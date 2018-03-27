@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app{
+      background: white;
+      width: 100%;
+    }
+    #header{
+      width: 100%;
+      display: flex;
+    }
+    .ifont{
+      display: inline-block;
+    }
+    .titlename{
+      flex: 1;
+      text-align: center;
+    }
+    .ospan{
+      width: 20%;
+      text-align: left;
+      padding-left: 15px;
+      display: inline-block;
+    }
+
+
+
+  </style>
+</head>
+<body>
+<div id='app'>
+  <header class="aui-bar aui-bar-nav" id="header">
+    <span class="ospan" @click="closethiswin()"><i class="iconfont ifont icon-ziyuan2-copy"></i></span>
+    <span class="titlename">琴曲试听</span>
+    <span class="ospan" @click="sharebtn()"></span>
+  </header>
+
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      firstLevelCateId:'',
+      sonCates:''
+    },
+    filters: {},
+
+    created:function() {
+      apiready = function () {
+        app.firstLevelCateId = api.pageParam.firstLevelCateId;
+        app.sonCates = api.pageParam.sonCates;
+
+        $api.fixStatusBar($api.dom('header'));
+        var posY = $api.offset($api.dom("header")).h;
+        api.openFrame({
+          name: 'listenhome_fm',
+          url: './listenhome_fm.html',
+          rect: {
+            x: 0,
+            y: posY,
+            width:'auto',
+            h:api.frameHeight - posY
+          },
+          pageParam: {
+            firstLevelCateId: app.firstLevelCateId,
+            sonCates: app.sonCates
+          },
+          bounces: true
+        });
+      };
+    },
+    methods: {
+      closethiswin:function(){
+        api.closeWin()
+      }
+    }
+  })
+</script>

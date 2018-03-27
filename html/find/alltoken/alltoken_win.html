@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+    }
+
+    #header {
+      border-bottom: 1px solid #ccc;
+      display: flex;
+    }
+
+    .headi {
+      width: 20%;
+      text-align: center;
+      display: inline-block;
+      font-size: 14px;
+    }
+
+    .messagetoken {
+      flex: 1;
+    }
+
+  </style>
+</head>
+<body>
+<div id='app'>
+  <header class="aui-bar aui-bar-nav" id="header">
+    <span class="headi" @click="closeWindow()"><i class="iconfont ifont icon-ziyuan2-copy"></i></span>
+    <span class="messagetoken">用户评价</span>
+    <span class="headi" @click="writetoken">写点评</span>
+  </header>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      userInfo:{},
+      clubId:'',
+      courseId:''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.clubId = api.pageParam.clubId;
+        app.courseId = api.pageParam.courseId;
+        $api.fixStatusBar($api.dom('header'));
+        api.openFrame({
+          name: 'alltoken',
+          url: "./alltoken_fm.html",
+          rect: {
+            x: 0,
+            y: $api.offset($api.dom('header')).h,
+            w: 'auto',
+            h: 'auto'
+          },
+          bounces: false,
+          pageParam: {
+            clubId:app.clubId,
+            courseId:app.courseId
+          }
+        });
+      };
+
+    },
+    methods: {
+      writetoken: function () {
+        api.sendEvent({
+          name: 'writemessage'
+        });
+      }
+    }
+  })
+</script>

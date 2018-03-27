@@ -1,0 +1,417 @@
+ <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/daily.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div id="loadStart"></div>
+    <div id="content">
+        <!--<mt-button icon="back" @click="{methods: aaa}" class="btn-black">back</mt-button>-->
+        <!--<mt-button icon="more" @click="{methods: aaa}">back</mt-button>-->
+        <!--账户总收入-->
+        <mt-swipe  prevent="true" @change="onLoad" :auto="10000" :continuous="true" :show-indicators="false" style="height: auto">
+            <mt-swipe-item style="height: auto">
+                <div class="banner">
+                    <div class="left">
+                        <div>
+                            {{periodActive | periodFont}}收益
+                        </div>
+                        <div>￥{{clubHomeData.totalPrice}}</div>
+                    </div>
+                    <div class="right">
+                        <div class="com">
+                            <span>综合评分: {{(clubHomeData.weights/20).toFixed(1)}}</span>
+                            <div>
+                                <svg class="icon" aria-hidden="true" v-for="i in 5">
+                                    <use :xlink:href="starClass(i,(clubHomeData.weights/20).toFixed(1))"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="class">
+                    <span>
+                        诚信
+                        <svg class="icon" aria-hidden="true" v-for="i in 5">
+                            <use :xlink:href="starClass(i,clubHomeData.overallScore)"></use>
+                        </svg>
+                    </span>
+                            <br/>
+                            <span>
+                        服务
+                        <svg class="icon" aria-hidden="true" v-for="i in 5">
+                            <use :xlink:href="starClass(i,clubHomeData.serverScore)"></use>
+                        </svg>
+                    </span>
+                            <br/>
+                            <span>
+                        环境
+                        <svg class="icon" aria-hidden="true" v-for="i in 5">
+                            <use :xlink:href="starClass(i,clubHomeData.teachScore)"></use>
+                        </svg>
+                    </span>
+                            <br/>
+                            <span>
+                        价格
+                        <svg class="icon" aria-hidden="true" v-for="i in 5">
+                            <use :xlink:href="starClass(i,clubHomeData.envirScore)"></use>
+                        </svg>
+                    </span>
+                        </div>
+                    </div>
+                    <img src="../../../../assets/images/index-banner.jpg" alt="">
+                </div>
+            </mt-swipe-item>
+            <mt-swipe-item style="height: auto">
+                <div class="banner" style='padding-top: 1rem'>
+                    <div id="main" style="width: 100%; height: 9rem"></div>
+                </div>
+            </mt-swipe-item>
+        </mt-swipe>
+        <div class="space"></div>
+        <!--今日、昨日订单金额-->
+        <div class="sum" @click="checkFlag" v-show="periodFlag == false">
+            <!--今日-->
+            <div class="today">
+                <!--订单-->
+                <div class="order">
+                    <div class="title">{{periodActive | periodFont}}订单</div>
+                    <div class="digit"><span>{{daily.todayOrder}}</span>笔</div>
+                </div>
+                <!--金额-->
+                <div class="money">
+                    <div class="title">成交金额</div>
+                    <div class="digit"><span>{{daily.todayPrice}}</span>元</div>
+                </div>
+            </div>
+            <!--昨日-->
+            <div class="yesterday">
+                <!--订单-->
+                <div class="order">
+                    <div class="title">{{periodActive | periodYesterday}}订单</div>
+                    <div class="digit"><span>{{daily.yesterdayOrder}}</span>笔</div>
+                </div>
+                <!--金额-->
+                <div class="money">
+                    <div class="title">成交金额</div>
+                    <div class="digit"><span>{{daily.yesterdayPrice}}</span>元</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab" v-show="periodFlag == true">
+            <div class="left" @click="checkFlag">
+                <span>切换</span>
+                <span>统计周期</span>
+            </div>
+
+            <div class="right">
+                <div class="tier">
+                    <div class="button" @click="periodChange('1')" :class="{active : periodActive === '1'}">按日</div>
+                    <div class="button" @click="periodChange('2')" :class="{active : periodActive === '2'}">按周</div>
+                </div>
+                <div class="tier">
+                    <div class="button" @click="periodChange('3')" :class="{active : periodActive === '3'}">按月</div>
+                    <div class="button" @click="periodChange('4')" :class="{active : periodActive === '4'}">按季</div>
+                </div>
+            </div>
+        </div>
+
+        <!--今日数据标题-->
+        <div class="today-data-title">
+            <span>-------------</span>&nbsp;&nbsp;&nbsp;{{periodActive | periodFont}}数据&nbsp;&nbsp;&nbsp;<span>-------------</span></div>
+        <!--今日数据-->
+        <div class="today-data">
+            <div class="top">
+                <div class="total-visits">
+                    <div class="tubiao">
+                        <i class="iconfont icon-yuandui"></i>
+                    </div>
+                    <span>
+            <div class="heading">{{periodActive | periodFont}}总访问量</div>
+            <div class="amount">{{daily.todayVisit}}</div>
+          </span>
+                </div>
+                <div class="new-evaluation">
+                    <div class="tubiao tubiao2">
+                        <i class="iconfont icon-yuandui"></i>
+                    </div>
+                    <span>
+            <div class="heading">新增评价</div>
+            <div class="amount">{{daily.newComment}}</div>
+          </span>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="actual-arrival">
+                    <div class="tubiao tubiao3" style="margin-right: 45px">
+                        <i class="iconfont icon-yuandui"></i>
+                    </div>
+                    <span>
+            <div class="heading" style="margin-left: -5px">实际到账</div>
+            <div class="amount">{{daily.todayFinishPrice}}</div>
+          </span>
+                </div>
+                <div class="new-student">
+                    <div class="tubiao tubiao4">
+                        <i class="iconfont icon-yuandui"></i>
+                    </div>
+                    <span>
+            <div class="heading">新增学员</div>
+            <div class="amount">{{daily.newStudentCount}}</div>
+          </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="space"></div>
+        <!--店铺排名 顾客口碑-->
+        <div class="degree">
+            <div class="store-ranking" v-show="daily.sort">
+                <div class="caption">店铺排名</div>
+                <div class="chart">
+                    <div class="circle">
+                        <div>{{daily.sort}}<span>名</span></div>
+                    </div>
+                </div>
+                <div class="report">
+                    <div>您的门店经营状况稳定，超过同城{{daily.passPercent}}%的商家</div>
+                </div>
+            </div>
+            <div class="word-of-mouth">
+                <div class="caption">顾客口碑</div>
+                <div class="chart">
+                    <div class="circle">
+                        <span class=support>支持</span>
+                        <div>{{daily.countClubAgree}}</div>
+                    </div>
+                </div>
+                <div class="report">
+                    <div>支持<span>{{daily.countClubAgree}}</span></div>
+                    <div>好评<span>{{daily.countClubGreatComment}}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+ <script type="text/javascript" src="../../../../assets/js/echarts.simple.min.js"></script>
+
+ <script type="text/javascript">
+    Vue.prototype.$echarts = echarts;
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            periodFlag: false,
+            periodActive: '1',
+            token: getToken(),
+            clubId: '',
+            clubName:'',
+            clubHomeData: {},
+            incomeData: {},
+            daily: {
+                totalPrice: '0.00',
+                todayOrder: 0,
+                todayPrice: '0.00',
+                yesterdayOrder: 0,
+                yesterdayPrice: '0.00',
+                todayVisit: 0,
+                newComment: 0,
+                todayFinishPrice: '0.00',
+                newStudentCount: 0,
+                sort: 0,
+                passPercent: 0,
+                countClubAgree: 0,
+                countClubGreatComment: 0
+            }
+        },
+        filters: {
+            periodYesterday(type) {
+                switch (type) {
+                    case '1' : return '昨日';
+                    case '2' : return '上周';
+                    case '3' : return '上个月';
+                    case '4' : return '上一季';
+                }
+            },
+            periodFont(type) {
+                switch (type) {
+                    case '1' : return '今日';
+                    case '2' : return '本周';
+                    case '3' : return '本月';
+                    case '4' : return '本季';
+                }
+            },
+            dateFormat(date) {
+                if (date) {
+                    return date.substr(0, 10);
+                } else {
+                    return '';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                api.setWinAttr({
+                    slidBackEnabled: false
+                });
+                app.clubId = api.pageParam.clubId;
+                app.clubName = api.pageParam.clubName;
+
+                app.getClubHomeData();
+
+                app.getweekIncome(2);
+
+                app.getBusinessDaily(function () {
+                    loadEnd();
+                });
+
+                refresh(function () {
+                    app.getBusinessDaily(function () {
+                        refreshDone();
+                    });
+                });
+            }
+        },
+        mounted: function () {
+            this.drawLine();
+        },
+        methods: {
+            periodChange: function (type) {
+                app.periodActive = type;
+                MINT.Indicator.open();
+                app.getBusinessDaily(false,type)
+                var tp = Number(type) + 1;
+                app.getweekIncome(tp);
+            },
+            checkFlag: function () {
+                app.periodFlag = !app.periodFlag
+            },
+            getClubHomeData: function () {
+                var post = {
+                    cmd: "storeBasicDoc",
+                    token: getToken(),
+                    clubId: app.clubId
+                };
+                sendAjax(this, post, function (res) {
+                    if (res.code === 1) {
+                        app.clubHomeData = res.data;
+                    }
+                })
+            },
+            starClass: function (index, x) {
+                var score = parseFloat(x);
+                if (score % 1 === 0) {
+                    if (index <= score) {
+                        return '#icon-yansebanxingxing';
+                    } else {
+                        return '#icon-yansebanxingxing1';
+                    }
+                } else {
+                    if (score - index < 0 && score - index > -1) {
+                        return '#icon-yibanyanseban';
+                    } else if (index < score) {
+                        return '#icon-yansebanxingxing';
+                    } else {
+                        return '#icon-yansebanxingxing1';
+                    }
+                }
+            },
+            resizeWorldMapContainer : function () {
+                var worldMapContainer = document.getElementById('main');
+                worldMapContainer.style.width = window.innerWidth+'px';
+                worldMapContainer.style.height = 10+'rem';
+            },
+            onLoad: function () {
+                var worldMapContainer = document.getElementById('main');
+                this.resizeWorldMapContainer();
+                var myChart = this.$echarts.init(worldMapContainer);
+                myChart.dispose();
+                this.drawLine()
+            },
+            drawLine: function () {
+                var worldMapContainer = document.getElementById('main');
+                this.resizeWorldMapContainer();
+                var myChart = this.$echarts.init(worldMapContainer);
+                myChart.setOption({
+                    xAxis: {
+                        data: this.incomeData.weektime
+                    },
+                    yAxis: {},
+                    title: {
+                        x: 'center',
+                        text: '收益统计图'
+                    },
+                    grid:{
+                        x:45,
+                        borderWidth:1
+                    },
+                    series: [{
+                        name: '收入',
+                        type: 'line',
+                        data: this.incomeData.weeklist
+                    }]
+                });
+                window.onresize = function () {
+                    //重置容器高宽
+                    this.resizeWorldMapContainer();
+                    myChart.resize();
+                };
+            },
+            getweekIncome: function (type) {
+                var post = {
+                    cmd: 'weekIncome',
+                    token: getToken(),
+                    clubId: app.clubId
+                };
+                if(type) {
+                    post.type = type
+                }
+                sendAjax(this, post, function (res) {
+                    if(res.code === 1) {
+                        app.incomeData = res.data
+                    }
+                })
+            },
+            getBusinessDaily(callback, type) {
+                var post = {
+                    cmd: 'getBusinessDaily',
+                    token: app.token,
+                    clubId: app.clubId
+                };
+                if(type) {
+                    post.type = type
+                }
+                sendAjax(this, post,function (res) {
+                    MINT.Indicator.close();
+                    app.daily = res.data;
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }
+        }
+    });
+</script>

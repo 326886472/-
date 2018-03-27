@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title>课程人气</title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    /*top标志*/
+    .top-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1.8rem;
+      height: 1.8rem;
+      overflow: hidden;
+      border-radius: 1rem;
+      color: #fff;
+    }
+
+    .beijing {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .beijing span {
+      font-size: 0.6rem;
+      margin-top: -5px;
+    }
+
+    .top1 {
+      background-color: #f46c5a;
+    }
+
+    .top2 {
+      background-color: #ffbb28;
+    }
+
+    .top3 {
+      background-color: #5a9bf4;
+    }
+
+    /*头部*/
+    .top-title {
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .top-title img {
+      width: 100%;
+    }
+
+    /*排行列表*/
+    .list-wrap {
+      display: flex;
+      flex-direction: row;
+      background-color: #fff;
+      padding: 0.3rem 0 5rem 0.5rem;
+      width: 100%;
+      height: 5rem;
+      color: #5a5a5a;
+      font-size: 0.7rem;
+      margin-bottom: 0.2rem;
+      box-sizing: border-box;
+    }
+
+    .left-img {
+      position: relative;
+      width: 4rem;
+      height: 4rem;
+      padding: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .left-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .right-content {
+      position: relative;
+      padding: 5px 2px 0 5px;
+      /*padding: 0.5rem 0.8rem 0 0;*/
+      flex-grow: 1;
+    }
+
+    .title {
+      padding: 0.2rem 0.5rem 0.2rem 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .title h4 {
+      display: inline-block;
+      font-size: 0.7rem;
+      color: #000;
+    }
+
+    /*.title span {*/
+    /*font-size: 0.6rem;*/
+    /*color: #5a5a5a;*/
+    /*}*/
+
+    .grade {
+      height: 1rem;
+      line-height: 1rem;
+      padding-top: 0.1rem;
+    }
+
+    .grade span {
+      color: #5a5a5a;
+    }
+
+    .biaoqian {
+      padding: 0.5rem 0.5rem 0.5rem 0;
+    }
+
+    .biaoqian span {
+      height: 0.7rem;
+      line-height: 0.7rem;
+      font-size: 0.6rem;
+      padding: 0 3px;
+      border-radius: 3px;
+
+    }
+
+    .dingqi {
+      color: #f46c5a;
+      border: 1px solid #f46c5a;
+    }
+
+    .freecourse {
+      color: #78b4ff;
+      border: 1px solid #78b4ff;
+    }
+
+    .ontimecourse {
+      color: #ff8500;
+      border: 1px solid #ff8500;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <div class="top-title kecheng">
+    <img src="../../assets/images/rank/kchot.png" alt="教学课程人气排行榜">
+  </div>
+
+  <div v-for="(item,index) in items">
+    <div class="list-wrap" @click="openkc(index)">
+      <div class="left-img">
+        <div class="top-wrap top1" v-show="item.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="item.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="item.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span>TOP3</span>
+          </div>
+        </div>
+        <img :src="formatImg(item.images)"/>
+      </div>
+      <div class="right-content">
+        <div class="title">
+          <div>
+            <h4>{{item.courseName}}</h4>
+            <span v-show="item.rankId>3" style="color:#f46c5a;padding-left: 0.2rem; ">排名{{item.rankId}}</span>
+          </div>
+          <span @click.stop="changeAgree(index)">
+                            <i style="font-size: 12px;color: #ff4949;" class="iconfont icon-xin"
+                               v-if="item.ifAgree==='1'"></i>
+                            <i style="font-size: 12px;" class="iconfont icon-ziyuan8" v-else></i>
+                         {{item.countAgree}}
+                        </span>
+        </div>
+        <div class="grade">
+          <span>古琴馆：{{item.clubName}}</span></div>
+        <div class="biaoqian">
+          <span class="dingqi" v-show="item.courseType==='1'">定期课程</span>
+          <span class="freecourse" v-show="item.courseType==='2'">免费体验课</span>
+          <span class="ontimecourse" v-show="item.courseType==='3'">随到随学</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script src="../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: "#app",
+    data: {
+      items: [],
+      firstCount: 0
+    },
+    created: function () {
+      this.getRank(function () {
+        app.firstCount++;
+      });
+      apiready = function () {
+
+      };
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    methods: {
+      getRank: function (callback) {
+        var post = {
+          cmd: 'rankCourseList',
+          cityCode: getcitycode(),
+          rank: 2,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+          app.items = res.data;
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      openkc: function (ret) {
+        //打开课程评分排名课程
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../find/catchdetails/catchdetails_win.html',
+          pageParam: {
+            statustype: 1,
+            courseId: app.items[ret].courseId
+          }
+        });
+      },
+      changeAgree: function (index) {
+        if (app.items[index].ifAgree === '1') {
+          app.items[index].ifAgree = '0';
+          app.items[index].countAgree--;
+        } else if (app.items[index].ifAgree === '0') {
+          app.items[index].ifAgree = '1';
+          app.items[index].countAgree++;
+        }
+        app.collectCommon(index);
+      },
+      collectCommon: function (ind) {
+        var post = {
+          cmd: 'collectCommon',
+          token: getToken(),
+          id: app.items[ind].courseId,
+          type: '2',
+          agreeOrCollect: '2',
+          cityCode: getcitycode()
+        };
+        sendAjax(this, post, function (res) {
+        });
+      }
+    }
+  })
+
+</script>
+
+
+<!--备注-->
+<!--没有懒加载-->
+<!--课程名称太长导致样式混乱-->

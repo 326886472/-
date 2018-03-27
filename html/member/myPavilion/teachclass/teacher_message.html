@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/teacher_message.css">
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+    <section>
+        <div class="headerimg">
+            <div class="btnimg">
+                <img style="width: 100%;height: 100%;border-radius: 50%" class="manage_src" :src="formatImg(teacherAvatar)">
+            </div>
+        </div>
+        <div class="bodycont">
+            <ul class="body_oul">
+                <li>
+                    <span>任课教师:</span>
+                    <span>{{teacher}}</span>
+                </li>
+                <li class="countmessage">
+                    <p>教师简介:</p>
+                    <span class="textarea">{{teacherDesc}}</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+
+<script>
+    new FastClick(document.body);
+</script>
+
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            teacherAvatar: '',
+            teacher: '',
+            teacherDesc: '',
+            more:{
+                popupVisible: false
+            }
+        },
+
+        created: function () {
+            apiready = function () {
+                app.teacherAvatar = api.pageParam.teacherAvatar;
+                app.teacher = api.pageParam.teacher;
+                app.teacherDesc = api.pageParam.teacherDesc;
+                loadEnd();
+            };
+        }
+    })
+</script>
+</html>

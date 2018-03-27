@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+            background: white;
+            width: 100%;
+            height: 100%;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+        }
+        .albumdetails{
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .albumdetails p {
+            font-size: 15px;
+            color:#838383;
+            line-height: 2rem;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+        <div class="albumdetails">
+            <p style="color: black;font-weight: bold">琴馆参数</p>
+
+            <p>
+                    <span>
+                        <i class="iconfont righticon icon-chuanglishijian"></i>
+                        创立时间
+                    </span>
+                {{maketime}}
+            </p>
+
+            <p>
+                    <span>
+                        <i class="iconfont righticon icon-jingyingnianxian"></i>
+                        经营年限
+                    </span>
+                {{makeyear}}年
+            </p>
+
+            <p>
+                    <span>
+                        <i class="iconfont righticon icon-pinpai"></i>
+                        主要品牌
+                    </span>
+                {{mainshop}}
+            </p>
+            <p>
+                    <span>
+                        <i class="iconfont righticon icon-kecheng"></i>
+                        琴馆课程
+                    </span>
+                {{classcount}}
+            </p>
+
+
+
+            <p>
+                    <span>
+                        <i class="iconfont righticon icon-shijian"></i>
+                        营业时间
+                    </span>
+                {{busyweek}} {{openTime}}
+            </p>
+
+            <p>
+                    <span>
+                        <i class="iconfont righticon icon-jiage"></i>
+                        价格区间
+                    </span>
+               {{minprice}}-{{maxprice}}
+            </p>
+            <p>
+                    <span>
+                        <i class="iconfont righticon icon-tesebiaoqian"></i>
+                        特色商品
+                    </span>
+                        {{othershop}}
+            </p>
+
+
+
+
+        </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+          maketime:'',
+          mainshop:'',
+          makeyear:'',
+          classcount:'',
+          busyweek:'',
+          openTime:'',
+          minprice:'',
+          maxprice:'',
+          othershop:''
+        },
+        filters: {},
+        created: function () {
+            apiready = function () {
+                app.maketime = api.pageParam.maketime,
+                app.mainshop = api.pageParam.mainshop,
+                app.makeyear = api.pageParam.makeyear,
+                app.classcount = api.pageParam.classcount,
+                app.busyweek = api.pageParam.busyweek,
+                app.openTime = api.pageParam.openTime,
+                app.minprice = api.pageParam.minprice,
+                app.maxprice = api.pageParam.maxprice,
+                app.othershop = api.pageParam.othershop
+            };
+        },
+        methods: {
+            change:function(index) {
+                app.changeindex = index
+            }
+        }
+    })
+</script>
+
+
+
+

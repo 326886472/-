@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    .icon {
+      width: 0.5rem;
+      height: 0.5rem;
+      color: #ccc;
+    }
+
+    input {
+      height: 1rem;
+      width: 60%;
+    }
+
+    .list {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .list li:last-child {
+      border: none;
+    }
+
+    .list-item {
+      background: white;
+      border-bottom: 1px solid #ccc;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .list-item-box {
+      background: white;
+      border-bottom: 1px solid #ccc;
+      padding: 0.5rem 1rem;
+    }
+
+    .list-item div:first-child {
+      width: 30%;
+      flex-shrink: 0;
+    }
+
+    .list-item div:last-child {
+      width: 70%;
+      flex-shrink: 0;
+    }
+
+    .top-box {
+      width: 100%;
+    }
+
+    input {
+      min-height: 1rem;
+    }
+
+    textarea {
+      width: 90%;
+      height: auto;
+      padding: 0.5rem 1rem;
+    }
+
+    /*radio样式*/
+    .my-radio {
+      width: 1rem;
+      height: 0.8rem;
+      border-radius: 0.1rem;
+      background-color: #ffffff;
+      border: solid 1px #dddddd;
+      font-size: 0.3rem;
+      margin-right: 0.3rem;
+      padding: 0;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      cursor: default;
+      -webkit-appearance: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-transition: background-color ease 0.1s;
+      transition: background-color ease 0.1s;
+    }
+
+    .my-radio:checked {
+      border: solid 1px #F8A79C;
+      text-align: center;
+      background-clip: padding-box;
+    }
+
+    .my-radio:checked:before, .my-radio:checked:after {
+      content: '';
+      width: 0.5rem;
+      height: 0.3rem;
+      position: absolute;
+      top: 42%;
+      left: 50%;
+      margin-left: -0.25rem;
+      margin-top: -0.25rem;
+      background: transparent;
+      border: 1px solid #F8A79C;
+      border-top: none;
+      border-right: none;
+      z-index: 2;
+      -webkit-border-radius: 0;
+      border-radius: 0;
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+    }
+
+    .right-box {
+      text-align: right;
+    }
+
+    .btn-box {
+      margin-top: 20%;
+    }
+
+    .btn-box div {
+      padding: 0.3rem 0;
+      text-align: center;
+      width: 60%;
+      margin: 0 auto;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      color: #666;
+      border: 1px solid #666;
+    }
+
+    .btn-box div:active {
+      background: gainsboro;
+    }
+
+    /*选择地址*/
+    .mint-popup {
+      width: 100%;
+    }
+
+    .picker-box {
+      display: flex;
+    }
+
+    .picker-box > * {
+      width: 0;
+      flex-grow: 1;
+    }
+
+    .picker-btn-box {
+      width: 60%;
+      margin: 0 auto 2rem auto;
+      display: flex;
+      justify-content: space-around;
+      border: 1px solid #666;
+      border-radius: 20px;
+      background-image: url("../../../../assets/images/shuxian.png");
+      background-repeat: no-repeat;
+      background-size: 1% 100%;
+      background-position: center center;
+    }
+
+    .picker-btn-box div {
+      font-size: 0.7rem;
+      text-align: center;
+      flex: 1;
+      padding: 0.5rem 0;
+    }
+
+    .picker-btn-box div:first-child {
+      border-top-left-radius: 0.8rem;
+      border-bottom-left-radius: 0.8rem;
+    }
+
+    .picker-btn-box div:last-child {
+      border-top-right-radius: 0.8rem;
+      border-bottom-right-radius: 0.8rem;
+    }
+
+    .disabled {
+      background: #bbb;
+    }
+
+    .picker-btn-box div:active {
+      background: #bbb;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <!--选择地址-->
+  <mt-popup
+          v-model="cityPickerVisible"
+          position="bottom"
+          :closeOnClickModal="false">
+    <div style="padding: 1rem;">
+      选择地址
+    </div>
+    <div class="picker-box">
+      <mt-picker :slots="provinceList" :visible-item-count="3" value-key="city" @change="provinceChange"
+                 ref="province"></mt-picker>
+      <mt-picker :slots="cityList" :visible-item-count="3" value-key="city" @change="cityChange"
+                 ref="city"></mt-picker>
+      <mt-picker :slots="regionList" :visible-item-count="3" value-key="city" @change="regionChange"
+                 ref="region"></mt-picker>
+    </div>
+    <div class='picker-btn-box'>
+      <div @click="cancel">取消</div>
+      <div @click="cityConfirm">确定</div>
+    </div>
+  </mt-popup>
+  <ul class="list aui-margin-t-5">
+    <li class="list-item ">
+      <div>收货人</div>
+      <div>
+        <input type="text" class="top-box" v-model="form.name">
+      </div>
+    </li>
+    <li class="list-item">
+      <div>联系电话</div>
+      <div>
+        <input type="tel" class="top-box" v-model="form.mobile" maxlength="11"/>
+      </div>
+    </li>
+    <li class="list-item ">
+      <div>所在地区</div>
+      <div class="right-box" @click="selectCity()">
+        <span style="float:left;" v-show="form.cityName">
+          {{form.cityName}}
+        </span>
+        <span style="float:left;" v-show="!form.cityName">请选择</span>
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-ziyuan2"></use>
+        </svg>
+      </div>
+    </li>
+    <li class="list-item-box ">
+      <div>详细地址</div>
+      <div>
+        <textarea name="" id="" cols="30" rows="10" v-model="form.address"></textarea>
+      </div>
+    </li>
+    <li class="list-item">
+      <div>设为默认地址</div>
+      <div class="right-box">
+        <input type="checkbox" class="my-radio" name="demo1" value="1" v-model="form.isDefault">
+      </div>
+    </li>
+  </ul>
+  <div class="btn-box" @click="addReceiptAddress">
+    <div>保存</div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      form: {
+        addressId: '',
+        name: '',
+        mobile: '',
+        address: '',
+        isDefault: '',
+        provinceCode: '',
+        cityCode: '',
+        regionCode: ''
+      },
+      // 三级联动
+      cityPickerVisible: false,
+      provinceList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      cityList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      regionList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      province: {},
+      city: {},
+      region: {},
+      provinceTemp: {},
+      cityTemp: {},
+      regionTemp: {},
+      cityAuto: false,
+      cityOnload: false,
+      msg: {
+        cityName: '',
+        provinceCode: '',
+        cityCode: '',
+        regionCode: ''
+      }
+    },
+    created: function () {
+      apiready = function () {
+//        三级联动
+        var vueObj = app;
+        // 获取省市
+        vueObj.$nextTick(function () {
+          vueObj.selectAllCityDrop(1, null, function (provinceList) {
+            vueObj.provinceList[0].values = provinceList;
+            vueObj.provinceTemp = provinceList[0];
+
+            vueObj.selectAllCityDrop(2, provinceList[0].code, function (cityList) {
+              vueObj.cityList[0].values = cityList;
+              vueObj.cityTemp = cityList[0];
+
+              vueObj.selectAllCityDrop(3, cityList[0].code, function (regionList) {
+                vueObj.regionList[0].values = regionList;
+                vueObj.regionTemp = regionList[0];
+                vueObj.cityAuto = true;
+              })
+            })
+          });
+        });
+      };
+    },
+    methods: {
+//      新增地址
+      addReceiptAddress: function () {
+//        新增
+        var post = {
+          cmd: 'addReceiptAddress',
+          token: getToken(),
+          name: app.form.name,
+          mobile: app.form.mobile,
+          province: app.form.provinceCode,
+          city: app.form.cityCode,
+          region: app.form.regionCode,
+          address: app.form.address,
+          isDefault: app.form.isDefault ? '1' : '0'
+        };
+        if ((mobileReg.test(post.mobile))) {
+          sendAjax(this, post, function (res) {
+            api.sendEvent({
+              name: "changeAdd"
+            });
+            closeWindow();
+          });
+        } else {
+          toastMsg('请输入正确的手机号');
+        }
+      },
+      //三级联动开始
+      selectCity: function () {
+        app.cityPickerVisible = true;
+      },
+      cancel: function () {
+        app.provinceTemp = app.province;
+        app.cityTemp = app.city;
+        app.regionTemp = app.region;
+        if (app.province.code && app.city.code && app.region.code) {
+          app.citySet(app.province.code, app.city.code, app.region.code);
+        }
+        app.form.cityName = app.province.city + '-' + app.city.city + '-' + app.region.city;
+        app.cityPickerVisible = false;
+      },
+      cityConfirm: function () {
+        if (!app.cityOnload) {
+          app.province = app.provinceTemp;
+          app.city = app.cityTemp;
+          app.region = app.regionTemp;
+          app.form.provinceCode = app.province.code;
+          app.form.cityCode = app.city.code;
+          app.form.regionCode = app.region.code;
+          app.form.cityName = app.province.city + '-' + app.city.city + '-' + app.region.city;
+          app.cityPickerVisible = false;
+        }
+      },
+      getCityByCode: function (codeOrObj, cityList) {
+        if ((typeof codeOrObj) === 'string') {
+          for (var i = 0; i < cityList.length; i++) {
+            if (cityList[i].code === codeOrObj) {
+              return cityList[i];
+            }
+          }
+        } else {
+          return codeOrObj;
+        }
+      },
+      provinceChange: function (picker, values) {
+        if (this.cityAuto) {
+          app.cityOnload = true;
+          this.selectAllCityDrop(2, values[0].code, function (cityList) {
+            app.cityList[0].values = cityList;
+          })
+        }
+        this.provinceTemp = values[0];
+      },
+      cityChange: function (picker, values) {
+        var cityobj = this;
+        if (this.cityAuto) {
+          app.cityOnload = true;
+          app.selectAllCityDrop(3, values[0].code, function (regionList) {
+            app.regionList[0].values = regionList;
+            app.cityOnload = false;
+          })
+        }
+        this.cityTemp = values[0];
+      },
+      regionChange: function (picker, values) {
+        this.regionTemp = values[0];
+      },
+      // 把 省-市-区 设置为指定的省市区
+      citySet: function (province, city, region) {
+        app.cityAuto = false;
+        var provinceTemp = app.getCityByCode(province, app.provinceList[0].values);
+        app.$refs.province.setSlotValue(0, provinceTemp);
+        app.province = provinceTemp;
+        app.provinceTemp = provinceTemp;
+
+        app.selectAllCityDrop(2, provinceTemp.code, function (cityList) {
+          app.cityList[0].values = cityList;
+          var cityTemp = app.getCityByCode(city, app.cityList[0].values);
+          app.$refs.city.setSlotValue(0, cityTemp);
+          app.city = cityTemp;
+          app.cityTemp = cityTemp;
+          app.selectAllCityDrop(3, cityTemp.code, function (regionList) {
+            app.regionList[0].values = regionList;
+            var regionTemp = app.getCityByCode(region, app.regionList[0].values);
+            app.$refs.region.setSlotValue(0, regionTemp);
+            app.region = regionTemp;
+            app.regionTemp = regionTemp;
+            app.cityAuto = true;
+          })
+        })
+      },
+      // 获取全国城市三级联动下拉列表，type: {1: 省, 2: 市, 3: 区}
+      selectAllCityDrop: function (type, code, callback) {
+        var post = {
+          cmd: 'selectAllCityDrop'
+        };
+        switch (type) {
+          case 2:
+            post.provinceCode = code;
+            break;
+          case 3:
+            post.cityCode = code;
+            break;
+        }
+        sendAjax(app, post, function (res) {
+          if (callback) {
+            callback(res.data);
+          }
+        });
+      }
+//      三级联动结束
+    }
+  })
+</script>

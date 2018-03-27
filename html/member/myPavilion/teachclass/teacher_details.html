@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/teacher_details.css">
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+    <section>
+        <div class="headerimg">
+            <div class="btnimg" @click="redactimg" style="position: relative; ">
+                点击编辑头像
+                <img v-show="olddataimg !== ''" style="width: 100%; height: 100%; border-radius: 50%; position: absolute; top: 0; left: 0;" :src="formatImgs(olddataimg)">
+            </div>
+        </div>
+        <div class="bodycont">
+            <ul class="body_oul">
+                <li>
+                    <span>任课教师:</span>
+                    <input type="text" v-model="teachername">
+                </li>
+                <li class="countmessage">
+                    <p>教师简介:</p>
+                    <textarea maxlength="500" v-model="teachermessage"></textarea>
+                </li>
+            </ul>
+            <div class="sure_btn">
+                <mt-button class="sure" @click="aaosure">确定</mt-button>
+            </div>
+        </div>
+        <mt-popup
+                v-model="more.popupVisible"
+                position="bottom">
+            <ul class="moreoul">
+                <li @click="takephoto">拍照</li>
+                <li @click="myphotos">相册</li>
+                <li @click="cancel">取消</li>
+            </ul>
+        </mt-popup>
+    </section>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+
+<script>
+    new FastClick(document.body);
+</script>
+
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            olddataimg: '',
+            teachername: '',
+            teachermessage: '',
+            more: {
+                popupVisible: false
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.olddataimg = api.pageParam.teacherAvatar;
+                app.teachername = api.pageParam.teacher;
+                app.teachermessage = api.pageParam.teacherDesc;
+                loadEnd();
+            };
+        },
+        methods: {
+            formatImgs (img) {
+                if (img.indexOf('/Public/') != -1) {
+                    return formatImg(img);
+                } else {
+                    return img;
+                }
+            },
+            aaosure() {
+                api.sendEvent({
+                    name: 'mypicture',
+                    extra: {
+                        mypicture: app.olddataimg,
+                        teachermessage: app.teachermessage,
+                        teachername: app.teachername
+                    }
+                });
+                api.closeWin()
+            },
+            redactimg() {
+                app.more.popupVisible = true;
+            },
+            takephoto(){
+                api.getPicture({
+                    sourceType: 'camera',
+                    encodingType: 'jpg',
+                    mediaValue: 'pic',
+                    destinationType: 'url',
+                    allowEdit: true,
+                    quality: 50,
+                    saveToPhotoAlbum: true
+                }, function (ret, err) {
+                    if (ret.data) {
+                        app.olddataimg = ret.data;
+                        toastMsg('修改成功');
+                    } else {
+                        toastMsg('取消修改');
+                    }
+                    app.more.popupVisible = false;
+                });
+            },
+            myphotos(){
+                api.getPicture({
+                    sourceType: 'album',
+                    encodingType: 'jpg',
+                    mediaValue: 'pic',
+                    destinationType: 'url',
+                    allowEdit: true,
+                    quality: 50,
+                    targetWidth: 100,
+                    targetHeight: 100,
+                    saveToPhotoAlbum: true
+                }, function (ret, err) {
+                    if (ret) {
+                        app.olddataimg = ret.data;
+                        toastMsg('修改成功');
+                    } else {
+                        toastMsg('取消修改');
+                    }
+                    app.more.popupVisible = false;
+                });
+            },
+            cancel() {
+                app.more.popupVisible = false;
+            }
+        }
+    })
+</script>
+</html>

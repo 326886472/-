@@ -1,0 +1,63 @@
+.complain {
+  display: flex;
+  flex-direction: column;
+  .type {
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .mint-checklist {
+    border-bottom: 0.3rem solid #f0f0f0;
+    padding: 0 0.2rem;
+    .mint-cell {
+      .mint-cell-wrapper {
+        background-image: none;
+        border-bottom: 0.1rem solid #f0f0f0;
+        width: 100%;
+        .mint-checklist-label {
+          margin: 0;
+          padding: 0;
+          .mint-checkbox-input:checked + .mint-checkbox-core {
+            background-color: #FF8500;
+            border-color: #FF8500;
+          }
+        }
+      }
+    }
+  }
+  .complain-details {
+    padding: 0.5rem 1.2rem;
+    .title {
+      font-size: 1rem;
+      font-weight: 600;
+      padding-bottom: 1rem;
+    }
+    .mint-field.is-textarea {
+      background-color: #F2F2F2;
+      border-radius: 0.3rem;
+    }
+    .mint-cell:last-child {
+      background-image: none;
+      .mint-cell-wrapper {
+        background-image: none;
+      }
+    }
+  }
+  .sure {
+    display: flex;
+    justify-content: center;
+    padding: 20% 0 10%;
+    .mint-button--large {
+      width: 70%;
+    }
+    .mint-button--default {
+      background-color: #404040;
+      color: #fff;
+      font-size: 1rem;
+    }
+  }
+}
+
+.mint-button--default{
+  border-radius: 1rem;
+}

@@ -1,0 +1,203 @@
+.brforeclass {
+  color: gainsboro;
+  border: 1px solid gainsboro; }
+
+html, body {
+  background: #f0f0f0; }
+  html section, body section {
+    width: 100%;
+    height: 100%; }
+    html section .headermessage, body section .headermessage {
+      width: 100%;
+      height: 7rem;
+      background: white; }
+      html section .headermessage img, body section .headermessage img {
+        width: 5rem;
+        height: 5rem;
+        margin: 1rem;
+        display: inline-block;
+        float: left; }
+      html section .headermessage .messagebox, body section .headermessage .messagebox {
+        margin-top: 1rem;
+        float: left;
+        width: auto;
+        height: auto; }
+        html section .headermessage .messagebox .stylep, body section .headermessage .messagebox .stylep {
+          font-size: 12px;
+          color: grey;
+          line-height: 2rem; }
+        html section .headermessage .messagebox i, body section .headermessage .messagebox i {
+          font-size: 12px; }
+        html section .headermessage .messagebox .oragnr, body section .headermessage .messagebox .oragnr {
+          color: orange; }
+    html section .basemessage, body section .basemessage {
+      width: 100%;
+      height: auto;
+      background: white; }
+      html section .basemessage .oul, body section .basemessage .oul {
+        width: 100%;
+        height: auto; }
+        html section .basemessage .oul li, body section .basemessage .oul li {
+          line-height: 3rem;
+          margin: 0 1rem;
+          height: auto;
+          border-bottom: 1px solid gainsboro; }
+          html section .basemessage .oul li .pub_span, body section .basemessage .oul li .pub_span {
+            width: 26%;
+            margin-left: 10px;
+            font-size: 14px; }
+          html section .basemessage .oul li .messagespan, body section .basemessage .oul li .messagespan {
+            font-size: 14px;
+            width: 64%; }
+            html section .basemessage .oul li .messagespan.ta, body section .basemessage .oul li .messagespan.ta {
+              height: 5.2rem;
+              line-height: 1.2;
+              resize: none; }
+      html section .basemessage .bottomoul, body section .basemessage .bottomoul {
+        width: 100%;
+        height: auto; }
+        html section .basemessage .bottomoul li, body section .basemessage .bottomoul li {
+          margin: 0 1rem;
+          height: auto;
+          border-bottom: 1px solid gainsboro; }
+          html section .basemessage .bottomoul li .stop, body section .basemessage .bottomoul li .stop {
+            width: 26%;
+            margin-left: 10px;
+            line-height: 3rem;
+            font-size: 14px; }
+          html section .basemessage .bottomoul li .bottomspan, body section .basemessage .bottomoul li .bottomspan {
+            width: 26%;
+            margin-left: 10px;
+            line-height: 1rem;
+            font-size: 14px; }
+          html section .basemessage .bottomoul li .bottomchange, body section .basemessage .bottomoul li .bottomchange {
+            font-size: 14px;
+            width: 65%;
+            line-height: 3rem; }
+            html section .basemessage .bottomoul li .bottomchange .changebtn, body section .basemessage .bottomoul li .bottomchange .changebtn {
+              width: 40%;
+              height: 2rem;
+              text-align: center;
+              line-height: 2rem;
+              border-radius: 20px;
+              border: 1px solid black;
+              margin-left: 5%;
+              font-size: 12px; }
+            html section .basemessage .bottomoul li .bottomchange .tradename, body section .basemessage .bottomoul li .bottomchange .tradename {
+              width: auto;
+              padding-left: 1rem;
+              padding-right: 1rem;
+              height: 1.5rem;
+              text-align: center;
+              line-height: 1.5rem;
+              border-radius: 20px;
+              border: 1px solid;
+              margin-left: 5%;
+              font-size: 12px;
+              color: #bbb; }
+              html section .basemessage .bottomoul li .bottomchange .tradename.active, body section .basemessage .bottomoul li .bottomchange .tradename.active {
+                color: #000; }
+            html section .basemessage .bottomoul li .bottomchange .addname, body section .basemessage .bottomoul li .bottomchange .addname {
+              position: relative; }
+              html section .basemessage .bottomoul li .bottomchange .addname .delbtn, body section .basemessage .bottomoul li .bottomchange .addname .delbtn {
+                position: absolute;
+                display: block;
+                background: #bbb;
+                color: white;
+                height: 18px;
+                width: 18px;
+                text-align: center;
+                line-height: 16px;
+                border-radius: 50%;
+                top: -6px;
+                right: -5px;
+                z-index: 100;
+                font-size: 13px; }
+            html section .basemessage .bottomoul li .bottomchange .range, body section .basemessage .bottomoul li .bottomchange .range {
+              display: flex;
+              align-items: center;
+              flex: 1; }
+              html section .basemessage .bottomoul li .bottomchange .range .mint-cell, body section .basemessage .bottomoul li .bottomchange .range .mint-cell {
+                flex: none;
+                width: 30%; }
+                html section .basemessage .bottomoul li .bottomchange .range .mint-cell .mint-cell-value, body section .basemessage .bottomoul li .bottomchange .range .mint-cell .mint-cell-value {
+                  border-bottom: 0.1rem solid #f0f0f0; }
+            html section .basemessage .bottomoul li .bottomchange .mint-cell, body section .basemessage .bottomoul li .bottomchange .mint-cell {
+              flex: none;
+              width: 50%; }
+              html section .basemessage .bottomoul li .bottomchange .mint-cell .mint-cell-value, body section .basemessage .bottomoul li .bottomchange .mint-cell .mint-cell-value {
+                border-bottom: 0.1rem solid #f0f0f0; }
+    html section .bottombox, body section .bottombox {
+      width: 100%;
+      height: 5rem;
+      display: flex;
+      text-align: center;
+      background: white;
+      /*.settingbtn {*/
+      /*margin: auto;*/
+      /*width: 50%;*/
+      /*height: 2rem;*/
+      /*background: #404040;*/
+      /*color: white;*/
+      /*}*/ }
+      html section .bottombox .btn-black, body section .bottombox .btn-black {
+        margin: 1rem auto; }
+        html section .bottombox .btn-black.confirm, body section .bottombox .btn-black.confirm {
+          width: 60%; }
+  html .mint-popup, body .mint-popup {
+    width: 100%; }
+    html .mint-popup .picker-box, body .mint-popup .picker-box {
+      display: flex; }
+      html .mint-popup .picker-box > *, body .mint-popup .picker-box > * {
+        width: 0;
+        flex-grow: 1; }
+      html .mint-popup .picker-box .slot1, body .mint-popup .picker-box .slot1 {
+        font-size: 14px; }
+    html .mint-popup .picker-button, body .mint-popup .picker-button {
+      display: flex;
+      justify-content: space-around;
+      padding: 1rem 0; }
+      html .mint-popup .picker-button .btn-black, body .mint-popup .picker-button .btn-black {
+        width: 30%; }
+      html .mint-popup .picker-button .disabled, body .mint-popup .picker-button .disabled {
+        background: #bbb; }
+        html .mint-popup .picker-button .disabled:active, body .mint-popup .picker-button .disabled:active {
+          background: #bbb; }
+      html .mint-popup .picker-button .cheng, body .mint-popup .picker-button .cheng {
+        flex-grow: 1; }
+
+.week .week-box {
+  padding: 1rem; }
+  .week .week-box .line {
+    border-bottom: 1px solid #ccc;
+    padding: 0.5rem 0;
+    text-align: center;
+    color: #737373; }
+    .week .week-box .line .iconfont {
+      float: right; }
+
+.week .picker-button {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 0; }
+  .week .picker-button .btn-black {
+    width: 30%; }
+  .week .picker-button .cheng {
+    flex-grow: 1; }
+
+.icon-xingxing {
+  color: #FF8500;
+  font-size: 1rem; }
+  .icon-xingxing.grey-star {
+    color: #BFBFBF; }
+
+.icon-yibanxingxing1 {
+  color: #ff8500; }
+
+.number {
+  color: #FFAA2A; }
+
+.iconfont {
+  margin-right: 0.2rem; }
+  .iconfont:nth-child(5) {
+    margin-right: 0; }

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    .headernav {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      font-size: 12px;
+      display: flex;
+    }
+
+    .headernav span {
+      flex: 1;
+    }
+
+    .tagdiv {
+      font-size: 13px;
+      display: inline-block;
+      line-height: 1.5rem;
+      margin-left: 0.2rem;
+      padding-left: 20px;
+      padding-right: 20px;
+      text-align: center;
+      background: white;
+      border-radius: 20px;
+      margin-top: 0.2rem;
+      border: 1px solid gainsboro;
+      z-index: 10;
+    }
+
+    .tagdiv:active {
+      background: #8d8d8d;
+    }
+
+    .searchbox {
+      width: 100%;
+      height: auto;
+      border-bottom: 1px solid gainsboro;
+      background: white;
+    }
+
+    .boxli {
+      width: 100%;
+      height: 2.5rem;
+      border-bottom: 1px solid gainsboro;
+      background: white;
+      line-height: 2.5rem;
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .boxli:active {
+      background: gainsboro;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div class="searchbox">
+    <div class="boxli" v-for="(item,index) in searchlist.proList" @click="surexount(index)">
+      <span style="margin-left: 15px">
+          <i style="color: gainsboro" class="iconfont icon-sousuo"></i>
+          {{item.title}}
+      </span>
+    </div>
+  </div>
+
+
+  <div class="headernav">
+    <span style="margin-left: 0.5rem">搜索发现 <i style="font-size: 12px" class="iconfont icon-faxian"></i></span>
+    <!--<span style="text-align: right;margin-right: 1rem">换一组</span>-->
+  </div>
+
+  <span class="tagdiv" v-for="(item,index) in keyword" @click="changebtnchar(index)">{{item.values}}</span>
+
+  <div style="width: 100%;margin-top: 3rem">
+    <span style="margin-left: 0.5rem;font-size: 12px">历史搜索 <i style="font-size: 14px" class="iconfont icon-shanchu"></i></span>
+  </div>
+
+  <span class="tagdiv" v-for="(item,index) in hisstorylist" @click="historybtn(index)">{{item}}</span>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      topStatus: '',
+      searchlist: [],
+      hisstorylist: [],
+      newhistorylist: [],
+      omyinput: '',
+//          接口
+//          关键字
+      keyword: []
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.homeSearchKeyWords();
+        var hislist = $api.getStorage('hislist');
+        if (hislist) {
+          app.hisstorylist = hislist.splice(0, 6);
+        } else {
+          app.hisstorylist = [];
+        }
+        api.addEventListener({
+          name: 'onchangeinput'
+        }, function (ret, err) {
+          app.searchlist = ret.value.searchlist;
+          app.omyinput = ret.value.proList;
+        });
+      };
+    },
+    methods: {
+//获取关键字
+      homeSearchKeyWords: function () {
+        var post = {
+          cmd: 'homeSearchKeyWords'
+        };
+        sendAjax(this, post, function (res) {
+          app.keyword = res.data;
+        })
+      },
+//选择关键字
+      changebtnchar: function (index) {
+//              alert(index);
+        api.sendEvent({
+          name: 'surecount',
+          extra: {
+            title: app.keyword[index].values
+          }
+        });
+      },
+//          获取列表的词，显示到搜索
+      surexount: function (index) {
+        api.sendEvent({
+          name: 'surecount',
+          extra: {
+            title: app.searchlist.proList[index].title
+          }
+        });
+      },
+//          历史搜索
+      historybtn: function (index) {
+        api.sendEvent({
+          name: 'surecount',
+          extra: {
+            title: app.hisstorylist[index]
+          }
+        });
+      }
+//          getlocalstore:function(){
+//            if($api.getStorage('hislist') == ''){
+//              app.hisstorylist=[]
+//            }else{
+//              app.hisstorylist = $api.getStorage('hislist').splice(0,6);
+//              alert(app.hisstorylist)
+//            }
+    }
+
+  })
+</script>

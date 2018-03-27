@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+</head>
+<body>
+<div id="app"></div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script>
+  var app = new Vue({
+    el:'#app',
+    data:{
+      lon:116.213,
+      lat:39.213
+    },
+    created:function () {
+      apiready = function () {
+        app.openMap(app.lon,app.lat,function () {
+          app.addAnnotations(app.lon,app.lat);
+          app.setbuble();
+        });
+      };
+    },
+    methods:{
+      openMap:function (lon,lat,callback) {
+        var aMap = api.require('aMap');
+        aMap.open({
+          rect: {
+            x: 0,
+            y: api.pageParam.height,
+            w: 'auto',
+            h:'auto'
+          },
+          zoomLevel:15,
+          center:{
+            lon: lon,
+            lat: lat
+          }
+        }, function(ret, err) {
+          if (ret.status) {
+            if(callback){callback();}
+          } else {
+          }
+        });
+      },
+      addAnnotations:function (lon,lat,callback) {
+        var aMap = api.require('aMap');
+        aMap.addAnnotations({
+          annotations: [{
+            id: 1,
+            lon: lon,
+            lat: lat
+          }],
+          icons: ['widget://assets/images/local(2).png'],
+          draggable: false
+        }, function(ret) {});
+      },
+      setbuble:function () {
+        var aMap = api.require('aMap');
+        aMap.setBubble({
+          id: 1,
+          content: {
+            title: '卿蓓轩国学馆',
+            subTitle: '北京市朝阳区光华路光...',
+          },
+          styles: {
+            titleColor: '#000',
+            titleSize: 16,
+            titleTextAlign:'left',
+            subTitleColor: '#999',
+            subTitleSize: 12
+          }
+        }, function(ret) {
+          if (ret) {
+          }
+        });
+      }
+    }
+  });
+</script>
+
+
+

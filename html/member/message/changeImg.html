@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      background: #f0f0f0;
+    }
+
+    .content {
+      padding: 15% 5% 0 5%;
+    }
+
+    .img {
+      width: 10rem;
+      height: 10rem;
+      margin: 0 auto;
+      display: block;
+      border-radius: 50%;
+    }
+
+    .btn-box {
+      margin-top: 20%;
+    }
+
+    .btn-box div {
+      width: 60%;
+      margin: 0 auto;
+      border-radius: 20px;
+      border: 1px solid #666;
+      text-align: center;
+      padding: 0.5rem 0;
+      margin-bottom: 0.5rem;
+      color: #666;
+      font-size: 0.7rem;
+    }
+
+    .btn-box div:active {
+      color: #AB9277;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="content">
+    <img :src="imgShow" alt="" class="img" @click="openPicWin()">
+    <div class="btn-box">
+      <div @click="openPicWin()">
+        更改头像
+      </div>
+      <div @click="close">取消</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      img: '',
+      imgShow: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.avatar) {
+          app.img = api.pageParam.avatar;
+        }
+
+        app.imgShow = formatImg(app.img);
+      };
+    },
+    methods: {
+      openPicWin: function () {
+        api.getPicture({
+          sourceType: 'album',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 30,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          if (ret) {
+            app.saveUserInfo(ret.data);
+          }
+        });
+      },
+      saveUserInfo: function (avatar) {
+        MINT.Indicator.open();
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "saveUserInfo",
+              "token": getToken()
+            },
+            files: {
+              "avatar": avatar
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            MINT.Indicator.close();
+            api.sendEvent({
+              name: "changeImg"
+            });
+            app.img = ret.data.avatar;
+            app.imgShow = formatImg(app.img);
+            toastMsg('修改成功');
+          } else {
+            toastMsg('网络错误，请稍后再试')
+          }
+        });
+      },
+      close: function () {
+        closeWindow();
+      }
+    }
+  })
+</script>

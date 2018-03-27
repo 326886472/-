@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+            background: #f0f0f0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+        }
+        li{
+            list-style: none;
+        }
+        #app {
+            height: 100%;
+          width: 100%;
+        }
+        .headerbox{
+            width: 100%;
+            height: auto;
+            box-sizing: inherit;
+        }
+        .headerimg{
+            width: 100%;
+            height: auto;
+            background: #f0f0f0;
+            line-height: 1.5rem;
+            font-size: 14px;
+        }
+        .headerimg img{
+            width: 100%;
+            height: 70%;
+        }
+        .public_span{
+            margin-left: 20px;
+        }
+        .bottombox{
+            width: 100%;
+            height: auto;
+            display: flex;
+        }
+        .numline{
+            width:40%;
+            height: 2rem;
+            line-height: 2rem;
+            text-align: center;
+            border: 1px solid black;
+            margin: auto;
+        }
+        .videostatic{
+            text-align: center;
+            width: 100%;
+            height: 3rem;
+            font-size: 15px;
+            line-height: 3rem;
+        }
+        .bottombox{
+            width: 100%;
+            height: auto;
+            display:flex;
+            background: white;
+        }
+        .leftbox{
+            width: 30%;
+            height: 100%;
+            text-align: center;
+        }
+        .middlebox{
+            flex: 1;
+        }
+        .rightbox{
+            width: 30%;
+            height: 100%;
+            text-align: center;
+        }
+        .naverbar{
+            width: 4rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            border: 1px solid gainsboro;
+            margin: 0.5rem auto auto auto;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .albumimg{
+            width: 100%;
+            height: 100%;
+        }
+        .ifont{
+            color: black;
+        }
+        .mikerlaver{
+          width: 100%;
+          background: black;
+          height: 100%;
+          z-index: 1000;
+          opacity: 0.9;
+          color: white;
+          text-align: center;
+          position: fixed;
+          left: 0;
+          top:0;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+  <div class="mikerlaver">该功能正在开发中敬请期待</div>
+    <div class="headerimg">
+        <p><span class="public_span">频率：440HZ</span></p>
+        <p><span class="public_span">古琴调试：正调</span></p>
+        <img src="../../../assets/images/deg.png">
+        <div class="numline">一弦</div>
+    </div>
+<div class="videostatic">【调音模式】</div>
+<div class="bottombox">
+        <div class="leftbox">
+            <div><i class="iconfont ifont icon-ziyuan-copy-1"></i></div>
+            <div class="naverbar" v-for="item in changelist">{{item.name}}</div>
+            <div><i class="iconfont ifont icon-ziyuan2-copy-2"></i></div>
+        </div>
+        <div class="middlebox">
+            <img class="albumimg" src="../../../assets/images/album.png">
+        </div>
+        <div class="rightbox">
+            <div><i class="iconfont ifont icon-ziyuan-copy-1"></i></div>
+            <div class="naverbar" v-for="item in changelist">{{item.name}}</div>
+            <div><i class="iconfont ifont icon-ziyuan2-copy-2"></i></div>
+        </div>
+</div>
+
+
+
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            changelist:[
+                {
+                    name:'紧五二弦'
+                },
+                {
+                    name:'正调'
+                },
+                {
+                    name:'紧五弦'
+                },
+            ],
+            tokenlist:[
+                {
+                    name:'花花花花多钱',
+                    time:'2017-4-12',
+                    message:' 介绍的资料很全面，有好几家的古琴和老师我都很喜欢，非常好的一款APP',
+                    num:'54',
+                    src:'../../../assets/images/timg.jpg'
+                },
+                {
+                    name:'花花花花多钱',
+                    time:'2017-4-12',
+                    message:' 介绍的资料很全面，有好几家的古琴和老师我都很喜欢，非常好的一款APP',
+                    num:'54',
+                    src:'../../../assets/images/timg.jpg'
+                },
+                {
+                    name:'花花花花多钱',
+                    time:'2017-4-12',
+                    message:' 介绍的资料很全面，有好几家的古琴和老师我都很喜欢，非常好的一款APP',
+                    num:'54',
+                    src:'../../../assets/images/timg.jpg'
+                }
+            ]
+        },
+        filters: {},
+        created: function () {
+            apiready = function () {
+
+            };
+        },
+        methods: {
+            change:function(index) {
+                app.changeindex = index
+            }
+        }
+    })
+</script>

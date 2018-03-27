@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    .content {
+      padding: 0 5%;
+    }
+
+    #header {
+      border-bottom: 1px solid #ccc;
+    }
+
+    .input-box {
+      display: flex;
+      font-size: 0.7rem;
+      color: #666;
+      align-items: center;
+      padding: 1rem 0 0.5rem 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .input-box input {
+      font-size: 0.7rem;
+    }
+
+    .between {
+      justify-content: space-between;
+    }
+
+    .flex-box {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .flex-box div {
+
+    }
+
+    /*radio样式*/
+    .my-radio {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.2rem;
+      background-color: #ffffff;
+      border: solid 1px #dddddd;
+      font-size: 0.3rem;
+      margin-right: 0.3rem;
+      padding: 0;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      cursor: default;
+      -webkit-appearance: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-transition: background-color ease 0.1s;
+      transition: background-color ease 0.1s;
+    }
+
+    .my-radio:checked {
+      border: solid 1px #F8A79C;
+      text-align: center;
+      background-clip: padding-box;
+    }
+
+    .my-radio:checked:before, .my-radio:checked:after {
+      content: '';
+      width: 0.5rem;
+      height: 0.3rem;
+      position: absolute;
+      top: 50%;
+      left: 48%;
+      margin-left: -0.25rem;
+      margin-top: -0.25rem;
+      background: transparent;
+      border: 1px solid #F8A79C;
+      border-top: none;
+      border-right: none;
+      z-index: 2;
+      -webkit-border-radius: 0;
+      border-radius: 0;
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+    }
+
+    .icon-style {
+      font-size: 0.7rem;
+    }
+
+    /*按钮*/
+    .btn-box {
+      margin-top: 20%;
+      width: 100%;
+      text-align: center;
+    }
+
+    .btn-box button {
+      width: 70%;
+      border: 1px solid #666;
+      border-radius: 0.7rem;
+      padding: 0.5rem 0;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .btn-box button:active {
+      background: gainsboro;
+    }
+
+    .btn-box div {
+      padding-top: 0.7rem;
+      font-size: 0.6rem;
+      color: #ccc;
+      text-decoration: underline
+    }
+
+    /*选择地址*/
+    .mint-popup {
+      width: 100%;
+    }
+
+    .big-box {
+      font-size: 0.7rem;
+      color: #666;
+      padding: 3%;
+      width: 94%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .picker-box {
+      width: 70%;
+      margin: 0 auto;
+      margin-bottom: 1rem;
+    }
+
+    .picker-btn-box {
+      width: 60%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      border: 1px solid #666;
+      border-radius: 0.8rem;
+      background-image: url("../../assets/images/shuxian.png");
+      background-repeat: no-repeat;
+      background-size: 1% 100%;
+      background-position: center center;
+    }
+
+    .picker-btn-box div {
+      text-align: center;
+      flex: 1;
+      padding: 0.5rem 0;
+    }
+
+    .picker-btn-box div:first-child {
+      border-top-left-radius: 0.8rem;
+      border-bottom-left-radius: 0.8rem;
+    }
+
+    .picker-btn-box div:last-child {
+      border-top-right-radius: 0.8rem;
+      border-bottom-right-radius: 0.8rem;
+    }
+
+    .disabled {
+      background: #bbb;
+    }
+
+    .picker-btn-box div:active {
+      background: #bbb;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <!--选择琴馆-->
+  <mt-popup v-model="QinGuanpopupVisible"
+            position="bottom" style="width:100%;">
+    <div class="big-box">
+      <span>选择琴馆</span>
+      <div class='picker-box'>
+        <mt-picker :slots="changeQinGuan" value-key="clubName" @change="onQinGuanChange">
+        </mt-picker>
+      </div>
+      <div class='picker-btn-box'>
+        <div @click="QinGuancancel">取消</div>
+        <div @click="QinGuanConfirm">确定</div>
+      </div>
+    </div>
+  </mt-popup>
+  <div class="content">
+    <div class="input-box">
+      <div class="aui-col-xs-3">用户名</div>
+      <input type="text" placeholder="请输入用户名" class="aui-col-xs-9" v-model="nickname">
+    </div>
+    <div class="input-box">
+      <div class="aui-col-xs-3">设置密码</div>
+      <input type="password" placeholder="(6-20位数字,字母或符号组合)" class="aui-col-xs-8" maxlength="20" v-model="password"
+             v-show="!passShow"/>
+      <input type="text" placeholder="(6-20位数字,字母或符号组合)" class="aui-col-xs-8" maxlength="20" v-model="password"
+             v-show="passShow"/>
+      <i class="iconfont icon-faxian aui-col-xs-1" @click="passShow = !passShow"></i>
+    </div>
+    <div class="input-box">
+      <div class="aui-col-xs-3">确认密码</div>
+      <input type="password" placeholder="(6-20位数字,字母或符号组合)" class="aui-col-xs-9" maxlength="20" v-model="pass2" />
+    </div>
+
+    <!--<div class="input-box between" @click="selectCity">-->
+    <!--<div>选择城市</div>-->
+    <!--<div>-->
+    <!--{{msg.cityName}}-->
+    <!--<i class="iconfont icon-ziyuan2 icon-style"></i>-->
+    <!--</div>-->
+    <!--</div>-->
+      <!--<div class="input-box between" @click="openQinGuanPicker">-->
+        <!--<div>选择琴馆</div>-->
+        <!--<div>-->
+          <!--{{markClubS}}-->
+          <!--<i class="iconfont icon-ziyuan2 icon-style"></i>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="input-box" v-show="clubId == 0">-->
+        <!--<div>琴馆名称</div>-->
+        <!--<div class="aui-padded-l-15">-->
+          <!--<input type="text" placeholder="请输入琴馆名称" v-model="markClub">-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="input-box" v-show="clubId == 0">-->
+        <!--<div>联系人电话</div>-->
+        <!--<div class="aui-padded-l-15">-->
+          <!--<input type="tel" placeholder="请输入联系人电话" v-model="markClubTel" maxlength="11" />-->
+        <!--</div>-->
+      <!--</div>-->
+      <div class="input-box">
+        <div class="aui-col-xs-3">推荐码</div>
+        <input class="aui-col-xs-9" type="text" placeholder="请输入用户或商家推荐码" v-model="recommendCode" />
+      </div>
+    <div class="btn-box">
+      <button @click="userRegister">立即注册</button>
+      <div>点击注册即表示同意正麟网《用户使用协议》</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      mobile: '',
+      nickname: '',
+      password: '',
+      passShow: false,
+      pass2: '',
+      recommendClubId: '0', // 有无琴馆推荐 1, 0
+      clubId: 0, // 所选琴馆id
+      markClub: '', // 琴馆名称
+      markClubTel: '', // 联系人电话
+      recommendCode: '', // 推荐码
+      QinGuanpopupVisible: false, // 琴馆
+      changeQinGuan: [
+        {
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      markClubS: '无琴馆推荐',  // 所选琴馆名称，只是显示，不是提交的数据
+      clubIdTemp: '',
+      markClubTemp: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.mobile) {
+          app.mobile = api.pageParam.mobile;
+        }
+        app.getExistClubDrop();
+      };
+    },
+    methods: {
+      getExistClubDrop: function () {
+        var post = {
+          cmd: 'getExistClubDrop',
+          type: 1
+        };
+        sendAjax(this, post, function (res) {
+          app.changeQinGuan[0].values = res.data;
+          app.changeQinGuan[0].values.unshift({id: 0, clubName: '无推荐琴馆'});
+        });
+      },
+      openQinGuanPicker: function () {
+        app.QinGuanpopupVisible = true;
+      },
+      // 取消
+      QinGuancancel: function () {
+        app.QinGuanpopupVisible = false;
+        app.clubIdTemp = '';
+        app.markClubTemp = '';
+      },
+      // 确定
+      QinGuanConfirm: function () {
+        app.clubId = app.clubIdTemp;
+        app.markClubS = app.markClubTemp;
+        app.QinGuanpopupVisible = false;
+      },
+      onQinGuanChange: function (picker, values) {
+        if (values[0]) {
+          app.clubIdTemp = values[0].id;
+          app.markClubTemp = values[0].clubName;
+        }
+      },
+      checkPost: function (callback) {
+        if (!trim(app.nickname)) {
+          toastMsg('请填写用户名');
+        } else if (!app.password) {
+          toastMsg('请填写密码');
+        } else if (!passReg.test(app.password)) {
+          toastMsg('密码格式不正确（6-20位数字，字母或符号组合）');
+        } else if (!app.pass2) {
+          toastMsg('请输入确认密码');
+        } else if (app.password != app.pass2) {
+          toastMsg('两次输入的密码不一致');
+        } else {
+            callback();
+        }
+      },
+      // 注册
+      userRegister: function () {
+          app.checkPost(function () {
+          MINT.Indicator.open();
+          var post = {
+            cmd: 'userRegister',
+            mobile: app.mobile,
+            password: app.password,
+            nickname: app.nickname,
+          };
+
+          if (app.recommendCode) {
+              post.recommendUserParent = app.recommendCode;
+          }
+
+          sendAjax(app, post, function (res) {
+              app.userLogin(function () {
+              MINT.Indicator.close();
+              api.openWin({
+                name: 'regSuccess',
+                url: './regSuccess.html',
+                pageParam: {
+                  nickname: app.nickname
+                }
+              });
+            });
+          });
+        });
+      },
+      userLogin: function (callback) {
+        var post = {
+          cmd: 'userLogin',
+          mobile: app.mobile,
+          password: app.password
+        };
+        sendAjax(app, post, function (res) {
+          api.sendEvent({
+            name: "login"
+          });
+          $api.setStorage("token", res.data.token);
+          $api.setStorage('id', res.data.id);
+          $api.setStorage('nickname', res.data.nickname);
+
+          pushBind(res.data.nickname, res.data.id);
+
+          if (callback) {
+            callback();
+          }
+        });
+      }
+    }
+  })
+</script>

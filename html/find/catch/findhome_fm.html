@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      background: white;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .headerback {
+      width: 100%;
+      height: 150px;
+      background: url('../../../assets/images/club.png');
+      background-size: 100% 100%;
+      z-index: 1000;
+    }
+    .coursestyle{
+      width: 100%;
+      height: 150px;
+      background: url('../../../assets/images/course.png');
+      background-size: 100% 100%;
+      z-index: 1000;
+    }
+
+    .search {
+      width: 75%;
+      height: 1.3rem;
+      background: white;
+      border-radius: 20px;
+      margin-top: 0.6rem;
+      display: inline-block;
+    }
+
+    .ofont {
+      display: inline-block;
+      float: left;
+      width: 15%;
+      height: 1.3rem;
+      line-height: 1.3rem;
+      text-align: center;
+      font-size: 18px;
+      color: #e5e5e5;
+    }
+
+    .otype {
+      display: inline-block;
+      float: left;
+      width: 70%;
+      height: 1.5rem;
+      font-size: 14px;
+      outline: none;
+      color: #a3a3a3;
+    }
+
+    .headerimg {
+      width: 100%;
+      height: 150px;
+      text-align: center;
+    }
+
+    .navoul {
+      width: 100%;
+      height: 1.5rem;
+      display: flex;
+      background: white;
+      margin-top: 0.5rem;
+      z-index: 100;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .navoul li {
+      flex: 1;
+      text-align: center;
+      font-size: 14px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      line-height: 1rem;
+      z-index: 100;
+      border-right: 1px solid #d9d9d9;
+      color: #585858;
+    }
+
+    /*.navoul li:active{*/
+    /*background: gainsboro;*/
+    /*}*/
+    .firstlable {
+      width: 100%;
+      height: auto;
+      background: white;
+    }
+
+    .firstlable li {
+      line-height: 2.5rem;
+      padding-left: 0.5rem;
+      font-size: 15px;
+      box-sizing: inherit;
+      border-top: 1px solid gainsboro;
+      z-index: 100;
+    }
+
+    .firstlable li.active {
+      background: gainsboro;
+      z-index: 100;
+    }
+
+    .changebox {
+      width: auto;
+      padding:4px 15px 4px 15px;
+      height: 1.2rem;
+      font-size: 12px;
+      color: #838383;
+      text-align: center;
+      line-height: 1.2rem;
+      border-radius: 20px;
+      border: 1px solid #838383;
+      display: inline-block;
+      margin-left: 0.5rem;
+      z-index: 100;
+    }
+
+    .changebox:active {
+      background: gainsboro;
+    }
+
+    .beforeclass {
+      border: 1px solid #ff3c00;
+      color: #ff3c00;
+    }
+
+    .datacount {
+      width: 100%;
+      height: auto;
+    }
+
+    .shopcount {
+      width: 100%;
+      height: auto;
+      background: white;
+      padding-top: 0.5rem;
+      margin-top: 5px;
+      display: flex;
+    }
+
+    .none {
+      width: 100%;
+      text-align: center;
+      line-height: 3;
+      font-size: 16px;
+    }
+
+    .oimg {
+      width: 5rem;
+      display: inline-block;
+      height: 5rem;
+      background-size: cover;
+      background-color: #888;
+      background-position: center;
+    }
+
+    .ableimg {
+      width: 5rem;
+      margin-left: 0.5rem;
+      display: inline-block;
+      height: auto;
+      float: left;
+      text-align: center;
+    }
+
+    .textcount {
+      flex: 1;
+      height: 100%;
+      float: left;
+      font-size: 14px;
+      display: inline-block;
+      margin-left: 0.5rem;
+    }
+
+    .countp {
+      width: 100%;
+      padding-bottom: 0.2rem;
+      height: auto;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .ableop {
+      font-size: 16px;
+      display: inline-block;
+      height: 2rem;
+      color: #585858;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      line-height: 2rem;
+    }
+
+    .ospan {
+      display: inline-block;
+      border: 1px solid orangered;
+      color: orangered;
+      font-size: 10px;
+      padding: 1px;
+      box-sizing: border-box;
+      border-radius: 2px;
+      position: relative;
+      top: -2px;
+    }
+
+    .storespan {
+      display: inline-block;
+      padding: 2px;
+      border: 1px solid #777777;
+      color: #777777;
+      font-size: 12px;
+      margin-bottom: 0.8rem;
+      margin-top: 0.2rem;
+      border-radius: 2px;
+    }
+
+    .oi {
+      font-size: 13px;
+      line-height: 1.5rem;
+    }
+
+    .oi .iconfont {
+      margin-right: 5px;
+    }
+
+    .kmitle {
+      display: inline-block;
+      float: right;
+      font-size: 14px;
+      margin-right: 0.5rem;
+      color: #b3b3b3;
+    }
+
+    .pricehour {
+      color: #ff3c00;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 1.5rem;
+      border-bottom: 1px solid gainsboro;
+    }
+
+    .option {
+      float: left;
+      display: inline-block;
+      height: 100%;
+      line-height: 1.5rem;
+      font-size: 12px;
+    }
+
+    .beforenavclass {
+      color: saddlebrown;
+    }
+
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 20px;
+      height: 20px;
+      margin: auto;
+    }
+    .pricettile{
+      line-height: 1.5rem;
+      color: #5a5a5a;
+      font-size: 12px
+    }
+    .clubscore{
+      color:#ff8500;
+      margin-left: 0.2rem;
+      font-size: 14px
+    }
+    .changebottombtn{
+      width: auto;
+      padding: 1px 40px 1px 40px;
+      border: 1px solid #5a5a5a;
+      font-size: 14px;
+      text-align: center;
+      line-height: 1.5rem;
+      border-radius: 20px;
+    }
+    .bottomchangebox{
+      width: auto;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+  <!--搜索头部-->
+  <div class="headerback" :class="{coursestyle:statusindex == 1}">
+    <div class="headerimg">
+      <div class="search" @click="search">
+        <i class="iconfont ofont icon-sousuo"></i>
+        <input type="text" class="otype" placeholder="请输入古琴馆，课程教学..." disabled="disabled">
+      </div>
+    </div>
+  </div>
+  <!--筛选列表-->
+  <div class="navlist" style="z-index: 1000">
+    <ul class="navoul" v-show="statusindex == 0">
+      <li @click="countClub(index)" v-for="(item, index) in navlist"
+          :class="{beforenavclass: navoulindexClub == index}">
+        {{item}}
+        <i v-if="navoulindexClub != index" style="font-size: 0.5rem;" class="iconfont icon-ziyuan2-copy-2"></i>
+        <i v-if="navoulindexClub == index" style="font-size: 0.5rem;" class="iconfont icon-ziyuan-copy-1"></i>
+      </li>
+    </ul>
+    <ul class="navoul" v-show="statusindex == 1">
+      <li @click="countCourse(index)" v-for="(item, index) in navlist"
+          :class="{beforenavclass: navoulindexClub == index}">
+        {{item}}
+        <i v-if="navoulindexClub != index" style="font-size: 0.5rem;" class="iconfont icon-ziyuan2-copy-2"></i>
+        <i v-if="navoulindexClub == index" style="font-size: 0.5rem;" class="iconfont icon-ziyuan-copy-1"></i>
+      </li>
+    </ul>
+
+    <div v-show="statusindex == 0">
+      <!-- 城市筛选 -->
+      <ul class="firstlable" v-show="minindexClub === 0">
+        <li v-for="(item, index) in cityListClub" :class="{active: cityActiveIndexClub == index}"
+            @click="cityChangeClub(index)">{{item.regionName}}
+        </li>
+      </ul>
+      <!-- 星级筛选 -->
+      <ul class="firstlable" v-show="minindexClub === 1">
+        <li v-for="(item, index) in starListClub" :class="{active: starActiveClub == index}"
+            @click="starChangeClub(index)">{{item}}
+        </li>
+      </ul>
+      <!-- 排序方式 -->
+      <ul class="firstlable" v-show="minindexClub === 2">
+        <li v-for="(item, index) in sortListClub" :class="{active: sortActiveClub == index}"
+            @click="sortChangeClub(index)">{{item}}
+        </li>
+      </ul>
+      <!-- 琴馆筛选 -->
+      <ul class="firstlable" v-show="minindexClub === 3">
+        <li v-for="(item, bigindex) in pickListClub"
+            v-show="bigindex != 3 || (pickListClub[2].active != '2' && pickListClub[2].active != '3')">
+          <p>{{item. listName}}</p>
+          <div @click="changeClub(bigindex, index)" class="changebox" v-for="(childitem,index) in item.children"
+               :class="{beforeclass: item.active == index}">
+            {{childitem.name}}
+          </div>
+        </li>
+        <li style="line-height: 4rem">
+          <div style="display: flex">
+            <div class="bottomchangebox" style="flex:1">
+              <span @click="resbtnClub()" class="changebottombtn" style="flex: 1">重置</span>
+            </div>
+            <div class="bottomchangebox" style="flex:1">
+              <span @click="surebtnClub()" class="changebottombtn" style="flex: 1">确定</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+
+    <div v-show="statusindex == 1">
+      <!-- 城市筛选 -->
+      <ul class="firstlable" v-show="minindexCourse === 0">
+        <li v-for="(item, index) in cityListCourse" :class="{active: cityActiveIndexCourse == index}"
+            @click="cityChangeCourse(index)">{{item.regionName}}
+        </li>
+      </ul>
+      <!-- 星级筛选 -->
+      <ul class="firstlable" v-show="minindexCourse === 1">
+        <li v-for="(item, index) in starListCourse" :class="{active: starActiveCourse == index}"
+            @click="starChangeCourse(index)">{{item}}
+        </li>
+      </ul>
+      <!-- 排序方式 -->
+      <ul class="firstlable" v-show="minindexCourse === 2">
+        <li v-for="(item, index) in sortListCourse" :class="{active: sortActiveCourse == index}"
+            @click="sortChangeCourse(index)">{{item}}
+        </li>
+      </ul>
+      <!-- 课程筛选 -->
+      <ul class="firstlable" v-show="minindexCourse === 3">
+        <li v-for="(item, bigindex) in pickListCourse"
+            v-show="bigindex != 1 || (pickListCourse[0].active != '2' && pickListCourse[0].active != '3')">
+          <p>{{item. listName}}</p>
+          <div @click="changeCourse(bigindex, index)" class="changebox" v-for="(childitem, index) in item.children"
+               :class="{beforeclass: item.active == index}">
+            {{childitem.name}}
+          </div>
+        </li>
+        <li style="line-height: 4rem">
+          <div style="display: flex">
+            <div class="bottomchangebox" style="flex:1">
+              <span @click="resbtnCourse()" class="changebottombtn" style="flex: 1">重置</span>
+            </div>
+            <div class="bottomchangebox" style="flex:1">
+              <span @click="surebtnCourse()" class="changebottombtn" style="flex: 1">确定</span>
+            </div>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="datacount">
+    <!-- 琴馆 -->
+    <div class="storebox" v-if="statusindex == 0">
+      <div class="shopcount" v-for="item in clubList" @click="godetails(item.id, item.distance)">
+        <div class="ableimg">
+          <div class="oimg" :style="{backgroundImage: 'url(' + formatImg(item.picName, true) + ')'}"></div>
+        </div>
+
+        <div class="textcount">
+          <p class="countp">
+            {{item.clubName}}
+          </p>
+          <p class="oi">
+            <i style="color: #ff8500" class="iconfont icon-xingxing1" v-for="i in parseInt(item.overallScore)"></i><i
+                  style="color: #bfbfbf" class="iconfont icon-xingxing1"
+                  v-for="i in (5 - parseInt(item.overallScore))"></i>
+            <span style="color: #ff8500; margin-left: 0.2rem;font-size: 14px">{{item.overallScore}} | 5</span>
+            <span class="kmitle" v-text="Number(item.distance).toFixed(2) + 'km'"></span>
+            </p>
+          <p>
+            <span class="storespan" v-show="item.dueTime == '1'">售后服务</span>
+            <span class="storespan" v-show="item.operateYear != '0'">{{item.operateYear}}年店</span>
+            <span class="storespan" v-show="item.isFree == '1'">免费体验课</span>
+            <span class="storespan" v-show="item.isBrand == '1'">品牌店</span>
+          </p>
+          <p style="line-height: 1.5rem;font-size: 15px;border-top: 1px solid gainsboro;color: #5a5a5a">
+          <p class="option" style="color: #5a5a5a">【近期开课】</p>
+          <p class="option">
+          <p class='pricettile'>{{item.courseName}} ¥{{item.price || '0.00'}}</p>
+          </p>
+          </p>
+        </div>
+      </div>
+      <div class="none" v-show="clubList.length == 0">
+        暂无琴馆
+      </div>
+    </div>
+
+    <!-- 古琴教学 -->
+    <div class="storebox" v-if="statusindex == 1">
+      <div class="shopcount" v-for="item in courseList" @click="godetails(item.courseId, item.distance)">
+        <div class="ableimg">
+          <div class="oimg" :style="{backgroundImage: 'url(' + formatImg(item.images, true) + ')'}"></div>
+          <p class="ableop">{{item.clubName}}</p>
+        </div>
+        <div class="textcount">
+          <p class="countp">
+            {{item.courseName}}
+            <span class="ospan" :style="'border-color:' + typeColor(item.courseType) + '; color:' + typeColor(item.courseType)">{{item.courseType | courseTypeText}}</span>
+            <span class="ospan" style="color: #b4e7d8;border-color: #b4e7d8" v-show="item.courseType == '1'">{{item.level | levelText}}</span>
+          </p>
+          <p class="oi">
+            <i style="color: #ff8500" class="iconfont icon-xingxing1" v-for="i in parseInt(item.overallScore)"></i><i
+                  style="color: #bfbfbf" class="iconfont icon-xingxing1"
+                  v-for="i in (5 - parseInt(item.overallScore))"></i>
+            <span class="clubscore">{{item.overallScore}} | 5</span>
+            <span class="kmitle" v-text="Number(item.distance).toFixed(2) + 'km'">{{item.distance}}</span>
+          </p>
+
+          <p class="pricehour">￥{{item.coursePrice}}</p>
+          <p style="line-height: 1.5rem; font-size: 12px;color: #5a5a5a">【开课日期】{{item.startDate}} ~ {{item.endDate | noYear}}</p>
+        </div>
+      </div>
+      <div class="none" v-show="courseList.length == 0">
+        暂无课程
+      </div>
+    </div>
+  </div>
+
+  <!-- 琴馆上拉 loading -->
+  <div class="bottomdiv" v-show="statusindex == 0">
+    <span v-show="!clubNotMore && !clubUpLoading" class="uptext">---上拉加载---</span>
+    <img v-show="courseUpLoading" class="publicfont" src="../../../assets/images/timg.gif" class="publicfont">
+    <span v-show="clubNotMore" class="uptext">数据已全部加载</span>
+  </div>
+
+  <!-- 课程上拉 loading -->
+  <div class="bottomdiv" v-show="statusindex == 1">
+    <span v-show="!courseNotMore && !courseUpLoading" class="uptext">---上拉加载---</span>
+    <img v-show="courseUpLoading" class="publicfont" src="../../../assets/images/timg.gif" class="publicfont">
+    <span v-show="courseNotMore" class="uptext">数据已全部加载</span>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      distance:'',
+      statusindex: '0',
+      navlist: ['附近', '星级', '智能排序', '筛选'],
+
+      // 琴馆的各种属性
+      navoulindexClub: null,  // 箭头
+      minindexClub: -1,
+      cityListClub: [],
+      cityActiveIndexClub: -1,
+      starListClub: ['一星', '二星', '三星', '四星', '五星'],
+      starActiveClub: -1,
+      sortListClub: ['智能排序', '距离优先', '人气最高', '服务最好', '环境最好', '教学最好'],
+      sortActiveClub: -1,
+      pickListClub: [],
+      clubFirst: true,  // 琴馆数据第一次加载（数据是增加还是替换）
+      clubUpLoading: false,  // 琴馆上拉加载中为 true
+      clubNotMore: false,  // 琴馆没有更多数据为 true
+      clubList: [],
+      clubPage: 1,
+
+      // 课程的各种属性
+      navoulindexCourse: null,  // 箭头
+      minindexCourse: -1,
+      cityListCourse: [],
+      cityActiveIndexCourse: -1,
+      starListCourse: ['一星', '二星', '三星', '四星', '五星'],
+      starActiveCourse: -1,
+      sortListCourse: ['综合排序', '距离优先', '好评排序', '销量最高', '价格最高', '价格最低', '专业度', '发布时间'],
+      sortActiveCourse: -1,
+      pickListCourse: [],
+      courseFirst: true,  // 课程数据第一次加载（数据是增加还是替换）
+      courseUpLoading: false,  // 课程上拉加载中为 true
+      courseNotMore: false,  // 课程没有更多数据为 true
+      courseList: [],
+      coursePage: 1,
+
+      searchvalue: 1,
+      aMap: null,
+      pos: [117.21451000000002, 39.116949]
+    },
+    filters: {
+      courseTypeText: function (courseType) {
+        switch (courseType) {
+          case '1':
+            return '定期课程';
+          case '2':
+            return '免费体验课';
+          case '3':
+            return '随到随学';
+        }
+      },
+      levelText: function (level) {
+        switch (level) {
+          case '1':
+            return '入门级';
+          case '2':
+            return '提高班';
+          case '3':
+            return '进修班';
+        }
+      },
+      noYear: function (date) {
+        if (date) {
+          return date.substr(5);
+        } else {
+          return '';
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.aMap = api.require('aMap');
+
+        app.init();
+
+        refresh(function () {
+          app.init(function () {
+            refreshDone();
+          });
+        });
+
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 0
+          }
+        }, function () {
+          if (app.statusindex == '0') {
+            app.clubPickList();
+          } else {
+            app.coursePickList();
+          }
+        });
+
+        app.$nextTick(function () {
+          api.addEventListener({
+            name: 'catchChange'
+          }, function (ret, err) {
+            app.statusindex = ret.value.statusindex;
+          });
+
+          api.addEventListener({
+            name: 'sendindex'
+          }, function (ret, err) {
+            app.statusindex = ret.value.navstatusindex;
+          });
+        });
+
+        api.addEventListener({
+          name: 'changecity'
+        }, function () {
+          app.init();
+        });
+      };
+    },
+    methods: {
+      init: function (callback) {
+        this.minindexClub = -1;
+        this.cityListClub = [];
+        this.cityActiveIndexClub = -1;
+        this.starActiveClub = -1;
+        this.sortActiveClub = -1;
+        this.pickListClub = [];
+        this.clubFirst = true;
+        this.clubUpLoading = false;
+        this.clubNotMore = false;
+        this.clubList = [];
+        this.clubPage = 1;
+
+        this.minindexCourse = -1;
+        this.cityListCourse = [];
+        this.cityActiveIndexCourse = -1;
+        this.starActiveCourse = -1;
+        this.sortActiveCourse = -1;
+        this.pickListCourse = [];
+        this.courseFirst = true;
+        this.courseUpLoading = false;
+        this.courseNotMore = false;
+        this.courseList = [];
+        this.coursePage = 1;
+
+        app.getExistCityDrop();
+
+        app.clubGetPickList(function () {
+          app.clubPickList(function () {
+            app.courseGetPickList(function () {
+              app.coursePickList(function () {
+                loadEnd();
+
+                if (callback) {
+                  callback();
+                }
+              });
+            });
+          });
+        });
+
+        app.openMap(function () {
+          app.getLocation(function (pos) {
+            app.pos[0] = pos.lon;
+            app.pos[1] = pos.lat;
+          });
+        });
+      },
+
+      typeColor: function (courseType) {
+        switch (courseType) {
+          case '1':
+            return '#f68778';
+          case '2':
+            return '#80b8ff';
+          case '3':
+            return '#ff941f';
+        }
+      },
+
+
+      openMap: function (callback) {
+        this.aMap.open({
+          rect: {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0
+          }
+        }, function (ret, err) {
+          if (ret.status) {
+            if (callback) {
+              callback();
+            }
+          }
+        });
+      },
+      getLocation: function (callback) {
+        this.aMap.getLocation(function (ret, err) {
+          if (ret.status) {
+            if (callback) {
+              callback(ret);
+            }
+          }
+        });
+      },
+
+      // 琴馆的四个改变
+      pickResetClub: function () {
+        app.minindexClub = -1;
+        app.navoulindexClub = null;
+        app.clubPage = 1;
+        app.clubFirst = true;
+        app.clubNotMore = false;
+      },
+      cityChangeClub: function (index) {
+        this.cityActiveIndexClub = index;
+
+        // 重置其他选项
+        this.starActiveClub = -1;
+        this.sortActiveClub = -1;
+        this.resetPickListClub();
+
+        app.pickResetClub();
+        app.clubPickList();
+      },
+      starChangeClub: function (index) {
+        this.starActiveClub = index;
+
+        // 重置其他选项
+        this.cityActiveIndexClub = -1;
+        this.sortActiveClub = -1;
+        this.resetPickListClub();
+
+        app.pickResetClub();
+        app.clubPickList();
+      },
+      sortChangeClub: function (index) {
+        this.sortActiveClub = index;
+
+        // 重置其他选项
+        this.cityActiveIndexClub = -1;
+        this.starActiveClub = -1;
+        this.resetPickListClub();
+
+        app.pickResetClub();
+        app.clubPickList();
+      },
+      changeClub: function (bigindex, index) {
+        app.pickListClub[bigindex].active = index;
+      },
+      resbtnClub: function () {
+        // 重置其他选项
+        this.cityActiveIndexClub = 0;
+        this.starActiveClub = -1;
+        this.sortActiveClub = -1;
+        this.resetPickListClub();
+
+        this.pickResetClub();
+        app.clubPickList();
+      },
+      resetPickListClub: function () {
+        for (var i = 0; i < app.pickListClub.length; i++) {
+          app.pickListClub[i].active = 0;
+        }
+      },
+      surebtnClub: function () {
+        // 重置其他选项
+        this.cityActiveIndexClub = -1;
+        this.starActiveClub = -1;
+        this.sortActiveClub = -1;
+
+        app.pickResetClub();
+        app.clubPickList();
+      },
+      countClub: function (index) {
+        app.navoulindexClub = index;
+        if (app.minindexClub === index) {
+          app.minindexClub = -1;
+          app.navoulindexClub = null;
+        } else {
+          app.minindexClub = index;
+        }
+      },
+
+
+      // 课程的四个改变
+      pickResetCourse: function () {
+        app.minindexCourse = -1;
+        app.navoulindexCourse = null;
+        app.coursePage = 1;
+        app.courseFirst = true;
+        app.courseNotMore = false;
+      },
+      cityChangeCourse: function (index) {
+        this.cityActiveIndexCourse = index;
+
+        // 重置其他选项
+        this.starActiveCourse = -1;
+        this.sortActiveCourse = -1;
+        this.resetPickListCourse();
+
+        app.pickResetCourse();
+        app.coursePickList();
+      },
+      starChangeCourse: function (index) {
+        this.starActiveCourse = index;
+
+        // 重置其他选项
+        this.cityActiveIndexCourse = -1;
+        this.sortActiveCourse = -1;
+        this.resetPickListCourse();
+
+        app.pickResetCourse();
+        app.coursePickList();
+      },
+      sortChangeCourse: function (index) {
+        this.sortActiveCourse = index;
+
+        // 重置其他选项
+        this.cityActiveIndexCourse = -1;
+        this.starActiveCourse = -1;
+        this.resetPickListCourse();
+
+        app.pickResetCourse();
+        app.coursePickList();
+      },
+      changeCourse: function (bigindex, index) {
+        app.pickListCourse[bigindex].active = index;
+      },
+      resbtnCourse: function () {
+        // 重置其他选项
+        this.cityActiveIndexCourse = 0;
+        this.starActiveCourse = -1;
+        this.sortActiveCourse = -1;
+        this.resetPickListCourse();
+
+        this.resetPickListCourse();
+        app.pickResetCourse();
+      },
+      resetPickListCourse: function () {
+        for (var i = 0; i < app.pickListCourse.length; i++) {
+          app.pickListCourse[i].active = 0;
+        }
+      },
+      surebtnCourse: function () {
+        // 重置其他选项
+        this.cityActiveIndexCourse = -1;
+        this.starActiveCourse = -1;
+        this.sortActiveCourse = -1;
+
+        app.pickResetCourse();
+        app.coursePickList();
+      },
+      countCourse: function (index) {
+        app.navoulindexCourse = index;
+        if (app.minindexCourse === index) {
+          app.minindexCourse = -1;
+          app.navoulindexCourse = null;
+        } else {
+          app.minindexCourse = index;
+        }
+      },
+
+
+      // 获取已存在琴馆城市三级联动下拉（就是 city 下的所有区）
+      getExistCityDrop: function () {
+        var post = {
+          cmd: 'getExistCityDrop',
+          cityCode: getcitycode()
+//          cityCode: '110000'
+        };
+        sendAjax(this, post, function (res) {
+          app.cityListClub = res.data;
+          app.cityListCourse = clone(res.data);
+
+          app.cityListClub.unshift({
+            "regionName": "附近（智能范围）"
+          });
+
+          app.cityListCourse.unshift({
+            "regionName": "附近（智能范围）"
+          });
+        });
+      },
+      // 搜索框子跳转
+      search: function () {
+        api.openWin({
+          name: 'search_win',
+          url: '../search/search_win.html',
+          pageParam: {
+            searchvalue: app.searchvalue
+          }
+        });
+      },
+      // 打开详情卡慢的那页跳转
+      godetails: function (id, distance) {
+        api.sendEvent({
+          name: 'textevent',
+          extra: {
+            statustype: app.statusindex
+          }
+        });
+        // openView('catchdetails_fm','catch/catchdetails/catchdetails_fm', '提交订单', false, false);
+
+        var pageParam = {
+          statustype: app.statusindex
+        };
+
+        if (app.statusindex == 0) {
+          pageParam.clubId = id;
+        } else {
+          pageParam.courseId = id;
+        }
+
+        pageParam.distance = distance;
+
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../catchdetails/catchdetails_win.html',
+          pageParam: pageParam
+        });
+      },
+      // 获取琴馆筛选列表
+      clubGetPickList: function (callback) {
+        var post = {
+          cmd: 'clubGetPickList',
+          cityCode: getcitycode()
+//          cityCode: '110000'
+        };
+        sendAjax(this, post, function (res) {
+          for (var i = 0; i < res.data.length; i++) {
+            res.data[i].active = 0;
+          }
+          app.pickListClub = res.data;
+
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      clubPickList: function (callback) {
+        if (!this.clubNotMore) {
+          MINT.Indicator.open();
+          this.clubUpLoading = true;
+
+          var post = {
+            cmd: 'clubPickList',
+            cityCode: getcitycode(),
+            currentposition: this.pos.toString(),
+            perPage: 5,
+            page: this.clubPage,
+            app: 1
+          };
+
+          // 经营年份
+          post.operateYear = this.pickListClub[0].children[this.pickListClub[0].active].value;
+          // 商户等级
+          post.clubLevel = this.pickListClub[1].children[this.pickListClub[1].active].value;
+          // 课程类型
+          post.courseType = this.pickListClub[2].children[this.pickListClub[2].active].value;
+          // 课程级别（courseType 为 2 或 3 的时候，等级没有意义）
+          if (post.courseType == '0' || post.courseType == '1') {
+            post.courseLevel = this.pickListClub[3].children[this.pickListClub[3].active].value;
+          } else {
+            post.courseLevel = '0';
+          }
+          // 经营品牌
+          if (this.pickListClub[4].active == 0) {
+            post.brand = '0';
+          } else {
+            post.brand = this.pickListClub[4].children[this.pickListClub[4].active].name;
+          }
+          // 特色商品
+          if (this.pickListClub[5].active == 0) {
+            post.productTag = '0';
+          } else {
+            post.productTag = this.pickListClub[5].children[this.pickListClub[5].active].name;
+          }
+
+          // 下面是排序，好像跟 pc 不一样，都是从高到低（都是倒叙，值为 2）
+          // 如果 cityActiveIndexClub 为 0 ，那则和排序冲突，所以这时排序就默认设为距离优先了
+          if (this.cityActiveIndexClub != 0) {
+            switch (this.sortActiveClub) {
+              case -1:
+                break;
+              case 0:
+                post.overall = 2;  // 综合排序，就先当它是 app 的智能排序了
+                break;
+              case 1:
+                post.nearby = 1;  // 距离（附近）
+                break;
+              case 2:
+                post.popular = 2;  // 人气
+                break;
+              case 3:
+                post.server = 2;  // 服务
+                break;
+              case 4:
+                post.envir = 2;  // 环境
+                break;
+              case 5:
+                post.teach = 2;  // 教学
+                break;
+            }
+          } else {
+            this.sortActiveClub = 1;
+          }
+
+          // 星级
+          if (this.starActiveClub != -1) {
+            post.star = this.starActiveClub + 1;
+          }
+
+          // 附近
+          if (this.cityActiveIndexClub != -1) {
+            if (this.cityActiveIndexClub == 0) {
+              post.nearby = 1;
+            } else {
+              post.regionCode = this.cityListClub[this.cityActiveIndexClub].regionCode
+            }
+          }
+
+          sendAjax(this, post, function (res) {
+            if (app.clubFirst) {
+              if (res.data.proList) {
+                app.clubList = res.data.proList;
+              } else {
+                app.clubList = [];
+              }
+              app.clubFirst = false;
+            } else {
+              if (res.data.proList) {
+                app.clubList = app.clubList.concat(res.data.proList);
+              }
+            }
+            app.clubUpLoading = false;
+
+            if (!res.data.proList) {
+              app.clubNotMore = true;
+            }
+
+            app.clubPage++;
+
+            MINT.Indicator.close();
+
+            if (callback) {
+              callback();
+            }
+          });
+        }
+      },
+
+      // 获取教学筛选列表
+      courseGetPickList: function (callback) {
+        var post = {
+          cmd: 'courseGetPickList',
+          cityCode: getcitycode()
+//          cityCode: '110000'
+        };
+        sendAjax(this, post, function (res) {
+          for (var i = 0; i < res.data.length; i++) {
+            res.data[i].active = 0;
+          }
+          app.pickListCourse = res.data;
+
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      coursePickList: function (callback) {
+        if (!this.courseNotMore) {
+          MINT.Indicator.open();
+          this.courseUpLoading = true;
+
+          var post = {
+            cmd: 'coursePickList',
+            cityCode: getcitycode(),
+            currentposition: this.pos.toString(),
+            perPage: 5,
+            page: this.coursePage,
+            app: 1
+          };
+
+          // 经营年份
+          post.operateYear = this.pickListCourse[3].children[this.pickListCourse[3].active].value;
+          // 商户等级
+          post.clubLevel = this.pickListCourse[4].children[this.pickListCourse[4].active].value;
+          // 课程类型
+          post.courseType = this.pickListCourse[0].children[this.pickListCourse[0].active].value;
+          // 课程级别（courseType 为 2 或 3 的时候，等级没有意义）
+          if (post.courseType == '0' || post.courseType == '1') {
+            post.courseLevel = this.pickListCourse[1].children[this.pickListCourse[1].active].value;
+          } else {
+            post.courseLevel = '0';
+          }
+          // 班级人数
+          post.personCount = this.pickListCourse[2].children[this.pickListCourse[2].active].value;
+
+          // 下面是排序，好像跟 pc 不一样，都是从高到低（都是倒叙，值为 2）
+          // 如果 cityActiveIndex 为 0 ，那则和排序冲突，所以这时排序就默认设为距离优先了
+          if (this.cityActiveIndexCourse != 0) {
+            switch (this.sortActiveCourse) {
+              case -1:
+                break;
+              case 0:  // 综合排序就是默认排序
+                break;
+              case 1:
+                post.nearby = 1;  // 距离（附近）
+                break;
+              case 2:
+                post.perfect = 2;  // 好评
+                break;
+              case 3:
+                post.sales = 2;  // 销量
+                break;
+              case 4:
+                post.price = 2;  // 价格倒序
+                break;
+              case 5:
+                post.price = 1;  // 价格正序
+                break;
+              case 6:
+                post.professional = 2;  // 专业度
+                break;
+              case 7:
+                post.publishTime = 2;  // 发布时间
+                break;
+            }
+          } else {
+            this.sortActiveCourse = 1;
+          }
+
+          // 星级
+          if (this.starActiveCourse != -1) {
+            post.star = this.starActiveCourse + 1;
+          }
+
+          // 附近
+          if (this.cityActiveIndexCourse != -1) {
+            if (this.cityActiveIndexCourse == 0) {
+              post.nearby = 1;
+            } else {
+              post.regionCode = this.cityListCourse[this.cityActiveIndexCourse].regionCode
+            }
+          }
+
+          sendAjax(this, post, function (res) {
+            if (app.courseFirst) {
+              if (res.data.proList) {
+                app.courseList = res.data.proList;
+              } else {
+                app.courseList = [];
+              }
+              app.courseFirst = false;
+            } else {
+              if (res.data.proList) {
+                app.courseList = app.courseList.concat(res.data.proList);
+              }
+              app.courseFirst = false;
+            }
+            app.courseUpLoading = false;
+
+            if (!res.data.proList) {
+              app.courseNotMore = true;
+            }
+
+            app.coursePage++;
+
+            MINT.Indicator.close();
+
+            if (callback) {
+              callback();
+            }
+          });
+        }
+      }
+    }
+  })
+</script>

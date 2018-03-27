@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+
+        .icon {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .list {
+            font-size: 0.7rem;
+            padding: 0 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .list-item {
+            background: white;
+            width: 48%;
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+        }
+
+        .list-item img {
+            width: 100%;
+            height: 9rem;
+        }
+
+        .img-box {
+            position: relative;
+        }
+
+        .price-box {
+            color: #666;
+            padding: 0.2rem 0;
+        }
+
+        .bottom-box {
+            width: 100%;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .bottom-box span {
+            margin-left: 0.6rem;
+        }
+
+        .ixin {
+            color: #d83615;
+            font-size: 16px;
+        }
+
+        .shoucangfont {
+            color: #FCBD54;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="list">
+        <li class="list-item" v-for="(item,index) in proList">
+            <div class="img-box" @click="openVideo">
+                <img :src="formatImg(item.articleCover)" alt="">
+            </div>
+            <div class="aui-padded-l-5 aui-padded-r-5">
+                <div class="aui-padded-t-5" @click="openQinquinfo(item.articleId,item.cateId)">{{item.articleTitle}}
+                </div>
+                <div class="bottom-box">
+                    <span style="" @click="collectCommon(index,3,2)">
+                        <i v-if="item.ifAgree==1" class="iconfont ixin icon-xin"></i>
+                        <i v-else class="iconfont icon-ziyuan8"></i>
+                    </span>
+                    <span style="" @click="collectCommon(index,3,1)">
+                            <i style="color: #FCBD54" v-if="item.ifCollect==1"
+                               class="iconfont shoucangfont icon-shoucang"></i>
+                            <i style="color: black" v-else class="iconfont icon-shoucang1"></i>
+                    </span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      formatImg: formatImg,
+      type: 4,
+      toolsType: 2,
+      page: 1,
+      perPage: 5,
+      proList: [],
+      firstCount: 0  //loader监听
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.uappGetCollectList(5);
+      };
+    },
+    methods: {
+      uappGetCollectList: function () {
+        var post = {
+          cmd: 'uappGetCollectList',
+          token: getToken(),
+          type: app.type,
+          toolsType: app.toolsType,
+          page: app.page,
+          perPage: app.perPage
+        };
+        sendAjax(this, post, function (res) {
+          app.proList = res.data.proList;
+          app.loaderChange();
+        });
+      },
+//      视频
+      openVideo: function () {
+        api.openVideo({
+          url: 'widget://res/1.mp4'
+        });
+      },
+      openQinquinfo: function (articleid, cateId) {
+        api.openWin({
+          name: 'revisehome_win',
+          url: '../../../tools/people/revisehome_win.html',
+          pageParam: {
+            articleid: articleid,
+            cateid: cateId
+          }
+        });
+      },
+      //      loader加载
+      loaderChange: function () {
+        app.firstCount++;
+      },
+      //      琴谱点赞/支持 （取消或支持）
+      collectCommon: function (index, type, agreeOrCollect) {
+        if (type == 1) {
+          if (agreeOrCollect == 1 && getToken() != null) {
+            if (app.proList[index].ifCollect == 1) {
+              app.proList[index].ifCollect = -1;
+            } else {
+              app.proList[index].ifCollect = 1
+            }
+          }
+          if (agreeOrCollect == 2 && getToken() != null) {
+            if (app.proList[index].ifAgree == 1) {
+              app.proList[index].ifAgree = -1;
+            } else {
+              app.proList[index].ifAgree = 1
+            }
+          }
+        }
+
+        var post = {
+          cmd: 'collectCommon',
+          token: getToken(),
+          id: app.proList[index].articleId,
+          type: type,
+          agreeOrCollect: agreeOrCollect
+        };
+        sendAjax(this, post, function (res) {
+          api.sendEvent({
+            name: 'sendtype'
+          });
+
+        });
+      }
+    }
+  })
+</script>

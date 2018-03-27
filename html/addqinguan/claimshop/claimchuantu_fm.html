@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      position: relative;
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    hr {
+      height: 1px;
+      background-color: #f0f0f0;
+    }
+
+    .warning {
+      margin: 5px 0;
+      width: 100%;
+      background-color: #fff;
+      height: 40px;
+      line-height: 40px;
+      font-size: 12px;
+      color: #f57665;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    /*营业执照、法人上传*/
+    .shangchuan-wrap {
+      background-color: #fff;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 15px;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      height: 40px;
+      line-height: 40px;
+      font-size: 12px;
+    }
+
+    .picwrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .shili, .add {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80px;
+      height: 80px;
+      margin: 5px;
+      border-radius: 5px;
+    }
+
+    .shili {
+      background-color: #e5e5e5;
+      color: #656565;
+    }
+
+    .add {
+      border: 1px solid #7f7f7f;
+      color: #7f7f7f;
+      font-size: 30px;
+      overflow: hidden;
+    }
+
+    .add img {
+      width: 100%;
+      height: 100%;
+    }
+
+    /*正反面*/
+    .zf {
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+
+    .zf p {
+      width: 100%;
+      text-align: center;
+    }
+
+    .claim-wrap {
+      width: 100%;
+      box-sizing: border-box;
+      background-color: #fff;
+      padding: 0 15px 15px;
+    }
+
+    /*认领人信息*/
+    .xinxi {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      font-size: 12px;
+      box-sizing: border-box;
+      height: 40px;
+      border-bottom: 1px solid #d9d9d9;
+    }
+
+    #name, #telephone {
+      margin-top: 2px;
+      flex: 1;
+      padding: 0 10px;
+      outline: none;
+    }
+
+    /*确认上传按钮*/
+    .uploading {
+      /*position:absolute;*/
+      /*bottom: 0;*/
+      /*left:0;*/
+      padding: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-sizing: border-box;
+      background-color: #fff;
+    }
+
+    .uploading button {
+      height: 1.5rem;
+      line-height: 1.5rem;
+      width: 11rem;
+      border: 1px solid #5a5a5a;
+      font-size: 0.8rem;
+      text-align: center;
+      border-radius: 0.8rem;
+      color: #5a5a5a;
+      outline: none;
+    }
+
+    .uploading button:active {
+      background-color: gainsboro;
+    }
+
+    .uploading p {
+      padding: 5px 0;
+      font-size: 12px;
+      color: #878787;
+      text-decoration: underline;
+    }
+
+    /*弹出框*/
+    .mint-popup-bottom {
+      width: 100%;
+    }
+
+    .moreoul {
+      width: 100%;
+    }
+
+    .moreoul li {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <hr>
+  <p class="warning">请提供商户的实际信息，以证明您为该琴馆的实际运营者</p>
+  <div class="shangchuan-wrap">
+    <div class="zhizhao">
+      <!--营业执照上传-->
+      <p class="title"><i style="color:red">*</i>请上传营业执照： </p>
+      <div class="picwrap">
+        <div class="shili">
+          <span>示例</span>
+        </div>
+        <div class="add" id="1" @click="openpop(1)">
+          <img :src="licence" v-if="licence!==''">
+          <i class="iconfont icon-jiahao" v-else></i>
+        </div>
+      </div>
+    </div>
+    <div class="faren">
+      <!--法人照片上传-->
+      <p class="title"><i style="color:red">*</i>请上传法人身份证正、反面照片： </p>
+      <div class="picwrap">
+        <div class="zf">
+          <div class="add" @click="openpop(2)">
+            <img :src='IDCardFace' alt="" v-if="IDCardFace!==''">
+            <i class="iconfont icon-jiahao" v-else></i>
+          </div>
+          <p>正面</p>
+        </div>
+        <div class="zf">
+          <div class="add" @click="openpop(3)">
+            <img :src="IDCardBack" alt="" v-if="IDCardBack!==''">
+            <i class="iconfont icon-jiahao" v-else></i>
+          </div>
+          <p>反面</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="claim-wrap">
+    <label class="xinxi" for="name">
+      <span><i style="color:red">*</i>认领人姓名：</span>
+      <input type="text" maxlength="10" id="name" placeholder="请填写认领人姓名" v-model="leader">
+    </label>
+    <label class="xinxi" for="telephone">
+      <span><i style="color:red">*</i>认领人电话：</span>
+      <input type="number" maxlength="11" id="telephone" placeholder="请填写认领人联系方式" v-model="contactNum">
+    </label>
+  </div>
+  <div class="uploading">
+    <p>点击确认上传即表示同意正麟网《商户使用协议》</p>
+    <!--@click="openvertify"-->
+    <button @click="applyData">上传审核</button>
+  </div>
+
+  <!--弹出选照片-->
+  <mt-popup
+          v-model="more.popupVisible"
+          position="bottom">
+    <ul class="moreoul">
+      <li @click="takephoto()">拍照</li>
+      <li @click="myphotos()">从相册中选择</li>
+      <li @click="cancel()" style="border-top: 2px solid #f0f0f0">取消</li>
+    </ul>
+  </mt-popup>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      more: {
+        popupVisible: false
+      },
+      licence: '',
+      IDCardFace: '',
+      IDCardBack: '',
+      picindex: null,
+      pics: null,
+      details: {},
+      leader: '',
+      contactNum: '',
+      number: /^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\d{8}$/
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        console.log(JSON.stringify(api.pageParam.details))
+        app.details = api.pageParam.details;
+      };
+    },
+    methods: {
+      openvertify: function () {
+        openView('claimverifying', 'addqinguan/claimshop/claimverifying_fm', '认领店铺', 'vertify', false, false);
+      },
+      myphotos: function () {
+        api.getPicture({
+          sourceType: 'album',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.more.popupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.switchcase(ret.data);
+          } else {
+          }
+        });
+      },
+      takephoto: function () {
+        api.getPicture({
+          sourceType: 'camera',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.more.popupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.switchcase(ret.data);
+          } else {
+            toastMsg('已取消修改')
+          }
+        });
+      },
+      cancel: function () {
+        app.more.popupVisible = false;
+      },
+      openpop: function (ret) {
+        app.more.popupVisible = true;
+        app.picindex = ret;
+      },
+      switchcase: function (val) {
+        switch (app.picindex) {
+          case 1: {
+            app.licence = val;
+            break;
+          }
+          case 2: {
+            app.IDCardFace = val;
+            break;
+          }
+          case 3: {
+            app.IDCardBack = val;
+            break;
+          }
+        }
+      },
+      upTmpImg: function (callback) {
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "upTmpImg",
+              "token": getToken()
+            },
+            files: {
+              licence: app.licence,
+              IDCardFace: app.IDCardFace,
+              IDCardBack: app.IDCardBack
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            app.pics = ret.data;
+            callback();
+          } else {
+//            alert(ret.message);
+          }
+        });
+      },
+      validat: function () {
+        if (!app.licence.trim()) {
+          api.toast({
+            msg: '请上传营业执照'
+          });
+          return false;
+        } else if (!app.IDCardFace.trim() || !app.IDCardBack.trim()) {
+          api.toast({
+            msg: '请上传法人身份证正反面照片'
+          });
+          return false;
+        } else if (!app.leader.trim()) {
+          api.toast({
+            msg: '请输入认领人姓名！'
+          });
+          return false;
+        } else if (!app.contactNum.trim()) {
+          api.toast({
+            msg: '请输入认领人联系方式！'
+          });
+          return false;
+        } else if (!app.number.test(app.contactNum)) {
+          api.toast({
+            msg: '请输入正确的联系电话'
+          });
+          return false;
+        } else {
+          return true;
+        }
+      },
+      applyData: function () {
+        if (app.validat() === true) {
+          app.upTmpImg(function () {
+            var post1 = {
+              cmd: 'applyData',
+              token: getToken(),
+              entry: 2,
+//              clubName: app.details.clubName,
+//              provinceCode: api.pageParam.cityCode,
+//              address: app.details.address,
+              leader: app.leader,
+              contactNum: app.contactNum,
+//              desc: app.details.desc,
+//              openHours: app.details.openHours,
+//              openTime: app.details.openTime,
+//              createTime: app.details.createTime,
+//              brand: app.details.brand,
+//              productTag: app.details.productTag,
+//              position: app.details.position,
+              clubId: app.details.id,
+              licence: app.pics.licence,
+              IDCardFace: app.pics.IDCardFace,
+              IDCardBack: app.pics.IDCardBack
+            };
+            sendAjax(app, post1, function (ret) {
+              if (ret.code === '1') {
+                openView('claimverifying_fm', 'addqinguan/claimshop/claimverifying_fm', 'claimverifying', '认领店铺', false, false);
+              }
+            })
+          });
+        }
+      }
+    }
+  })
+
+</script>
+
+
+<!--备注-->
+

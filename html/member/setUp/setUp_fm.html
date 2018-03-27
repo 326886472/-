@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      background: #F0F0F0;
+    }
+
+    .list {
+      color: #666;
+      background: white;
+      padding-left: 0.5rem;
+    }
+
+    .list li {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.5rem 0;
+      font-size: 0.7rem;
+    }
+
+    .list li div {
+      flex: 1;
+    }
+
+    .pull-right {
+      color: #666;
+      font-size: 0.7rem;
+      text-align: right;
+      padding-right: 0.75rem;
+      position: relative;
+    }
+
+    .icon-style {
+      font-size: 0.6rem;
+    }
+
+    .my-switch {
+      position: absolute;
+      right: 0.8rem;
+      top: -0.8rem;
+    }
+
+    .text {
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.5rem;
+      border: 1px solid #666;
+    }
+
+    .btn-box {
+    }
+
+    .btn-box div {
+      width: 60%;
+      margin: 0 auto;
+      position: absolute;
+      bottom: 10%;
+      left: 20%;
+      border-radius: 1rem;
+      border: 1px solid #666;
+      text-align: center;
+      padding: 0.4rem 0;
+      margin-bottom: 0.5rem;
+      color: #666;
+      font-size: 0.7rem;
+    }
+
+    .btn-box div:active {
+      background: gainsboro;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div class="list">
+    <ul>
+      <!--<li class="" @click="remindWin()">-->
+      <!--<div>消息提醒</div>-->
+      <!--<div class="pull-right">-->
+      <!--<i class="iconfont icon-ziyuan2 icon-style"></i>-->
+      <!--</div>-->
+      <!--</li>-->
+      <!--<li class="">-->
+      <!--<div>WIFI自动升级客户端</div>-->
+      <!--<div class="pull-right">-->
+      <!--<mt-switch class="my-switch"></mt-switch>-->
+      <!--</div>-->
+      <!--</li>-->
+      <li class="" @click="clearCache">
+        <div>清除缓存</div>
+        <div class="pull-right">
+          {{size}}
+        </div>
+      </li>
+      <li class="" @click="aboutWin()">
+        <div>关于正麟</div>
+        <div class="pull-right">
+          <i class="iconfont icon-ziyuan2 icon-style"></i>
+        </div>
+      </li>
+      <!--<li class="">-->
+      <!--<div>检查更新</div>-->
+      <!--<div class="pull-right">-->
+      <!--<span class="text">更新</span>-->
+      <!--</div>-->
+      <!--</li>-->
+    </ul>
+  </div>
+  <div class="btn-box">
+    <div @click="loginOut()">
+      退出当前账号
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      size: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.getCacheSize();
+      };
+    },
+    methods: {
+      // 获取缓存占用大小
+      getCacheSize: function () {
+        api.getCacheSize(function (ret) {
+          app.size = ((ret.size / 1024) / 1024).toFixed(1) + 'M';
+        })
+      },
+      // 清除缓存
+      clearCache: function () {
+        api.clearCache(function () {
+          app.size = '';
+          toastMsg('清除成功');
+        });
+      },
+      // 退出
+      loginOut: function () {
+        api.confirm({
+          title: '退出后下次需要\n重新输入账号和密码！',
+          buttons: ['取消', '确定']
+        }, function (ret) {
+          if (ret.buttonIndex === 2) {
+            var post = {
+              cmd: 'userLogout',
+              token: getToken()
+            };
+
+            sendAjax(app, post, function (res) {
+              pushUnBind();
+
+              $api.rmStorage('token');
+              $api.rmStorage('mobile');
+              $api.rmStorage('id');
+              $api.rmStorage('nickname');
+
+              api.sendEvent({name: "loginOut"});
+              api.closeWin();
+            });
+          }
+        });
+      },
+      remindWin: function () {
+        openView('remind', 'member/setUp/remind_fm', '消息提醒')
+      },
+      aboutWin: function () {
+        openView('about', 'member/setUp/about_fm', '关于正麟');
+      }
+    }
+  })
+</script>

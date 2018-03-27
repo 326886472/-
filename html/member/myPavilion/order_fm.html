@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../assets/css/css/order_fm.css">
+        </head>
+<body>
+<div id='app'>
+    <div id="loadStart"></div>
+    <div class="order-home">
+        <div :class="{modal: menuIndex !== -1}"></div>
+        <div class="title_header">
+            <ul class="header_oul">
+                <li class="typeof" @click="menuActive(0)">
+                    {{pickTypeActive | pickTp}}<i class="iconfont icon-iconfontxiangxiajiantou"></i>
+                    <ul v-show="menuIndex === 0">
+                        <li v-for="(item, index) in pickType" :class="{active: pickTypeActive === index}"
+                            @click="pick(1,index)">{{item.label}}
+                        </li>
+                    </ul>
+                </li>
+                <!--<li class="shu">|</li>-->
+                <!--<li class="typeof" :class="{hide: pickTypeActive === -1}" @click="menuActive(1)">-->
+                    <!--交易方式 <i class="iconfont icon-iconfontxiangxiajiantou"></i>-->
+                    <!--<ul v-show="menuIndex === 1">-->
+                        <!--<li v-for="(item, index) in secondPickType[pickTypeActive]"-->
+                            <!--:class="{active: secondPickTypeActive === index}"-->
+                            <!--@click="pick(2,index)">{{item.label}}-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <li class="shu">|</li>
+                <li class="typeof" @click="menuActive(2)">
+                    {{thirdPickTypeActive | OrderTp}}<i class="iconfont icon-iconfontxiangxiajiantou"></i>
+                    <ul v-show="menuIndex === 2">
+                        <li v-for="(item, index) in thirdPickType" :class="{active: thirdPickTypeActive === index}"
+                            @click="pick(3,index)">{{item.label}}
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="orderContent">
+            <div class="shadow" v-if="loadAll">
+                <img  src="../../../assets/images/timg.gif">
+            </div>
+            <div v-for="(order, index) in orderList">
+
+                <div class="oedercontent">
+                    <span style="line-height: 2rem;display: inline-block;float: left;margin-left: 10px;font-size: 11px; color: grey;">订单编号：{{order.orderSn}}</span><span
+                        style="display: inline-block;float: right;margin-right: 10px;line-height: 2rem;font-size: 11px; color: grey;">{{order.createTime}}建单</span>
+                    <!--<p style="float: left;display: block;line-height: 2rem;border-bottom: 1px solid gainsboro;width:100%;border-top: 1px solid gainsboro;">-->
+                        <!--<span class="nickname">{{order.nickname}}</span><i style="color: #ffbb28; margin-left: 10px" class="iconfont icon-huiyuan" v-if="order.level !== '0'"></i></p>-->
+                    <div class="shopcount" >
+                        <div class="leftbox"><img class="oimg" :src="formatImg(order.images)"></div>
+                        <div class="rightbox">
+                            <p class="overflowp">{{order.courseName}}</p>
+                            <div class="priceandnum">
+                                <div class="oprice">¥{{order.price}}</div>
+                            </div>
+                            <p class="omethods">交易方式：{{order.payType | payTypeText}}</p>
+                            <p class="opricemessage1"><span>共 {{order.amount}} 件商品</span><span>实付：<span class="sprice">¥ {{order.realPrice}}</span></span></p>
+                        </div>
+                    </div>
+                    <p class="opricemessage" v-show="order.buyersremark !== null && order.buyersremark !== ''">
+                        <span>备注: {{order.buyersremark}}</span>
+                    </p>
+                    <p class="customerInformation">
+                        客户姓名：{{order.isTake !== null ? order.StudentName : order.StudentNameX}}
+                    </p>
+                    <p class="customerInformation">
+                        联系电话：{{order.isTake !== null ? order.mobile : order.mobileX}}
+                    </p>
+                    <p class="customerInformation">
+                        到店时间：{{order.timeToShop}}
+                    </p>
+                    <div class="customerInformation">
+                        <mt-button style="margin-bottom: 8px" type="primary" size="small" v-if="order.isremark == 0" @click="function () {order.isremark = 1}">添加备注</mt-button>
+                        <div style="padding-bottom: 8px" v-show="order.isremark == 1 ">
+                            <p>备注：<input style="display: inline; width: 70%" type="text" placeholder="这里可以修改备注" v-model="order.remark" @blur.prevent="inputRemark(order.id, order.remark)"></p>
+                        </div>
+                    </div>
+                    <div class="fource">
+                        <!--跳转评论详情入口-->
+                        <span  class="detailstime" v-show="order.status !== 3">
+                            {{order.status | orderStatus}}
+                        </span>
+                        <span class="detailstime" @click="onComment" v-show="order.status == 3">
+                            <p style="padding-left: 10px" class="comment">{{order.weights}} <i class="iconfont icon-ziyuan1" style="color: #ff8500;"></i></p>
+                        </span>
+                        <div classs="detailsbox">
+                            <mt-button v-show="order.isTake === '1'" @click="call(order.mobile)" class="relation publicbtn">联系客户</mt-button>
+                            <mt-button class="surebtn publicbtn" @click="showTakeBox(order.isTake, order.id, order.orderType, index)" v-show="order.isTake === null" plain>接单</mt-button>
+                            <mt-button class="gospeak publicbtn not" v-show="order.isTake === '1'">已接单</mt-button>
+                            <mt-button class="gospeak publicbtn already" v-show="order.isTake === '-1'">未接单</mt-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-show="orderList.length !== 0" class="bottom">
+                -- 我们是有底线的 --
+            </div>
+        </div>
+        <div class="none" v-show="orderList.length == 0">暂无订单</div>
+    </div>
+
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            token: getToken(),
+            clubId: '',
+            menuIndex: -1,
+            pickTypeActive: -1,/*订单类型的选中项*/
+            pickType: [
+                {label: '全部', value: '0'},
+                {label: '活动预约', value: '1'},
+                {label: '课程教学', value: '2'},
+                {label: '商品', value: '3'},
+            ],
+//            secondPickTypeActive: -1,
+//            secondPickType: [
+//                [
+//                    {label: '免费预约到店', value: '1'}
+//                ],
+//                [
+//                    {label: '免费预约到店', value: '1'},
+//                    {label: '到店付余额', value: '2'},
+//                    {label: '已付全款购买', value: '3'}
+//                ],
+//                [
+//                    {label: '线上付琴馆提', value: '4'},
+//                    {label: '线上付正麟发', value: '5'},
+//                    {label: '免费预约', value: '1'}
+//                ]
+//            ],
+            thirdPickTypeActive: 0,/*订单状态的选中项*/
+            thirdPickType: [
+                {label: '全部', value: '0'},
+                {label: '已接单', value: '1'},
+                {label: '未接单', value: '2'},
+                {label: '待评价', value: '3'}
+            ],
+            orderList: [],
+            modal: false,
+            form: {
+                type: ""
+            },
+            first: true,
+            loadAll: false,
+            page: 1
+        },
+        filters: {
+            orderCom (orderType) {
+                switch (orderType) {
+                    case '1':
+                        return 'club';
+                    case '2':
+                        return 'course';
+                    case '3':
+                        return 'goods';
+                }
+            },
+            remarkClass(remarkFlag) {
+                switch (remarkFlag) {
+                    case '1':
+                        return 'c1';
+                    case '2':
+                        return 'c2';
+                    case '3':
+                        return 'c3';
+                    case '4':
+                        return 'c4';
+                    default:
+                        return '';
+                }
+            },
+            remarkType (remark) {
+                switch (remark) {
+                    case '0' :
+                        return "添加备注";
+                    case '1' :
+                        return "修改备注";
+                    default:
+                        return '添加备注';
+                }
+            },
+            formatDate(time) {
+                if (time) {
+                    return time.substr(0, 10);
+                } else {
+                    return '';
+                }
+            },
+            payTypeText(payType) {
+                switch (payType) {
+                    case '1': return '全款购买';
+                    case '2': return '预付定金';
+                    case '3': return '免费预约';
+                }
+            },
+            orderStatus(status) {
+                switch (status) {
+                    case '0': return '等待付款';
+                    case '1': return '等待到店';
+                    case '2': return '待评价';
+                    case '4': return '订单关闭';
+                }
+            },
+            OrderTp (type) {
+                switch (type) {
+                    case 1: return '已接单';
+                    case 2: return '未接单';
+                    case 3: return '待评价';
+                    default : return '订单状态';
+                }
+            },
+            pickTp (type) {
+                switch (type) {
+                    case 1: return '活动预约';
+                    case 2: return '课程教学';
+                    case 3: return '商品';
+                    default : return '订单类型';
+                }
+            },
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+                api.addEventListener({
+                    name: 'scrolltobottom',
+                    extra: {
+                        threshold: 10
+                    }
+                }, function () {
+                    app.getToDealOrderList();
+                });
+                app.getToDealOrderList(function () {
+                    loadEnd();
+                });
+            };
+        },
+        methods: {
+            onComment () {
+                api.openWin({
+                    name: "evaluate",
+                    url: 'evaluate_win.html',
+                    pageParam: {
+                        clubId:app.clubId
+                    }
+                })
+            },
+//            拨打电话联系用户
+            call (number) {
+                api.call({
+                    type: 'tel_prompt',
+                    number: number
+                });
+            },
+//            修改订单备注
+            inputRemark: function (id, rmk) {
+                var post = {
+                    cmd: "courseOrderAddRemarkFlag",
+                    clubId: app.clubId,
+                    token: app.token,
+                    courseOrderId: id,
+                    remark : rmk
+                }
+                sendAjax(this, post, function (res) {
+                    if(res.code == 1) {
+                        toastMsg('备注已修改！');
+                    }
+                })
+            },
+
+            showTakeBox: function (isTake, id, type, i) {
+                app.getToDealOrderList();
+                var post = {
+                    cmd: 'orderIsTake',
+                    token: app.token,
+                    clubId: app.clubId,
+                    id: id,
+                    orderType: type,
+                    isTake: '1'
+                };
+                sendAjax(this, post, function (res) {
+                    if(res.code == 1) {
+                        app.orderList[i].isTake = '1';
+                        app.orderList[i].mobileX = app.orderList[i].mobile;
+                        app.orderList[i].StudentNameX = app.orderList[i].StudentName;
+                    }
+                });
+            },
+            menuActive:function (params) {
+                if (app.menuIndex === params) {
+                    app.menuIndex = -1;
+                } else {
+                    app.menuIndex = params;
+                }
+            },
+            pick: function (index,value) {
+                app.loadAll = false;
+
+                app.first = true;
+                app.page = 1;
+                switch (index) {
+                    case 1:
+                        app.pickTypeActive = value;
+                        if (app.pickTypeActive === 0) {
+                            app.secondPickTypeActive = 0;
+                        } else {
+                            app.secondPickTypeActive = -1;
+                        }
+                        break;
+//                    case 2:
+//                        app.secondPickTypeActive = value;
+//                        break;
+                    case 3:
+                        app.thirdPickTypeActive = value;
+                        break;
+                }
+                Vue.set(app.menuIndex ,0 , -1);
+                app.getToDealOrderList();
+            },
+            format: function (data) {
+                for (var i=0; i < data.length;i++) {
+                    if (data[i].isTake == null) {
+                       data[i].StudentNameX = '**';
+                        var reg = /^(\d{3})\d{4}(\d{4})$/;
+                       data[i].mobileX = data[i].mobile.replace(reg, "$1****$2");
+                    }
+                }
+                return data;
+            },
+            getToDealOrderList: function (callback) {
+                if (!app.loadAll) {
+                    var post = {
+                        cmd: 'getToDealOrderList',
+                        token: app.token,
+                        clubId: app.clubId,
+                        page: app.page
+                    };
+                    if (app.pickTypeActive !== -1) {
+                        post.pickType = app.pickType[app.pickTypeActive].value;
+                    }
+//                    if (app.pickTypeActive !== -1 && app.secondPickTypeActive !== -1) {
+//                        post.secondPickType = app.secondPickType[app.pickTypeActive][app.secondPickTypeActive].value;
+//                    }
+                    if (app.thirdPickTypeActive !== -1) {
+                        post.thirdPickType = app.thirdPickType[app.thirdPickTypeActive].value;
+                    }
+
+                    sendAjax(this, post, function (res) {
+                        if (app.first) {
+                            if (res.data.proList.length != 0) {
+                                app.orderList = res.data.proList;
+                                app.format(app.orderList);
+                            } else {
+                                app.orderList = [];
+                                app.loadAll = false;
+                                loadEnd();
+
+                            }
+                            app.first = false;
+                        } else {
+                            if (res.data.proList.length != 0) {
+                                app.orderList = app.orderList.concat(res.data.proList);
+                                app.format(app.orderList);
+                            } else {
+                                app.loadAll = false;
+                                loadEnd();
+
+                            }
+                        }
+                        app.page++;
+                        if (callback) {
+                            callback();
+                        }
+                    });
+                }
+            },
+        }
+    });
+</script>

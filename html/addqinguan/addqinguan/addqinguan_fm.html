@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    .qinren, .shop, .qinguan {
+      width: 100%;
+      padding: 15px 15px 0 15px;
+      box-sizing: border-box;
+      background-color: #fff;
+    }
+
+    .qinren-img, .shop-img, .qinguan-img {
+      width: 100%;
+      border: 1px solid #f0f0f0;
+    }
+
+    img {
+      width: 100%;
+    }
+
+    /*搜索栏*/
+    .search-bar {
+      width: 95%;
+      padding: 5px 15px;
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-size: 12px;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+      margin: 5px auto 0;
+      background-color: #fff;
+      box-sizing: border-box;
+      border: 1px solid #404040;
+      border-radius: 20px;
+    }
+
+    .city {
+      width: 60px;
+      height: 30px;
+      line-height: 30px;
+      display: flex;
+    }
+    .city span{
+      width: 50px;
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+    }
+    .search-box {
+      flex: 1;
+      
+      height: 30px;
+      line-height: 30px;
+      margin: 0 10px;
+    }
+
+    .search-box input {
+      width: 90%;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .search-bar button {
+      outline: none;
+      color: #404040;
+      height: 18px;
+      line-height: 18px;
+      width: 30px;
+      border-bottom: 1px solid #404040;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <div class="qinren" @click="openqrhome">
+    <div class="qinren-img">
+      <img src="../../../assets/images/addqinren.png"/></div>
+  </div>
+  <div class="shop" @click="openqghome">
+    <div class="shop-img">
+      <img src="../../../assets/images/addshop.png"/></div>
+  </div>
+  <div class="qinguan">
+    <div class="qinguan-img">
+      <div class="search-bar" @click="opensearch">
+        <div class="city" @click.stop="changeCity()">
+          <span>{{cityname}}</span>
+          <i class="iconfont icon-ziyuan2-copy-2" style="font-size: 8px;line-height: 30px"></i>
+        </div>
+        <div class="search-box">
+          <input type="text" placeholder="搜索您的商铺名称" disabled="disabled">
+        </div>
+        <button>搜索</button>
+      </div>
+      <img src="../../../assets/images/claimshop.png" alt="" @click="opensearch">
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      cityname: '',
+      citycode: ''
+    },
+    created: function () {
+      loadEnd();
+      apiready = function () {
+        app.cityname=getcityname();
+        app.citycode=getcitycode();
+        api.addEventListener({
+          name: 'changecity'
+        }, function (ret, err) {
+          app.cityname = ret.value.cityname;
+          app.citycode = ret.value.citycode;
+        });
+      }
+    },
+    methods: {
+      openqrhome: function () {
+        openView('addqinhome', 'addqinguan/addqinren/addqinhome', '琴人添加', 'qinren', false, false);
+      },
+      openqghome: function () {
+        openView('addqghome', 'addqinguan/applyshop/addqinhome', '申请店铺', 'apply', false, false);
+      },
+      opensearch: function () {
+        openView('searchshop', 'addqinguan/searchshop/searchshop_fm', '搜索店铺', 'search', false, {
+          cityname: app.cityname,
+          citycode: app.citycode
+        });
+      },
+      changeCity: function () {
+        api.openWin({
+          name: 'changecity_win',
+          url: '../../index/splitcity/changecity_win.html'
+        });
+      }
+    }
+  })
+</script>

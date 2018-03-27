@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont_pavilion.css">
+    <style>
+        html, body {
+            background: #f0f0f0;
+        }
+
+        #app {
+
+        }
+
+    </style>
+</head>
+<body>
+<div id='app'>
+    <header class="aui-bar aui-bar-nav" id="header" style="min-height: 0">
+
+    </header>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+    window.apiready = function () {
+        var app = new Vue({
+            el: '#app',
+            data: {
+                winTitle: api.pageParam.winTitle,
+                win: api.pageParam.win,
+                pageload: 0
+            },
+            mounted: function () {
+                $api.fixStatusBar($api.dom('header'));
+                api.setStatusBarStyle({
+                    style: 'dark'
+                });
+                if (api.systemType == "ios") {
+                    api.openFrame({
+                        name: api.pageParam.fmName,
+                        url: api.pageParam.fmUrl,
+                        rect: {
+                            x: 0,
+                            y: getHeight('header'),
+                            w: 'auto',
+                            h: 'auto'
+                        },
+                        pageParam: api.pageParam.fm,
+                        bounces: false,
+                        vScrollBarEnabled: true,
+                        hScrollBarEnabled: true
+                    });
+                } else {
+                    //viewappear事件在ios中首次打开不会调用，在安卓使用以避免切换时加载frame造成卡顿。
+                    api.addEventListener({
+                        name: 'viewappear'
+                    }, function (ret, err) {
+                        if (app.pageload < 1) {
+                            api.openFrame({
+                                name: api.pageParam.fmName,
+                                url: api.pageParam.fmUrl,
+                                rect: {
+                                    x: 0,
+                                    y: getHeight('header'),
+                                    w: 'auto',
+                                    h: 'auto'
+                                },
+                                pageParam: api.pageParam.fm,
+                                bounces: false,
+                                vScrollBarEnabled: true,
+                                hScrollBarEnabled: true
+                            });
+                        }
+                        app.pageload++;
+                    });
+                }
+            },
+            methods: {
+                closeWindow: function () {
+                    closeWindow();
+                }
+            }
+        })
+    }
+</script>

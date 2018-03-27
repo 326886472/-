@@ -1,0 +1,507 @@
+functanic {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 3px;
+}
+
+.mint-cell-wrapper {
+  padding: 0;
+}
+
+.mint-cell-title {
+  display: none;
+}
+
+.listbox {
+  width: 100%;
+  background: white;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  height: auto;
+
+  .manage_src {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .textbox {
+    width: 56%;
+    position: relative;
+    float: left;
+
+    .manage_name {
+      display: block;
+      float: left;
+      font-size: 16px;
+      width: 100%;
+      line-height: 1.2;
+    }
+
+    .manage_daytime {
+      color: #808080;
+      font-size: 12px;
+      line-height: 1.3rem;
+    }
+
+    .manage_hourtime {
+      color: #808080;
+      font-size: 12px;
+      line-height: 1.3rem;
+    }
+
+    .manage_nowprice {
+      color: #ff3c00;
+      font-weight: bolder;
+      font-size: 14px;
+      display: flex;
+      align-items: flex-end;
+
+      .nprice {
+        font-weight: normal !important;
+        font-size: 12px !important;
+      }
+
+      span {
+        margin-left: 0.5rem;
+        color: #a3a3a3;
+        text-decoration: line-through;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .formnum {
+        text-decoration: none;
+        color: black;
+        font-size: 12px;
+        flex-grow: 1 !important;
+        text-align: right !important;
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+.mint-cell-wrapper {
+  display: block;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.mint-msgbox {
+  padding-bottom: 1rem;
+}
+
+.mint-msgbox-content {
+  border: 1px solid transparent;
+}
+
+.html section .title_header .now_typelist, body section .title_header .now_typelist {
+  z-index: 10;
+}
+
+html section .title_header .now_staticlist, body section .title_header .now_staticlist {
+  z-index: 10;
+}
+
+.mint-msgbox-btns {
+  width: 100%;
+}
+
+.model {
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0.5;
+  z-index: 9;
+  position: fixed;
+}
+
+.mint-cell-value {
+  display: block;
+}
+
+html, body {
+  width: 100%;
+  height: auto;
+  section {
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0;
+
+    .refer {
+      background: #f0f0f0;
+      padding: 0.6rem 1rem;
+      font-size: 14px;
+    }
+
+    .title_header {
+      width: 100%;
+
+      @keyframes xiala
+      {
+        from {opacity: 0;top:-25rem;}
+        to {opacity: 1;top:3rem}
+      }
+      .SecondList {
+        animation: xiala .5s;
+        position: absolute;
+        top: 3rem;
+        left: 40%;
+        display: block;
+        width:40%;
+        font-size: 14px;
+        border-left: 1px solid #7f7f7f;
+        border-right: 1px solid #7f7f7f;
+        border-bottom: 1px solid #7f7f7f;
+        z-index: 10;
+
+        li {
+          width:100%;
+          clear: both;
+          height: 3rem;
+          border-top: 1px solid gainsboro;
+          transition: 0.5s;
+
+          &.active {
+            background: gainsboro;
+          }
+        }
+      }
+
+      .rr {
+        transform: rotate(180deg);
+        transform-origin: 50% 50%;
+        display: inline-block;
+        transition: 0.5s;
+      }
+
+      .gg {
+        transform: rotate(180deg);
+        transform-origin: 50% 50%;
+        display: inline-block;
+        transition: 0.5s;
+      }
+
+      @keyframes xiala1
+      {
+        from {opacity: 0;top:-14rem;}
+        to {opacity: 1;top:3rem}
+      }
+      .now_typelist {
+        position: absolute;
+        top: 3rem;
+
+        animation: xiala1 .5s;
+        left: 0;
+        display: block;
+        width: 40%;
+        font-size: 14px;
+
+        li {
+          width: 80%;
+          padding: 0 10%;
+          transition: 0.5s;
+          clear: both;
+          height: 3rem;
+          border-top: 1px solid gainsboro;
+
+          .xiangyou {
+            float: right;
+            transform: rotate(-90deg);
+          }
+
+          &.active {
+            background: gainsboro;
+          }
+        }
+      }
+
+      .now_staticlist {
+        position: absolute;
+        animation: xiala1 .5s;
+        right: 0;
+        display: block;
+        top: 3rem;
+
+        width: 40%;
+        font-size: 14px;
+
+        li {
+          width: 100%;
+          transition: 0.5s;
+          clear: both;
+          height: 3rem;
+          border-top: 1px solid gainsboro;
+
+          &.active {
+            background: gainsboro;
+          }
+        }
+      }
+
+      .more_typelist {
+        position: absolute;
+        top: -14rem;
+        left: 0;
+        width: 40%;
+        font-size: 14px;
+
+        li {
+          width: 100%;
+          clear: both;
+          height: 3rem;
+          border-bottom: 1px solid gainsboro;
+        }
+      }
+
+      .more_staticlist {
+        position: absolute;
+        top: -14rem;
+        right: 0;
+        width: 40%;
+        font-size: 14px;
+
+        li {
+          width: 100%;
+          clear: both;
+          height: 3rem;
+          border-bottom: 1px solid gainsboro;
+        }
+      }
+
+      ul {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        background: white;
+
+        .typeofe {
+          z-index: 100;
+          font-size: 15px;
+        }
+
+        li {
+          z-index: 100;
+          width: 40%;
+          float: left;
+          text-align: center;
+          line-height: 3rem;
+          background: white;
+        }
+      }
+    }
+    .manage_p {
+      padding: 0.6rem 1rem;
+      font-size: 14px;
+    }
+
+    .passsbox {
+      width: 100%;
+      height: auto;
+
+      .passed_list {
+        background: #f0f0f0;
+        width: 100%;
+
+        li {
+          width: 100%;
+          height: auto;
+          margin-top: 0.5rem;
+          background: white;
+
+          &:first-child {
+            margin-top: 0;
+          }
+
+          &.none {
+            padding: 0.6rem 1rem;
+            font-size: 14px;
+            box-sizing: border-box;
+          }
+
+          .listbox {
+            width: 100%;
+            background: white;
+            padding: 1rem;
+            box-sizing: border-box;
+            display: flex;
+            height: auto;
+
+            .manage_src {
+              width: 7rem;
+              height: 7rem;
+            }
+
+            .textbox {
+              width: 55%;
+              margin-left: 1rem;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+
+              .manage_name {
+                display: block;
+                float: left;
+                font-size: 16px;
+                width: 100%;
+                line-height: 1.2;
+              }
+
+              .manage_daytime {
+                color: #808080;
+                font-size: 12px;
+                line-height: 1.3rem;
+              }
+
+              .manage_hourtime {
+                color: #808080;
+                font-size: 12px;
+                line-height: 1.3rem;
+              }
+
+              .manage_nowprice {
+                display: block;
+                color: #ff3c00;
+                font-weight: bolder;
+                font-size: 16px;
+                align-items: flex-end;
+
+                span {
+                  margin-left: 0.5rem;
+                  color: #a3a3a3;
+                  text-decoration: line-through;
+                  font-size: 14px;
+                  font-weight: 700;
+                }
+
+                .formnum {
+                  text-decoration: none;
+                  color: black;
+                  font-size: 12px;
+                  flex-grow: 1 !important;
+                  text-align: right !important;
+                  font-weight: normal;
+                }
+              }
+            }
+          }
+
+          .typeoutline {
+            width: 100%;
+            position: relative;
+            display: flex;
+            padding: 0.5rem 0;
+            justify-content: flex-end;
+            border-top: 1px solid #d9d9d9;
+
+            .typebtn {
+              font-size: 14px;
+              height: 1.9rem;
+              padding: 0 24px;
+              margin-right: 1rem;
+              color: #a3a3a3;
+              border-color: #a3a3a3;
+            }
+
+            .typebtn-short {
+              color: #a3a3a3;
+              border-color: #a3a3a3;
+            }
+          }
+        }
+      }
+    }
+
+    .referbox {
+      width: 100%;
+      background: white;
+      .refer_list {
+        display: inline-block;
+        background: #f0f0f0;
+        width: 100%;
+
+        .mint-cell {
+          &:first-child {
+            margin-top: 0;
+          }
+
+          margin-top: 0.5rem;
+        }
+
+        li {
+          width: 100%;
+          height: auto;
+          background: white;
+
+          &.none {
+            padding: 0.6rem 1rem;
+            font-size: 14px;
+            box-sizing: border-box;
+          }
+
+          .manage_src {
+            width: 7rem;
+            height: 7rem;
+          }
+          .textbox {
+            width: 55%;
+            margin-left: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: black;
+
+            .manage_name {
+              display: inline-block;
+              float: left;
+              font-size: 16px;
+              width: 100%;
+              line-height: 1.2;
+            }
+            .manage_daytime {
+              color: #808080;
+              font-size: 12px;
+              line-height: 1rem;
+            }
+            .manage_hourtime {
+              color: #808080;
+              font-size: 12px;
+              line-height: 2rem;
+            }
+            .manage_nowprice {
+              color: #ff3c00;
+              font-weight: bolder;
+              font-size: 16px;
+              display: flex;
+              align-items: flex-end;
+
+              span {
+                margin-left: 0.5rem;
+                color: #a3a3a3;
+                text-decoration: line-through;
+                font-size: 14px;
+                font-weight: 700;
+              }
+              .formnum {
+                text-decoration: none;
+                float: right;
+                color: black;
+                font-size: 12px;
+                flex-grow: 1 !important;
+                text-align: right !important;
+                font-weight: normal;
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+}

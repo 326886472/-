@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <style>
+        html, body {
+            background: #f0f0f0;
+        }
+
+        #app {
+
+        }
+        .icon{
+            width:1rem;
+            height: 1rem;
+            margin-right: 0.3rem;
+        }
+        .content{
+            font-size:0.7rem;
+        }
+        .content h3{
+            padding-top:1rem;
+            font-size:1rem;
+            font-weight:100;
+        }
+        .content-top-box{
+            padding:1rem 0 2rem 0;
+            background:#F46C5A ;
+            color:white;
+            text-align: center;
+        }
+        .content-center-box{
+            margin-top:0.5rem;
+            color:#666;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: white;
+        }
+        .content-center-box div{
+            margin:0.5rem 0;
+            padding:0.3rem 0;
+            text-align: center;
+            flex-shrink: 0;
+            width: 49.5%;
+            border-right: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .content-center-box div:last-child{
+            border:none;
+        }
+        .content-bottom-box div{
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            padding:0.5rem;
+        }
+        .content-bottom-box div .icon{
+            margin-right: 0.5rem;
+        }
+        .btn-box{
+            width: 30%;
+            font-size:0.6rem;
+            color:#666;
+            position: absolute;
+            bottom: 5%;
+            left: 35%;
+        }
+        .fix-cover{
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            font-size:1rem;
+            color:white;
+            background: rgba(0,0,0,0.7);
+            background-clip: padding-box;
+            /*background: #bbb;*/
+            z-index: 100000;
+            transition: 1s;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="fix-cover">
+        该功能正在开发中,敬请期待
+    </div>
+    <div class="content aui-margin-t-5">
+        <div class="content-top-box">
+            <div>账户余额(元)</div>
+            <h3>1200.00</h3>
+        </div>
+        <div class="content-center-box">
+            <div class="center-box" v-for="item in list" @click="openChildWin(item.name,item.url,item.title)">
+                <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="item.icon"></use>
+                </svg>{{item.title}}
+            </div>
+        </div>
+        <div class="content-bottom-box aui-margin-t-10" >
+            <div  v-for="i in bootomList" @click="openChildWin(i.name,i.url,i.title)">
+                <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="i.icon"></use>
+                </svg>{{i.title}}
+            </div>
+        </div>
+            <div class="btn-box">
+                正麟钱包使用说明
+            </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      list:[
+        {
+          name:'Recharge',
+          icon:'#icon-chongzhi-copy-1',
+          title:'充值',
+          url:'member/myAccount/Recharge/Recharge_fm'
+        },
+        {
+          name:'Withdrawals',
+          icon:'#icon-tixian-copy',
+          title:'提现',
+          url:'member/myAccount//Withdrawals/Withdrawals_fm'
+        }
+      ],
+      bootomList:[
+        {
+          name:'SetPayCode',
+          icon:'#icon-zhifumimashezhi-copy',
+          title:'支付密码设置',
+          url:'member/myAccount/SetPayCode/SetPayCode_fm'
+        },
+        {
+          name:'Card',
+          icon:'#icon-yinhangqia-copy',
+          title:'我的银行卡',
+          url:'member/myAccount/Card/Card_fm'
+        }
+      ]
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+      openChildWin:function(name,url,title){
+            openView(name,url,title)
+      }
+    }
+  })
+</script>

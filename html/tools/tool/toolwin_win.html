@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+    }
+
+    #header {
+      border-bottom: 1px solid #ccc;
+
+    }
+
+    .middlebox {
+      float: left;
+      width: 50%;
+      display: block;
+      border-radius: 20px;
+      border: 1px solid #929292;
+      padding-left: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .middlebox input {
+      width: 80%;
+      height: 100%;
+      display: block;
+      float: left;
+      outline: none;
+      margin: auto;
+      line-height: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <header class="aui-bar aui-bar-nav" id="header">
+    咨询/工具
+  </header>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+        openFm('toolfm');
+      };
+    },
+    methods: {}
+  })
+</script>

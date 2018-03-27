@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+        .icon{
+            width:2rem;
+            height:2rem;
+        }
+        .icon-box{
+            padding:0.3rem;
+            margin-bottom: 0.5rem;
+            width:2rem;
+            height:2rem;
+            border-radius: 50%;
+        }
+        .content{
+            font-size:0.7rem;
+            color:#666;
+        }
+        .content-header{
+            padding:0.3rem 1rem;
+        }
+        .content-list{
+            background: white;
+            padding:1rem 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .content-list div{
+            text-align: center;
+        }
+        .btn-box{
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+        }
+        .btn-box:active{
+            color:#AB9277;
+        }
+        .btn-box div{
+            padding: 0.3rem 0;
+            text-align: center;
+            width:60%;
+            margin:0 auto;
+            border-radius: 20px;
+            font-size:0.7rem;
+            color:#666;
+            border:1px solid #666;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="content">
+        <div class="content-header">
+            充值方式
+        </div>
+        <div class="content-list">
+            <div>
+                <div class="icon-box weixin">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-weixin-copy"></use>
+                    </svg>
+                </div>
+               微信
+            </div>
+            <div>
+                <div class="icon-box zfb">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-zhifubao"></use>
+                    </svg>
+                </div>
+               支付宝
+            </div>
+            <div>
+                <div class="icon-box yl">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-yinhangqia-copy"></use>
+                    </svg>
+                </div>
+                银联
+            </div>
+        </div>
+    </div>
+    <div class="btn-box" @click="openReCard">
+        <div>下一步</div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+      openReCard:function () {
+            openWin('RechargeCard','../RechargeCard/RechargeCard_win.html')
+      }
+    }
+  })
+</script>

@@ -1,0 +1,118 @@
+.art {
+  background: red;
+}
+
+.details {
+  width: 26px;
+  height: 26px;
+  background: #bbb;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  line-height: 26px;
+  font-size: 14px;
+  position: absolute;
+  top: -13px;
+  right: -13px;
+}
+
+html, body {
+  background: #f0f0f0;
+  section {
+    background: #f0f0f0;
+    .classoul {
+      width: 100%;
+      height: auto;
+      background: white;
+      li {
+        line-height: 4rem;
+        border-bottom: 1px solid #d9d9d9;
+        background: white;
+        span {
+          margin-left: 1rem;
+
+        }
+        i {
+          float: right;
+          margin-right: 1rem;
+        }
+      }
+      .classcontent {
+        height: 14rem;
+        p {
+          margin-left: 1rem;
+          line-height: 2rem;
+        }
+        textarea {
+          width: 90%;
+          height: 85%;
+          outline: none;
+          margin:0 5%;
+          color: #8b8b8b;
+          font-size: 14px;
+        }
+      }
+    }
+    .class_img {
+      margin-top: 1rem;
+      border-top: 1px solid gainsboro;
+      width: 100%;
+      height: auto;
+      background: white;
+      padding-bottom: 1rem;
+
+      p {
+        margin-left: 1rem;
+        margin-top: 1rem;
+      }
+      ul {
+        width: auto;
+        display: inline-block;
+        background: white;
+        li {
+          display: inline-block;
+          width: 5rem;
+          height: 5rem;
+          border: 1px dashed gainsboro;
+          margin-left: 1rem;
+          line-height: 5rem;
+          margin-top: 1rem;
+          float: left;
+          text-align: center;
+          background: white;
+        }
+      }
+    }
+    .bottom_box {
+      width: 100%;
+      display: flex;
+      background: #f0f0f0;
+
+      .submit_btn {
+        margin: 0 auto;
+        width: 50%;
+        background: #3c3c3c;
+        text-align: center;
+        color: white;
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+      }
+    }
+    .mint-popup-bottom {
+      width: 100%;
+    }
+    .moreoul {
+      width: 100%;
+      li {
+        width: 100%;
+        line-height: 3rem;
+        text-align: center;
+        border-bottom: 1px solid gainsboro;
+        color: #8b8b8b;
+        &.active {
+          color: orange;
+        }
+      }
+    }
+  }
+}

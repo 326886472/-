@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #f0f0f0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+            background: white;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+        }
+
+        #app {
+            height: auto;
+        }
+        .bigbox{
+            width: 100%;
+            height: auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .titlep{
+            border-bottom: 1px solid gainsboro;
+        }
+        .titlep{
+            width: 100%;
+            height: 2rem;
+            line-height: 2rem;
+            font-size: 15px;
+        }
+        .titlep span{
+            margin-left: 5px;
+        }
+        .tokendetails{
+            width: 85%;
+            height: auto;
+            margin: auto;
+            border-bottom: 1px solid gainsboro;
+            font-size: 14px;
+            display: flex;
+            padding-top: 20px;
+            padding-bottom: 5px;
+        }
+        .detailsbox{
+            width:3rem;
+            height: 3rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .detailsbox img{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        .ifont{
+            position: absolute;
+            bottom: -5%;
+            z-index: 10;
+            left: 50%;
+            margin-left: -1rem;
+            width: 2rem;
+            background: orangered;
+            color: white;
+            font-size: 10px;
+            text-align:center;
+        }
+        .rightbox{
+            flex: 1;
+        }
+        .nametime{
+            line-height: 2rem;
+            display: flex;
+        }
+        .nametime span{
+            flex: 1;
+            font-size: 13px;
+        }
+        .artical{
+            width: 100%;
+            font-size: 13px;
+            color: black;
+            word-break: break-all;
+        }
+        .ixin{
+            color: #f44336;
+        }
+        .bottomdiv{
+              width: 100%;
+              height: 2rem;
+              text-align: center;
+              line-height: 2rem;
+              background: #f0f0f0;
+              color: black;
+          }
+        .uptext{
+            color: #bfbfbf;
+            font-size: 13px;
+        }
+        .publicfont{
+            width:20px;
+            height: 20px;
+            margin: auto;
+        }
+
+    </style>
+</head>
+<body style="background: #f0f0f0">
+<div id='app'>
+    <div id="loadStart"></div>
+        <div class="bigbox">
+            <p class="titlep">
+                <span><i class="iconfont icon-liuyan"></i></span>
+                <span>全部留言({{tokennum || 0}})</span>
+            </p>
+        </div>
+
+    <div class="tokendetails" v-for="(item,index) in tokenlist">
+        <div class="detailsbox" style="position: relative">
+            <img :src="formatImg(item.avatar)">
+            <div class="ifont" v-if="item.isQinAuth==1||item.isUserAuth==1">V认证</div>
+        </div>
+        <div class="rightbox">
+            <div class="nametime">
+                <span style="margin-left: 0.2rem">{{item.nickname}}<i style="color:#ffbb28" class="iconfont icon-huangguan-copy" v-if="item.level==1"></i></span>
+                <span style="text-align: right;margin-right: 0.2rem;color: #b8b8b8">{{item.addTime}}</span>
+            </div>
+            <div class="artical">
+                {{item.content}}
+            </div>
+            <div style="width: 100%;line-height: 2rem;text-align: right;margin-right: 20px">
+                <span>
+                     <i v-if="item.ifAgree==1" class="iconfont ixin icon-xin" @click="culEvaluateDoAgree(index)"></i>
+                     <i v-else class="iconfont icon-ziyuan8" @click="culEvaluateDoAgree(index)"></i>
+                    {{item.countAgree}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <!--v-if="rote"-->
+    <div class="bottomdiv">
+        <span v-if="rote" class="uptext">---上拉加载---</span>
+        <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+        <span v-if="overlate" class="uptext">数据已全部加载</span>
+    </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tokenlist:[],
+            tokennum:[],
+            articleid:'',
+            page: 1,
+            perPage: 5,
+            rote:false,
+            overlate:false,
+            load:false,
+            tokencountnum:''
+        },
+        filters: {},
+        watch:{
+            'tokencountnum':function(value){
+                if(value==1){
+                  loadEnd()
+                }
+            }
+        },
+        created: function () {
+
+            apiready = function () {
+                app.articleid = api.pageParam.articleid;
+//这个是第一次加载数据
+                app.culGetEvaluateList(app.articleid,1);
+
+                api.addEventListener({
+                    name: 'shuaxinmessage'
+                }, function(ret, err) {
+                  app.page = 1;
+                  app.culGetEvaluateList(app.articleid,1)
+                });
+
+//这个是监听滑动
+              api.addEventListener({
+                name: 'scrolltobottom',
+                extra: {
+                  threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+                }
+//                滑动时候改变的值
+              }, function (ret, err) {
+//                app.rote = true;
+                app.load = true;//
+                app.rote = false;
+                app.overlate = false;
+                app.page++;
+                app.culGetEvaluateList(app.articleid);
+              });
+            };
+        },
+        methods: {
+            change:function(index) {
+                app.changeindex = index
+            },
+//
+            culGetEvaluateList: function (articleid,ref) {
+                var post = {
+                    cmd: 'culGetEvaluateList',
+                    articleId: articleid,
+                    token: getToken(),
+                    page: app.page,
+                    perPage: app.perPage
+                };
+                sendAjax(this, post, function (res) {
+
+                  if(ref==1){
+                    app.tokenlist = res.data.proList;
+                    app.tokennum = res.data.count ? res.data.count : 0;
+                    app.laber();
+                    app.rote = true;
+                    app.load = false
+                  }else{
+                    app.tokenlist = app.tokenlist.concat(res.data.proList);
+                    app.rote = true;
+                    app.load = false
+                  }
+                  if (res.data.proList.length == 0) {
+                    app.overlate = true;
+                    app.rote = false;
+                    app.load = false
+                  }
+
+                  for(var i=0;i<app.tokenlist.length;i++){
+                    console.log(app.tokenlist[i].addTime.substring(0,10));
+                    app.tokenlist[i].addTime = app.tokenlist[i].addTime.substring(0,10)
+                  }
+                });
+            },
+//          点击支持的
+            noagreeitem: function(index){
+                    app.tokenlist[index].ifAgree = 1
+            },
+//          取消支持的
+            agreeitem:function(index){
+                    app.tokenlist[index].ifAgree = 0
+            },
+//          获取了留言信息的
+            culEvaluateDoAgree: function (index) {
+              if(getToken()!= null){
+                if(app.tokenlist[index].ifAgree==1){
+                  app.tokenlist[index].ifAgree=0;
+                  app.tokenlist[index].countAgree--
+                }else{
+                  app.tokenlist[index].ifAgree=1;
+                  app.tokenlist[index].countAgree++
+                }
+              }
+                var post = {
+                    cmd: 'culEvaluateDoAgree',
+                    commentId:app.tokenlist[index].commentId,
+                    token:getToken
+                };
+                sendAjax(this, post, function (res) {
+                })
+            },
+//          检验次数 （动画）
+            laber:function(){
+                app.tokencountnum++
+            }
+        }
+    })
+</script>

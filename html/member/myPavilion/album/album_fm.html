@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/album_fm.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div id="loadStart"></div>
+    <div class="album-class">
+        <div class="pd-album">
+            <h2>正麟殿古琴文化艺术馆</h2>
+            <div style="position: relative;" @click="alert">
+                <mt-swipe :auto="5000" class="cheng" stopPropagation>
+                    <mt-swipe-item v-for="item in rowPosterList"><img :src="formatImg(item)" alt="" class="cover-img"></mt-swipe-item>
+                </mt-swipe>
+                <!--<span class="cover-text op-label">封面</span>-->
+            </div>
+        </div>
+        <hr>
+        <div class="pd-album">
+            <h2>官方相册</h2>
+            <div class="album-list clearfix">
+                <div class="album" v-for="item in albumList">
+                    <div class="img-wrap">
+                        <img :src=formatImg(item.picCover) alt="" @click="openAlbum(item.id)">
+                    </div>
+                    <span class="op-label default-text" v-show="item.isDefault === '1'">默认</span>
+                    <span class="op-label default-text" v-show="item.isDefault !== '1'"
+                          @click="setDefaultAlbum(item.id)">设为默认</span>
+                    <span class="op-label del-text" v-show="item.isDefault !== '1'"
+                          @click="delAlbum(item.id)">X</span>
+                    <div class="album-title">{{item.albumName}}</div>
+                    <div class="pic-num">{{item.picCount}}张</div>
+                </div>
+                <div class="album plus-img" v-show="albumList.length < 20">
+                    <div style="padding-bottom: 100%; position: relative;" @click="addAlbumShow()">
+                        <i class="iconfont icon-jiajian02"></i>
+                    </div>
+                    <div class="album-title">新建相册</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            token: getToken(),
+            clubId: '',
+            rowPosterList: [],
+            albumList: [],
+            albumName: '',
+            loadDone: 0
+        },
+        watch: {
+            loadDone(value) {
+                if (value == 2) {
+                    loadEnd();
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+
+                app.clubId = api.pageParam.clubId;
+
+                app.getClubAlbum(function () {
+                    app.loadDone++;
+                });
+
+                app.getClubRowPosterList(function () {
+                    app.loadDone++;
+                });
+
+                refresh(function () {
+                    app.getClubAlbum(function () {
+                        refreshDone();
+                    });
+                });
+            };
+        },
+        methods: {
+            alert() {
+                toastMsg('在www.zhenglinc.com商户管理可修改此横图')
+            },
+
+            delAlbum (albumId) {
+                api.confirm({
+                    title: '确认删除相册吗？',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        app.delClubAlbum (albumId)
+                    }
+                });
+            },
+
+            delClubAlbum(albumId) {
+                var post = {
+                    cmd: 'delClubAlbum',
+                    token: app.token,
+                    clubId: app.clubId,
+                    albumId: albumId
+                };
+                sendAjax(this, post, function (res) {
+                    if(res){
+                        app.getClubAlbum();
+                    }
+                })
+            },
+
+            getClubRowPosterList(callback) {
+                var post = {
+                    cmd: 'getClubRowPosterList',
+                    token: app.token,
+                    clubId: app.clubId
+                };
+                sendAjax(this, post,function (res) {
+                    if (res.data) {
+                        app.rowPosterList = res.data;
+                    }
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            },
+            getClubAlbum(callback) {
+                var post = {
+                    cmd: 'getClubAlbum',
+                    token: app.token,
+                    clubId: app.clubId,
+                    page: 1,
+                    perPage: 1000
+                };
+                MINT.Indicator.open();
+                sendAjax(this, post,function (res) {
+                    MINT.Indicator.close();
+
+                    if (res.data.proList) {
+                        app.albumList = res.data.proList;
+                    } else {
+                        app.albumList = [];
+                    }
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            },
+            addAlbumShow() {
+                api.prompt({
+                    title: '请输入相册名称',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        app.addClubAlbum(ret.text);
+                    }
+                });
+            },
+            addClubAlbum(albumName) {
+                var post = {
+                    cmd: 'addClubAlbum',
+                    token: app.token,
+                    clubId: app.clubId,
+                    albumName: albumName
+                };
+
+                sendAjax(this, post,function (res) {
+                    app.getClubAlbum();
+                });
+            },
+            setDefaultAlbum(albumId) {
+                var post = {
+                    cmd: 'setDefaultAlbum',
+                    token: app.token,
+                    clubId: app.clubId,
+                    albumId: albumId
+                };
+
+                sendAjax(this, post,function (res) {
+                    app.getClubAlbum();
+                });
+            },
+            openAlbum(albumId) {
+                openView('albumItem', 'member/myPavilion/album/albumItem', '产品相册', false, 'winNohead', {albumId: albumId , clubId: app.clubId});
+            }
+        }
+    });
+</script>

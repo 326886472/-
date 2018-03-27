@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../assets/css/api.css"/>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        #app {
+
+        }
+
+        /*选择地址*/
+        .big-box {
+            font-size: 0.7rem;
+            color: #666;
+            padding: 3%;
+            width: 94%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .picker-box-city {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .picker-btn-box {
+            width: 70%;
+            margin: 0 auto;
+            display: flex;
+            margin-bottom: 1rem;
+            justify-content: space-around;
+            border: 1px solid #666;
+            border-radius: 20px;
+            background-image: url("../assets/images/shuxian.png");
+            background-repeat: no-repeat;
+            background-size: 1% 100%;
+            background-position: center center;
+        }
+
+        .picker-btn-box div {
+            text-align: center;
+            flex: 1;
+            padding: 0.4rem 0;
+        }
+
+        .picker-btn-box div:first-child {
+            border-top-left-radius: 0.8rem;
+            border-bottom-left-radius: 0.8rem;
+        }
+
+        .picker-btn-box div:last-child {
+            border-top-right-radius: 0.8rem;
+            border-bottom-right-radius: 0.8rem;
+        }
+
+        .picker-btn-box div:active {
+            background: #bbb;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <!--选择生日-->
+    <mt-popup v-model="BirthdaypopupVisible"
+              position="bottom" style="width:100%;">
+        <div class="big-box">
+            <span>生日</span>
+            <div class='picker-box-city'>
+                <mt-picker :slots="changeBirthdayYear" value-key="title" visibleItemCount="3"
+                           @change="Yearchange">
+                </mt-picker>
+                <mt-picker :slots="changeBirthdayMon" value-key="title" visibleItemCount="3"
+                           @change="Monthchange">
+                </mt-picker>
+                <mt-picker :slots="changeBirthdayDay" value-key="title" visibleItemCount="3"
+                           @change="Daychange">
+                </mt-picker>
+            </div>
+            <div class='picker-btn-box'>
+                <div @click="BirthdayCancel">取消</div>
+                <div @click="BirthdayConfirm">确定</div>
+            </div>
+        </div>
+    </mt-popup>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../assets/js/api.js"></script>
+<script type="text/javascript" src="../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../assets/js/public.js"></script>
+<script type="text/javascript" src="../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      BirthdaypopupVisible: true, //生日
+      changeBirthdayYear: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],  //年
+      changeBirthdayMon: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],  //月
+      changeBirthdayDay: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'left'
+        }
+      ],  //日
+      yearTmep: '',
+      MonthTmep: '',
+      DayTmep: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        //        生日
+        var date = new Date();
+        var year = date.getFullYear();
+        app.changeBirthdayYear[0].values = app.adddanwei(getSeq(101, year - 100), '年');
+        app.changeBirthdayMon[0].values = ['01月', '02月', '03月', '04月', '05月', '06月', '07月', '08月', '09月', '10月', '11月', '12月'];
+        app.getbirthDay();
+      };
+    },
+    methods: {
+      adddanwei: function (values, danwei) {
+        var arr = new Array(values.length);
+        for (var i = 0; i < values.length; i++) {
+          arr[i] = values[i] + danwei;
+        }
+        return arr;
+      },
+      getbirthDay: function () {
+        app.changeBirthdayDay[0].values = app.adddanwei(getSeq(app.days(app.yearTmep, app.MonthTmep), 1), '日');
+      },
+//        生日选择
+      Yearchange: function (picker, values) {
+        app.yearTmep = values[0].substr(0, 4);
+        app.getbirthDay();
+      },
+      Monthchange: function (picker, values) {
+        app.MonthTmep = values[0].substr(0, 2);
+        app.getbirthDay();
+      },
+      Daychange: function (picker, values) {
+        app.DayTmep = values[0].substr(0, 2);
+      },
+      days: function (year, month) {
+        var dayCount;
+        now = new Date(year, month, 0);
+        dayCount = now.getDate();
+        return dayCount;
+      },
+      //      取消
+      BirthdayCancel: function () {
+        app.BirthdaypopupVisible = false;
+      },
+//      确定
+      BirthdayConfirm: function () {
+        app.form.birth = app.yearTmep + '-' + app.MonthTmep + '-' + app.DayTmep;
+        app.BirthdaypopupVisible = false;
+        var post = {
+          cmd: 'saveUserInfo',
+          token: getToken(),
+          birth: app.form.birth
+        };
+        console.log(JSON.stringify(post));
+        sendAjax(this, post, function (res) {
+          toastMsg(JSON.stringify(res));
+        });
+      }
+    }
+  })
+</script>

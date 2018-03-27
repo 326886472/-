@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    .main{
+      width: 100%;
+    }
+    .main img{width: 100%}
+    .sharebtn{
+      width: 50%;
+      margin: 10px auto 50px;
+      height: 2rem;
+      font-size: 16px;
+      color: #8D8D8D;
+      border-radius: 1rem;
+      border: 1px solid #8d8d8d;
+      text-align: center;
+      line-height: 2rem;
+    }
+    /*分享*/
+    .mint-popup-bottom {
+      /*width: 100%;*/
+
+    }
+
+    .share {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .share p {
+      width: 100%;
+      font-size: 16px;
+      margin: 10px;
+    }
+
+    .shareWrap {
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .shareWrap > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .shareWrap i {
+      font-size: 40px;
+    }
+
+    .cancelbtn {
+      width: 60%;
+      margin: 20px auto 10px;
+      height:1.8rem;
+      line-height: 1.8rem;
+      border-radius: 1rem;
+      font-size: 16px;
+      border: 1px solid #8D8D8D;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <div class="main">
+    <img src="../../../assets/images/learnme.jpg" alt="">
+    <div class="sharebtn" @click="share">分享给好友</div>
+  </div>
+  <mt-popup v-model="sharepopup" position="bottom" modal="true" class="share">
+    <p>分享到</p>
+    <div class="shareWrap">
+      <div class="wx" @click="shareTo(1)"><i class="iconfont icon-weixin-copy" style="color:#28Ac0c"></i><span>微信好友</span></div>
+      <div class="wxFriend" @click="shareTo(2)"><i class="iconfont icon-pengyouquan" style="color:#28Ac0c"></i><span>朋友圈</span></div>
+      <div class="qq" @click="shareTo(3)"><i class="iconfont icon-qq" style="color:#24bbff"></i><span>QQ</span></div>
+      <div class="Qzone" @click="shareTo(4)"><i class="iconfont icon-qqkongjian" style="color:#f7c000"></i><span>QQ空间</span></div>
+    </div>
+    <div class="cancelbtn" @click="cancelshare">取消</div>
+  </mt-popup>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      sharepopup:false
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        loadEnd();
+      };
+    },
+    methods: {
+      //分享内容：1：微信好友；2：朋友圈；3：qq；4：空间
+      share: function () {
+        app.sharepopup=true;
+      },
+      cancelshare:function () {
+        app.sharepopup=false;
+      },
+      shareTo:function (ind) {
+        var wx = api.require('wx');
+        var qq = api.require('QQPlus');
+        app.sharepopup=false;
+        switch(ind){
+          case 1 :{
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'session',
+              title: '正麟网',
+              description:'一家古琴艺术深度交流平台',
+              thumb: '../../assets/images/thelogo.png',
+              contentUrl: wapUrl + 'wap/html2/download/download.html?2'
+            }, function (ret, err) {
+              if (ret.status) {
+                api.toast({
+                  msg:'分享成功！'
+                });
+              } else {
+                if(err.code == 2){
+                  api.toast({
+                    msg:'已取消'
+                  });
+                }else{
+                  qpi.toast({
+                    msg:'分享失败'
+                  })
+                }
+              }
+            });
+            break;
+          }
+          case 2 :{
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'timeline',
+              title: '正麟网',
+              description:'一家古琴艺术深度交流平台',
+              thumb: '../../assets/images/thelogo.png',
+              contentUrl: wapUrl + 'wap/html2/download/download.html?2'
+            }, function (ret, err) {
+              if (ret.status) {
+                toastMsg('分享成功');
+              } else {
+              }
+            });
+            break;
+          }
+          case 3 :{
+            qq.shareNews({
+              url: wapUrl + 'wap/html2/download/download.html?2',
+              title: '正麟网',
+              description: '一家古琴艺术深度交流平台',
+              imgUrl: '../../assets/images/thelogo.png',
+              type:'QFriend'
+            },function(ret,err){
+            });
+
+            break;
+          }
+          case 4 :{
+            qq.shareNews({
+              url: wapUrl + 'wap/html2/download/download.html?2',
+              title: '正麟网',
+              description:'一家古琴艺术深度交流平台',
+              imgUrl: '../../assets/images/thelogo.png',
+              type:'QZone'
+            },function(ret,err){
+            });
+            break;
+          }
+        }
+      }
+    }
+  })
+</script>

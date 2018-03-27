@@ -1,0 +1,24 @@
+* {
+  padding: 0;
+  margin: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%; }
+  html section, body section {
+    width: 100%;
+    height: 100%; }
+    html section ul, body section ul {
+      width: 100%;
+      height: auto; }
+      html section ul li, body section ul li {
+        width: 100%;
+        line-height: 3rem;
+        border-bottom: 1px solid gainsboro; }
+        html section ul li span, body section ul li span {
+          margin-left: 0.8rem; }
+        html section ul li input, body section ul li input {
+          outline: none; }
+        html section ul li .startime, body section ul li .startime {
+          border-bottom: 1px solid gainsboro;
+          width: 30%; }

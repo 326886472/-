@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+        }
+
+        #header {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .content {
+            padding: 0 5%;
+        }
+
+        .input-box {
+            display: flex;
+            font-size: 0.7rem;
+            color: #666;
+            align-items: center;
+            padding: 1rem 0 0.5rem 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .input-box input {
+            padding-left: 0.3rem;
+            font-size: 0.7rem;
+        }
+
+        .btn-box {
+            margin-top: 20%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-box button {
+            width: 70%;
+            border: 1px solid #666;
+            border-radius: 0.7rem;
+            padding: 0.5rem 0;
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .btn-box button:active {
+            background: gainsboro;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="content">
+        <div class="input-box">
+            <div class="aui-col-xs-3">登录密码</div>
+            <input type="text" placeholder="(6-20位数字,字母或符号组合)" class="aui-col-xs-9" v-model="password">
+        </div>
+        <div class="input-box">
+            <div class="aui-col-xs-3">确认密码</div>
+            <input type="text" placeholder="请确认密码" class="aui-col-xs-9" v-model="rpassword">
+        </div>
+        <div class="btn-box">
+            <button @click="resetPwd">立即登录</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      mobile: '',
+      password: '',
+      rpassword: '',
+      code: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+        app.mobile = api.pageParam.mobile;
+        app.code = api.pageParam.code;
+        api.addEventListener({
+          name: 'viewdisappear'
+        }, function (ret, err) {
+          closeWindow('forget');
+        });
+      };
+    },
+    methods: {
+//      忘记重置密码
+      resetPwd: function () {
+        if (app.password === app.rpassword) {
+          var post = {
+            cmd: 'resetPwd',
+            mobile: app.mobile,
+            password: app.password,
+            rpassword: app.rpassword,
+            code: app.code
+          };
+          sendAjax(this, post, function (res) {
+            app.newPassuserLogin();
+          });
+        }
+      },
+      newPassuserLogin: function () {
+        var post = {
+          cmd: 'userLogin',
+          mobile: app.mobile,
+          password: app.password
+        };
+        sendAjax(this, post, function (res) {
+          api.sendEvent({
+            name: "login",
+            extra: {
+              data: res.data
+            }
+          });
+          $api.setStorage('token', res.data.token);
+          $api.setStorage('id', res.data.id);
+          $api.setStorage('nickname', res.data.nickname);
+
+          pushBind(res.data.nickname, res.data.id);
+
+          if(api.pageParam.fromLaunch){
+            api.openWin({
+              name: 'root',
+              url: '../index/index/index_win.html'
+            });
+          }else{
+           closeWindow();
+          }
+        });
+      }
+    }
+  })
+</script>

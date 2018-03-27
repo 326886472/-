@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+
+    }
+
+    /*tab样式*/
+    .menu-top-bar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      background: white;
+      font-size: 0.7rem;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .menu-top-bar div {
+      text-align: center;
+      width: 25%;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .mentAct {
+      color: #BEAB97;
+      border-bottom: 3px solid #BAA691;
+    }
+
+    /*订单开始*/
+    .my-margin {
+      height: 2rem;
+      background: #f0f0f0;
+    }
+
+    .content {
+      background: white;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    /*公共样式*/
+    .padding-box {
+      padding: 0 1rem;
+    }
+
+    /*头*/
+    .order-top-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /*中间*/
+    .order-content-box {
+      display: flex;
+      justify-content: space-around;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .img-box img {
+      width: 4rem;
+      height: 4.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .content-center-box {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .content-center-box h6 {
+
+      font-weight: 100;
+      color: black;
+      font-size: 0.8rem;
+    }
+
+    .content-center-box span {
+      margin-top: 1rem;
+      font-size: 0.6rem;
+    }
+
+    /*价格*/
+    .price-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .text {
+      color: #FF6B44;
+    }
+
+    /*底部*/
+    .order-middle-box {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .bet {
+      justify-content: space-between !important;
+    }
+
+    .order-middle-box div {
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      border: 1px solid #666;
+      margin-right: 1rem;
+      color: black;
+    }
+
+    /*未通过*/
+    .order-middle-box-copy {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .order-middle-box-copy div {
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      border: 1px solid #666;
+      margin-right: 1rem;
+      color: black;
+    }
+
+    /*底部上拉加载更多样式*/
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 1rem;
+      height: 1rem;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <div class="menu-top-bar">
+    <div v-for="item in menuList" @click="chagneC(true,item.mIndex)"
+         :class="{'mentAct' : myIndex ===item.mIndex }">{{item.title}}
+    </div>
+  </div>
+  <div class="my-margin"></div>
+  <ul>
+    <li v-for="item in proList">
+      <div class="content aui-margin-t-10">
+        <!--头-->
+        <div class="order-top-box aui-padded-t-10 padding-box aui-padded-b-5">
+          <div>来源:{{item.clubName}}</div>
+          <div v-show="item.qinSn">编号:{{item.qinSn}}</div>
+        </div>
+        <!--中间-->
+        <div class="order-content-box padding-box">
+          <div class="img-box">
+            <img :src="formatImg(img)" class="img" v-for="img in cutImgurl(item.qinPic,1)"/>
+          </div>
+          <div class="content-center-box">
+            <h6>{{item.qinName}}</h6>
+            <span>品牌:{{item.brand}}</span>
+          </div>
+          <!--价格-->
+          <div class="price-box">
+            <span class="text" v-show="item.status ==='0'">被锁定</span>
+            <span class="text" v-show="item.status ==='1'">审核通过</span>
+            <span class="text" v-show="item.status ==='2'">审核中</span>
+            <span class="text" v-show="item.status ==='3'">审核未通过</span>
+            <span>{{item.buyingPrice}}元</span>
+          </div>
+        </div>
+        <!--底部-->
+        <div class="order-middle-box padding-box aui-padded-t-10 aui-padded-b-10" :class="{ bet : item.status ==='3' }">
+          <span v-show="item.status ==='3' && item.refuseReason != '' ">理由:{{item.refuseReason}}</span>
+          <div v-show="item.status ==='3'" @click="openBiangeng(item, item.qinId, item.qinSn, item.qinName, item.price, item.clubId)">重新申请</div>
+          <span v-show="item.isLease==='1'&& item.status ==='1' ">已出租</span>
+          <span v-show="item.isLease==='2'&&item.status ==='1' ">已出售</span>
+          <div @click="openWin('Sell','member/myAuth/Sell/Sell_fm','申请出售',item.qinAuthId)"
+               v-if="item.isLease ==='0'">申请出售
+          </div>
+          <div @click="openWin('lease','member/myAuth/lease/lease_fm','申请出租',item.qinAuthId)"
+               v-if="item.isLease ==='0' ">申请出租
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <!--v-if="rote"-->
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      myIndex: 0,
+      menuList: [
+        {
+          title: '全部',
+          mIndex: 0
+        },
+        {
+          title: '审核通过',
+          mIndex: 1
+        },
+        {
+          title: '审核未通过',
+          mIndex: -1
+        }
+      ],
+      proList: [],
+      formatImg: formatImg,
+      cutImgurl: cutImgurl,
+      page: 1,
+      perPage: 5,
+      rote: false,
+      load: false,
+      overlate: false
+    },
+    created: function () {
+      apiready = function () {
+        app.chagneC(true, app.myIndex);
+        // 监听订单状态变化
+        api.addEventListener({
+          name: 'AuthOrderChange'
+        }, function (ret, err) {
+          app.chagneC(true, app.myIndex);
+        });
+        // 上滑加载更多
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 10 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+        }, function (ret, err) {
+          app.load = true;//
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.chagneC(false, app.myIndex, true);
+        });
+      };
+    },
+    methods: {
+      // 出租,出售
+      openWin: function (name, url, title, qinAuthId) {
+        openView(name, url, title, false, false, {
+          qinAuthId: qinAuthId
+        })
+      },
+      // 获取认证列表
+      chagneC: function (ref, index, fromPull) {
+        app.overlate = false;
+        app.myIndex = index;
+        if (!fromPull) {
+          app.page = 1;
+        }
+        var post = {
+          cmd: 'getMyQinAuthList',
+          token: getToken(),
+          isPass: index,
+          page: app.page,
+          perPage: app.perPage
+        };
+        sendAjax(this, post, function (res) {
+          if (ref) {
+            app.proList = res.data.proList;
+            app.rote = true;
+            app.load = false
+          } else {
+            app.proList = app.proList.concat(res.data.proList);
+            app.rote = true;
+            app.load = false
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+          loadEnd();
+        });
+      },
+      // 变更认证
+      openBiangeng: function (item, qinId, qinSn, qinName, price, clubId) {
+        var qinInfo = {
+          qinId: qinId,
+          qinSn: qinSn,
+          qinName: qinName,
+          price: price,
+          clubId: clubId
+        };
+        openView('bianGeng', 'qinAuth/bianGeng/bianGeng_fm', '变更认证', false, false, {
+          qinInfo: qinInfo
+        });
+      }
+    }
+  })
+</script>

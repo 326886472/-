@@ -1,0 +1,46 @@
+.complain {
+  display: flex;
+  flex-direction: column; }
+  .complain .type {
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600; }
+  .complain .mint-checklist {
+    border-bottom: 0.3rem solid #f0f0f0;
+    padding: 0 0.2rem; }
+    .complain .mint-checklist .mint-cell .mint-cell-wrapper {
+      background-image: none;
+      border-bottom: 0.1rem solid #f0f0f0;
+      width: 100%; }
+      .complain .mint-checklist .mint-cell .mint-cell-wrapper .mint-checklist-label {
+        margin: 0;
+        padding: 0; }
+        .complain .mint-checklist .mint-cell .mint-cell-wrapper .mint-checklist-label .mint-checkbox-input:checked + .mint-checkbox-core {
+          background-color: #FF8500;
+          border-color: #FF8500; }
+  .complain .complain-details {
+    padding: 0.5rem 1.2rem; }
+    .complain .complain-details .title {
+      font-size: 1rem;
+      font-weight: 600;
+      padding-bottom: 1rem; }
+    .complain .complain-details .mint-field.is-textarea {
+      background-color: #F2F2F2;
+      border-radius: 0.3rem; }
+    .complain .complain-details .mint-cell:last-child {
+      background-image: none; }
+      .complain .complain-details .mint-cell:last-child .mint-cell-wrapper {
+        background-image: none; }
+  .complain .sure {
+    display: flex;
+    justify-content: center;
+    padding: 20% 0 10%; }
+    .complain .sure .mint-button--large {
+      width: 70%; }
+    .complain .sure .mint-button--default {
+      background-color: #404040;
+      color: #fff;
+      font-size: 1rem; }
+
+.mint-button--default {
+  border-radius: 1rem; }

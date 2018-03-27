@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport"
+            content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+      <title></title>
+      <link rel="stylesheet" href="../../../assets/css/api.css"/>
+      <link rel="stylesheet" href="../../../assets/css/style.css">
+      <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    </head>
+<body>
+<div id='app'>
+  <!--头部-->
+  <header class="aui-bar aui-bar-nav">
+    <a class="aui-padded-l-5 aui-pull-left aui-btn" @click="closeWindow()">
+      <i class="iconfont icon-ziyuan2-copy" style="width: 20px;padding-left: 10px"></i>
+    </a>
+    <div class="aui-title aui-font-size-16">写留言</div>
+    <a class="aui-pull-right aui-btn" @click="fabiao()">
+      <span>发表</span>
+    </a>
+  </header>
+
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      isQinAuth: null,
+      isUserAuth: null
+    },
+    created: function () {
+
+    },
+    methods: {
+      fabiao: function () {
+        app.isUserAuth = api.pageParam.isUserAuth;
+        app.isQinAuth = api.pageParam.isQinAuth;
+        api.sendEvent({
+          name: 'jxtokenmessage'
+        });
+      },
+      closeWindow: function () {
+        api.closeWin();
+      }
+    }
+  });
+  apiready = function () {
+    $api.fixStatusBar($api.dom('header'));
+    api.openFrame({
+      name: 'msg_fm',
+      url: "./leaveMsg_fm.html",
+      rect: {
+        x: 0,
+        y: $api.offset($api.dom('header')).h,
+        w: 'auto',
+        h: 'auto'
+      },
+      bounce: false
+    })
+  }
+</script>
+
+
+<!--备注-->
+<!--本页返回按钮手机端不显示-->
+<!--评价数据要用v-for从后台返回评价-->
+<!--日期格式化-->
+
+

@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="./assets/css/api.css">
+  <link rel="stylesheet" type="text/css" href="./assets/css/style.css"/>
+  <link rel="stylesheet" href="./assets/css/swiper-3.4.2.min.css">
+  <style>
+    html, body {
+      height: 100%;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .swiper-container {
+      height: 100%;
+    }
+
+    .swiper-slide {
+      /*display: flex;*/
+      /*align-items: center;*/
+      /*justify-content: center;*/
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .btn-box {
+      width: 100%;
+      text-align: center;
+      font-size: 0.8rem;
+      position: absolute;
+      bottom: 10%;
+    }
+
+    .btn-box button {
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      padding: 0.5rem 1.2rem;
+    }
+
+    .btn-box button:active {
+      background: gainsboro;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <!-- Swiper -->
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" style="background-image: url('./assets/images/bg1.png')">
+      </div>
+      <div class="swiper-slide" style="background-image: url('./assets/images/bg2.png')">
+      </div>
+      <div class="swiper-slide" style="background-image: url('./assets/images/bg3.png')">
+      </div>
+      <div class="swiper-slide" style="background-image: url('./assets/images/bg4.png')">
+        <div class="btn-box">
+          <button @click="getIndex" class="aui-margin-r-15">进入首页</button>
+          <button @click="getLogin">登录注册</button>
+        </div>
+      </div>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+</div>
+</body>
+<script type="text/javascript" src="./assets/js/api.js"></script>
+<script type="text/javascript" src="./assets/js/swiper-3.4.2.min.js"></script>
+<script type="text/javascript" src="./assets/js/public.js"></script>
+<script type="text/javascript" src="./assets/js/vue.min.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    created: function () {
+      Vue.nextTick(function () {
+        var mySwiper = new Swiper('.swiper-container', {
+          pagination: '.swiper-pagination'
+        })
+      });
+
+      apiready = function () {
+        api.setWinAttr({
+          slidBackEnabled: false
+        });
+
+        api.addEventListener({
+          name: 'keyback'
+        }, function() {
+          return false;
+        });
+      };
+    },
+    methods: {
+      getIndex: function () {
+        $api.setStorage('launch', 1);
+        api.openWin({
+          name: 'root',
+          url: './html/index/index/index_win.html'
+        })
+      },
+      getLogin: function () {
+        $api.setStorage('launch', 1);
+        openView('login', 'common/login', '会员登录', false, false, {
+          fromLaunch: true
+        });
+      }
+    }
+  });
+
+</script>
+</html>

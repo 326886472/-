@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .top-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      display: block;
+      margin: 0 auto 0.5rem auto;
+    }
+
+    .top-box {
+      padding: 1rem 0;
+      text-align: center;
+      background: white;
+
+    }
+
+    .btn {
+      margin: 1rem auto;
+      width: 40%;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid #666;
+      border-radius: 0.5rem;
+    }
+
+    .btn:active {
+      background: gainsboro;
+    }
+
+    .list li {
+      padding: 0.5rem 1rem;
+      background: white;
+    }
+
+    /*琴馆*/
+    .club-order-top-box {
+      font-size: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .club-order-content-box {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .club-img-box {
+      flex-shrink: 0;
+      width: 25%;
+    }
+
+    .club-img-box img {
+      width: 4rem;
+      height: 4rem;
+      margin-right: 0.5rem;
+    }
+
+    .club-content-center-box {
+      flex-shrink: 0;
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+    }
+
+    .club-content-center-box h6 {
+      font-weight: 100;
+      margin-left: 0.5rem;
+      color: black;
+      font-size: 0.7rem;
+    }
+
+    .club-content-center-box span {
+      padding-left: 0.4rem;
+      font-size: 0.6rem;
+    }
+
+    /*评价*/
+    .class-order-middle-box-copy {
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .class-order-middle-box-copy div {
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #666;
+      margin-right: 1rem;
+      color: black;
+    }
+
+    .class-order-middle-box-copy div:active {
+      background: gainsboro;
+    }
+
+    /*课程订单*/
+
+    .class-icon {
+      width: 0.8rem;
+      height: 0.8rem;
+      display: block;
+    }
+
+    .class-flex-box {
+      display: flex;
+      align-items: center;
+    }
+
+    .class-label-box span {
+      border-radius: 0.2rem;
+      padding: 0.2rem;
+    }
+
+    .class-label-span-left {
+      color: #F9B1A9;
+      border: 1px solid #F9B1A9;
+    }
+
+    .class-label-span-right {
+      color: #B1E3D4;
+      border: 1px solid #B1E3D4;
+    }
+
+    .class-img-box {
+      width: 25%;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .class-img-box img {
+      width: 4rem;
+      height: 4.5rem;
+    }
+
+    .class-padding-box {
+      margin-top: 0.5rem;
+    }
+
+    .class-message-box {
+      width: 70%;
+      flex-shrink: 0;
+    }
+
+    .class-btn-box {
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid #ccc;
+    }
+
+    .class-btn-box div {
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #666;
+      margin-right: 1rem;
+      color: black;
+    }
+
+    .class-btn-box div:active {
+      background: gainsboro;
+    }
+
+    .class-my-color {
+      color: #FF3C00;
+    }
+
+    .class-fz-box {
+      text-align: center;
+      font-size: 0.6rem;
+    }
+
+    /*产品订单*/
+    .end {
+      justify-content: flex-end;
+    }
+
+    .shop-order-top-box {
+      font-size: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .shop-order-content-box {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+    }
+
+    .shop-img-box {
+      flex-shrink: 0;
+      width: 25%;
+    }
+
+    .shop-img-box img {
+      width: 4rem;
+      height: 4.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .shop-content-center-box {
+      flex-shrink: 0;
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+    }
+
+    .shop-flex-box-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .shop-flex-box-top h6 {
+      flex-shrink: 0;
+      width: 70%;
+      font-size: 0.7rem;
+    }
+
+    .shop-price-box-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /*评价*/
+    .shop-order-middle-box-copy {
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .shop-order-middle-box-copy div {
+      right: 10%;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #666;
+      margin-right: 1rem;
+      color: black;
+    }
+
+    .order-middle-box-copy div:active {
+      background: gainsboro;
+    }
+
+    .order-middle-box-copy span {
+      width: 50%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="content">
+    <div class="top-box">
+      <svg class="icon top-icon" aria-hidden="true">
+        <use xlink:href="#icon-duigou"></use>
+      </svg>
+      感谢您的评价,祝您购物愉快
+      <div class="btn" @click="openMycomment">查看我的评价</div>
+    </div>
+    <div class="aui-padded-t-5 aui-padded-b-5 aui-padded-l-15">您还有未评价订单</div>
+    <ul class="list">
+      <!--琴馆未评价订单-->
+      <li class="club-list-item aui-margin-t-5" v-for="item in ClubproList" @click="openClubInfo(item.id)">
+        <!--头-->
+        <div class="club-order-top-box aui-padded-t-10 aui-padded-b-5">
+          <div>订单编号:{{item.orderSn}}</div>
+          <div>{{item.createTime}}</div>
+        </div>
+        <!--中间-->
+        <div class="club-order-content-box">
+          <div class="club-img-box">
+            <img :src="formatImg(item.banner)" alt="" class="club-img">
+          </div>
+          <div class="club-content-center-box">
+            <h6>{{item.clubName}}</h6>
+            <span>预约人:{{item.username}}</span>
+            <span>预约电话:{{item.mobile}}</span>
+          </div>
+        </div>
+        <!--底部-->
+        <div class="class-order-middle-box-copy aui-padded-t-5">
+          <div @click="openClubEvaluate(item.id,item.clubName,item.banner,item.address)">去评价</div>
+        </div>
+      </li>
+      <!--课程未评价订单-->
+      <li class="aui-margin-t-5 class-content" v-for="ite in ClassproList"
+          @click="openClassInfo(ite.courseOrderId)">
+        <!--头-->
+        <div class="club-order-top-box aui-padded-t-10 aui-padded-b-5">
+          <div>订单编号:{{ite.orderSn}}</div>
+          <div>{{ite.createTime}}</div>
+        </div>
+        <!--图片-->
+        <div class="class-flex-box class-padding-box">
+          <div class="class-img-box">
+            <img :src="formatImg(ite.images)" alt="" class="">
+          </div>
+          <!--信息-->
+          <div class="class-message-box aui-padded-l-10">
+            <div style="color:black;font-size: 0.8rem;">{{ite.courseName}}</div>
+            <div class="class-flex-box aui-padded-t-5 aui-padded-b-5"
+                 style="justify-content: space-between">
+              <div class="class-fz-box class-label-box">
+                <!--定期-->
+                <span v-show="ite.courseType === '1' ">
+            <span class="class-label-span-left">定期</span>
+            <span v-show="ite.level === '1'  "
+                  class="class-label-span-right">入门级</span>
+            <span v-show="ite.level === '2'  "
+                  class="class-label-span-right">提高班</span>
+            <span v-show="ite.level === '3' "
+                  class="class-label-span-right">进修班</span>
+            </span>
+
+                <!--免费体验课-->
+                <span v-show="ite.courseType === '2' ">
+            <span class="class-label-span-left">免费体验课</span>
+            <span v-show="ite.level === '1' "
+                  class="class-label-span-right">入门级</span>
+            <span v-show="ite.level === '2'  "
+                  class="class-label-span-right">提高班</span>
+            </span>
+
+                <!--随到随学-->
+                <span v-show="ite.courseType === '3' ">
+            <span class="class-label-span-left">随到随学</span>
+            <span v-show="ite.level === '1' "
+                  class="class-label-span-right">入门级</span>
+            <span v-show="ite.level === '2' "
+                  class="class-label-span-right">提高班</span>
+            </span>
+
+              </div>
+              <div class="class-flex-box class-my-color">
+                <svg class="icon class-icon" aria-hidden="true" style="font-size: 0.8rem">
+                  <use xlink:href="#icon-qian-copy"></use>
+                </svg>
+                {{ite.price}}
+              </div>
+            </div>
+            <div class="class-flex-box aui-padded-b-5">
+              <div class="class-fz-box aui-col-xs-4">开课日期:</div>
+              <div class="class-fz-box"> {{ite.startDate}}至{{ite.endDate}}
+                {{ite.startInterval}}-{{ite.endInterval}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--底部-->
+        <div class="aui-padded-t-5 class-btn-box">
+          <div @click="openClassEvaluate(ite.courseOrderId)">去评价</div>
+        </div>
+      </li>
+      <!--产品未评价订单-->
+      <li v-for="i in ShopproList" class="aui-margin-t-5"
+          @click="openShopInfo(i.goodOrderId)" v-if="ShopproList.length >=1">
+        <div class="aui-margin-t-10">
+          <!--头-->
+          <div class="shop-order-top-box aui-padded-t-10 aui-padded-b-5">
+            <div>订单编号:{{i.orderSn}}</div>
+            <div>{{i.createTime}}</div>
+          </div>
+          <!--中间-->
+          <div class="shop-order-content-box">
+            <div class="shop-img-box">
+              <img :src="formatImg(i.images)" alt="" class="img">
+            </div>
+            <div class="shop-content-center-box aui-padded-l-5">
+              <div class="shop-flex-box-top">
+                <h6 class="aui-ellipsis-1">{{i.goodName}}</h6>
+              </div>
+              <div class="aui-padded-l-10" v-show="i.payType=== '1'">线上付 琴馆提</div>
+              <div class="aui-padded-l-10" v-show="i.payType=== '2'">线上付 正麟发</div>
+              <div class="aui-padded-l-10" v-show="i.payType=== '3'">免费预约</div>
+              <div class="shop-price-box-top">
+                            <span class="" style="color:red;">
+                                <i class="iconfont icon-qian-copy"></i>{{i.oldPrice}}
+                            </span>
+                <span class="">
+                                    X{{i.amount}}
+                                </span>
+              </div>
+            </div>
+          </div>
+          <!--底部-->
+          <div class="shop-order-middle-box-copy end aui-padded-t-5 aui-padded-b-5">
+            <div v-show="i.status === '3'" @click="openShopEvaluate(i.goodOrderId)">去评价</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      ClubproList: [],
+      ClassproList: [],
+      ShopproList: [],
+      perPage: 5,
+      page: 1,
+      formatImg: formatImg
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.uappGetClubOrder();
+        app.uappGetClassOrder();
+        app.uappGetShopOrder();
+
+        api.addEventListener({
+          name: 'viewappear'
+        }, function () {
+          api.closeWin({name: 'qinGuanEvaluate'});
+          api.closeWin({name: 'evaluate'});
+          api.closeWin({name: 'shopEvaluate'});
+        });
+      };
+    },
+    methods: {
+      // 查看我的评价
+      openMycomment: function () {
+        openWin('myComment', '../../myComment/myComment_win.html');
+      },
+      // 获取琴馆未评价订单
+      uappGetClubOrder: function () {
+        var post = {
+          cmd: 'uappGetMyOrder',
+          token: getToken(),
+          orderType: 1,
+          pickType: 4
+        };
+        sendAjax(this, post, function (res) {
+          app.ClubproList = res.data.proList;
+        });
+      },
+      // 获取课程未评价订单
+      uappGetClassOrder: function () {
+        var post = {
+          cmd: 'uappGetMyOrder',
+          token: getToken(),
+          orderType: 2,
+          pickType: 4
+        };
+        sendAjax(this, post, function (res) {
+          app.ClassproList = res.data.proList;
+        });
+      },
+      // 获取产品未评价订单
+      uappGetShopOrder: function () {
+        var post = {
+          cmd: 'uappGetMyOrder',
+          token: getToken(),
+          orderType: 3,
+          pickType: 4
+        };
+        sendAjax(this, post, function (res) {
+          app.ShopproList = res.data.proList;
+        });
+      },
+      // 订单详情页
+      openClubInfo: function (clubOrderId) {
+        openView('qinGuanOrderInfo', 'member/myOrder/qinGuanOrderInfo/qinGuanOrderInfo_fm', '订单详情', false, false, {
+          clubOrderId: clubOrderId
+        })
+      },
+      openClassInfo: function (courseOrderId) {
+        openView('classOrderInfo', 'member/myOrder/classOrderInfo/classOrderInfo_fm', '订单详情', false, false, {
+          courseOrderId: courseOrderId
+        })
+      },
+      openShopInfo: function (goodOrderId) {
+        openView('shopOrderInfo', 'member/myOrder/shopOrderInfo/shopOrderInfo_fm', '订单详情', false, false, {
+          goodOrderId: goodOrderId
+        })
+      },
+//      评价订单
+      //      琴馆评价
+      openClubEvaluate: function (clubOrderId, clubName, banner, address) {
+        var clubInfo = {
+          clubOrderId: clubOrderId,
+          clubName: clubName,
+          banner: banner,
+          address: address
+        };
+        api.openWin({
+          name: 'qinGuanEvaluate',
+          url: '../qinGuanEvaluate/qinGuanEvaluate_win.html',
+          pageParam: {
+            clubInfo: clubInfo
+          }
+        });
+      },
+      openClassEvaluate: function (courseOrderId) {
+        api.openWin({
+          name: 'evaluate',
+          url: '../evaluate/evaluate_win.html',
+          pageParam: {
+            courseOrderId: courseOrderId
+          }
+        });
+      },
+      openShopEvaluate: function (goodOrderId) {
+        api.openWin({
+          name: 'shopEvaluate',
+          url: '../shopEvaluate/shopEvaluate_win.html',
+          pageParam: {
+            goodOrderId: goodOrderId
+          }
+        });
+      }
+    }
+  })
+</script>

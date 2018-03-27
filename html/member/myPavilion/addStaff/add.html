@@ -1,0 +1,138 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/level.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/addStaff.css">
+</head>
+<body>
+<div id="app">
+    <div id="loadStart"></div>
+    <ul class="list">
+        <li class="item" @click="app.popupVisible = !app.popupVisible;app.ace = item" v-for="item in EmployeeList">
+            <img :src="formatImg(item.avatar)" alt="">
+            <span class="name">
+            {{item.nickname}}
+        </span>
+        </li>
+    </ul>
+    <mt-button class="addMt-button" style="font-size: 2rem" class="add" type="primary" @click="ToSearch">+</mt-button>
+    <mt-popup
+            v-model="popupVisible"
+            position="right"
+            class="detailsMessage"
+            style="width: 100%;height: 100%;flex-direction: column;justify-content: flex-start"
+    >
+        <div style="height: 100px;margin: 0.5rem 0">
+            <img slot="icon" :src="formatImg(ace.avatar)" width="100" height="100">
+        </div>
+        <div>用户姓名：{{ace.nickname}}</div>
+        <div>联系方式：{{ace.mobile}}</div>
+        <div v-show="ace.city">所在城市 ：{{ace.city}}</div>
+        <div>性别：{{ace.sex | resolverSex}}</div>
+        <mt-button type="danger" @click="removeStaff(ace.id)" style="margin-top: 1rem;">删除员工</mt-button>
+        <mt-button type="default" @click="popupVisible = false" style="margin-top: 1rem;">返回</mt-button>
+    </mt-popup>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+
+<script type="text/javascript">
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            EmployeeList: [],
+            clubId:'',
+            popupVisible:false,
+            ace:{},
+            token:getToken()
+        },
+        created: function () {
+            apiready = function () {
+                api.addEventListener({
+                    name: 'staffRefresh'
+                }, function (ret, err) {
+                    app.getEmployeeList();
+                });
+                app.clubId = api.pageParam.clubId;
+                app.getEmployeeList();
+                loadEnd()
+            }
+        },
+        filters:{
+            resolverSex:function (sex) {
+                switch (sex) {
+                    case '1':
+                        return '男';
+                    case '2':
+                        return '女';
+                }
+            }
+        },
+        methods: {
+            removeStaff: function (id) {
+                api.confirm({
+                    title: '确定删除?',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        var post = {
+                            cmd: 'delUserClub',
+                            staffId: id,
+                            token: app.token,
+                            clubId: app.clubId
+                        };
+                        sendAjax(app, post, function (res) {
+                            if(res.code === 1) {
+                                toastMsg('删除成功！');
+                                app.getEmployeeList();
+                                setTimeout(function () {
+                                    app.popupVisible = false;
+                                },1000);
+                            }
+                        })
+                    }
+                });
+            },
+            ToSearch: function () {
+                openView('searchStaff', 'member/myPavilion/addStaff/search', '添加员工', false, false, {
+                    clubId:app.clubId
+                })
+            },
+            getEmployeeList: function () {
+                MINT.Indicator.open();
+                var post = {
+                    cmd: 'getUserClubList',
+                    token: getToken(),
+                    clubId: app.clubId
+                };
+                sendAjax(this, post, function (res) {
+                    if(res.code === 1) {
+                        app.EmployeeList = res.data;
+                        MINT.Indicator.close();
+                    }
+                })
+            }
+        }
+    });
+</script>

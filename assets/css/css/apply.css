@@ -1,0 +1,44 @@
+html, body {
+  background: #f0f0f0; }
+
+.apply .content {
+  background: white;
+  margin-top: 0.5rem; }
+  .apply .content .title {
+    line-height: 2;
+    margin-left: 10px;
+    font-weight: bold; }
+  .apply .content .back .qing {
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: inherit; }
+    .apply .content .back .qing .tian {
+      line-height: 2;
+      color: #a6a6a6; }
+    .apply .content .back .qing textarea {
+      resize: none;
+      display: block;
+      width: 90%;
+      margin-left: 10px;
+      height: 6rem;
+      margin-top: 10px; }
+    .apply .content .back .qing .max {
+      text-align: right;
+      color: #a6a6a6; }
+
+.apply .commit-text {
+  line-height: 3;
+  color: #8b8b8b; }
+
+.apply .btn-box {
+  text-align: center;
+  padding-top: 1rem; }
+  .apply .btn-box .mint-button {
+    width: 50%; }
+
+.apply .ad {
+  display: flex;
+  height: 20rem;
+  background: white;
+  align-items: center;
+  justify-content: center; }

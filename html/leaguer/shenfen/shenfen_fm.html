@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style type="text/css">
+    .cantent {
+      font-size: 0.7rem;
+      padding: 0.7rem;
+    }
+
+    .header > div {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      -webkit-box-align: center;
+      height: 2rem;
+      border-bottom: 0.01rem solid #EAEAEA;
+    }
+
+    .header > div:nth-child(5) {
+      border: 0;
+    }
+
+    span {
+      color: #F8264C;
+    }
+
+    .head-top {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .head-top > div:nth-child(2) {
+      -webkit-box-flex: 1;
+    }
+
+    .head-top > div > input {
+      width: 100%;
+      outline: none;
+      border: 0;
+      height: 1.5rem;
+    }
+
+    .content > p {
+      display: block;
+    }
+
+    .content {
+      width: 100%;
+    }
+
+    .content > div {
+      display: -webkit-box;
+    }
+
+    .content > div > div {
+      -webkit-box-flex: 1;
+    }
+
+    .content > p {
+      height: 5rem;
+      line-height: 5rem;
+    }
+
+    .content > div > div > p {
+      text-align: center;
+    }
+
+    .content > div > div > div {
+      width: 6rem;
+      height: 6rem;
+      border: 0.01rem solid #8D8D8D;
+      margin: auto auto;
+    }
+
+    .frool-x {
+      display: -webkit-box;
+      color: #FF895F
+
+    }
+
+    .frool-x div {
+      font-size: 12px;
+    }
+
+    .frool-x > div:nth-child(1) {
+      width: 25%;
+    }
+
+    .frool > div:last-child {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      text-align: center;
+    }
+
+    .frool {
+      margin-top: 3.5rem;
+    }
+
+    .frool > div > input {
+      width: 14rem;
+      height: 2rem;
+      border: 0.01rem solid #CDCDCD;
+      outline: none;
+      background-color: transparent;
+      border-radius: 2.5rem;
+    }
+
+    .content_add div {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .content_add .img {
+      background-size: cover;
+      width: 5rem;
+      height: 5rem;
+    }
+
+    .icon {
+      position: absolute;
+      left: 40%;
+      top: 28%;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .btn-box:active {
+      background: gainsboro;
+    }
+
+    /*弹出框*/
+    .mint-popup-bottom {
+      width: 100%;
+    }
+
+    .moreoul {
+      width: 100%;
+    }
+
+    .moreoul li {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="cantent">
+    <div class="header">
+      <div>
+        <span>*</span>
+        <div class="head-top">
+          <div>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</div>
+          <div>
+            <input type="text" v-model="realname"/>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span>*</span>
+        <div class="head-top">
+          <div>身份证号码：</div>
+          <div><input type="number" v-model="realnum" maxlength="18"/></div>
+        </div>
+      </div>
+      <div>
+        <div class="head-top">
+          <div>&nbsp;&nbsp;单&nbsp;位&nbsp;名&nbsp;称：</div>
+          <div><input type="text" v-model="workname"/></div>
+        </div>
+      </div>
+      <div>
+        <div class="head-top">
+          <div>&nbsp;&nbsp;从&nbsp;事&nbsp;行&nbsp;业：</div>
+          <div><input type="text" v-model="workkind"/></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="content">
+        <p><span>*</span>请上传身份证正、反照片：</p>
+        <div class="content_add">
+          <div @click="openImgPic('1')">
+            <svg class="icon" aria-hidden="true" v-show="   form.imgZ=== '' ">
+              <use xlink:href="#icon-jiahao"></use>
+            </svg>
+            <div :style="{'background-image': 'url(' + form.imgZ + ')'}" class="img"></div>
+            <p>正面</p>
+          </div>
+          <div @click="openImgPic('2')">
+            <svg class="icon" aria-hidden="true" v-show="   form.imgF=== '' ">
+              <use xlink:href="#icon-jiahao"></use>
+            </svg>
+            <div :style="{'background-image': 'url(' + form.imgF + ')'}" class="img"></div>
+            <p>反面</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="frool">
+      <div class="frool-x">
+        <div></div>
+        <div>溫馨提示：</div>
+        <div></div>
+      </div>
+      <div class="frool-x">
+        <div></div>
+        <div>所有照片必須真实清晰才能通审核。</div>
+        <div></div>
+      </div>
+      <div class="frool-x">
+        <div></div>
+        <div>审核通过后资料不可修改哦</div>
+        <div></div>
+      </div>
+      <div>
+        <input type="button" value="提交认证" @click="openRenZ()" class="btn-box"/>
+      </div>
+    </div>
+
+  </div>
+  <!--弹出选照片-->
+  <mt-popup
+          v-model="popupVisible"
+          position="bottom">
+    <ul class="moreoul">
+      <li @click="takephoto">拍照</li>
+      <li @click="myphotos">从相册中选择</li>
+      <li @click="cancel" style="border-top: 2px solid #f0f0f0">取消</li>
+    </ul>
+  </mt-popup>
+</div>
+</body>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      popupVisible: false,
+      realname: '',
+      realnum: '',
+      workname: '',
+      workkind: '',
+      IDRagular: /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+      iszf:0,
+      form: {
+        imgZ: '',
+        imgF: ''
+      }
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+      myphotos: function () {
+        api.getPicture({
+          sourceType: 'album',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.popupVisible = false;
+          if (ret) {
+            if (app.isZF === '1') {
+              app.form.imgZ = ret.data;
+            } else {
+              app.form.imgF = ret.data;
+            }
+            toastMsg('已修改成功')
+          } else {
+            toastMsg('已取消修改')
+          }
+        });
+      },
+      takephoto: function () {
+        api.getPicture({
+          sourceType: 'camera',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.popupVisible = false;
+          if (ret) {
+            if (app.isZF === '1') {
+              app.form.imgZ = ret.data;
+            } else {
+              app.form.imgF = ret.data;
+            }
+            toastMsg('已修改成功')
+          } else {
+            toastMsg('已取消修改')
+          }
+        });
+      },
+      cancel: function () {
+        app.popupVisible = false;
+      },
+//      身份证
+      openImgPic: function (i) {
+        app.popupVisible=true;
+        //判断正反：1正；2反
+        app.isZF=i;
+      },
+      openRenZ: function () {
+        if (app.realname == '' || app.realnum == '') {
+          api.toast({
+            msg: '请输入姓名和身份证号！'
+          });
+          return false;
+        } else if (!app.IDRagular.test(app.realnum)) {
+          api.toast({
+            msg: '请输入正确的身份证号！'
+          });
+          return false;
+        } else if(app.form.imgF=='' || app.form.imgZ==''){
+          api.toast({
+            msg: '请上传身份证照片！'
+          });
+          return false;
+        }else {
+          api.ajax({
+            url: Ajaxurl(),
+            method: 'post',
+            data: {
+              values: {
+                "cmd": "setUserAuth",
+                "token": getToken(),
+                "username": app.realname,
+                "idcard": app.realnum,
+                "orgName": app.workname,
+                "industry": app.workkind
+              },
+              files: {
+                "idcardPicA": app.form.imgZ,
+                "idcardPicB": app.form.imgF
+              }
+            }
+          }, function (ret, err) {
+            if (ret) {
+              api.sendEvent({
+                name: 'authChange'
+              });
+              openView('shengHe', 'leaguer/shengHe/shengHe_fm', '身份认证', false, false);
+            }
+            if (err) {
+              openView('shengHe', 'leaguer/shengHe/shengHe_fm', '身份认证', false, false, {
+                countcode: 0
+              });
+            }
+          });
+          return false;
+        }
+      }
+
+
+    }
+  })
+</script>
+
+</html>

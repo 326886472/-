@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/class_detailstwo.css">
+
+</head>
+<body>
+<div id="app">
+    <div id="loadStart"></div>
+    <section>
+        <ul>
+            <li>
+                <span>课时：</span>
+                <input type="number" v-model="classHour">
+            </li>
+            <!--<li>-->
+                <!--<span>课节：</span>-->
+                <!--<input type="number" v-model="Lesson">-->
+            <!--</li>-->
+            <li>
+                <span>人数：</span>
+                <input type="tel" v-model="personCount">
+            </li>
+            <li>
+                <span>开课日期：</span>
+                <span class="dateTimeBlock" @click="openPicker(1)">{{formatDate(startDate, 'yyyy-mm-dd') || ''}}</span>
+                <!--<span class="dateTimeBlock" @click="{methods: openPicker, nowChoose: 1}">{{startDate}}</span>-->
+                <span style="margin: 0 0.4rem">-</span>
+                <span class="dateTimeBlock" @click="openPicker(2)">{{formatDate(endDate, 'yyyy-mm-dd') || ''}}</span>
+                <!--<span class="dateTimeBlock" @click="{methods: openPicker, nowChoose: 2}">{{endDate}}</span>-->
+            </li>
+            <li>
+                <span>时间段：</span>
+                <span class="dateTimeBlock" @click="openPicker(3)">{{startInterval}}</span>
+                <span style="margin: 0 0.4rem">-</span>
+                <span class="dateTimeBlock" @click="openPicker(4)">{{endInterval}}</span>
+            </li>
+            <li>
+                <span>提前预约 : 需提前<input type="number" v-model="reserveDay"
+                                     style="width: 10%; padding: 0 10px; text-decoration: underline;">天预约</span>
+            </li>
+        </ul>
+        <div class="boxbottom">
+            <mt-button class="bottombtn" @click="surebutton()">确定</mt-button>
+        </div>
+        <mt-datetime-picker
+                v-model="tempDate"
+                type="date"
+                year-format="{value} 年"
+                month-format="{value} 月"
+                date-format="{value} 日"
+                :startDate="new Date('1970-01-01')"
+                :endDate="new Date('2100-12-31')"
+                ref="tempPickerDate"
+                @confirm="handleConfirm">
+        </mt-datetime-picker>
+        <mt-datetime-picker
+                v-model="tempTime"
+                type="time"
+                hourFormat="{value} 时"
+                minuteFormat="{value} 分"
+                ref="tempPickerTime"
+                @confirm="handleConfirm">
+        </mt-datetime-picker>
+    </section>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+
+<script>
+    new FastClick(document.body);
+</script>
+
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            classHour: '',
+            Lesson: '',
+            personCount: '',
+            startInterval: '',
+            endInterval: '',
+            startDate: '',
+            endDate: '',
+            reserveDay: 0,
+            tempDate: '',
+            tempTime: '',
+            nowChoose: 1,  // 1: startDate, 2: endDate, 3: startInterval, 4: endInterval
+            classlist: []
+        },
+        created: function () {
+            apiready = function () {
+                app.classHour = api.pageParam.classHour;
+                app.Lesson = api.pageParam.Lesson;
+                app.personCount = api.pageParam.personCount;
+                app.startInterval = api.pageParam.startInterval;
+                app.endInterval = api.pageParam.endInterval;
+                app.startDate =  app._toDate(api.pageParam.startDate);
+                app.endDate = app._toDate(api.pageParam.endDate);
+                app.reserveDay = api.pageParam.reserveDay;
+                loadEnd();
+            };
+        },
+        methods: {
+            surebutton() {
+                api.sendEvent({
+                    name: 'courseDetailUp',
+                    extra: {
+                        classHour: app.classHour,
+                        Lesson: app.Lesson,
+                        personCount: app.personCount,
+                        startInterval: app.startInterval,
+                        endInterval: app.endInterval,
+                        startDate: formatDate(app.startDate, 'yyyy-mm-dd'),
+                        endDate: formatDate(app.endDate, 'yyyy-mm-dd'),
+                        reserveDay: app.reserveDay
+                    }
+                });
+                api.closeWin();
+            },
+            _toDate(timeString) {
+                if (new Date(timeString) == 'Invalid Date') {
+                    return '';
+                } else {
+                    return new Date(timeString);
+                }
+            },
+            openPicker(nowChoose) {
+                app.nowChoose = nowChoose;
+                switch (app.nowChoose) {
+                    case 1:
+                        app.tempDate = app.startDate;
+                        app.$refs.tempPickerDate.open();
+                        break;
+                    case 2:
+                        app.tempDate = app.endDate;
+                        app.$refs.tempPickerDate.open();
+                        break;
+                    case 3:
+                        app.tempTime = app.startInterval;
+                        app.$refs.tempPickerTime.open();
+                        break;
+                    case 4:
+                        app.tempTime = app.endInterval;
+                        app.$refs.tempPickerTime.open();
+                        break;
+                }
+            },
+            handleConfirm() {
+                switch (app.nowChoose) {
+                    case 1:
+                        if (app.endDate && app.tempDate > app.endDate) {
+                            toastMsg('开始时间不能晚于结束时间');
+                        } else {
+                            app.startDate = app.tempDate;
+                        }
+                        break;
+                    case 2:
+                        if (app.startDate && app.tempDate < app.startDate) {
+                            toastMsg('结束时间不能早于开始时间');
+                        } else {
+                            app.endDate = app.tempDate;
+                        }
+                        break;
+                    case 3:
+                        if (new Date('2000-01-01T' + app.tempTime) > new Date('2000-01-01T' + app.endInterval)) {
+                            toastMsg('开始时间段不能晚于结束时间段');
+                        } else {
+                            app.startInterval = app.tempTime;
+                        }
+                        break;
+                    case 4:
+                        if (new Date('2000-01-01T' + app.tempTime) < new Date('2000-01-01T' + app.startInterval)) {
+                            toastMsg('结束时间段不能早于开始时间段');
+                        } else {
+                            app.endInterval = app.tempTime;
+                        }
+                        break;
+                }
+            }
+        }
+    })
+</script>
+</html>

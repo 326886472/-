@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+      width: 100%;
+      height: 100%;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    .headerdetails {
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      background: #ededed;
+    }
+
+    .detailsspan {
+      margin-left: 10px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .detailsmessage {
+      width: 100%;
+      height: 3rem;
+      border-bottom: 1px solid gainsboro;
+      background: white;
+      line-height: 3rem;
+      display: flex;
+      font-weight: bold;
+    }
+
+    .leftbox {
+      flex: 1;
+    }
+
+    .rightbox {
+      width: auto;
+      text-align: center;
+      font-size: 13px;
+      padding-right: 8px;
+      box-sizing: border-box;
+    }
+
+    .leftbox {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 13px;
+    }
+
+    .rightcount {
+      width: 40%;
+      text-align: right;
+      padding-right: 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    .rightcount span {
+      border: 1px solid gainsboro;
+      line-height: 1rem;
+      padding: 3px 12px 3px 12px;
+    }
+
+    .rightmethods {
+      width: 100%;
+      text-align: right;
+    }
+
+    .paymethods {
+      margin-right: 10px;
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 2rem;
+    }
+
+    .paymessage {
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+    }
+
+    .bottomoinput {
+      height: 3rem;
+      line-height: 3rem;
+      border-bottom: 1px solid gainsboro;
+      background: white;
+      font-size: 14px;
+    }
+
+    .typetextarea {
+      margin-top: 1rem;
+      flex: 1;
+      padding-right: 10px;
+      height: auto;
+      display: block;
+    }
+
+    .bottomone {
+      width: 100%;
+      height: 44px;
+      background: #ededed;
+      display: flex;
+    }
+
+    .bottomsure {
+      width: 100%;
+      height: 44px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      display: flex;
+    }
+
+    .bottomright {
+      line-height: 44px;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+    }
+
+    .bottommiddle {
+      font-size: 14px;
+      line-height: 44px;
+      background: white;
+    }
+
+    .bottomleft {
+      line-height: 44px;
+      font-size: 12px;
+      background: white;
+      text-align: center;
+    }
+
+    .objectprice {
+      font-weight: bold;
+      color: #ff8500;
+      font-size: 14px;
+    }
+
+    .mtpopupbox {
+      width: 100%;
+      height: auto;
+    }
+
+    .abletap {
+      color: black;
+    }
+
+    .popupli {
+      line-height: 3rem;
+      text-align: center;
+      border-bottom: 1px solid gainsboro;
+      font-size: 15px;
+    }
+
+    .popupul li:active {
+      background: gainsboro;
+    }
+
+    .popupul {
+      color: #a8a8a8;
+    }
+
+    .lablenum {
+      padding: 0 10px 0 10px;
+    }
+
+    .obtnspan:active {
+      background: #FF8500;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <p class="headerdetails">
+    <span class="detailsspan">课程信息</span>
+  </p>
+  <div class="detailsmessage">
+    <div class="leftbox">
+      <span style="margin-left: 10px">{{getorderlist.courseName}}</span></div>
+    <div class="rightbox">￥{{getorderlist.perPrice}}元</div>
+  </div>
+
+
+  <div class="detailsmessage">
+    <div class="leftbox">
+      <span style="margin-left: 10px">数量</span></div>
+    <div class="rightcount">
+      <span class="obtnspan" style="background: #f2f2f2;color: #aeaeae" @click="downbtn()">-</span>
+      <lable class="lablenum">{{detailsnum}}</lable>
+      <span class="obtnspan" style="background: #f2f2f2;color: #535353" @click="addbtn()">+</span>
+    </div>
+  </div>
+
+  <div class="detailsmessage">
+    <div class="leftbox">
+      <span style="margin-left: 10px">小计</span></div>
+    <div class="rightcount">￥{{getorderlist.perPrice}}元</div>
+  </div>
+
+  <div class="detailsmessage">
+    <div class="leftbox">
+      <span style="margin-left: 10px">订单总价</span></div>
+    <div class="rightcount">￥{{getorderlist.totalPrice}}元</div>
+  </div>
+
+  <div class="detailsmessage" @click="paymethods()">
+    <div class="leftbox">
+      <span style="margin-left: 10px">支付方式</span></div>
+    <div class="rightcount" style="font-weight: 100">
+      {{valueindex |statusText}}
+      <i class="iconfont icon-ziyuan2" style="color:#9e9e9e"></i>
+    </div>
+  </div>
+
+
+  <mt-popup class="mtpopupbox"
+            v-model="popupVisible"
+            position="bottom">
+    <ul style="width:100%" class="popupul">
+      <li v-for="(item,index) in bottomlist" :class="{abletap:valueindex==index}" class="popupli"
+          @click="tapfang(index)">{{item.name}}
+      </li>
+    </ul>
+  </mt-popup>
+
+
+  <div class="paymessage" v-if="valueindex==1">
+    <div class="rightmethods" style="color:#737373">
+      <span class="paymethods">付定金预约收取总价格的10%</span>
+    </div>
+  </div>
+
+  <p class="headerdetails">
+    <span class="detailsspan">填写个人信息</span>
+  </p>
+
+
+  <div class="bottomoinput">
+    <p>
+      <span style="margin-left: 10px; color: red;">*</span>
+      <span style="margin-right: 10px;width: 20%">姓名：</span>
+      <input type="text" placeholder="请输入姓名" v-model="username">
+    </p>
+  </div>
+
+  <div class="bottomoinput">
+    <p>
+      <span style="margin-left: 10px; color: red;">*</span>
+      <span style="margin-right: 10px;width: 20%;">手机号：</span>
+      <input type="tel" placeholder="请输入手机号" v-model="tel">
+    </p>
+  </div>
+
+  <div class="bottomoinput" @click="nowdateFocus()">
+    <p style="display: flex">
+      <span style="margin-left: 10px; color: red; margin-right: 3px;">*</span>
+      <span style="margin-right: 10px">到店时间：</span>
+      <span style="margin-right: 10px;text-align: right;flex: 1">
+                <input type="date" v-model="nowdate" ref="nowdate"/>
+                <i style="width: 20px" class="iconfont icon-ziyuan2"></i>
+            </span>
+    </p>
+  </div>
+
+  <div style="width: 100%;height: auto;background: white">
+    <div style="display: flex;font-size: 14px;height: auto">
+            <span style="line-height: 3rem">
+            <span style="margin-right: 10px; margin-left: 12px;">给卖家留言：</span>
+            </span>
+      <textarea class="typetextarea" v-model="tokenmessage"></textarea>
+    </div>
+  </div>
+
+  <div class="bottomone"></div>
+  <div class="bottomone"></div>
+  <div class="bottomsure">
+    <div class="bottomleft" style="width: 30%" v-if="valueindex==1||valueindex==2">总价:￥{{getorderlist.totalPrice}}</div>
+    <div class="bottommiddle" style="width: 40%" v-if="valueindex==1">付定金预约:<span style="color: #ff3c00">￥{{getorderlist.firstMoney}}</span>
+    </div>
+
+    <div class="bottommiddle" style="flex: 1;text-align: right;padding-right: 10px;box-sizing: border-box"
+         v-if="valueindex==0" style="width: 40%">合计：<span class="objectprice">￥{{getorderlist.totalPrice}}</span></div>
+
+    <div class="bottommiddle" style="width: 40%" v-if="valueindex==2">免费预约：<span class="objectprice">￥{{getorderlist.realPrice}}</span>
+    </div>
+
+    <div class="bottomright" style="width: 30%;background: #ff8500" @click="courseOrderSubmit()">提交订单</div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      valueindex: 0,
+      detailsnum: 0,
+      detailssumprice: 0,
+      detailsminprice: 0,
+      detailsshopprice: 366,
+      willprice: 0,
+      popupVisible: false,
+      bottomlist: [
+        {
+          name: '全额购买'
+        },
+        {
+          name: '付定金预约'
+        },
+        {
+          name: '免费预约'
+        }
+      ],
+      courseId: '',
+//          获取提交页面信息
+      getorderlist: '',
+//          for表单信息
+      tokenmessage: '',
+      tel: '',
+      username: '',
+      nowdate: '',
+//          mint
+      Indicator: '',
+//          课程类型
+      coursetype: ''
+    },
+    filters: {
+      statusText: function (status) {
+        switch (status) {
+          case 0:
+            return '全额购买';
+          case 1:
+            return '付定金预约';
+          case 2:
+            return '免费预约';
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.valueindex = api.pageParam.buymethods;
+        app.detailsnum = api.pageParam.buynumber;
+        app.courseId = api.pageParam.courseId;
+        app.coursetype = api.pageParam.coursetype;
+        app.getBuyCourse()
+      };
+    },
+    methods: {
+//获取订单信息
+      getBuyCourse: function () {
+        var post = {
+          cmd: 'getBuyCourse',
+          token: getToken(),
+          cityCode: getcitycode(),
+          courseId: app.courseId,
+          payType: app.valueindex + 1,
+          amount: app.detailsnum
+        };
+        sendAjax(this, post, function (res) {
+          app.getorderlist = res.data;
+          MINT.Indicator.close();
+        });
+      },
+
+      paymethods: function () {
+        app.popupVisible = true
+      },
+      tapfang: function (index) {
+        app.valueindex = index;
+        app.popupVisible = false
+      },
+//          增加价钱
+      addbtn: function () {
+        MINT.Indicator.open('请稍等...');
+        if (app.coursetype == 2 && app.detailsnum >= 1) {
+          app.detailsnum = 1;
+        } else {
+          app.detailsnum++;
+          app.getBuyCourse();
+        }
+      },
+//          减少价钱
+      downbtn: function () {
+        MINT.Indicator.open('请稍等...');
+        app.detailsnum--;
+        if (app.detailsnum <= 0) {
+          app.detailsnum = 0;
+          app.detailssumprice = 0;
+          app.willprice = 0
+        }
+        app.getBuyCourse();
+
+      },
+      checkPost: function () {
+        if (!app.username.trim()) {
+          toastMsg('请填写姓名');
+        } else if (!app.tel) {
+          toastMsg('请填写手机号');
+        } else if (!mobileReg.test(app.tel)) {
+          toastMsg('请填写正确的手机号!');
+        } else if (!app.nowdate) {
+          toastMsg('请填写到店时间');
+        } else {
+          return true;
+        }
+      },
+      courseOrderSubmit: function () {
+        if (app.checkPost()) {
+          var post = {
+            cmd: 'courseOrderSubmit',
+            token: getToken(),
+            cityCode: getcitycode(),
+            courseId: app.courseId,
+            payType: app.valueindex + 1,
+            amount: app.detailsnum,
+            StudentName: app.username,
+            mobile: app.tel,
+            gender: 0,
+            timeToShop: app.nowdate,
+            message: app.tokenmessage
+          };
+          sendAjax(this, post, function (res) {
+            api.sendEvent({
+              name: 'OrderSubmit'
+            });
+
+            if (app.valueindex + 1 == 3 || app.getorderlist.realPrice == '0.00') {
+              app.payCourseSuccessByZero(res.data, function () {
+                openView('classOrderInfo', 'member/myOrder/classOrderInfo/classOrderInfo_fm', '订单详情', false, false, {
+                  courseOrderId: res.data
+                })
+              });
+            } else {
+              openView('classOrderInfo', 'member/myOrder/classOrderInfo/classOrderInfo_fm', '订单详情', false, false, {
+                courseOrderId: res.data
+              })
+            }
+          });
+        }
+      },
+      payCourseSuccessByZero: function (orderId, callback) {
+        var post = {
+          cmd: 'payCourseSuccessByZero',
+          token: getToken(),
+          orderId: orderId
+        };
+
+        sendAjax(this, post, function (res) {
+          callback();
+        });
+      },
+      nowdateFocus: function () {
+        this.$refs.nowdate.focus();
+      }
+    }
+  })
+</script>
+
+
+
+

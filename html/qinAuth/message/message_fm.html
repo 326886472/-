@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <style type="text/css">
+    .cantert {
+      font-size: 0.7rem;
+    }
+
+    .title {
+      text-indent: 5%;
+      background-color: #F0F0F0;
+      padding: 0.5rem 0;
+    }
+
+    span.xing {
+      color: #F57868;
+    }
+
+    .tatou, .tet, .txt {
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+
+    .tatou, .tet > div, .txt > div {
+      height: 2rem;
+      display: -webkit-box;
+      line-height: 2rem;
+
+    }
+
+    .txt > div:nth-child(1) {
+      border-bottom: 0.01rem solid #D4D4D4;
+    }
+
+    .tet > div:nth-child(1), .tet > div:nth-child(2), .tet > div:nth-child(3), .tet > div:nth-child(4) {
+      border-bottom: 0.01rem solid #D4D4D4;
+    }
+
+    input[type=text] {
+      width: 100%;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      border: 0;
+      /*color: #A3A3A3;*/
+      outline: none;
+    }
+
+    .tatou {
+      border-bottom: 1px solid #D4D4D4;
+    }
+
+    .tatou > div {
+      margin-left: 5%;
+    }
+
+    .btn {
+      width: 50%;
+      margin-top: 10%;
+      margin-bottom: 5%;
+      border: 0.01rem solid;
+      padding: 0.5rem 0;
+      border-radius: 1.5rem;
+    }
+
+    .btn:active {
+      background: gainsboro;
+    }
+
+    /*checkbox样式*/
+    .my-checkbox {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 0.2rem;
+      background-color: #ffffff;
+      border: solid 1px #dddddd;
+      font-size: 0.3rem;
+      margin-right: 0.3rem;
+      padding: 0;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      cursor: default;
+      -webkit-appearance: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-transition: background-color ease 0.1s;
+      transition: background-color ease 0.1s;
+    }
+
+    .my-checkbox:checked {
+      border: solid 1px #F8A79C;
+      text-align: center;
+      background-clip: padding-box;
+    }
+
+    .my-checkbox:checked:before, .my-checkbox:checked:after {
+      content: '';
+      width: 0.5rem;
+      height: 0.3rem;
+      position: absolute;
+      top: 50%;
+      left: 48%;
+      margin-left: -0.25rem;
+      margin-top: -0.25rem;
+      background: transparent;
+      border: 1px solid #F8A79C;
+      border-top: none;
+      border-right: none;
+      z-index: 2;
+      -webkit-border-radius: 0;
+      border-radius: 0;
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+    }
+
+    .bottom-box {
+      margin: 0 5%;
+    }
+
+    .flex-box {
+      padding: 0.5rem 0;
+      display: flex;
+      position: relative;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .center {
+      align-items: center;
+    }
+
+    .textarea-box {
+      width: 75%;
+      min-height: 4rem;
+      padding: 0.2rem 0 0.2rem 0;
+    }
+
+    .text-box {
+      position: absolute;
+      right: 5%;
+      font-size: 0.6rem;
+    }
+
+    .icon {
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+
+    .icon-box {
+      border-bottom: 1px solid #ccc;
+      padding: 0.5rem 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /*选择地址*/
+    .big-box {
+      font-size: 0.7rem;
+      color: #666;
+      padding: 3%;
+      width: 94%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .picker-box-city {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .picker-btn-box {
+      width: 70%;
+      margin: 0 auto;
+      display: flex;
+      margin-bottom: 1rem;
+      justify-content: space-around;
+      border: 1px solid #666;
+      border-radius: 20px;
+      background-image: url("../assets/images/shuxian.png");
+      background-repeat: no-repeat;
+      background-size: 1% 100%;
+      background-position: center center;
+    }
+
+    .picker-btn-box div {
+      text-align: center;
+      flex: 1;
+      padding: 0.4rem 0;
+    }
+
+    .picker-btn-box div:first-child {
+      border-top-left-radius: 0.8rem;
+      border-bottom-left-radius: 0.8rem;
+    }
+
+    .picker-btn-box div:last-child {
+      border-top-right-radius: 0.8rem;
+      border-bottom-right-radius: 0.8rem;
+    }
+
+    .picker-btn-box div:active {
+      background: #bbb;
+    }
+
+    .placeholder {
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="cantert">
+    <div class="title">认证基本信息</div>
+    <div class="txt">
+      <div><span class="xing">*</span>
+        <p style="width: 100px">产品持有者：</p><input type="text" placeholder="请输入姓名" v-model="buyer"/></div>
+      <div><span class="xing">*</span>
+        <p style="width: 100px">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</p><input type="tel" placeholder="请输入电话号"
+                                                                                        v-model="mobile"/>
+      </div>
+    </div>
+    <div class="title">产品信息</div>
+    <div class="tet">
+      <div><span class="xing">*</span>
+        <p style="width: 100px">产品名称：</p><input type="text" placeholder="请输入产品名称" v-model="qinName"/></div>
+      <div><span class="xing">*</span>
+        <p style="width: 100px">产品价格：</p><input type="tel" placeholder="请输入产品价格" v-model="buyingPrice"/></div>
+      <div @click="dateVisible = true"><span class="xing">*</span>
+        <p style="width: 100px">购买时间：</p>
+        <span v-show="year && month && day">
+          {{year}}-{{month}}-{{day}}
+        </span>
+        <span v-show="!(year && month && day)" class="placeholder">
+          请选择
+        </span>
+      </div>
+      <div @click="cityVisible = true">
+        <span class="xing">*</span>
+        <p style="width: 100px; white-space: nowrap;">商家所在城市：</p>
+        <span v-show="city.provinceName">{{city.provinceName}}</span>
+        <span class="placeholder" v-show="!city.provinceName">请选择</span>
+      </div>
+      <div @click="clubVisible = true">
+        <span class="xing">*</span>
+        <p style="width: 100px">商家名称：</p>
+        <span v-show="club.clubName">{{club.clubName}}</span>
+        <span class="placeholder" v-show="!club.clubName">请选择</span>
+      </div>
+    </div>
+    <div class="title">二次交易</div>
+    <div class="tatou">
+      <p style="width: 100px;">交易类型：</p>
+      <div class="aui-margin-r-10" style="margin-left: 0;">我要出租</div>
+      <input type="checkbox" class="my-checkbox" :checked="isLease == 1" @click="leaseChange(1)"/>
+      <div class="aui-margin-r-10">我要出售</div>
+      <input type="checkbox" class="my-checkbox" :checked="isLease == 2" @click="leaseChange(2)"/>
+    </div>
+    <!--出售-->
+    <div class="bottom-box" v-show="isLease == 2">
+      <div class="flex-box center">
+        <div style="width: 100px">产品价格：</div>
+        <div>
+          <input type="number" placeholder="请输入产品价格" v-model="leasePrice"/>
+        </div>
+      </div>
+      <div class="flex-box" style="border:none;">
+        <div style="width: 100px; flex-shrink: 0">出价理由:</div>
+        <textarea placeholder="请输入理由" v-model="reason" maxlength="500" class="textarea-box"></textarea>
+      </div>
+      <div class="text-box">
+        <div>{{reason.length}}/500</div>
+      </div>
+    </div>
+    <!--出租-->
+    <div class="bottom-box" v-show="isLease == 1">
+      <div class="flex-box center">
+        <div style="width: 100px">出租押金：</div>
+        <div>
+          <input type="number" placeholder="请输入出租押金（元）" v-model="depositPrice"/>
+        </div>
+      </div>
+      <div class="flex-box center">
+        <div style="width: 100px">出租价格：</div>
+        <div>
+          <input type="number" placeholder="请输入出租价格（元）" v-model="leasePrice"/>
+        </div>
+      </div>
+      <div class="icon-box" @click="leaseMonthVisible = true">
+        <div style="width: 100px">租期</div>
+        <div v-show="unit && leaseMonth" style="flex-grow: 1">{{leaseMonth}}{{unit}}</div>
+        <div v-show="!(unit && leaseMonth)" style="flex-grow: 1" class="placeholder">请选择</div>
+        <div>
+          <svg class="icon icon-left" aria-hidden="true">
+            <use xlink:href="#icon-ziyuan2"></use>
+          </svg>
+        </div>
+      </div>
+      <div class="flex-box" style="border: none;">
+        <div style="width: 100px; flex-shrink: 0">出价理由:</div>
+        <textarea placeholder="请输入理由" v-model="reason" maxlength="500" class="textarea-box"></textarea>
+      </div>
+      <div class="text-box">
+        <div>{{reason.length}}/500</div>
+      </div>
+    </div>
+    <div style="text-align: center">
+      <button class="btn" @click="qinAuth">下一步</button>
+    </div>
+  </div>
+
+  <mt-popup v-model="dateVisible" position="bottom" style="width:100%;">
+    <div class="big-box">
+      <span>购买时间</span>
+      <div class='picker-box-city'>
+        <mt-picker :slots="yearList" visibleItemCount="3"
+                   @change="yearChange" ref="year">
+        </mt-picker>
+        <mt-picker :slots="monthList" visibleItemCount="3"
+                   @change="monthChange" ref="month">
+        </mt-picker>
+        <mt-picker :slots="dayList" visibleItemCount="3"
+                   @change="dayChange" ref="day">
+        </mt-picker>
+      </div>
+      <div class='picker-btn-box'>
+        <div @click="cancelDate">取消</div>
+        <div @click="confrimDate">确定</div>
+      </div>
+    </div>
+  </mt-popup>
+
+  <mt-popup v-model="cityVisible" position="bottom" style="width:100%;">
+    <div class="big-box">
+      <span>选择城市</span>
+      <div class='picker-box-city'>
+        <mt-picker :slots="cityList" value-key="provinceName" visibleItemCount="3"
+                   @change="cityChange" ref="city">
+        </mt-picker>
+      </div>
+      <div class='picker-btn-box'>
+        <div @click="cancelCity">取消</div>
+        <div @click="confrimCity">确定</div>
+      </div>
+    </div>
+  </mt-popup>
+
+  <mt-popup v-model="clubVisible" position="bottom" style="width:100%;">
+    <div class="big-box">
+      <span>选择琴馆</span>
+      <div class='picker-box-city'>
+        <mt-picker :slots="clubList" value-key="clubName" visibleItemCount="3" @change="clubChange" ref="club">
+        </mt-picker>
+      </div>
+      <div class='picker-btn-box'>
+        <div @click="cancelClub">取消</div>
+        <div @click="confrimClub">确定</div>
+      </div>
+    </div>
+  </mt-popup>
+
+  <mt-popup v-model="leaseMonthVisible" position="bottom" style="width:100%;">
+    <div class="big-box">
+      <span>租期</span>
+      <div class='picker-box-city'>
+        <mt-picker :slots="unitList" visibleItemCount="3" @change="unitChange" ref="unit">
+        </mt-picker>
+        <mt-picker :slots="leaseMonthList" visibleItemCount="3" @change="leaseMonthChange" ref="leaseMonth">
+        </mt-picker>
+      </div>
+      <div class='picker-btn-box'>
+        <div @click="cancelLeaseMonth">取消</div>
+        <div @click="confrimLeaseMonth">确定</div>
+      </div>
+    </div>
+  </mt-popup>
+</div>
+</body>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      buyer: '',
+      mobile: '',
+      qinName: '',
+      buyingPrice: '',
+      buyTime: '',
+      reason: '',
+      leasePrice: '',
+      yearList: [
+        {
+          flex: 1,
+          values: mkSequence(1970, new Date().getFullYear()),
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      monthList: [
+        {
+          flex: 1,
+          values: getSeq(12, 1),
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      dayList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      yearTemp: '',
+      monthTemp: '',
+      dayTemp: '',
+      year: '',
+      month: '',
+      day: '',
+      dateVisible: false,
+      autoChange: false,
+      cityList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      cityVisible: false,
+      city: {},
+      cityTemp: {},
+      clubList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      clubVisible: false,
+      club: {},
+      clubTemp: {},
+      unitList: [
+        {
+          flex: 1,
+          values: ['年', '月'],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      tempUnit: '',
+      unit: '',
+      leaseMonthList: [
+        {
+          flex: 1,
+          values: mkSequence(1, 20),
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      tempLeaseMonth: 1,
+      leaseMonth: 1,
+      isLease: 0,  // 1 出租, 2 出售, 0 啥都没
+      leaseMonthVisible: false,
+      depositPrice: ''
+    },
+    filters: {},
+    created: function () {
+      this.$nextTick(function () {
+        app.setDate(2000, '01', '01');
+        app.year = '';
+        app.month = '';
+        app.day = '';
+        app.autoChange = true;
+
+        this.getExistCityDrop();
+      });
+    },
+    methods: {
+      leaseChange: function (lease) {
+        if (lease == this.isLease) {
+          this.isLease = 0;
+        } else {
+          this.isLease = lease;
+        }
+      },
+      cancelLeaseMonth: function () {
+        this.tempUnit = this.unit;
+        this.tempLeaseMonth = this.leaseMonth;
+
+        app.$refs.unit.setSlotValue(0, this.tempUnit);
+        app.$refs.leaseMonth.setSlotValue(0, this.tempLeaseMonth);
+
+        this.leaseMonthVisible = false;
+      },
+      confrimLeaseMonth: function () {
+        this.unit = this.tempUnit;
+        this.leaseMonth = this.tempLeaseMonth;
+        this.leaseMonthVisible = false;
+      },
+      leaseMonthChange: function (picker, values) {
+        this.tempLeaseMonth = values[0];
+      },
+      unitChange: function (picker, values) {
+        this.tempUnit = values[0];
+      },
+      getExistClubDrop: function (provinceCode) {
+        var post = {
+          cmd: 'getExistClubDrop',
+          type: 1,
+          provinceCode: provinceCode
+        };
+        sendAjax(this, post, function (res) {
+          app.clubList[0].values = res.data;
+        });
+      },
+      clubChange: function (picker, values) {
+        this.clubTemp = values[0];
+      },
+      confrimClub: function () {
+        this.club = this.clubTemp;
+        this.clubVisible = false;
+      },
+      cancelClub: function () {
+        this.clubTemp = this.club;
+        app.$refs.club.setSlotValue(0, this.clubTemp);
+        this.clubVisible = false;
+      },
+      getCityByCode: function (code, cityList) {
+        for (var i = 0; i < cityList.length; i++) {
+          if (cityList[i].provinceCode == code) {
+            return cityList[i];
+          }
+        }
+      },
+      getExistCityDrop: function () {
+        var post = {
+          cmd: 'getExistCityDrop'
+        };
+        sendAjax(this, post, function (res) {
+          app.cityList[0].values = res.data;
+        });
+      },
+      cityChange: function (picker, values) {
+        this.cityTemp = values[0];
+        if (this.cityTemp) {
+          this.getExistClubDrop(this.cityTemp.provinceCode);
+        }
+        this.club = {};
+        this.clubTemp = {};
+      },
+      cancelCity: function () {
+        this.cityTemp = this.city;
+        app.$refs.city.setSlotValue(0, this.cityTemp);
+        this.cityVisible = false;
+      },
+      confrimCity: function () {
+        this.city = this.cityTemp;
+        this.cityVisible = false;
+      },
+      setDate: function (year, month, day) {
+        this.autoChange = false;
+
+        app.$refs.year.setSlotValue(0, year);
+        app.yearTemp = year;
+        app.year = year;
+
+        app.$refs.month.setSlotValue(0, month);
+        app.monthTemp = month;
+        app.month = month;
+
+        app.dayRecount();
+        app.$refs.day.setSlotValue(0, day);
+        app.dayTemp = month;
+        app.day = day;
+
+        this.autoChange = true;
+      },
+      confrimDate: function () {
+        app.year = app.yearTemp;
+        app.month = app.monthTemp;
+        app.day = app.dayTemp;
+        app.dateVisible = false;
+      },
+      cancelDate: function () {
+        if (app.year && app.month && app.day) {
+          app.setDate(app.year, app.month, app.day);
+        }
+
+        app.dateVisible = false;
+      },
+      yearChange: function (picker, values) {
+        if (this.autoChange) {
+          app.yearTemp = values[0];
+          app.dayRecount();
+        }
+      },
+      monthChange: function (picker, values) {
+        if (this.autoChange) {
+          app.monthTemp = values[0];
+          app.dayRecount();
+        }
+      },
+      dayChange: function (picker, values) {
+        if (this.autoChange) {
+          app.dayTemp = values[0];
+        }
+      },
+      dayRecount: function () {
+        app.dayList[0].values = getSeq(app.getDayCount(app.yearTemp, app.monthTemp), 1);
+      },
+      // 根据年月获取这个月有多少天
+      getDayCount: function (year, month) {
+        var now = new Date(year, month, 0);
+        return now.getDate();
+      },
+      openImgwin: function () {
+        openView('oImg_fm', 'qinAuth/message/oImg_fm', '申请认证')
+      },
+      qinAuth: function () {
+        if (this.checkPost()) {
+          var post = {
+            cmd: 'qinAuth',
+            token: getToken(),
+            type: '1',
+            isSn: '2',
+            buyer: app.buyer,
+            mobile: app.mobile,
+            qinName: app.qinName,
+            buyingPrice: app.buyingPrice,
+            reason: app.reason
+          };
+
+          post.buyTime = app.year + app.month + app.day;
+
+          post.clubId = app.club.id;
+
+          if (this.isLease == 1) {
+            post.isLease = 1;
+            post.leasePrice = app.leasePrice;
+            post.depositPrice = app.depositPrice;
+
+            if (app.unit == '年') {
+              post.leaseMonth = parseInt(app.leaseMonth) * 12;
+            } else {
+              post.leaseMonth = app.leaseMonth;
+            }
+          } else if (this.isLease == 2) {
+            post.isLease = 2;
+            post.leasePrice = app.leasePrice;
+          }
+
+          openView('oImg_fm', 'qinAuth/message/oImg_fm', '申请认证', false, false, {
+            post: post
+          });
+        }
+      },
+      checkPost: function () {
+        if (!trim(this.buyer)) {
+          MINT.Toast('请输入姓名');
+          return false;
+        } else if (!trim(this.mobile)) {
+          MINT.Toast('请输入电话');
+          return false;
+        }
+        if (!/^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\d{8}$/.test(this.mobile)) {
+          MINT.Toast('请输入正确的电话号');
+          return false;
+        } else if (!trim(this.qinName)) {
+          MINT.Toast('请输入产品名称');
+          return false;
+        } else if (!trim(this.buyingPrice)) {
+          MINT.Toast('请输入产品价格');
+          return false;
+        } else if (!(this.year && this.month && this.day)) {
+          MINT.Toast('请选择购买时间');
+          return false;
+        } else if (!this.city.provinceName) {
+          MINT.Toast('请选择商家所在城市');
+          return false;
+        } else if (!this.club.clubName) {
+          MINT.Toast('请选择商家');
+          return false;
+        } else if (this.isLease == 1) {
+          if (!(this.depositPrice && this.leasePrice && this.leaseMonth && this.unit)) {
+            MINT.Toast('请填写“出租押金/出租价格/租期”');
+            return false;
+          } else {
+            return true;
+          }
+        } else if (this.isLease == 2) {
+          if (!this.leasePrice) {
+            MINT.Toast('请填写产品价格”');
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+          return true;
+        }
+      }
+    }
+  })
+</script>
+</html>

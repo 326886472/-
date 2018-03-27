@@ -1,0 +1,119 @@
+.functanic {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px; }
+
+* {
+  padding: 0;
+  margin: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%; }
+  html section, body section {
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0; }
+    html section .listbox, body section .listbox {
+      width: 100%;
+      height: 8rem;
+      border-bottom: 1px solid gainsboro;
+      background: white; }
+      html section .listbox .manage_src, body section .listbox .manage_src {
+        width: 6rem;
+        height: 6rem;
+        float: left;
+        margin: 0.7rem; }
+      html section .listbox .textbox, body section .listbox .textbox {
+        width: 55%;
+        height: auto;
+        float: left; }
+        html section .listbox .textbox .manage_name, body section .listbox .textbox .manage_name {
+          display: block;
+          float: left;
+          font-size: 15px;
+          width: 100%;
+          margin-top: 0.7rem; }
+        html section .listbox .textbox .manage_daytime, body section .listbox .textbox .manage_daytime {
+          color: #808080;
+          font-size: 0.6rem;
+          line-height: 1.5rem; }
+        html section .listbox .textbox .manage_hourtime, body section .listbox .textbox .manage_hourtime {
+          color: #808080;
+          font-size: 0.6rem;
+          line-height: 1.5rem; }
+        html section .listbox .textbox .manage_nowprice, body section .listbox .textbox .manage_nowprice {
+          color: #ff3c00;
+          font-weight: bolder;
+          line-height: 2rem;
+          font-size: 18px; }
+          html section .listbox .textbox .manage_nowprice span, body section .listbox .textbox .manage_nowprice span {
+            margin-left: 0.5rem;
+            color: #a3a3a3;
+            text-decoration: line-through;
+            font-size: 14px;
+            font-weight: 700; }
+          html section .listbox .textbox .manage_nowprice .formnum, body section .listbox .textbox .manage_nowprice .formnum {
+            text-decoration: none;
+            font-weight: 400;
+            color: black;
+            font-size: 9px; }
+      html section .listbox .typeoutline, body section .listbox .typeoutline {
+        width: 100%; }
+        html section .listbox .typeoutline .typebtn, body section .listbox .typeoutline .typebtn {
+          float: right;
+          width: 40%;
+          height: 2rem; }
+    html section .classoul, body section .classoul {
+      width: 100%;
+      height: auto;
+      background: white;
+      margin-top: 1rem; }
+      html section .classoul li, body section .classoul li {
+        line-height: 3rem;
+        border-bottom: 1px solid #d9d9d9;
+        background: white;
+        font-size: 18px; }
+        html section .classoul li span, body section .classoul li span {
+          margin-left: 1rem; }
+        html section .classoul li i, body section .classoul li i {
+          float: right;
+          margin-right: 1rem; }
+      html section .classoul .classcontent p, body section .classoul .classcontent p {
+        margin-left: 1rem;
+        line-height: 2rem; }
+      html section .classoul .classcontent .textarea, body section .classoul .classcontent .textarea {
+        outline: none;
+        margin-left: 1rem;
+        color: #8b8b8b;
+        font-size: 14px;
+        line-height: 2;
+        box-sizing: border-box;
+        padding-right: 1rem; }
+    html section .mint-popup-bottom, body section .mint-popup-bottom {
+      width: 100%; }
+    html section .moreoul, body section .moreoul {
+      width: 100%; }
+      html section .moreoul li, body section .moreoul li {
+        width: 100%;
+        line-height: 3rem;
+        text-align: center;
+        border-bottom: 1px solid gainsboro;
+        color: #8b8b8b; }
+        html section .moreoul li.active, body section .moreoul li.active {
+          color: orange; }
+    html section .bottomalter, body section .bottomalter {
+      width: 100%;
+      height: 7rem;
+      display: flex;
+      background: #f0f0f0; }
+      html section .bottomalter .bottom_btn, body section .bottomalter .bottom_btn {
+        margin: 0 auto;
+        width: 60%;
+        background: #3c3c3c;
+        text-align: center;
+        color: white;
+        margin-top: 3rem;
+        margin-bottom: 1rem; }

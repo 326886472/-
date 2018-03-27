@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+        .icon{
+            width:1rem;
+            height:1rem;
+        }
+        .content{
+            font-size:0.7rem;
+            color:#666;
+        }
+        .content-header{
+            padding:0.3rem 1rem;
+        }
+        .content-list{
+            font-size:0.7rem;
+            color:#666;
+        }
+        /*银行卡*/
+        .content-list-item-first{
+            background: white;
+            display: flex;
+            align-items: center;
+        }
+        .icon-box{
+            width:10%;
+            padding:1rem;
+        }
+        .card-box{
+            width:70%;
+        }
+        .card-box span{
+            display: block;
+        }
+        .right-icon{
+            width:0.5rem;
+            height:0.5rem;
+            color:#666;
+        }
+        .content-list-item-second{
+            padding:0.5rem 0;
+            margin-top:0.3rem;
+            background: white;
+        }
+        .top_box{
+            padding:0 0 1rem 1rem;
+        }
+        .bottom_box{
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom:1px solid #ccc;
+        }
+        .bottom_box input{
+            margin-left: 1rem;
+        }
+        .bottom-title-box{
+            font-size:0.6rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn-box{
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+        }
+        .btn-box div{
+            padding: 0.3rem 0;
+            text-align: center;
+            width:60%;
+            margin:0 auto;
+            border-radius: 20px;
+            font-size:0.7rem;
+            color:#666;
+            border:1px solid #666;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="content">
+        <div class="content-list">
+            <!--银行卡-->
+            <div class="content-list-item-first aui-margin-t-5">
+                <div class="icon-box">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-jianhang"></use>
+                    </svg>
+                </div>
+                <div class="card-box">
+                    <span>中国建设银行</span>
+                    <span>尾号9361</span>
+                </div>
+                <div class="">
+                    <svg class="icon right-icon" aria-hidden="true">
+                        <use xlink:href="#icon-ziyuan2"></use>
+                    </svg>
+                </div>
+            </div>
+            <!--提现-->
+            <div class="content-list-item-second">
+                <div class="top_box">
+                    提现金额
+                </div>
+                <div class="bottom_box">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-qian"></use>
+                    </svg>
+                    <input type="number" placeholder="">
+                </div>
+                <div class="bottom-title-box aui-padded-l-15 aui-padded-r-15 aui-padded-t-5">
+                    <div>可提现金额12000.00元</div>
+                    <div>全部提现</div>
+                </div>
+            </div>
+            <div class="aui-margin-l-15 aui-margin-t-5">
+                预计2-3天到账
+            </div>
+        </div>
+    </div>
+    <div class="btn-box" @click="openSwin()">
+        <div>下一步</div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+      openSwin:function () {
+        openWin('RechargeSuccess','../RechargeSuccess/RechargeSuccess_win.html')
+      }
+    }
+  })
+</script>

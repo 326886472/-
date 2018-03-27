@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    #app {
+      height: 100%;
+      flex: 1;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    hr {
+      height: 1px;
+      background-color: #f0f0f0;
+    }
+
+    /*搜索栏*/
+    .search-bar {
+      width: 100%;
+      padding: 5px 15px;
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-size: 14px;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+      margin: 5px auto 0;
+      background-color: #fff;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .city {
+      width: 60px;
+      height: 30px;
+      line-height: 30px;
+      display: flex;
+    }
+    .city span{
+      width: 50px;
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+    }
+
+    .search-box {
+      flex: 1;
+      height: 30px;
+      line-height: 30px;
+      margin: 0 10px;
+      border-bottom: 1px solid #cccccc;
+    }
+
+    .search-box input {
+      width: 90%;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .search-bar button {
+      outline: none;
+      color: #404040;
+      line-height: 18px;
+      width: 50px;
+      padding: 3px 5px;
+      border: 1px solid #4c4c4c;
+      border-radius: 14px;
+    }
+
+    /*未搜索到*/
+    .unsearched-bar {
+      height: 200px;
+      width: 100%;
+      box-sizing: border-box;
+      background-color: #fff;
+      font-size: 13px;
+      color: #575757;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .unsearched-bar p {
+      padding: 1px;
+    }
+
+    /*确认上传按钮*/
+    .uploading {
+      flex: 1;
+      margin-top: 6rem;
+      position: relative;
+      padding: 0.5rem 0 2rem;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: flex-start;
+      align-items: center;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .uploading button {
+      height: 45px;
+      line-height: 45px;
+      width: 60%;
+      border: 1px solid #5a5a5a;
+      font-size: 16px;
+      text-align: center;
+      border-radius: 35px;
+      outline: none;
+    }
+
+    .uploading button:active {
+      background: #888;
+    }
+
+    .uploading p {
+      padding: 5px 0;
+      font-size: 12px;
+      color: #878787;
+    }
+
+    /*搜索出来的店铺*/
+    .search-list {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      background-color: #fff;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      border-bottom: 1px solid #d9d9d9;
+    }
+
+    .search-list h5 {
+      font-size: 14px;
+      color: #5f5f5f;
+      font-weight: normal;
+    }
+
+    .star {
+      margin-top: -9px;
+    }
+
+    .star i {
+      font-size: 10px;
+    }
+
+    .search-list p {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #9c9c9c;
+    }
+
+    .rightarea {
+      display: flex;
+      align-items: center;
+    }
+
+    .rightarea button {
+      height: 18px;
+      line-height: 18px;
+      font-size: 14px;
+      outline: none;
+      width: 70px;
+      border-radius: 8px;
+      border: 1px solid #404040;
+      color: #4a4a4a;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <hr>
+  <div class="search-bar">
+    <div class="city" @click="selectCity()">
+      <span>{{cityname}}</span>
+      <i class="iconfont icon-ziyuan2-copy-2" style="font-size: 8px;line-height: 30px"></i>
+    </div>
+    <div class="search-box">
+      <input type="text" placeholder="请输入琴馆名称" v-model="clubName" id="clubName" ref="clubName"/>
+    </div>
+    <button @click="search1()">搜索</button>
+  </div>
+  <div class="unsearched-bar" v-show="unsearch">
+    <p>抱歉，您搜索的琴馆不存在，</p>
+    <p>请检查店铺名称是否有误以及换名称试试。</p>
+    <p>若还是搜索不到，</p>
+    <p>请您直接上传琴馆相关信息。</p>
+  </div>
+
+  <div class="uploading" v-show="unsearch">
+    <button @click="openqghome">上传琴馆</button>
+  </div>
+
+  <div v-for="(item,index) in searchLists" v-show="searchLists.length>0">
+    <div class="search-list">
+      <div class="leftarea">
+        <h5>{{item.clubName}}</h5>
+        <div class="star">
+          <i class="iconfont icon-shoucang" style="color: #ff8500"></i>
+          <i class="iconfont icon-shoucang" style="color: #ff8500"></i>
+          <i class="iconfont icon-shoucang" style="color: #ff8500"></i>
+          <i class="iconfont icon-shoucang" style="color: #ff8500"></i>
+          <i class="iconfont icon-shoucang" style="color: #bfbfbf"></i>
+        </div>
+        <p>{{item.address}}</p>
+      </div>
+      <div class="rightarea">
+        <button @click="openclaim(index)">我要认领</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: "#app",
+    data: {
+      clubName: '',
+      cityname:'',
+      citycode:'',
+      searchLists: [],
+      unsearch:false
+    },
+    created: function () {
+      loadEnd();
+      apiready = function () {
+        app.cityname = api.pageParam.cityname;
+        app.citycode = api.pageParam.citycode;
+        //选择城市：修改为弹窗，返回cityCode、regionCode
+        api.addEventListener({
+          name: 'changecity',
+        }, function (ret, err) {
+          app.cityname = ret.value.cityname;
+          app.citycode = ret.value.citycode;
+        });
+      };
+    },
+    mounted: function () {
+      this.$refs.clubName.focus();
+    },
+    methods: {
+      openclaim: function (ind) {
+        openView('claimshop', 'addqinguan/claimshop/claimshop_fm', '认领店铺', 'claim',false,{
+          clubId:app.searchLists[ind].clubId,
+          cityCode:app.cityCode
+        } ,false)
+      },
+      search1: function (callback) {
+        if(!app.clubName.trim()){
+          api.toast({
+            msg:'请输入琴馆名称'
+          });
+        }else{
+          var post = {
+            cmd: 'searchBox',
+            provinceCode: app.citycode,
+            clubName: app.clubName,
+            token: getToken()
+          };
+          sendAjax(this, post, function (ret) {
+            if(ret && callback){
+              callback();
+            }
+            app.searchLists = ret.data.proList;
+            if (app.searchLists == undefined){
+              app.unsearch=true;
+            }else {
+              app.unsearch=false;
+            }
+          });
+        }
+
+      },
+      openqghome: function (ind) {
+        openView('addqghome', 'addqinguan/applyshop/addqinhome', '申请店铺', 'apply', false, false);
+      },
+      selectCity: function () {
+        api.openWin({
+          name: 'changecity_win.html',
+          url: '../../index/splitcity/changecity_win.html'
+        })
+      }
+    }
+  })
+</script>
+
+
+<!--备注-->
+<!--通过搜索返回的searchLists的长度来控制是否搜索到显示-->
+<!--claim:可认领店铺；claimed：‘已认领店铺’-->
+

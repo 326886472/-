@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+      height: auto;
+    }
+
+    html, body {
+      width: 100%;
+      background: white
+    }
+
+    .cantent {
+      width: 100%;
+    }
+
+    .cantent > div:nth-child(1) {
+      display: -webkit-box;
+      width: 100%;
+      background-color: #F0F0F0;
+    }
+
+    .cantent > div:nth-child(1) > div {
+      margin: 5%;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+    }
+
+    .cantent > div:nth-child(1) p {
+      height: 2rem;
+      line-height: 2rem;
+      margin-top: 5%;
+    }
+
+    .hurrycheck {
+      border-radius: 20px;
+      padding-left: 3rem;
+      padding-right: 3rem;
+      box-sizing: border-box;
+      border: 1px solid gainsboro;
+    }
+
+    .fontbox {
+      width: 100%;
+      height: auto;
+      display: flex;
+      margin-top: 2rem;
+    }
+
+    .publicbox {
+      flex: 1;
+      text-align: center;
+    }
+
+    .icon {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .peoplename {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .mintitle {
+      font-size: 13px;
+      color: darkgray;
+    }
+
+    .btn-box {
+      width: 100%;
+      text-align: center;
+      padding-top: 10%;
+      padding-bottom: 15%;
+    }
+
+    .btn {
+      width: 60%;
+      margin: 0 auto;
+      font-size: 0.7rem;
+      padding: 0.5rem 0;
+      border: 1px solid #666;
+      border-radius: 0.6rem;
+      color: #666;
+    }
+
+    .btn:active {
+      background: gainsboro;
+    }
+
+    /*名字*/
+    .nameposition {
+      position: absolute;
+      top: 4.5rem;
+      left: 4.5rem;
+      font-size: 14px;
+      color: #fafafa;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="cantent">
+    <div>
+      <div>
+        <div v-if="isUserAuth != '1'"><img src="../../../assets/images/name.png"/></div>
+        <div v-if="isUserAuth == '1'" style="position: relative"><img src="../../../assets/images/throunght.png"/>
+          <span class="nameposition">{{userInfo.username | passName}}</span>
+        </div>
+        <p style="font-size: 15px">支持以下场景:</p>
+      </div>
+    </div>
+    <div class="fontbox">
+      <div class="publicbox" v-for="item in minfontlist">
+        <svg class="icon" aria-hidden="true">
+          <use :xlink:href="item.font"></use>
+        </svg>
+        <p class="peoplename">{{item.title}}</p>
+        <p class="mintitle">{{item.message}}</p>
+      </div>
+    </div>
+    <div class="btn-box" @click="toAuth()" v-show="isUserAuth != '1'">
+      <button class="btn">立即认证</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      minfontlist: [
+        {
+          font: '#icon-shenfenbiaoshinet',
+          title: '身份标识',
+          message: '尊享高贵特权'
+        },
+        {
+          font: '#icon-shouhoufuwu',
+          title: '售后服务',
+          message: '优先享受售后服务'
+        },
+        {
+          font: '#icon-changsuoyuyan',
+          title: '畅所欲言',
+          message: '自由发表言论'
+        }
+      ],
+      isUserAuth: '',
+      username: '',
+      userInfo: {}
+    },
+    filters: {
+      passName: function (username) {
+        if (username) {
+          var str = '';
+          for (var i = 0; i < username.length - 1; i++) {
+            str += '*';
+          }
+          str += username.substr(-1);
+          return str;
+        } else {
+          return '';
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.getUserInfo();
+
+        api.addEventListener({
+          name: 'authChange'
+        }, function () {
+          app.getUserInfo();
+        });
+      };
+    },
+    methods: {
+      getUserInfo: function (callback) {
+        var post = {
+          cmd: 'getUserInfo',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.isUserAuth = res.data.isUserAuth;
+          app.userInfo = res.data;
+        });
+      },
+      toAuth: function () {
+        switch (app.isUserAuth) {
+          case '0':
+            openView('shenfen', 'leaguer/shenfen/shenfen_fm', '身份认证');
+            break;
+          case '2':
+            openView('shengHe', 'leaguer/shengHe/shengHe_fm', '身份认证', false, false);
+            break;
+        }
+      }
+    }
+  })
+</script>
+
+
+
+

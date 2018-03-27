@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/alter_class.css">
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+    <section>
+        <div class="listbox clearfix">
+            <img class="manage_src" :src="formatImg(olist.images)">
+            <div class="textbox">
+        <span class="manage_name"><span class="functanic"
+                                        :style="'background: ' + statuscolor(olist.courseType)"></span>[{{olist.courseType | typeText}}]{{olist.courseName}}</span>
+                <span class="manage_daytime" v-if="olist.courseType!=='3'">开课日期：{{olist.startDate}}</span>
+                <span class="manage_hourtime" v-if="olist.courseType!=='3'">{{olist.startInterval}}~{{olist.endInterval}}</span>
+                <p class="manage_nowprice">¥{{olist.vipPrice}}<span>¥{{olist.price}}</span>
+                    <span style="color:#8d8d8d;font-size: 13px" class="formnum" v-show="olist.courseType==='3'">限{{olist.personCount}}人</span>
+                    <span style="color:#8d8d8d;font-size: 13px" class="formnum" v-show="olist.courseType==='1'">已售{{olist.countOrder}}</span>
+                </p>
+            </div>
+        </div>
+        <ul class="classoul">
+            <li>
+                <span>课程类型：</span>
+                <span style="color:#8b8b8b">{{olist.courseType | typeText}}</span>
+            <li>
+                <span>课程名称：</span>
+                <span style="outline: none;color: #8b8b8b;margin-left: 1rem" type="text">{{olist.courseName}}</span>
+            </li>
+            <li v-if="olist.courseType!=2&&olist.courseType!=3">
+                <span>课程等级：</span>
+                <span style="color:#8b8b8b">{{olist.level | gradeText}}</span>
+            <li @click="classdetails"><span>课程详情：</span><i class="iconfont icon-fanhui"></i></li>
+            <li v-if="olist.courseType!=2">
+                <span>收费价格：</span>
+                <span style="outline: none;color: #8b8b8b;margin-left: 1rem">{{olist.price}}</span>
+            </li>
+            <li v-if="olist.courseType!=2">
+                <span>会 员 价：</span>
+                <span style="outline: none;color: #8b8b8b;margin-left: 1rem">{{olist.vipPrice}}</span>
+            </li>
+            <li @click="gototeacherdetails"><span>教师信息：</span><i class="iconfont icon-fanhui"></i></li>
+            <li class="classcontent" style="height: 6rem">
+                <p>一句话推荐：</p>
+                <span class="textarea">{{olist.slogan}}</span>
+            </li>
+            <li class="classcontent">
+                <p>课程简介：</p>
+                <span class="textarea">{{olist.courseDesc}}</span>
+            </li>
+        </ul>
+        <!--弹出课程类型-->
+    </section>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+
+<script>
+    new FastClick(document.body);
+</script>
+
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            clubId: '',
+            id: '',
+            classActive: 0,
+            levelActive: 0,
+            ablechange: true,
+            ableprice: true,
+            olist: {
+                status: '1'
+            },
+            more: {
+                popupVisible: false,
+                classdengji: false,
+            },//弹页的布尔值
+            form: {
+                type: 1,
+                grade: 1,
+                memberprice: '',
+                price: ''
+            },//表单的数据
+        },
+        filters: {
+            typeText(courseType) {
+                switch (courseType) {
+                    case '1':
+                        return '定期课程';
+                    case '2':
+                        return '免费体验课';
+                    case '3':
+                        return '随到随学';
+                }
+            },
+            gradeText(level) {
+                switch (level) {
+                    case '1':
+                        return '入门级';
+                    case '2':
+                        return '提高班';
+                    case '3':
+                        return '进修班';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.id = api.pageParam.id;
+                app.clubId = api.pageParam.clubId;
+                app.getPerCourseInfo()
+            };
+        },
+        methods: {
+            statuscolor(courseType) {
+                switch (courseType) {
+                    case '1':
+                        return "#47c6a4";
+                    case '2':
+                        return "#f46c5a";
+                    case '3':
+                        return "#b02db2";
+                }
+            },
+            //获取详情数据
+            getPerCourseInfo() {
+                var post = {
+                    cmd: 'getPerCourseInfo',
+                    token: getToken(),
+                    clubId: app.clubId,
+                    courseId: app.id
+                };
+                sendAjax(this, post, function (res) {
+                    loadEnd();
+                    app.olist = res.data;
+                });
+            },
+            //课程类型显示与隐藏
+            moretype() {
+                app.more.popupVisible = true;
+            },
+            //课程类型的文字转换及高亮
+            changeclass(type) {
+                app.form.type = type;
+                app.more.popupVisible = false;
+                if (app.form.type == 2 || app.form.type == 3) {
+                    app.ablechange = false
+                } else {
+                    app.ablechange = true
+                }
+                if (app.form.type == 2) {
+                    app.ableprice = false
+                } else {
+                    app.ableprice = true
+                }
+            },
+            //课程等级&&价格显示与隐藏
+            classdengji() {
+                if (app.more.classdengji) {
+                    app.more.classdengji = false;
+                } else {
+                    app.more.classdengji = true
+                }
+            },
+            //课程等级的文字转换及高亮
+            changedengji(grade){
+                app.form.grade = grade;
+                app.more.classdengji = false;
+            },
+            //去教师详情页
+            gototeacherdetails() {
+                openView ('teacher_details', 'member/myPavilion/teachclass/teacher_message', '教师信息', false, false, {
+                    teacherAvatar: app.olist.teacherAvatar,
+                    teacher: app.olist.teacher,
+                    teacherDesc: app.olist.teacherDesc
+                });
+            },
+            //去课程详情页
+            classdetails() {
+                openView ('class_details', 'member/myPavilion/teachclass/class_details', '课程详情', false, false, {
+                    classHour: app.olist.classHour,
+                    Lesson: app.olist.Lesson,
+                    personCount: app.olist.personCount,
+                    startInterval: app.olist.startInterval,
+                    endInterval: app.olist.endInterval,
+                    startDate: app.olist.startDate,
+                    endDate: app.olist.endDate,
+                    reserveDay: app.olist.reserveDay,
+                    courseType: app.olist.courseType
+                });
+            }
+        }
+    })
+</script>
+</html>

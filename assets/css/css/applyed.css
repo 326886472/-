@@ -1,0 +1,25 @@
+html, body {
+  background: #f0f0f0; }
+
+.ad {
+  position: relative; }
+  .ad > img {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    vertical-align: bottom;
+    position: relative; }
+  .ad .bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%; }
+  .ad .notice {
+    padding: 1rem;
+    background: white;
+    font-size: 12px; }
+  .ad .btn-box {
+    text-align: center;
+    padding: 1rem; }
+    .ad .btn-box a {
+      display: block; }
+      .ad .btn-box a .mint-button {
+        width: 50%; }

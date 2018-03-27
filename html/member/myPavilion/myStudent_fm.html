@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../assets/css/css/myStudent_fm.css">
+        </head>
+<body>
+<div id='app'>
+    <div id="loadStart"></div>
+    <div class="student-manage">
+        <div class="options">
+      <span @click="optionsShow(1)">
+        学员来源<i class="iconfont icon-iconfontxiangxiajiantou"></i>
+        <ul :class="{active: optActive === 1}">
+          <li v-for="item in originList" :class="{active: item.value === active}"
+              @click="choose(item.value)">{{item.label}}</li>
+        </ul>
+      </span>
+            <span @click="optionsShow(2)">
+        交易状态<i class="iconfont icon-iconfontxiangxiajiantou"></i>
+        <ul :class="{active: optActive === 2}">
+          <li v-for="(item,index) in statusList" :class="{active: item.value === active}"
+              @click="choose(item.value)">{{item.label}}</li>
+        </ul>
+      </span>
+            <span @click="optionsShow(3)" :class="{gray: optActive === 3}">过往会员</span>
+        </div>
+        <div class="line" style="margin-top: 0.5rem;">
+            总学员：{{memberCount}}人
+        </div>
+        <div class="student" v-for="(student, index) in studentlist">
+            <div class="line name-line clearfix" @click="ofpull(index)">
+                {{student.nickname}} <i class="iconfont icon-huiyuan"></i>({{student.memberType}})
+                <span class="time">{{student.createTime | formatDate}} <i style="font-size: 15px" class="iconfont icon-iconfontxiangxiajiantou" v-show="student.memberType !== '推荐会员'"></i></span>
+            </div>
+            <div class="info" :class="{brforestyle: student.spread}" v-for="detail in student.details">
+                <div class="club-name">
+                    {{detail.clubName}}
+                    <span class="time">{{detail.createTime | formatDate}}</span>
+                </div>
+                <div class="under">
+                    <img :src=formatImg(detail.images) alt="">
+                    <div class="right">
+                        <div class="name-count">
+                            <div class="name">{{detail.courseName}}</div>
+                            <div class="count" v-show="detail.amount">
+                                x{{detail.amount}}
+                            </div>
+                        </div>
+                        <div class="price" v-show="detail.price">¥{{detail.price}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" v-show="optActive !== 0 && optActive !== 3" @click="cancel()"></div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            token: getToken(),
+            clubId: '',
+            optActive: 0,
+            originList: [
+                {label: '全部', value: 0},
+                {label: '消费学员', value: 1},
+                {label: '推荐学员', value: 2},
+                {label: '认证学员', value: 3}
+            ],
+            statusList: [
+                {label: '已消费', value: 5},
+                {label: '未消费', value: 6}
+            ],
+            active: 0,
+            memberCount: 0,
+            studentlist: []
+        },
+        filters: {
+            formatDate (date) {
+                return date.substr(0, 10);
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+                app.getUserManageList();
+            };
+        },
+        methods: {
+            // 获取学员列表
+            getUserManageList: function () {
+                var post = {
+                    cmd: 'getUserManageList',
+                    token: app.token,
+                    clubId: app.clubId
+                };
+
+                if (app.active != 0) {
+                    post.pickType = app.active;
+                }
+
+                sendAjax(this, post, function (res) {
+                    if(res) {
+                        loadEnd();
+                        if (res.data.memberCount) {
+                            app.formatUserList(res.data.list.proList);
+                            app.studentlist = res.data.list.proList;
+                            app.memberCount = res.data.memberCount;
+                        } else {
+                            app.formatUserList(res.data.proList);
+                            app.studentlist = res.data.proList;
+                            app.memberCount = res.data.count;
+                        }
+                    }
+                });
+            },
+            formatUserList(userList) {
+                for (var i = 0; i < userList.length; i++) {
+                    userList[i].spread = true;
+                    userList[i].details = [];
+                }
+            },
+            ofpull(index) {
+                var nowStudent = app.studentlist[index];
+                nowStudent.spread = !nowStudent.spread;
+                app.getOrderListByUser(nowStudent.userId, index);
+            },
+            getOrderListByUser(userId, index) {
+                var post = {
+                    cmd: 'getOrderListByUser',
+                    token: app.token,
+                    clubId: app.clubId,
+                    userId: userId
+                };
+                sendAjax(this, post, function (res) {
+                    app.studentlist[index].details = res.data;
+                });
+            },
+            // type: {1: 学员来源, 2: 交易状态, 3: 过往会员}
+            optionsShow(params) {
+                if (params === 3) {
+                    app.optActive = 3;
+                    app.active = 4;
+                    app.getUserManageList();
+                } else {
+                    if (app.optActive === params) {
+                        app.optActive = 0;
+                    } else {
+                        app.optActive = params;
+                    }
+                }
+            },
+            choose(params) {
+                event.stopPropagation();
+                app.active = params;
+                app.optActive = 0;
+                app.getUserManageList();
+            },
+            cancel() {
+                app.optActive = 0;
+            }
+        },
+        components: {}
+    });
+</script>

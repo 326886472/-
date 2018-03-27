@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+    }
+
+    #header {
+      border-bottom: 1px solid #ccc;
+      display: flex;
+
+    }
+
+    .middlebox {
+      display: block;
+      border-radius: 20px;
+      border: 1px solid #929292;
+      padding-left: 0.5rem;
+      margin-top: 0.5rem;
+      flex: 1;
+      height: 1.3rem;
+    }
+
+    .middlebox input {
+      width: 85%;
+      display: block;
+      float: left;
+      outline: none;
+      margin: auto;
+      line-height: 1.3rem;
+      font-size: 14px;
+    }
+
+    .fesddy {
+      display: inline-block;
+      float: left;
+      width: 2rem;
+      height: 1.3rem;
+      line-height: 1.3rem;
+      color: #ff4d4d
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <header class="aui-bar aui-bar-nav" id="header">
+    <div style="float: left;width: 44px;text-align: center;display: block;font-size: 15px"><span><i
+            style="font-size: 15px" class="iconfont icon-ziyuan2-copy"></i></span></div>
+    <div class="middlebox">
+      <input type="text" v-modal="searchBox">
+      <i class="iconfont fesddy icon-sousuo"></i>
+    </div>
+    <div style="float: right;width: 44px;text-align: center;color: #ff4d4d;font-size: 14px" @click="startsearch">搜索
+    </div>
+  </header>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      searchBox: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+        api.openFrame({
+          naem:'search',
+          url:'search.html'
+        })
+//        openFm('searchover');
+      };
+    },
+    methods: {
+      startsearch: function () {
+        if (app.searchBox == '') {
+          toastMsg('请输入搜索内容')
+        } else {
+          api.sendEvent({
+            name: 'search',
+            extra: {
+              searchBox: app.searchBox
+            }
+          });
+        }
+      }
+    }
+  })
+</script>

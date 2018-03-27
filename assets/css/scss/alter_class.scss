@@ -1,0 +1,151 @@
+.functanic {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  section {
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0;
+    .listbox {
+      width: 100%;
+      height: 8rem;
+      border-bottom: 1px solid gainsboro;
+      background: white;
+      .manage_src {
+        width: 6rem;
+        height: 6rem;
+        float: left;
+        margin: 0.7rem;
+      }
+      .textbox {
+        width: 55%;
+        height: auto;
+        float: left;
+        .manage_name {
+          display: block;
+          float: left;
+          font-size: 15px;
+          width: 100%;
+          margin-top: 0.7rem;
+        }
+        .manage_daytime {
+          color: #808080;
+          font-size: 0.6rem;
+          line-height: 1.5rem;
+        }
+        .manage_hourtime {
+          color: #808080;
+          font-size: 0.6rem;
+          line-height: 1.5rem;
+        }
+        .manage_nowprice {
+          color: #ff3c00;
+          font-weight: bolder;
+          line-height: 2rem;
+          font-size: 18px;
+          span {
+            margin-left: 0.5rem;
+            color: #a3a3a3;
+            text-decoration: line-through;
+            font-size: 14px;
+            font-weight: 700;
+          }
+          .formnum {
+            text-decoration: none;
+            font-weight: 400;
+            color: black;
+            font-size: 9px;
+          }
+        }
+      }
+      .typeoutline {
+        width: 100%;
+        .typebtn {
+          float: right;
+          width: 40%;
+          height: 2rem;
+        }
+      }
+
+    }
+    .classoul {
+      width: 100%;
+      height: auto;
+      background: white;
+      margin-top: 1rem;
+      li {
+        line-height: 3rem;
+        border-bottom: 1px solid #d9d9d9;
+        background: white;
+        font-size: 18px;
+        span {
+          margin-left: 1rem;
+
+        }
+        i {
+          float: right;
+          margin-right: 1rem;
+        }
+      }
+      .classcontent {
+        p {
+          margin-left: 1rem;
+          line-height: 2rem;
+        }
+
+        .textarea {
+          outline: none;
+          margin-left: 1rem;
+          color: #8b8b8b;
+          font-size: 14px;
+          line-height: 2;
+          box-sizing: border-box;
+          padding-right: 1rem;
+        }
+      }
+    }
+    .mint-popup-bottom {
+      width: 100%;
+    }
+    .moreoul {
+      width: 100%;
+      li {
+        width: 100%;
+        line-height: 3rem;
+        text-align: center;
+        border-bottom: 1px solid gainsboro;
+        color: #8b8b8b;
+        &.active {
+          color: orange;
+        }
+      }
+    }
+    .bottomalter {
+      width: 100%;
+      height: 7rem;
+      display: flex;
+      background: #f0f0f0;
+      .bottom_btn {
+        margin: 0 auto;
+        width: 60%;
+        background: #3c3c3c;
+        text-align: center;
+        color: white;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}

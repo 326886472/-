@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/settingstore_fm.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div id="loadStart"></div>
+    <section>
+        <div class="headermessage">
+            <img class="goodstitle_img" :src="formatImg(picName)"/>
+            <div class="messagebox">
+                <p>{{clubNameCopy}}</p>
+                <p style="line-height: 1rem">
+                    <span class="listView-text-score">
+                        <div class="star-sorce">
+                            <i class="iconfont" :class="starClass(i)" v-for="i in 5"></i>
+                            <span v-if="true"><span class="number">{{overallScore}} / 5</span> <span class="score">分</span></span>
+                        </div>
+                    </span>
+                </p>
+                <p class="stylep">
+                    <span>环境：{{envirScore}}</span>
+                    <span>师资：{{teachScore}}</span>
+                    <span>服务：{{serverScore}}</span>
+                </p>
+            </div>
+        </div>
+        <div class="basemessage">
+            <p style="line-height: 2rem">
+        <span style="margin-left: 10px">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-xinxi"></use>
+          </svg>
+        </span>
+                <span style="line-height: 2rem">基础信息</span>
+            </p>
+            <ul class="oul">
+                <li><span class="pub_span"><span style="color: orangered">*</span>店铺名称</span><input
+                        class="messagespan" v-model="clubName"/></li>
+                <li @click="showCityPiker()"> <span class="pub_span">
+          <span style="color: orangered">*</span>城    市</span>
+                    <span class="messagespan" style="line-height: 1.5rem">{{province.city}} {{city.city}} {{region.city}}</span><i
+                            class="iconfont icon-fanhui" style="float: right"></i>
+                </li>
+                <li><span class="pub_span"><span style="color: orangered;">*</span>地    址</span>
+                    <input type="text" class="messagespan" style="line-height: 1.5rem; width: 60%;" v-model="address"/>
+                    <span style="float: right;display: inline-block; box-sizing: border-box; width: 8%; text-align: center;" @click="openMap()"><i class="iconfont icon-dizhi_"></i></span>
+                </li>
+                <li><span class="pub_span"><span style="color: orangered">*</span>负 责 人</span><input
+                        class="messagespan" v-model="leader"/></li>
+                <li><span class="pub_span"><span style="color: orangered">*</span>联系电话</span><input class="messagespan" v-model="contactNum" type="tel"/>
+                </li>
+                <li style="line-height: 1rem;padding-top: 0.5rem;padding-bottom:0.5rem"><span class="pub_span" style="display: inline-block;float: left;margin-top: 1rem">琴馆简介</span><textarea class="messagespan ta" v-model="desc"></textarea>
+                </li>
+            </ul>
+            <p style="line-height: 2rem">
+        <span style="margin-left: 10px">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-jingyingxinxi"></use>
+          </svg>
+        </span>
+                <span style="line-height: 2rem">经营信息</span>
+            </p>
+            <ul class="bottomoul">
+                <li style="line-height: 3rem" @click="showOpenHours()">
+                    <span class="bottomspan">营业时段</span>
+                    <span class="bottomchange">
+            {{openHours.value | formatOpenHours}}
+          </span>
+                </li>
+                <li style="line-height: 3rem" @click="showCreateTime()">
+                    <span class="bottomspan">创立时间</span>
+                    <span style="width: 50%" class="bottomchange">
+            <span v-show="createTime">{{createTime}}年</span>
+          </span>
+                    <span> <i class="iconfont icon-fanhui"></i></span>
+                </li>
+                <li style="line-height: 3rem">
+                    <span class="bottomspan" style="display: inline-block;float: left;margin-top: 1rem">琴馆课程</span>
+                    <span class="bottomchange">
+            <span v-for="item in courseType">{{item | courseTypeText}}</span>
+          </span>
+                </li>
+                <li class="clearfix" style="line-height: 3rem;">
+          <span class="bottomspan" style="display: inline-block;float: left;margin-top: 1rem;"><span
+                  style="color: orangered">*</span>经营品牌</span>
+                    <span class="bottomchange">
+            <span class="tradename" :class="{active: brand.indexOf(item) !== -1}" v-for="item in fixedBrand"
+                  @click="toggleFixedBrand(item)">{{item}}</span>
+            <span class="tradename addname active" v-for="(item, index) in brand"
+                  v-show="item !== '正麟殿' && item !== '钧天坊'">
+              {{item}}
+              <span class="delbtn" @click="delbutton(item)">x</span>
+            </span>
+            <span class="tradename active" @click="addBrand()">其他</span>
+          </span>
+                </li>
+                <li>
+                    <span class="bottomspan">是否有绝响</span>
+                    <span class="bottomchange">
+              <span class="tradename" :class="{active: isJuexiang == '1'}"
+                    @click="changeJX(1)">是</span>
+              <span class="tradename" :class="{active: isJuexiang == '0'}"
+                    @click="changeJX(0)">否</span>
+          </span>
+                </li>
+                <li>
+          <span class="bottomspan" style="display: inline-block;float: left;margin-top: 1rem"><span
+                  style="color: orangered">*</span>其他特色商品</span>
+                    <span class="bottomchange">
+            <span class="tradename" :class="{active: productTag.indexOf(item) !== -1}" v-for="item in fixedProduct"
+                  @click="toggleFixedProduct(item)">{{item}}</span>
+            <span class="tradename addname active" v-for="item in productTag"
+                  v-show="fixedProduct.indexOf(item) === -1">
+              {{item}}
+              <span class="delbtn" @click="delProduct(item)">x</span>
+            </span>
+            <span class="tradename active" @click="addProduct">其他</span>
+          </span>
+                </li>
+                <li>
+                    <span class="stop">停车位情况</span>
+                    <span class="bottomchange">
+                        <div style=" display: flex;align-items: center;flex: 1;">
+                            <mt-field style="font-size: 12px; border-top: none" v-model="park" type="tel"></mt-field>
+                        <span>个</span>
+                        </div>
+                   </span>
+                </li>
+            </ul>
+        </div>
+        <div class="bottombox">
+            <mt-button class="btn-black confirm" @click="confirmModify()">确认修改</mt-button>
+        </div>
+        <div style="display: flex;width: 100%;background: white">
+            <p style="display: block;margin: 0 auto;width: 90%;color: grey;font-size: 12px">
+                温馨提示：为了确保您的门店信息真实有效，您提交修改的内容将会在审核后在同步到正麟网，因此您选择修改后的3天内，不可再进行修改，敬请谅解</p>
+        </div>
+        <mt-popup
+                v-model="openHoursVisible"
+                position="bottom"
+                :closeOnClickModal="false">
+            <div class="week">
+                <div class="week-box">
+                    <div class="line" v-for="(day, index) in tempWeek" @click="select(index)">
+                        星期{{index | dayTextWeek}}
+                        <i class="iconfont" :class="day ? 'icon-checkbox-selected-copy' : 'icon-fuxuankuang'"></i>
+                    </div>
+                </div>
+                <div class="picker-button">
+                    <div class="cheng"></div>
+                    <mt-button type="primary" class="mint-button btn-black" style="background:#8c8c8c;" @click="cancelWeek()">取消</mt-button>
+                    <div class="cheng"></div>
+                    <mt-button type="primary" class="mint-button btn-black" @click="confirmWeek()">确定</mt-button>
+                    <div class="cheng"></div>
+                </div>
+            </div>
+        </mt-popup>
+        <mt-popup
+                v-model="createTimeVisible"
+                position="bottom"
+                :closeOnClickModal="false">
+            <div style="padding: 1rem;">
+                选择年份
+            </div>
+            <mt-picker :slots="createTimeSlot" @change="createTimeChange" ref="createTime"></mt-picker>
+            <div class="picker-button">
+                <div class="cheng"></div>
+                <mt-button type="primary" class="mint-button btn-black" style="background:#8c8c8c;"
+                           @click="createTimeBtn(2)">取消
+                </mt-button>
+                <div class="cheng"></div>
+                <mt-button type="primary" class="mint-button btn-black" @click="createTimeBtn(1)">确定</mt-button>
+                <div class="cheng"></div>
+            </div>
+        </mt-popup>
+        <mt-popup
+                v-model="cityPickerVisible"
+                position="bottom"
+                :closeOnClickModal="false">
+            <div style="padding: 1rem;">
+                选择地址
+            </div>
+            <div class="picker-box">
+                <mt-picker :slots="provinceList" value-key="city" @change="provinceChange" ref="province"></mt-picker>
+                <mt-picker :slots="cityList" value-key="city" @change="cityChange" ref="city"></mt-picker>
+                <mt-picker :slots="regionList" value-key="city" @change="regionChange" ref="region"></mt-picker>
+            </div>
+            <div class="picker-button">
+                <div class="cheng"></div>
+                <mt-button type="primary" class="mint-button btn-black" style="background:#8c8c8c;" @click="cancel()">取消
+                </mt-button>
+                <div class="cheng"></div>
+                <mt-button type="primary" class="mint-button btn-black" :class="{disabled: cityOnload}"
+                           @click="cityConfirm()">确定
+                </mt-button>
+                <div class="cheng"></div>
+            </div>
+        </mt-popup>
+    </section>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tempWeek:[],
+            token: getToken(),
+            clubId: '',
+            clubHead: {},
+            clubName: '',
+            clubNameCopy: '',
+            cityPickerVisible: false,
+            provinceList: [
+                {
+                    flex: 1,
+                    values: [],
+                    className: 'slot1',
+                    textAlign: 'center'
+                }
+            ],
+            cityList: [
+                {
+                    flex: 1,
+                    values: [],
+                    className: 'slot1',
+                    textAlign: 'center'
+                }
+            ],
+            regionList: [
+                {
+                    flex: 1,
+                    values: [],
+                    className: 'slot1',
+                    textAlign: 'center'
+                }
+            ],
+            province: {},
+            city: {},
+            region: {},
+            provinceTemp: {},
+            cityTemp: {},
+            regionTemp: {},
+            cityAuto: false,
+            cityOnload: false,
+            address: '',
+            leader: '',
+            contactNum: '',
+            desc: '',
+            openHours: {
+                value: [false, false, false, false, false, false, false]
+            },
+            openHoursVisible: false,
+            createTime: '',
+            createTimeTemp: '',
+            createTimeSlot: [
+                {
+                    flex: 1,
+                    values: mkSequence(1970, new Date().getFullYear()),
+                    className: 'slot1',
+                    textAlign: 'center'
+                }
+            ],
+            createTimeVisible: false,
+            courseType: ['2', '3'],
+            fixedBrand: ['正麟殿', '钧天坊'],
+            brand: [],
+            isJuexiang: '0',
+            fixedProduct: ['琴桌', '茶艺', '饰品', '家居产品', '琴具保养品', '出版物'],
+            productTag: [],
+            park: 0,
+            position: '117.21451000000002,39.116949',
+            overallScore: '0.0',
+            envirScore: '0.0',
+            serverScore: '0.0',
+            teachScore: '0.0',
+            picName: '',
+            loadFinish: 0
+        },
+        watch: {
+            loadFinish: function () {
+                if ( app.loadFinish >= 1) {
+                    loadEnd();
+                }
+            },
+            refreshDone(value) {
+                if (value == 3) {
+                    refreshDone();
+                }
+            },
+            firstDone(value) {
+                if (value == 3) {
+                }
+            }
+        },
+        filters: {
+            dayTextWeek(day) {
+                switch (day) {
+                    case 0: return '一';
+                    case 1: return '二';
+                    case 2: return '三';
+                    case 3: return '四';
+                    case 4: return '五';
+                    case 5: return '六';
+                    case 6: return '日';
+                }
+            },
+            courseTypeText(courseType) {
+                switch (courseType) {
+                    case '1':
+                        return '免费体验课';
+                    case '2':
+                        return '定期课程';
+                    case '3':
+                        return '随到随学';
+                }
+            },
+            formatOpenHours(openHours) {
+                if (openHours) {
+                    if (openHours[0] && openHours[1] && openHours[2] && openHours[3] && openHours[4] && openHours[5] && openHours[6]) {
+                        return '整周';
+                    } else if (openHours[0] && openHours[1] && openHours[2] && openHours[3] && openHours[4] && !openHours[5] && !openHours[6]) {
+                        return '周一到周五';
+                    } else {
+                        var openHoursText = '';
+                        for (var i = 0; i < openHours.length; i++) {
+                            if (openHours[i]) {
+                                var dayText = '';
+                                switch (i) {
+                                    case 0:
+                                        dayText = '周一';
+                                        break;
+                                    case 1:
+                                        dayText = '周二';
+                                        break;
+                                    case 2:
+                                        dayText = '周三';
+                                        break;
+                                    case 3:
+                                        dayText = '周四';
+                                        break;
+                                    case 4:
+                                        dayText = '周五';
+                                        break;
+                                    case 5:
+                                        dayText = '周六';
+                                        break;
+                                    case 6:
+                                        dayText = '周日';
+                                        break;
+                                }
+                                openHoursText += dayText + ',';
+                            }
+                        }
+                        openHoursText = openHoursText.substr(0, openHoursText.length - 1);
+                        return openHoursText;
+                    }
+                } else {
+                    return '';
+                }
+            },
+            formatCourseType(courseType) {
+                for (var i = 0; i < courseType.length; i++) {
+                    switch (courseType[i]) {
+                        case '1':
+                            courseType[i] = '定期课程';
+                            break;
+                        case '2':
+                            courseType[i] = '免费体验课';
+                            break;
+                        case '3':
+                            courseType[i] = '随到随学';
+                            break;
+                    }
+                }
+                return courseType.toString();
+            }
+        },
+        created: function () {
+            apiready = function () {
+
+                app.tempWeek = new Array(7);
+
+                arrayCopy(app.openHours.value, app.tempWeek);
+
+                app.clubId = api.pageParam.clubId;
+                
+                app.storeBasicDoc(function () {
+                    app.label();
+                });
+
+                api.addEventListener({
+                    name: 'addressChange'
+                }, function (res) {
+                    app.address = res.value.address;
+                    app.position = res.value.lon + ',' + res.value.lat;
+                });
+            };
+        },
+        methods: {
+            label () {
+                app.loadFinish++
+            },
+            select(params) {
+                var index = params;
+                app.tempWeek.splice(index, 1, !app.tempWeek[index]);
+            },
+            confirmWeek() {
+                app.openHoursVisible = false;
+                arrayCopy(app.tempWeek, app.openHours.value);
+                app.$emit('confirm');
+            },
+            cancelWeek() {
+                app.openHoursVisible = false;
+                arrayCopy(app.openHours.value, app.tempWeek);
+                app.$emit('cancel');
+            },
+            outChange() {
+                arrayCopy (app.openHours.value, app.tempWeek);
+            },
+            starClass(index) {
+                var score = parseFloat(app.overallScore);
+                if (score % 1 === 0) {
+                    if (index <= score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                } else {
+                    if (score - index < 0 && score - index > -1) {
+                        return 'icon-yibanxingxing1';
+                    } else if (index < score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                }
+            },
+            cancel() {
+                app.provinceTemp = app.province;
+                app.cityTemp = app.city;
+                app.regionTemp = app.region;
+                if (app.province && app.city && app.region) {
+                    app.citySet(app.province.code, app.city.code, app.region.code);
+                }
+                app.cityPickerVisible = false;
+            },
+            cityConfirm() {
+                if (!app.cityOnload) {
+                    app.province = app.provinceTemp;
+                    app.city = app.cityTemp;
+                    app.region = app.regionTemp;
+                    app.cityPickerVisible = false;
+                }
+            },
+            showCityPiker() {
+                app.cityPickerVisible = true;
+                document.activeElement.blur();
+            },
+            getCityByCode(codeOrObj, cityList) {
+                if ((typeof codeOrObj) == 'string') {
+                    for (var i = 0; i < cityList.length; i++) {
+                        if (cityList[i].code == codeOrObj) {
+                            return cityList[i];
+                        }
+                    }
+                } else {
+                    return codeOrObj;
+                }
+            },
+            provinceChange(picker, values) {
+                if (app.cityAuto) {
+                    app.cityOnload = true;
+                    app.selectAllCityDrop(2, values[0].code, function (cityList) {
+                        app.cityList[0].values = cityList;
+                    })
+                }
+                app.provinceTemp = values[0];
+            },
+            cityChange(picker, values) {
+                if (app.cityAuto) {
+                    app.cityOnload = true;
+                    app.selectAllCityDrop(3, values[0].code, function (regionList) {
+                        app.regionList[0].values = regionList;
+                        app.cityOnload = false;
+                    })
+                }
+                app.cityTemp = values[0];
+            },
+            regionChange(picker, values) {
+                if (app.cityAuto) {
+                }
+                app.regionTemp = values[0];
+            },
+            // 把 省-市-区 设置为指定的省市区
+            citySet(province, city, region) {
+                app.cityAuto = false;
+
+                var provinceTemp = app.getCityByCode(province, app.provinceList[0].values);
+                app.$refs.province.setSlotValue(0, provinceTemp);
+                app.province = provinceTemp;
+                app.provinceTemp = provinceTemp;
+
+                app.selectAllCityDrop(2, provinceTemp.code, function (cityList) {
+                    app.cityList[0].values = cityList;
+                    var cityTemp = app.getCityByCode(city, app.cityList[0].values);
+                    app.$refs.city.setSlotValue(0, cityTemp);
+                    app.city = cityTemp;
+                    app.cityTemp = cityTemp;
+
+                    app.selectAllCityDrop(3, cityTemp.code, function (regionList) {
+                        app.regionList[0].values = regionList;
+                        var regionTemp = app.getCityByCode(region, app.regionList[0].values);
+                        app.$refs.region.setSlotValue(0, regionTemp);
+                        app.region = regionTemp;
+                        app.regionTemp = regionTemp;
+
+                        app.cityAuto = true;
+                    })
+                })
+            },
+            // 获取全国城市三级联动下拉列表，type: {1: 省, 2: 市, 3: 区}
+            selectAllCityDrop(type, code, callback) {
+                var post = {
+                    cmd: 'selectAllCityDrop'
+                };
+
+                switch (type) {
+                    case 2:
+                        post.provinceCode = code;
+                        break;
+                    case 3:
+                        post.cityCode = code;
+                        break;
+                }
+
+                sendAjax(this, post,function (res) {
+                    if (callback) {
+                        callback(res.data);
+                    }
+                });
+            },
+            storeBasicDoc(callback) {
+                var post = {
+                    cmd: 'storeBasicDoc',
+                    token: app.token,
+                    clubId: app.clubId
+                };
+
+                sendAjax(this, post,function (res) {
+                    app.formatStore(res.data);
+                    app.clubName = res.data.clubName;
+                    app.clubNameCopy = app.clubName;
+                    app.address = res.data.address;
+                    app.leader = res.data.leader;
+                    app.contactNum = res.data.contactNum;
+                    app.desc = res.data.desc;
+                    app.openTime = res.data.openTime;
+                    app.createTime = res.data.createTime;
+//                    app.$refs.createTime.setSlotValue(0, parseInt(app.createTime));
+                    if (res.data.brand) {
+                        app.brand = res.data.brand.split(',');
+                    } else {
+                        app.brand = [];
+                    }
+                    app.isJuexiang = res.data.isJuexiang;
+                    if (res.data.productTag) {
+                        app.productTag = res.data.productTag.split(',');
+                    } else {
+                        app.productTag = [];
+                    }
+                    app.park = res.data.park;
+                    app.position = res.data.position;
+                    app.overallScore = res.data.overallScore;
+                    app.envirScore = res.data.envirScore;
+                    app.serverScore = res.data.serverScore;
+                    app.teachScore = res.data.teachScore;
+                    app.picName = res.data.picName;
+
+                    app.selectAllCityDrop(1, null, function (provinceList) {
+                        app.provinceList[0].values = provinceList;
+                        app.citySet(res.data.provinceCode, res.data.cityCode, res.data.regionCode);
+                    });
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            },
+            formatStore(store) {
+                if (store.openHours === '整周') {
+                    app.openHours.value = [true, true, true, true, true, true, true];
+                } else {
+                    var tempOpenHours = !store.openHours ? [] : store.openHours.split('-');
+
+                    for (var i = 0; i < tempOpenHours.length; i++) {
+                        switch (tempOpenHours[i]) {
+                            case '周一':
+                                app.openHours.value[0] = true;
+                                break;
+                            case '周二':
+                                app.openHours.value[1] = true;
+                                break;
+                            case '周三':
+                                app.openHours.value[2] = true;
+                                break;
+                            case '周四':
+                                app.openHours.value[3] = true;
+                                break;
+                            case '周五':
+                                app.openHours.value[4] = true;
+                                break;
+                            case '周六':
+                                app.openHours.value[5] = true;
+                                break;
+                            case '周日':
+                                app.openHours.value[6] = true;
+                                break;
+                        }
+                    }
+                }
+                app.outChange();
+            },
+            // 打开地图先不做了
+            openMap() {
+                openView('store_map', 'member/myPavilion/storemessage/store_map', '地图搜索', false, false, {
+                    notBounces: true,
+                    position: app.position
+                });
+            },
+            showOpenHours() {
+                app.openHoursVisible = true;
+                document.activeElement.blur();
+            },
+            createTimeChange(vue, value) {
+                app.createTimeTemp = value[0];
+            },
+            // type: {1: confirm, 2: cancel}
+            createTimeBtn(params) {
+                if (params === 1) {
+                    app.createTime = app.createTimeTemp;
+                }
+                app.createTimeVisible = false;
+            },
+            showCreateTime() {
+                app.createTimeVisible = true;
+                document.activeElement.blur();
+            },
+            toggleFixedBrand(params) {
+                var index = app.brand.indexOf(params);
+                if (index === -1) {
+                    app.brand.push(params);
+                } else {
+                    app.brand.splice(index, 1);
+                }
+            },
+            addBrand() {
+                api.prompt({
+                    title: '请输入经营品牌',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        if (!trim(ret.text)) {
+                            Toast('不能为空');
+                        } else {
+                            if (app.brand.indexOf(ret.text) !== -1) {
+                                Toast('品牌已存在');
+                            } else {
+                                app.brand.push(ret.text);
+                            }
+                        }
+                    }
+                });
+            },
+            delbutton(params) {
+                api.confirm({
+                    title: '确定删除？',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        var index = app.brand.indexOf(params);
+                        app.brand.splice(index, 1);
+                    }
+                });
+            },
+            // isJuexiang: {0: 无, 1: 有}
+            changeJX(params) {
+                app.isJuexiang = params;
+            },
+            toggleFixedProduct(params) {
+                var index = app.productTag.indexOf(params);
+                if (index === -1) {
+                    app.productTag.push(params);
+                } else {
+                    app.productTag.splice(index, 1);
+                }
+            },
+            addProduct() {
+                api.prompt({
+                    title: '请输入特色商品',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        if (!trim(ret.text)) {
+                            Toast('不能为空');
+                        } else {
+                            if (app.productTag.indexOf(ret.text) !== -1) {
+                                Toast('品牌已存在');
+                            } else {
+                                app.productTag.push(ret.text);
+                            }
+                        }
+                    }
+                });
+            },
+            delProduct(params) {
+                api.confirm({
+                    title: '确定删除？',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        var index = app.productTag.indexOf(params);
+                        app.productTag.splice(index, 1);
+                    }
+                });
+            },
+            checkPost() {
+                if (!trim(app.clubName)) {
+                    Toast('请输入琴馆名称');
+                    return false;
+                } else if (!(app.province.code && app.city.code && app.region.code)) {
+                    Toast('请选择市-区-县');
+                    return false;
+                } else if (!trim(app.address)) {
+                    Toast('请输入地址');
+                    return false;
+                } else if (!trim(app.leader)) {
+                    Toast('请输入负责人');
+                    return false;
+                } else if (!trim(app.contactNum)) {
+                    Toast('请输入联系电话');
+                    return false;
+                } else if (!regular.mobile.test(app.contactNum)) {
+                    Toast('请输入正确的联系电话');
+                    return false;
+                } else if (!app.createTime) {
+                    Toast('请选择创立时间');
+                    return false;
+                } else if (app.brand.length === 0) {
+                    Toast('请选择经营品牌');
+                    return false;
+                } else if(/^-\d+$/.test(app.park)) {
+                    Toast('停车位不能为负值');
+                } else {
+                    return true;
+                }
+            },
+            confirmModify() {
+                document.activeElement.blur();
+                if (app.checkPost()) {
+                    api.confirm({
+                        title: '修改琴馆资料后会交由后台管理员审核，是否继续?',
+                        buttons: ['取消', '确定']
+                    }, function (ret) {
+                        if (ret.buttonIndex === 2) {
+                            app.modifyBasicDoc();
+                        }
+                    });
+                }
+            },
+            modifyBasicDoc() {
+                var post = {
+                    cmd: 'modifyBasicDoc',
+                    token: app.token,
+                    clubId: app.clubId,
+                    clubName: app.clubName,
+                    provinceCode: app.province.code,
+                    cityCode: app.city.code,
+                    regionCode: app.region.code,
+                    address: app.address,
+                    leader: app.leader,
+                    contactNum: app.contactNum,
+                    desc: app.desc,
+                    openHours: app.formatOpenHoursForPost(),
+                    openTime: '00:00~24:00',
+                    createTime: app.createTime,
+                    brand: app.brand.toString(),
+                    isJuexiang: app.isJuexiang,
+                    productTag: app.productTag.toString(),
+                    park: app.park,
+                    position: app.position
+                };
+
+                sendAjax(this, post, function() {
+                    api.sendEvent({
+                        name: 'storeUpdate'
+                    });
+//                    openView('store_over', 'storeManage/store_over', '琴馆资料管理');
+                    api.openWin({
+                        name: 'store_over',
+                        url: '../store_over_win.html',
+                        pageParam: {
+                            clubName: app.clubName,
+                            clubId: app.clubName
+                        }
+                    })
+                });
+            },
+            formatOpenHoursForPost() {
+                var openHours = app.openHours.value;
+                if (openHours[0] && openHours[1] && openHours[2] && openHours[3] && openHours[4] && openHours[5] && openHours[6]) {
+                    return '整周';
+                } else {
+                    var openHoursText = '';
+                    for (var i = 0; i < openHours.length; i++) {
+                        if (openHours[i]) {
+                            var dayText = '';
+                            switch (i) {
+                                case 0:
+                                    dayText = '周一';
+                                    break;
+                                case 1:
+                                    dayText = '周二';
+                                    break;
+                                case 2:
+                                    dayText = '周三';
+                                    break;
+                                case 3:
+                                    dayText = '周四';
+                                    break;
+                                case 4:
+                                    dayText = '周五';
+                                    break;
+                                case 5:
+                                    dayText = '周六';
+                                    break;
+                                case 6:
+                                    dayText = '周日';
+                                    break;
+                            }
+                            openHoursText += dayText + '-';
+                        }
+                    }
+                    openHoursText = openHoursText.substr(0, openHoursText.length - 1);
+                    return openHoursText;
+                }
+            }
+        }
+    });
+</script>

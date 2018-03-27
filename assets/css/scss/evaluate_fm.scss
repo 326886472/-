@@ -1,0 +1,531 @@
+html, body {
+  height: 100%;
+}
+
+.vsure {
+  font-size: 12px;
+  position: absolute;
+  height: 1rem;
+  line-height: 0.9rem;
+  text-align: center;
+  background: #ff8500;
+  color: white;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 40px;
+  border-radius: 2px;
+}
+
+.evaluate {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .mobuile {
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.5;
+    z-index: 9;
+    position: fixed;
+  }
+  .header {
+    display: flex;
+    padding: 0.8rem;
+    border-bottom: 0.5rem solid #f0f0f0;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    .score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-right: 4%;
+
+      .mark {
+        padding-bottom: 3px;
+        font-size: 24px;
+        color: #ff8500;
+        font-weight: bold;
+      }
+    }
+    .shu {
+      border-right: 1px solid #333;
+      height: 50px;
+      margin: 0 10px;
+    }
+    .shop {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding-left: 4%;
+      .shop-name {
+        padding-bottom: 0.7rem;
+        display: flex;
+        color: #5a5958;
+      }
+      .number {
+        display: flex;
+        font-size: 0.8rem;
+        .support {
+          display: flex;
+          flex: none;
+          align-items: center;
+
+          .dianzan {
+            font-size: 14px;
+            position: relative;
+            top: 2px;
+          }
+
+          .num {
+            font-size: 16px;
+            vertical-align: -1px;
+          }
+        }
+        .assess {
+          margin-left: 20px;
+
+          .pinglun {
+            position: relative;
+            top: 2px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+  .title_header {
+    border-bottom: 1px solid #d9d9d9;
+    flex-shrink: 0;
+
+    li {
+      &.active {
+        background: gainsboro;
+      }
+    }
+
+    .header_oul {
+      z-index: 100;
+      position: relative;
+      display: flex;
+
+      li {
+        line-height: 1rem;
+        margin: 1rem 0;
+        border-right: 0.1rem solid #999999;
+        width: 0;
+        flex-grow: 1;
+
+        &:last-child {
+          border-right: none;
+        }
+
+        .icon-iconfontxiangxiajiantou {
+          transition: 0.5s
+        }
+      }
+    }
+    .rr {
+      transform: rotate(180deg);
+      transform-origin: 50% 45%;
+      display: inline-block;
+    }
+    .now_typelist {
+      position: absolute;
+      left: 0;
+      display: block;
+      width: 33%;
+      z-index: 11;
+
+      li {
+        width: 100%;
+        clear: both;
+        height: 2rem;
+        border-top: 1px solid gainsboro;
+        font-size: 15px;
+
+      }
+    }
+
+    .now_stars {
+      position: absolute;
+      left: 33%;
+      display: block;
+      background: white;
+      width: 33%;
+      z-index: 11;
+
+      li {
+        width: 100%;
+        clear: both;
+        height: 2rem;
+        border-top: 1px solid gainsboro;
+        font-size: 15px;
+      }
+    }
+
+    .now_staticlist {
+      position: absolute;
+      right: 0;
+      display: block;
+      width: 33%;
+      z-index: 11;
+
+      li {
+        width: 100%;
+        clear: both;
+        height: 2rem;
+        border-top: 1px solid gainsboro;
+        font-size: 15px;
+      }
+    }
+
+    .more_typelist {
+      position: absolute;
+      top: -16rem;
+      left: 0;
+      width: 33%;
+
+      li {
+        width: 100%;
+        clear: both;
+        height: 3rem;
+        border-top: 1px solid gainsboro;
+      }
+    }
+
+    .more_stars {
+      position: absolute;
+      top: -16rem;
+      left: 33.33333%;
+      width: 33%;
+      z-index: 11;
+      li {
+        width: 100%;
+        clear: both;
+        height: 3rem;
+        border-top: 1px solid gainsboro;
+      }
+    }
+
+    .more_staticlist {
+      position: absolute;
+      top: -16rem;
+      right: 0;
+      width: 33%;
+      li {
+        width: 100%;
+        clear: both;
+        height: 1.5rem;
+        border-top: 1px solid gainsboro;
+      }
+    }
+    ul {
+      width: 100%;
+      display: inline-block;
+
+      .typeofe {
+        z-index: 100;
+        font-size: 15px;
+      }
+
+      li {
+        z-index: 100;
+        width: 50%;
+        float: left;
+        text-align: center;
+        line-height: 2rem;
+        background: white;
+      }
+    }
+  }
+
+  .list-box {
+    position: relative;
+    flex-grow: 1;
+
+    .list {
+      border-top: 0.5rem solid #f0f0f0;
+
+      &:first-child {
+        border-top: 0;
+      }
+
+      &.none {
+        padding: 1rem;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .inner-box {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 0.3rem solid #F0F0F0;
+        box-sizing: border-box;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .username {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px solid #d9d9d9;
+          padding: 0.5rem 0.8rem 1rem;
+
+          .left {
+            display: flex;
+            .head-picture {
+              width: 3.3rem;
+              height: 3.3rem;
+              margin-right: 0.6rem;
+              img {
+                width: 100%;
+                height: 100%;
+                border-radius: 100%;
+              }
+            }
+            .nickname {
+              display: flex;
+              flex-direction: column;
+              padding-top: 8px;
+
+              .xinxi {
+                font-size: 14px;
+                padding-bottom: 0.3rem;
+
+                .icon-huiyuan {
+                  color: #FFBB28;
+                  padding-left: 0.2rem;
+                }
+              }
+
+              .star-sorce {
+                & > .iconfont {
+                  font-size: 13px;
+                }
+              }
+            }
+          }
+          .right {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8rem;
+            flex: none;
+            align-items: flex-end;
+            position: relative;
+
+            .dianzan {
+              display: flex;
+              align-items: center;
+              position: absolute;
+              bottom: -5px;
+              right: 0;
+
+              .icon-dianzan {
+                color: #FFAA2A;
+                font-size: 0.8rem;
+                padding: 0.1rem 0.3rem 0 0;
+              }
+            }
+          }
+        }
+        .message {
+          display: flex;
+          flex-direction: column;
+          font-size: 0.8rem;
+          margin-left: 2rem;
+          padding: 0.5rem 0.7rem 0 0;
+          .text {
+            .content {
+              overflow: hidden;
+              height: auto;
+              line-height: 1.3rem;
+              font-size: 13px;
+            }
+          }
+          .full-text, .pack {
+            padding-top: 0.6rem;
+          }
+          .pack {
+            display: none;
+          }
+          .image {
+            display: flex;
+            flex-flow: row wrap;
+            padding: 0.5rem 0;
+            .flex-img {
+              width: 5rem;
+              height: 5rem;
+              margin-right: 3%;
+              margin-bottom: 3%;
+              &:nth-child(3n) {
+                margin-right: 0;
+              }
+              img {
+                width: 100%;
+                height: 100%;
+                border-radius: 0.3rem;
+              }
+            }
+          }
+        }
+        .button {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 0.8rem;
+          margin-left: 2rem;
+          margin-right: 0.8rem;
+          padding-bottom: 12px;
+
+          .goods-type {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            .buy-date {
+              margin-top: 0.2rem;
+              font-size: 13px;
+            }
+          }
+          .reply-complain {
+            display: flex;
+            flex: 0.8;
+            justify-content: flex-end;
+            .icon-shangjiahuifu, .icon-tousu {
+              font-size: 0.8rem;
+              margin-right: 0.3rem;
+            }
+            .reply, .complain {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .complain {
+              margin-left: 8px;
+            }
+
+            .reply {
+              margin-right: 0.3rem;
+            }
+          }
+        }
+        .replay-input {
+          margin-left: 2rem;
+          margin-right: 0.8rem;
+          padding-bottom: 10px;
+
+          textarea {
+            width: 100%;
+            border: 1px solid #bbb;
+            resize: none;
+            height: 3rem;
+            margin-bottom: 8px;
+            background: #eee;
+            box-sizing: border-box;
+            padding: 3px;
+          }
+
+          .mint-button {
+            float: right;
+            height: 23px;
+            font-size: 13px;
+          }
+        }
+        .seller-reply {
+          font-size: 0.8rem;
+          margin: 0 0.8rem 0.6rem 1.2rem;
+          padding-left: 20px;
+          padding-top: 8px;
+          flex: none;
+          display: flex;
+          flex-direction: column;
+          border-top: 1px solid #d9d9d9;
+
+          &:first-child {
+            border-top: 0.1rem solid #f0f0f0;
+          }
+
+          .icon-shangjiahuifu {
+            font-size: 12px;
+            margin-right: 4px;
+          }
+
+          .seller-name {
+            font-size: 12px;
+
+            .reply-content {
+              color: #979797;
+              display: inline;
+              line-height: 1.3;
+            }
+          }
+        }
+        .all {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0.8rem 1.2rem 0 4.8rem;
+          color: #979797;
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .modal {
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0.5;
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.listView-text-score {
+  display: inline-flex;
+
+  .icon-xingxing {
+    color: #FF8500;
+    font-size: 1rem;
+
+    &.grey-star {
+      color: #BFBFBF;
+    }
+  }
+
+  .icon-yibanxingxing1 {
+    color: #ff8500;
+  }
+
+  .number {
+    color: #FFAA2A;
+  }
+
+  .iconfont {
+    margin-right: 0.2rem;
+
+    &:nth-child(5) {
+      margin-right: 0;
+    }
+  }
+}
+
+.pull-up {
+  span {
+    padding: 1rem 0;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+  }
+}

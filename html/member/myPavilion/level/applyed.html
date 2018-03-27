@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/applyed.css">
+</head>
+<body>
+<div id="app">
+    <div class="ad">
+        <img src="../../../../assets/images/level/ad.jpg" alt=""/>
+        <div class="bottom">
+            <div class="notice">您的评级申请已提交，工作人员会尽快处理！</div>
+            <div class="btn-box">
+                <a href="tel:010-67535381">
+                    <mt-button type="primary" class="mint-button btn-black">加急联系</mt-button>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+
+<script type="text/javascript">
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+            }
+        },
+        methods: {
+
+        }
+    });
+</script>

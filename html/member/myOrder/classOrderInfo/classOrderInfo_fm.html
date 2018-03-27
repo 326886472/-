@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+
+    }
+
+    .fz-box {
+      text-align: center;
+      font-size: 0.6rem;
+    }
+
+    .icon {
+      width: 0.8rem;
+      height: 0.8rem;
+      display: block;
+    }
+
+    .icon-dfk {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    /*公共头*/
+    .box-header {
+      padding: 0.2rem 0 0.2rem 1rem;
+    }
+
+    .flex-box {
+      display: flex;
+      align-items: center;
+    }
+
+    .bet {
+      justify-content: space-between;
+    }
+
+    .aound {
+      justify-content: space-around;
+    }
+
+    .content li {
+      padding: 0.5rem 1rem;
+      background: white;
+    }
+
+    .label-box span {
+      border-radius: 0.2rem;
+      padding: 0.2rem;
+    }
+
+    .label-span-left {
+      color: #F9B1A9;
+      border: 1px solid #F9B1A9;
+    }
+
+    .label-span-right {
+      color: #B1E3D4;
+      border: 1px solid #B1E3D4;
+    }
+
+    /*课程详情*/
+    .img-box {
+      width: 28%;
+      min-height: 6rem;
+      flex-shrink: 0;
+      overflow: hidden;
+      background-size: cover;
+    }
+
+    .message-box {
+      width: 70%;
+      flex-shrink: 0;
+    }
+
+    .list-box li {
+      padding: 0.5rem 1rem;
+      font-size: 0.7rem;
+      color: #666;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .bottom-box {
+      font-size: 0.7rem;
+      color: #666;
+      padding: 0.5rem 1rem;
+      background: white;
+    }
+
+    .btn-box {
+      margin-top: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.7rem;
+      color: #666;
+      background: white;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-box div {
+      width: 20%;
+      text-align: center;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid #666;
+      border-radius: 20px;
+      margin-right: 0.3rem;
+    }
+
+    .btn-box div:active {
+      background: gainsboro;
+    }
+
+    .my-color {
+      color: #FF3C00;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <ul class="content">
+    <div class="box-header">
+      订单编号:&nbsp;{{form.orderSn}}
+    </div>
+    <!--"status": 订单状态:0:等待付款;1:付款成功(等待到店)2:交易成功(待评价);3:已完成;4:订单关闭;-->
+    <!--四种状态  根据class_fm传值判断显示-->
+    <!--代付款-->
+    <li class="order-box flex-box aound" v-show="form.status ==='0' ">
+      <div>
+        <div>等待买家付款</div>
+        <div>
+          {{sendText}}
+        </div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-daifukuan"></use>
+      </svg>
+    </li>
+    <!--等待,确认到店-->
+    <li class="order-box flex-box aound" v-show="form.status ==='1' ">
+      <div>
+        <div>等待买家到店</div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-jiudianbinguan"></use>
+      </svg>
+    </li>
+    <!--完成付款-->
+    <li class="order-box flex-box aound" v-show="form.status ==='2' || form.status ==='3'  ">
+      <div>
+        <div>交易完成</div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-wancheng"></use>
+      </svg>
+    </li>
+    <!--商家不接单-->
+    <li class="order-box flex-box aound" v-show="form.status ==='4' ">
+      <div>
+        <div>商家不接单</div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-dingdan"></use>
+      </svg>
+    </li>
+    <div class="box-header">
+      买家信息
+    </div>
+    <li class="Buyers-box">
+      <div class="flex-box aui-margin-b-15">
+        <div class="flex-box">
+          <svg class="icon aui-margin-r-10" aria-hidden="true" style="font-size: 0.8rem">
+            <use xlink:href="#icon-shouhuorenxinxi"></use>
+          </svg>
+          买家:&nbsp;
+        </div>
+        <div class="aui-margin-l-5">
+          {{form.StudentName}}
+        </div>
+      </div>
+      <div class="flex-box">
+        <div class="flex-box">
+          <svg class="icon aui-margin-r-10" aria-hidden="true" style="font-size: 0.8rem">
+            <use xlink:href="#icon-dingwei1"></use>
+          </svg>
+          联系电话:
+        </div>
+        <div class="aui-margin-l-5">
+          {{form.mobile}}
+        </div>
+      </div>
+    </li>
+    <div class="box-header">
+      课程信息
+    </div>
+    <li>
+      <div class="flex-box aui-padded-b-5">
+        <svg class="icon aui-margin-r-5" aria-hidden="true" style="font-size: 0.8rem">
+          <use xlink:href="#icon-shangjia"></use>
+        </svg>
+        {{form.clubName}}
+      </div>
+      <!--课程详情-->
+      <div class="flex-box">
+        <!--图片-->
+        <div class="img-box" :style="{'background-image': 'url(' + formatImg(form.images) + ')'}">
+        </div>
+        <!--信息-->
+        <div class="message-box aui-padded-l-10">
+          <div style="color:black;font-size: 0.8rem;">{{form.courseName}}</div>
+          <div class="flex-box bet aui-padded-t-5 aui-padded-b-5">
+            <div class="fz-box label-box">
+              <!--定期-->
+              <span v-show="form.courseType === '1' ">
+                                 <span class="label-span-left">定期</span>
+                            <span v-show="form.level === '1'  "
+                                  class="label-span-right">入门级</span>
+                            <span v-show="form.level === '2'  "
+                                  class="label-span-right">提高班</span>
+                            <span v-show="form.level === '3' "
+                                  class="label-span-right">进修班</span>
+                            </span>
+
+              <!--免费体验课-->
+              <span v-show="form.courseType === '2' ">
+                                 <span class="label-span-left">免费体验课</span>
+                            <span v-show="form.level === '1' "
+                                  class="label-span-right">入门级</span>
+                            <span v-show="form.level === '2'  "
+                                  class="label-span-right">提高班</span>
+                            </span>
+
+              <!--随到随学-->
+              <span v-show="form.courseType === '3' ">
+                                 <span class="label-span-left">随到随学</span>
+                            <span v-show="form.level === '1' "
+                                  class="label-span-right">入门级</span>
+                            <span v-show="form.level === '2' "
+                                  class="label-span-right">提高班</span>
+                            </span>
+
+            </div>
+            <div class="flex-box my-color">
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-qian-copy"></use>
+              </svg>
+              {{form.perPrice}}
+            </div>
+          </div>
+          <div class="flex-box bet aui-padded-b-5">
+            <div class="fz-box">
+              <span>{{form.personCount}}人</span>
+              <span>{{form.Lesson}}课节</span>
+              <span>{{form.classHour}}分钟/课节</span>
+            </div>
+            <div class="fz-box">
+              X{{form.amount}}
+            </div>
+          </div>
+          <div class="flex-box" v-show="form.startDate !=null ">
+            <div class="fz-box aui-col-xs-4" style="text-align: left">开课日期:</div>
+            <div class="fz-box"> {{form.startDate}}至{{form.endDate}}
+              {{form.startInterval}}-{{form.endInterval}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <ul class="list-box aui-margin-t-10" v-if="form.payType !== '3' ">
+    <li>
+      <div>课程总价</div>
+      <div class="flex-box">
+        <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+          <use xlink:href="#icon-qian"></use>
+        </svg>
+        {{ form.perPrice * form.amount }}
+      </div>
+    </li>
+    <li v-if="form.payType === '2' ">
+      <div>订金预约付10%</div>
+      <div class="flex-box">
+        <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+          <use xlink:href="#icon-qian"></use>
+        </svg>
+        {{ form.realPrice }}
+      </div>
+    </li>
+    <li>
+      <div>需付款</div>
+      <div class="flex-box">
+        <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+          <use xlink:href="#icon-qian"></use>
+        </svg>
+        {{form.realPrice}}
+      </div>
+    </li>
+  </ul>
+  <div>
+    <div class="bottom-box">
+      <div class="flex-box">
+        <div class="aui-margin-r-10">创建时间:</div>
+        <div>
+          {{form.createTime}}
+        </div>
+      </div>
+      <!--<div class="flex-box">-->
+      <!--<div class="aui-margin-r-10">付款时间:</div>-->
+      <!--<div>-->
+      <!--2017-04-10 18:47-->
+      <!--</div>-->
+      <!--</div>-->
+      <div class="flex-box" v-show="form.timeToShop">
+        <div class="aui-margin-r-10">到店时间:</div>
+        <div>
+          {{form.timeToShop}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--对应各种状态btn-->
+  <div class="btn-box">
+    <div v-show="form.status ==='0'" @click="openPay(form.id)">付款</div>
+    <div v-show="form.status ==='0'" @click="courseConfirmToClub('quxiao',form.id)">取消订单</div>
+    <div @click="prompt(form.id)" v-show="form.status ==='1'">确认到店</div>
+    <div v-show="form.status ==='2'" @click="openEvaluate(form.id)">去评价</div>
+    <div v-show="form.status ==='3'" @click="courseConfirmToClub('tuikuan',form.id)">申请退款</div>
+    <!--<div v-show="form.status ==='4'">删除订单</div>-->
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      courseOrderId: '',
+      countTime: '2880',
+      sendText: '',
+      form: {},
+      formatImg: formatImg,
+      status: '',
+      firstCount: 0
+    },
+    watch: {
+      firstCount: function (val) {
+        if (val == 1) {
+          loadEnd();
+        }
+      }
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.courseOrderId) {
+          app.courseOrderId = api.pageParam.courseOrderId;
+          app.getMyCourseInfo(function () {
+            app.firstCount++;
+          });
+          app.countDownFn();
+        }
+        // 监听订单状态变化
+        api.addEventListener({
+          name: 'classOrderchange'
+        }, function (ret, err) {
+          app.getMyCourseInfo();
+        });
+      };
+    },
+    methods: {
+//      获取订单详情
+      getMyCourseInfo: function (callback) {
+        var post = {
+          cmd: 'getMyCourseInfo',
+          token: getToken(),
+          courseOrderId: app.courseOrderId
+        };
+        sendAjax(this, post, function (res) {
+          app.form = res.data;
+          if (callback) {
+            callback()
+          }
+        });
+      },
+//      确认到店
+      prompt: function (courseOrderId) {
+        api.confirm({
+          title: '确认到店',
+          buttons: ['取消', '确定']
+        }, function (ret, err) {
+          var index = ret.buttonIndex;
+          if (index === 2) {
+            var post = {
+              cmd: 'courseConfirmToClub',
+              token: getToken(),
+              courseOrderId: courseOrderId,
+              status: 1
+            };
+            sendAjax(app, post, function (res) {
+              api.sendEvent({
+                name: 'classOrderchange'
+              });
+            });
+          }
+        });
+      },
+      // 付款
+      openPay: function (courseOrderId) {
+        openView('orderPay', 'member/myOrder/orderPay/orderPay_fm', '订单支付', false, false, {
+          courseOrderId: courseOrderId
+        });
+      },
+      // 评价
+      openEvaluate: function (courseOrderId) {
+        api.openWin({
+          name: 'evaluate',
+          url: '../evaluate/evaluate_win.html',
+          pageParam: {
+            courseOrderId: courseOrderId
+          }
+        });
+      },
+      // 取消订单 退款
+      courseConfirmToClub: function (name, courseOrderId) {
+        var title = '';
+        if (name === 'quxiao') {
+          title = '确认取消订单？'
+          app.status = 3;
+        } else {
+          app.status = 2;
+          title = '确认操作？'
+        }
+
+        api.confirm({
+          title: title,
+          buttons: ['取消', '确定']
+        }, function (ret) {
+          if (ret.buttonIndex === 2) {
+            var post = {
+              cmd: 'courseConfirmToClub',
+              token: getToken(),
+              courseOrderId: courseOrderId,
+              status: app.status
+            };
+            sendAjax(app, post, function (res) {
+              api.sendEvent({
+                name: 'classOrderchange'
+              });
+            });
+          }
+        });
+      },
+      //            倒计时
+      countDownFn: function () {
+//        剩余1天23小时自动关闭
+        app.sendText = "剩余" + Math.floor(app.countTime / 1440) + '天' + app.countTime % 24 + '小时自动关闭';
+        var countDown = setInterval(function () {
+          if (app.countTime > 1) {
+            app.countTime--;
+            app.sendText = "剩余" + Math.floor(app.countTime / 1440) + '天' + app.countTime % 24 + '小时自动关闭';
+          } else {
+            app.sendText = "订单已失效";
+            app.countTime = 2880;
+            clearInterval(countDown);
+          }
+        }, 60000);
+      }
+    }
+  })
+</script>

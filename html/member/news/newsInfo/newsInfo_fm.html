@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    .icon {
+      border-radius: 0.2rem;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .icon-dd {
+      background: #47C6A4
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .content-item {
+      background: white;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+    }
+
+    .icon-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+    }
+
+    .content-right {
+      flex-shrink: 0;
+      width: 80%;
+      padding-left: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .content-right span {
+      text-align: center;
+    }
+
+    .content-bottom {
+      min-height: 4rem;
+      background: white;
+      padding: 0.5rem 1rem;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <ul class="content aui-margin-t-10">
+    <li class="aui-margin-t-5">
+      <div class="content-item">
+        <div class="icon-box" style="width: 2.5rem;height: 2.5rem;background-color:#5AC7A3 ">
+          <i class="iconfont icon-xiaoxi-dingdan" style="font-size: 1.4rem;color: white;"></i>
+        </div>
+        <div class="content-right">
+          <div style="display: flex;justify-content: space-between;width: 100%;padding-bottom: 0.3rem;">
+            <span style="display: inline-block; width: 8.5em; text-align: left;">{{form.title}}</span>
+            <span>{{form.addTime}}</span>
+          </div>
+          <!--<div class="aui-ellipsis-1" style="width: 100%;">-->
+            <!--{{form.content}}-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="content-bottom">
+        {{form.content}}
+      </div>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      sonTypeId: '',
+      messId: '',
+      form: {
+        title: '',
+        addTime: '',
+        content: ''
+      }
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.sonTypeId = api.pageParam.sonTypeId;
+        app.messId = api.pageParam.messId;
+        app.uappGetSystemNotify();
+        api.sendEvent({
+          name: 'NotifyOk'
+        });
+      };
+    },
+    methods: {
+      // 获取消息详情
+      uappGetSystemNotify: function () {
+        var post = {
+          cmd: 'uappGetSystemNotify',
+          token: getToken(),
+          typeId: '2',
+          sonTypeId: app.sonTypeId,
+          messId: app.messId
+        };
+        sendAjax(this, post, function (res) {
+//          app.notifyFormat(res.data);
+          app.form = res.data;
+        });
+      },
+      notifyFormat: function (notify) {
+        if (notify.title.length > 6) {
+          notify.title = notify.title.substr(0, 6) + '…';
+        }
+      }
+    }
+  })
+</script>

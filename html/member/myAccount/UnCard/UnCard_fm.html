@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <style>
+        #app {
+            text-align: center;
+            font-size:0.7rem;
+            color:#666;
+        }
+        .text-box{
+            padding:1rem 0;
+        }
+        .btn-box{
+            position: absolute;
+            bottom: 55%;
+            width: 100%;
+        }
+        .pass-box{
+            width:65%;
+            margin:0 auto;
+            display: flex;
+        }
+        .pass-box input{
+            text-align: center;
+            width:2rem;
+            height:2rem;
+            border:1px solid #ccc;
+        }
+        .btn-box div{
+            padding: 0.3rem 0;
+            text-align: center;
+            width:60%;
+            margin:0 auto;
+            border-radius: 0.5rem;
+            font-size:0.7rem;
+            color:#666;
+            border:1px solid #666;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="text-box">
+        请输入支付密码以验证身份,解绑后可重新添加
+    </div>
+    <div class="pass-box">
+        <input type="password" maxlength="1">
+        <input type="password" maxlength="1">
+        <input type="password" maxlength="1">
+        <input type="password" maxlength="1">
+        <input type="password" maxlength="1">
+        <input type="password" maxlength="1">
+    </div>
+    <div class="btn-box">
+        <div>确认解绑</div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {}
+  })
+</script>

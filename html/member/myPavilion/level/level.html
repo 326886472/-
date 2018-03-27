@@ -1,0 +1,162 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/level.css">
+</head>
+<body>
+<div id="app">
+    <div id="loadStart"></div>
+    <div class="level-index">
+        <div class="level-box">
+            <img :src=formatImg(levellist.picName)>
+            <div class="info">
+                <div class="title">{{levellist.clubName}}</div>
+                <div class="overall">
+                <span class="listView-text-score">
+                    <div class="star-sorce">
+                        <i class="iconfont" :class="starClass(i,levellist.overallScore)" v-for="i in 5"></i>
+                        <span v-if="false"><span class="number">{{levellist.overallScore}} / 5</span> <span class="score">分</span></span>
+                    </div>
+                </span>
+                    {{levellist.overallScore | starText}}星级
+                </div>
+                <div class="rate-box">
+                    <div>
+                        教学评分
+                        <span class="listView-text-score">
+                        <div class="star-sorce">
+                            <i class="iconfont" :class="starClass(i,levellist.teachScore)" v-for="i in 5"></i>
+                            <span v-if="false"><span class="number">{{levellist.teachScore}} / 5</span> <span class="score">分</span></span>
+                        </div>
+                    </span>
+                    </div>
+                    <div>
+                        环境评分
+                        <span class="listView-text-score">
+                        <div class="star-sorce">
+                            <i class="iconfont" :class="starClass(i,levellist.envirScore)" v-for="i in 5"></i>
+                            <span v-if="false"><span class="number">{{levellist.envirScore}} / 5</span> <span class="score">分</span></span>
+                        </div>
+                    </span>
+                    </div>
+                    <div>
+                        服务评分
+                        <span class="listView-text-score">
+                        <div class="star-sorce">
+                            <i class="iconfont" :class="starClass(i,levellist.serverScore)" v-for="i in 5"></i>
+                            <span v-if="false"><span class="number">{{levellist.serverScore}} / 5</span> <span class="score">分</span></span>
+                        </div>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="expires" v-show="levellist.payDueTime !== ''">
+            到期时间　　<span>{{levellist.payDueTime}}</span>
+        </div>
+        <div class="btn-box">
+            <mt-button type="primary" class="mint-button btn-black" @click="next">我要评级</mt-button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+
+<script type="text/javascript">
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            payDueTime: '',
+            teachScore: '',
+            serverScore: '',
+            envirScore: '',
+            levellist: [],
+            clubId: ''
+        },
+        filters: {
+                starText(score) {
+                if (score) {
+                    score = parseInt(score);
+                    switch (score) {
+                        case 1: return '一';
+                        case 2: return '二';
+                        case 3: return '三';
+                        case 4: return '四';
+                        case 5: return '五';
+                    }
+                } else {
+                    return '无';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+                app.getClubGrade()
+                loadEnd()
+            }
+        },
+        methods: {
+            starClass(index, score) {
+                var score = parseFloat(score);
+                if (score % 1 === 0) {
+                    if (index <= score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                } else {
+                    if (score - index < 0 && score - index > -1) {
+                        return 'icon-yibanxingxing1';
+                    } else if (index < score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                }
+            },
+            next() {
+                if (app.levellist.clubApplyStatus !== '2') {
+                    openView('levelApply', 'member/myPavilion/level/apply', '琴馆评级', false, false, {
+                        clubId:app.clubId
+                    });
+                } else {
+                    openView('goods_details', 'member/myPavilion/level/applyed', '琴馆评级',false,false,{
+                        clubId:app.clubId
+                    });
+                }
+            },
+            getClubGrade() {
+                var post = {
+                    cmd: 'getClubGrade',
+                    token: getToken(),
+                    clubId: app.clubId
+                };
+                sendAjax(this, post,function (res) {
+                    app.levellist = res.data
+                });
+            }
+        }
+    });
+</script>

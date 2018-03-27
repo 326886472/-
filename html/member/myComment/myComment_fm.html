@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <link rel="stylesheet" href="../../../assets/css/swiper-3.4.2.min.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+
+    }
+
+    /*头部列表*/
+    .menu {
+    }
+
+    .menu-top {
+      width: 100%;
+      font-size: 0.7rem;;
+      display: flex;
+      flex-direction: column;
+      background: white;
+      position: fixed;
+      z-index: 10;
+    }
+
+    .menu-top-top {
+      color: #666;
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .menu-top-left {
+      padding-left: 1rem;
+    }
+
+    .menu-icon-box {
+      border-left: 1px solid #ccc;
+      padding: 0.5rem 1rem;
+      background: white;
+    }
+
+    /*显隐菜单*/
+    .menu-list {
+      font-size: 0.7rem;
+      background: white;
+      padding-bottom: 1rem;
+      width: 100%;
+      border-top: 5px solid #f0f0f0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .menu-list li {
+      border: 1px solid #666;
+      color: #666;
+      text-align: center;
+      padding: 0.3rem 0;
+      border-radius: 20px;
+      width: 17%;
+      margin-left: 2%;
+      margin-top: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .changbox {
+      text-align: center;
+      font-size: 14px;
+      color: #585858;
+      height: 2rem;
+      line-height: 2rem;
+    }
+
+    .act {
+      color: #B59F88 !important;
+      border: 1px solid #B19A81 !important;
+    }
+
+    .beforeclass {
+      border-bottom: 2px solid #ab9277;
+      color: #ab9277;
+    }
+
+    .borderAct {
+      border-bottom: 5px solid #f0f0f0;
+    }
+
+    /*底部遮罩层*/
+    .menu .cover {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5;
+      background: rgba(0, 0, 0, .4);
+    }
+
+    /*模板*/
+    .content {
+      border-top: 5px solid #f0f0f0;
+      background: white;
+      display: flex;
+      padding: 2.5rem 0.5rem 0 0.5rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    /*头像*/
+    .img-box {
+      width: 3rem;
+      height: 2.5rem;
+      position: relative;
+    }
+
+    .img {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+    }
+
+    .icon-rz {
+      position: absolute;
+      bottom: 0;
+      left: 18%;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    /*内容*/
+    .content-box {
+      width: 100%;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .top-message-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .icon-hz {
+      width: 1rem;
+      height: 1rem;
+      vertical-align: -2px;
+    }
+
+    /*图片*/
+    .img-box-list {
+      display: flex;
+    }
+
+    .img-box-list img {
+      width: 2.5rem;
+      height: 2.5rem;
+      margin-top: 0.3rem;
+      margin-left: 0.4rem;
+      border-radius: 0.2rem;
+    }
+
+    /*店铺*/
+    .shop-box {
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.5rem;
+      display: flex;
+      align-items: center;
+      background: #F0F0F0;
+    }
+
+    .shop-img {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 20px;
+    }
+
+    .look-box {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0.2rem 0;
+    }
+
+    /*商家回复*/
+    .shop-back-box {
+      background: white;
+      padding: 0.5rem 0.5rem 0.5rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .shop-back-box div:last-child {
+      padding-left: 1rem;
+      flex: 5;
+    }
+
+    .shop-back-box img {
+      margin-top: 0.2rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+    }
+
+    .shop-back-box-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .shop-back-text {
+      color: #FAC4BF;
+    }
+
+    /*底部上拉加载更多样式*/
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 1rem;
+      height: 1rem;
+      margin: auto;
+    }
+
+    /*横排列表*/
+    .swiper-box-top {
+      display: flex;
+      justify-content: flex-start;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <div class="menu" id="menu">
+    <!--竖排-->
+    <div class="menu-top">
+      <div class="menu-top-top" :class="{'borderAct': !count}">
+        <!--所有分类-->
+        <div class="menu-top-left" v-show="count">
+          所有分类
+        </div>
+        <!--横排菜单-->
+        <div class="swiper-container" v-show="!count" style="width :auto">
+          <div class="swiper-wrapper" style="width: 25%">
+            <div class="swiper-slide changbox" @click="choseColor(true, item.index, false, 'second')" :class="{'beforeclass' : actIndex ===item.index }" v-for="item in menulist">
+              {{item.title}}
+            </div>
+          </div>
+        </div>
+        <div class="menu-icon-box" @click="shouMenu">
+          <i class="iconfont icon-ziyuan2-copy-2" v-show="count"></i>
+          <i class="iconfont icon-ziyuan-copy-1" v-show="!count"></i>
+        </div>
+      </div>
+      <!--显隐菜单-->
+      <ul class="menu-list" v-if="count">
+        <li v-for="item in menulist" @click="choseColor(true, item.index, false, 'first')"
+            :class="{'act' : actIndex ===item.index }">
+          {{item.title}}
+        </li>
+      </ul>
+    </div>
+    <!--遮罩层-->
+    <div class="cover" v-if="count"></div>
+  </div>
+  <!--横排-->
+  <div class="my-margin"></div>
+  <ul>
+    <li v-for="item in proList" v-show="proList !=='' ">
+      <div class="content">
+        <!--头像-->
+        <div class="img-box">
+          <img :src="formatImg(item.userPic)" alt="" class="img">
+          <svg class="icon icon-rz" aria-hidden="true" v-show="item.isUserAuth == '1'">
+            <use xlink:href="#icon-vrenzheng"></use>
+          </svg>
+        </div>
+        <!--内容-->
+        <div class="content-box">
+          <!--名字-->
+          <div class="top-message-box">
+            <div>
+              {{item.nickname}}
+              <svg class="icon icon-hz" aria-hidden="true" v-show="item.level == '1'">
+                <use xlink:href="#icon-huangguan-copy"></use>
+              </svg>
+            </div>
+            <div>{{item.evaAddTime}}</div>
+          </div>
+          <!--评论-->
+          <div>
+            <div class="text aui-padded-t-10">{{item.evaContent}}</div>
+            <!--<div>全文</div>-->
+            <!--评论图片-->
+            <div class="img-box-list">
+              <img :src="formatImg(img)" v-for="img in cutImgurl(item.evaImages)"/>
+            </div>
+          </div>
+          <!--店铺-->
+          <div class="shop-box">
+            <img :src="formatImg(item.clubPic)" alt="" class="shop-img">
+            <div class="shop-title aui-margin-l-15">
+              <div>{{item.clubName}}</div>
+              <div class="aui-padded-t-5 ">
+                <span>{{item.city}}</span>
+                <span>{{item.region}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="aui-margin-t-15" v-show="item.replyContent ===null"></div>
+          <!--商家回复数-->
+          <div class="look-box" v-show="item.replyContent !==null">
+            <div>
+              <svg class="icon icon-hz" aria-hidden="true">
+                <use xlink:href="#icon-huifu"></use>
+              </svg>
+              商家回复({{item.countSellerReply}})
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--商家回复-->
+      <div class="shop-back-box" v-show="item.replyContent !== null">
+        <div class="shop-back-img-box" v-show="item.sellerAvatar !== null ">
+          <img :src="formatImg(item.sellerAvatar)" alt="">
+        </div>
+        <div>
+          <div class="shop-back-box-top">
+            <span class="shop-back-text">商家回复:</span>
+            <span>{{item.replyTime}}</span>
+          </div>
+          <span style="width: 100%;word-break: break-all">{{item.replyContent}}</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script type="text/javascript" src="../../../assets/js/swiper-3.4.2.min.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      menulist: [
+        {
+          title: '全部',
+          index: -1
+        },
+        {
+          title: '琴馆',
+          index: 1
+        },
+        {
+          title: '课程',
+          index: 2
+        }, {
+          title: '商品',
+          index: 3
+        }
+        , {
+          title: '琴谱',
+          index: 4
+        },
+        {
+          title: '琴曲',
+          index: 5
+        },
+        {
+          title: '琴学',
+          index: 6
+        },
+        {
+          title: '新闻',
+          index: 7
+        },
+        {
+          title: '名家',
+          index: 8
+        }
+      ],
+      count: false,  //控制下拉显隐
+      counList: false,
+      actIndex: -1,
+      proList: [],
+      page: 1,
+      perPage: 5,
+      formatImg: formatImg,
+      cutImgurl: cutImgurl,
+      Swiper_tab: false,   //横排tab
+      rote: false,
+      load: false,
+      overlate: false,
+      firstCount: 0  //loader监听
+    },
+    created: function () {
+      apiready = function () {
+        app.choseColor(true, app.actIndex, false, 'second', function () {
+          app.$nextTick(function () {
+            var mySwiper = new Swiper('.swiper-container', {
+              slidesPerView: 4,
+              spaceBetween: 15
+            });
+          });
+          loadEnd();
+        });
+
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 5 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+        }, function (ret, err) {
+          app.load = true;
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.choseColor(false, app.actIndex, true, 'second');
+        });
+      };
+    },
+    methods: {
+      // 获取点评列表
+      uappGetCommentList: function () {
+        var post = {
+          cmd: 'uappGetCommentList',
+          token: getToken(),
+          cate: -1,
+          page: app.page,
+          perPage: app.perPage
+        };
+        sendAjax(this, post, function (res) {
+          app.loaderChange();
+          app.proList = res.data.proList;
+        });
+      },
+      // 下拉显隐
+      shouMenu: function () {
+        app.count = !app.count;
+      },
+      // 子列表
+      choseColor: function (ref, index, fromPull, fre, callback) {
+        MINT.Indicator.open();
+
+        // 每次点击  数据已全部加载隐藏
+        app.overlate = false;
+        app.actIndex = index;
+        if (fre === 'first') {
+          app.count = !app.count;
+        } else if (fre === 'second') {
+        } else {
+        }
+        if (index != -1 && !fromPull) {
+          app.page = 1;
+        }
+        var post = {
+          cmd: 'uappGetCommentList',
+          token: getToken(),
+          cate: index,
+          page: app.page,
+          perPage: app.perPage
+        };
+
+        sendAjax(app, post, function (res) {
+          if (ref) {
+            app.proList = res.data.proList;
+            app.rote = true;
+            app.load = false
+          } else {
+            app.proList = app.proList.concat(res.data.proList);
+            app.rote = true;
+            app.load = false
+          }
+
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+
+          MINT.Indicator.close();
+
+          if (callback) {
+            callback();
+          }
+        });
+      }
+    }
+  })
+</script>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+    }
+
+    /*tab样式*/
+    .menu-top-bar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      background: white;
+      font-size: 0.7rem;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .menu-top-bar div {
+      text-align: center;
+      width: 25%;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .mentAct {
+      color: #BEAB97;
+      border-bottom: 3px solid #BAA691;
+    }
+
+    /*订单开始*/
+    .my-margin {
+      height: 2rem;
+      background: #f0f0f0;
+    }
+
+    .content {
+      background: white;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    /*公共样式*/
+    .padding-box {
+      padding: 0 1rem;
+    }
+
+    /*一个子元素end 两个子元素bet*/
+    .end {
+      justify-content: flex-end;
+    }
+
+    .bet {
+      justify-content: space-between;
+    }
+
+    /*头*/
+    .order-top-box {
+      font-size: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /*中间*/
+    .order-content-box {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+    }
+
+    .img-box {
+      flex-shrink: 0;
+      width: 25%;
+    }
+
+    .img-box img {
+      width: 4rem;
+      height: 4.5rem;
+      margin-right: 0.5rem;
+      /*border-top-left-radius: 0.3rem;*/
+      /*border-bottom-left-radius: 0.3rem;*/
+    }
+
+    .content-center-box {
+      flex-shrink: 0;
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+    }
+
+    .flex-box-top {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .flex-box-top h6 {
+      flex-shrink: 0;
+      width: auto;
+      font-size: 0.7rem;
+    }
+
+    .flex-box-center {
+      font-size: 0.6rem;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .flex-box-center div:first-child {
+      min-width: 20%;
+      flex-shrink: 0;
+    }
+
+    .border-b {
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .price-box span:first-child {
+      margin-right: 0.5rem;
+    }
+
+    .content-center-bottom-box {
+      font-size: 0.6rem;
+      padding: 0 1rem 0.2rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /*未通过*/
+    .order-middle-box-copy {
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .order-middle-box-copy div {
+      right: 10%;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      border: 1px solid #666;
+      margin-right: 1rem;
+      color: #666;
+    }
+
+    .order-middle-box-copy div:active {
+      background: gainsboro;
+    }
+
+    .order-middle-box-copy span {
+      width: 50%;
+      overflow: hidden;
+    }
+
+    /*底部上拉加载更多样式*/
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 1rem;
+      height: 1rem;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="loadStart"></div>
+  <ul>
+    <div class="menu-top-bar">
+      <div v-for="item in menuList" @click="chagneC(true, item.mIndex)"
+           :class="{'mentAct' : myIndex ===item.mIndex }">{{item.title}}
+      </div>
+    </div>
+    <div class="my-margin"></div>
+    <li v-for="item in proList">
+      <div class="content aui-margin-t-10">
+        <!--头-->
+        <div class="order-top-box aui-padded-t-10 padding-box aui-padded-b-5">
+          <div>订单编号:&nbsp;{{item.orderSn}}</div>
+          <div v-show="item.status === '0'">等待买家付款</div>
+          <div v-show="item.status === '1'">等待买家到店</div>
+          <div v-show="item.status === '2'">交易完成</div>
+          <div v-show="item.status === '3'">订单交易完成</div>
+          <div v-show="item.status === '4'">订单关闭</div>
+        </div>
+        <!--中间-->
+        <div class="order-content-box padding-box" @click="openInfo(item.courseOrderId)">
+          <div class="img-box">
+            <img :src="formatImg(item.images)" alt="" class="img">
+          </div>
+          <div class="content-center-box aui-padded-l-10">
+            <div class="flex-box-top">
+              <h6 class="aui-ellipsis-1">{{item.courseName}}</h6>
+              <span v-show="item.courseType === '1' ">定期
+                                <span v-show="item.level === '1' ">入门级</span>
+                                <span v-show="item.level === '2' ">提高班</span>
+                                <span v-show="item.level === '3' ">进修班</span>
+                            </span>
+              <span v-show="item.courseType === '2' ">免费体验课
+                            <span v-show="item.level === '1' ">入门级</span>
+                                <span v-show="item.level === '2' ">提高班</span>
+                            </span>
+              <span v-show="item.courseType === '3' ">随到随学
+                                <span v-show="item.level === '1' ">入门级</span>
+                                <span v-show="item.level === '2' ">提高班</span>
+                            </span>
+            </div>
+            <div class="flex-box-center" v-show="item.startDate !=null ">
+              <div class="tiem-box">
+                开课日期:
+              </div>
+              <div class="aui-padded-l-5" style="text-align: center">
+                {{item.startDate}}至{{item.endDate}} <br/> {{item.startInterval}} - {{item.endInterval}}
+              </div>
+            </div>
+            <div class="flex-box-center border-b">
+              <span v-show="item.payType ==='1'">全款购买</span>
+              <span v-show="item.payType ==='2'">预付定金</span>
+              <span v-show="item.payType ==='3'">免费预约</span>
+              <div class="price-box">
+                                  <span class="">
+                                      <i class="iconfont icon-qian"></i>{{item.price}}
+                                  </span>
+                <span class="">
+                                    X{{item.amount}}
+                                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-center-bottom-box">
+          <div class="">{{item.clubName}}</div>
+          <div class="">共{{item.amount}}份课程 合计{{item.price}}</div>
+        </div>
+        <!--底部-->
+        <div class="order-middle-box-copy end aui-padded-t-5 aui-padded-b-5">
+          <div v-show="item.status ==='0'"
+               @click="courseConfirmToClub('quxiao',item.courseOrderId)">取消订单
+          </div>
+          <div v-show="item.status === '0'" @click="openPay(item.courseOrderId)">付款</div>
+          <div v-show="item.status === '1'" @click="prompt(item.courseOrderId)">确认到店</div>
+          <div v-show="item.status === '2'" @click="openEvaluate(item.courseOrderId)">去评价</div>
+          <div v-show="item.status ==='3'" @click="courseConfirmToClub('tuikuan',form.courseOrderId)">申请退款
+          </div>
+          <!--<div v-show="item.status ==='4'">删除订单</div>-->
+        </div>
+      </div>
+    </li>
+  </ul>
+  <!--v-if="rote"-->
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      myIndex: 1,
+      menuList: [
+        {
+          title: '全部',
+          mIndex: 1
+        },
+        {
+          title: '待付款',
+          mIndex: 2
+        },
+        {
+          title: '待到店',
+          mIndex: 5
+        },
+        {
+          title: '待评价',
+          mIndex: 4
+        }
+      ],
+      proList: [],
+      formatImg: formatImg,
+      status: '',
+      perPage: 5,
+      page: 1,
+      rote: false,
+      load: false,
+      overlate: false,
+      firstCount: 0  //loader监听
+    },
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.myIndex) {
+          if (api.pageParam.myIndex == 3) {
+            app.myIndex = 1;
+          } else {
+            app.myIndex = api.pageParam.myIndex;
+          }
+          app.chagneC(true, app.myIndex, false, function () {
+            loadEnd();
+          });
+        } else {
+          app.chagneC(true, app.myIndex, false, function () {
+            loadEnd();
+          });
+        }
+
+        // 监听订单状态变化
+        api.addEventListener({
+          name: 'classOrderchange'
+        }, function (ret, err) {
+          app.chagneC(true, app.myIndex);
+        });
+
+        // 上拉加载更多
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 10 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+        }, function (ret, err) {
+          app.load = true;//
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.chagneC(false, app.myIndex, true);
+        });
+      };
+    },
+    methods: {
+      // 课程订单列表 tab
+      chagneC: function (ref, index, fromPull, callback) {
+        MINT.Indicator.open();
+
+        app.overlate = false;
+        app.myIndex = index;
+        if (!fromPull) {
+          app.page = 1;
+        }
+        var post = {
+          cmd: 'uappGetMyOrder',
+          token: getToken(),
+          orderType: 2,
+          pickType: index,
+          perPage: app.perPage,
+          page: app.page
+        };
+        sendAjax(this, post, function (res) {
+          if (ref) {
+            app.proList = res.data.proList;
+            app.rote = true;
+            app.load = false
+          } else {
+            app.proList = app.proList.concat(res.data.proList);
+            app.rote = true;
+            app.load = false
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+
+          MINT.Indicator.close();
+
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      // 订单详情
+      openInfo: function (courseOrderId) {
+        openView('classOrderInfo', 'member/myOrder/classOrderInfo/classOrderInfo_fm', '订单详情', false, false, {
+          courseOrderId: courseOrderId
+        })
+      },
+      // 评价
+      openEvaluate: function (courseOrderId) {
+        api.openWin({
+          name: 'evaluate',
+          url: '../evaluate/evaluate_win.html',
+          pageParam: {
+            courseOrderId: courseOrderId
+          }
+        });
+      },
+      // 取消订单 退款
+      courseConfirmToClub: function (name, courseOrderId) {
+        var title = '';
+        if (name === 'quxiao') {
+          title = '确认取消订单？'
+          app.status = 3;
+        } else {
+          app.status = 2;
+          title = '确认操作？'
+        }
+
+        api.confirm({
+          title: title,
+          buttons: ['取消', '确定']
+        }, function (ret) {
+          if (ret.buttonIndex === 2) {
+            var post = {
+              cmd: 'courseConfirmToClub',
+              token: getToken(),
+              courseOrderId: courseOrderId,
+              status: app.status
+            };
+            sendAjax(app, post, function (res) {
+              api.sendEvent({
+                name: 'classOrderchange'
+              });
+            });
+          }
+        });
+      },
+      // 确认到店
+      prompt: function (courseOrderId) {
+        api.confirm({
+          title: '确认到店',
+          buttons: ['取消', '确定']
+        }, function (ret, err) {
+          var index = ret.buttonIndex;
+          if (index === 2) {
+            var post = {
+              cmd: 'courseConfirmToClub',
+              token: getToken(),
+              courseOrderId: courseOrderId,
+              status: 1
+            };
+            sendAjax(app, post, function (res) {
+              api.sendEvent({
+                name: 'classOrderchange'
+              });
+            });
+          }
+        });
+      },
+      // 付款
+      openPay: function (courseOrderId) {
+        openView('orderPay', 'member/myOrder/orderPay/orderPay_fm', '订单支付', false, false, {
+          courseOrderId: courseOrderId
+        });
+      }
+    }
+  })
+</script>

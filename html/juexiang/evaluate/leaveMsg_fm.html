@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      height: 100%;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background-color: #f0f0f0;
+    }
+
+    /*留言*/
+    .hr {
+      height: 1px;
+      background-color: #f0f0f0;
+    }
+
+    .msgWrap {
+      margin-top: 0.5rem;
+      width: 100%;
+      height: 9rem;
+      background-color: #fff;
+      padding-top: 10px;
+      box-sizing: border-box;
+    }
+
+    .msgWrap p {
+      text-align: right;
+      width: 100%;
+      font-size: 0.7rem;
+      color: #5a5a5a;
+      box-sizing: border-box;
+      padding-right: 15px;
+    }
+
+    .message {
+      width: 100%;
+      height: 9em;
+      line-height: 1rem;
+      font-size: 0.8rem;
+      padding: 0 1rem;
+      text-align: start;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .photo {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      /*flex: 1;*/
+    }
+
+    .img-wrap {
+      width: 3.5em;
+      height: 3.5em;
+      margin: 8px;
+    }
+
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .camera {
+      border: 1px solid #5a5a5a;
+      color: #5a5a5a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .camera i {
+      display: block;
+      margin-top: 5px;
+      margin-bottom: -7px;
+      font-size: 20px;
+    }
+
+    .camera span {
+      padding-top: 10px;
+      font-size: 14px;
+    }
+
+    /*弹出框*/
+    .mint-popup-bottom {
+      width: 100%;
+    }
+
+    .moreoul {
+      width: 100%;
+    }
+
+    .moreoul li {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      text-align: center;
+    }
+
+    .label {
+      position: relative;
+
+    }
+
+    .del {
+      position: absolute;
+      left: -10px;
+      top: -10px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: black;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      font-weight: bolder;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+
+  <!--导航-->
+  <div class="hr"></div>
+  <div class="msgWrap">
+    <textarea class="message" placeholder="请在这里输入留言文字" v-model="msg" maxlength="200"></textarea>
+    <p><span v-text="msg.length"></span><span>/200</span></p>
+  </div>
+  <div class="photo">
+    <div v-for="(photo,index) in photos">
+            <span class="img-wrap label">
+                <img :src="photo" alt="">
+                <span class="del" @click="delbtn(photo)"><i class="iconfont icon-shanchu"></i></span>
+            </span>
+
+    </div>
+
+    <div class="img-wrap camera" @click="openpop" v-show="photos.length<5">
+      <i class="iconfont icon-xiangji"></i><span v-text="photos.length">{{photos.length}}/5</span>
+    </div>
+
+  </div>
+  <mt-popup
+          v-model="more.popupVisible"
+          position="bottom">
+    <ul class="moreoul">
+      <li @click="takephoto">拍照</li>
+      <li @click="myphotos">从相册中选择</li>
+      <li @click="cancel" style="border-top: 2px solid #f0f0f0">取消</li>
+    </ul>
+  </mt-popup>
+
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      msg: '',
+      more: {
+        popupVisible: false
+      },
+      updataimg: '',
+      photos: [],
+      imgs: [],
+      i: 1
+    },
+    created: function () {
+      apiready = function () {
+        api.addEventListener({
+          name: 'jxtokenmessage'
+        }, function (ret, err) {
+          app.disble();
+        });
+      }
+    },
+    methods: {
+      delbtn: function (photo) {
+//          MessageBox.confirm('确定删除?') = function(){
+//            var index = this.addlist.indexOf(params.item);
+//          this.addlist.splice(index, 1);
+//          this.contlist = this.addlist.concat(this.imglist);
+//        });
+
+        api.confirm({
+          msg: '确认删除该图片？',
+          buttons: ['确定', '取消']
+        }, function (ret, err) {
+//              var index = ret.buttonIndex;
+//              var text = ret.text;
+          if (ret.buttonIndex == 1) {
+            var newindex = app.photos.indexOf(photo);
+            app.photos.splice(newindex, 1);
+          }
+        });
+      },
+
+      myphotos: function () {
+        api.getPicture({
+          sourceType: 'album',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.more.popupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.upEvaluateImgTmp(ret.data);
+          } else {
+          }
+        });
+      },
+      takephoto: function () {
+        api.getPicture({
+          sourceType: 'camera',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.more.popupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.upEvaluateImgTmp(ret.data);
+          } else {
+          }
+        });
+      },
+      //转化图片
+      upEvaluateImgTmp: function (res) {
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "upEvaluateImgTmp",
+              "token": getToken()
+            },
+            files: {
+              "images": res
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            app.photos.push(res);
+            app.imgs.push(ret.data);
+          } else {
+            toastMsg('失败')
+          }
+        });
+      },
+      cancel: function () {
+        app.more.popupVisible = false;
+      },
+      openpop: function () {
+        app.more.popupVisible = true;
+      },
+
+      jxPublishComment: function () {
+        var post = {
+          cmd: 'jxPublishComment',
+          token: getToken(),
+          content: app.msg,
+          images: app.imgs.join(',')
+        };
+        sendAjax(this, post, function (res) {
+          api.sendEvent({
+            name: 'jxCommentUpdate'
+          });
+          api.closeWin();
+        });
+      },
+      disble: function() {
+        if (app.msg == '') {
+          toastMsg('请在留言板评论不能为空')
+        } else {
+          app.jxPublishComment();
+//          api.openWin({
+//            name: 'evaluate_win',
+//            url: './evaluate_win.html',
+//            pageParam: {
+//              isQinAuth: app.isQinAuth,
+//              isUserAuth: app.isUserAuth
+//            },
+//            bounce: false
+//          });
+        }
+      }
+    }
+  })
+
+</script>
+
+
+<!--备注-->
+

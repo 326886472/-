@@ -1,0 +1,241 @@
+* {
+  padding: 0;
+  margin: 0; }
+
+.modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  z-index: 10; }
+
+.hide {
+  visibility: hidden; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0; }
+  html .order-home, body .order-home {
+    flex: 1;
+    color: #808080;
+    font-size: 13px; }
+    html .order-home .refer, body .order-home .refer {
+      margin-left: 0.7rem;
+      display: block;
+      background: #f0f0f0;
+      font-size: 13px;
+      line-height: 1rem; }
+    html .order-home .title_header, body .order-home .title_header {
+      width: 100%;
+      background: white;
+      z-index: 10;
+      position: relative;
+      height: 2.5rem;
+      display: flex; }
+      html .order-home .title_header .header_oul, body .order-home .title_header .header_oul {
+        width: 100%;
+        display: flex;
+        font-size: 14px;
+        text-align: center;
+        align-items: center;
+        color: #000; }
+        html .order-home .title_header .header_oul .shu, body .order-home .title_header .header_oul .shu {
+          font-size: 16px;
+          color: #999; }
+        html .order-home .title_header .header_oul .typeof, body .order-home .title_header .header_oul .typeof {
+          position: relative;
+          width: 0;
+          flex-grow: 1;
+          align-self: stretch;
+          display: flex;
+          justify-content: center;
+          align-items: center; }
+          html .order-home .title_header .header_oul .typeof > .iconfont, body .order-home .title_header .header_oul .typeof > .iconfont {
+            position: relative;
+            top: 1px; }
+          html .order-home .title_header .header_oul .typeof ul, body .order-home .title_header .header_oul .typeof ul {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            top: 2.5rem;
+            background: white; }
+            html .order-home .title_header .header_oul .typeof ul li, body .order-home .title_header .header_oul .typeof ul li {
+              height: 2.5rem;
+              line-height: 2.5rem;
+              border-top: 1px solid #d9d9d9;
+              font-size: 13px; }
+              html .order-home .title_header .header_oul .typeof ul li.active, body .order-home .title_header .header_oul .typeof ul li.active {
+                background: #d9d9d9; }
+    html .order-home .headerfirst, body .order-home .headerfirst {
+      width: 100%;
+      height: 9.2rem;
+      background: white;
+      border-bottom: 1px solid gainsboro;
+      position: relative;
+      margin-top: 0.5rem; }
+      html .order-home .headerfirst .nickname, body .order-home .headerfirst .nickname {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #242424; }
+      html .order-home .headerfirst span, body .order-home .headerfirst span {
+        font-size: 11px;
+        color: grey; }
+      html .order-home .headerfirst .fonttel, body .order-home .headerfirst .fonttel {
+        margin-left: 10px;
+        color: black;
+        font-size: 14px; }
+      html .order-home .headerfirst p, body .order-home .headerfirst p {
+        line-height: 1.5rem;
+        color: grey; }
+      html .order-home .headerfirst .gospeak, body .order-home .headerfirst .gospeak {
+        width: 100px;
+        height: 1.8rem;
+        float: right;
+        font-size: 14px;
+        position: absolute;
+        bottom: 25%;
+        right: 4%; }
+        html .order-home .headerfirst .gospeak.not, body .order-home .headerfirst .gospeak.not {
+          border-color: #7f7f7f;
+          background: #7f7f7f;
+          color: #efefef; }
+        html .order-home .headerfirst .gospeak.already, body .order-home .headerfirst .gospeak.already {
+          background: #404040;
+          color: #e9e9e9; }
+    html .order-home .shopcount, body .order-home .shopcount {
+      width: 100%;
+      display: flex;
+      padding: 10px;
+      box-sizing: border-box; }
+    html .order-home .leftbox, body .order-home .leftbox {
+      width: 6rem;
+      height: 6rem; }
+    html .order-home .oimg, body .order-home .oimg {
+      width: 6rem;
+      height: 6rem; }
+    html .order-home .rightbox, body .order-home .rightbox {
+      flex: 1;
+      padding: 0 10px;
+      box-sizing: border-box;
+      width: 70%;
+      overflow: hidden; }
+    html .order-home .overflowp, body .order-home .overflowp {
+      width: 100%;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.5rem; }
+    html .order-home .priceandnum, body .order-home .priceandnum {
+      display: flex;
+      margin-top: 18px; }
+      html .order-home .priceandnum .oprice, body .order-home .priceandnum .oprice {
+        text-align: left;
+        flex: 1;
+        color: #ff3c00;
+        font-size: 13px; }
+      html .order-home .priceandnum .onum, body .order-home .priceandnum .onum {
+        flex: 1;
+        text-align: right; }
+    html .order-home .omethods, body .order-home .omethods {
+      margin-top: 7px;
+      color: #808080; }
+    html .order-home .omessage, body .order-home .omessage {
+      border-top: 1px solid #d9d9d9;
+      border-bottom: 1px solid #d9d9d9;
+      padding: 8px 0; }
+      html .order-home .omessage > span, body .order-home .omessage > span {
+        font-size: 12px; }
+    html .order-home .opricemessage1, body .order-home .opricemessage1 {
+      padding: 8px 0px; }
+    html .order-home .opricemessage, body .order-home .opricemessage {
+      padding: 8px 0px 8px 10px; }
+      html .order-home .opricemessage > span, body .order-home .opricemessage > span {
+        margin-right: 10px;
+        color: #808080; }
+        html .order-home .opricemessage > span:first-child, body .order-home .opricemessage > span:first-child {
+          margin-right: 12px; }
+        html .order-home .opricemessage > span .sprice, body .order-home .opricemessage > span .sprice {
+          color: #ff6647; }
+    html .order-home .fource, body .order-home .fource {
+      display: flex;
+      height: auto;
+      padding: 10px;
+      box-sizing: border-box; }
+    html .order-home .publicbtn, body .order-home .publicbtn {
+      text-align: center;
+      font-size: 14px;
+      height: 1.8rem;
+      line-height: 1.7rem;
+      flex: 1;
+      margin-right: 10px;
+      border: 1px solid #7f7f7f;
+      width: 100px;
+      border-radius: 1.7rem; }
+      html .order-home .publicbtn.not, body .order-home .publicbtn.not {
+        border-color: #7f7f7f;
+        background: #7f7f7f;
+        color: #efefef; }
+      html .order-home .publicbtn.already, body .order-home .publicbtn.already {
+        background: #404040;
+        color: #e9e9e9; }
+    html .order-home .detailstime, body .order-home .detailstime {
+      flex: 1;
+      text-align: left;
+      line-height: 1.7rem; }
+    html .order-home .comment, body .order-home .comment {
+      color: #409EFF; }
+    html .order-home .detailsbox, body .order-home .detailsbox {
+      flex: 1;
+      text-align: right; }
+    html .order-home .oedercontent, body .order-home .oedercontent {
+      margin-top: 0.5rem;
+      background: white; }
+      html .order-home .oedercontent .nickname, body .order-home .oedercontent .nickname {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #242424; }
+      html .order-home .oedercontent .icon-qizi, body .order-home .oedercontent .icon-qizi {
+        float: right;
+        margin-right: 10px;
+        color: #f46c5a; }
+    html .order-home .none, body .order-home .none {
+      padding: 1rem;
+      box-sizing: border-box;
+      background: white;
+      text-align: center;
+      margin-top: 0.5rem; }
+
+.customerInformation {
+  background: #f0f0f0;
+  padding: 8px 0 8px 10px; }
+
+.relation {
+  background: #409EFF;
+  color: white; }
+
+.orderContent {
+  position: relative; }
+  .orderContent .shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    .orderContent .shadow img {
+      width: 1rem;
+      height: 1rem;
+      margin: auto; }
+
+.bottom {
+  height: 2rem;
+  text-align: center;
+  line-height: 2rem; }

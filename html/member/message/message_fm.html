@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+      background: #F0F0F0;
+    }
+
+    .content {
+      font-size: 0.7rem;
+    }
+
+    .aui-padded-b-5 {
+      padding-left: 1rem;
+    }
+
+    .img {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      margin-right: 0.2rem;
+    }
+
+    .list {
+      color: #666;
+      background: white;
+      padding-left: 0.5rem;
+    }
+
+    .list li {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.5rem 0;
+    }
+
+    .list li div:first-child {
+      flex: 1;
+    }
+
+    .list li div:last-child {
+      flex: 2;
+    }
+
+    .pull-right {
+      color: #666;
+      text-align: right;
+      padding-right: 0.75rem;
+    }
+
+    /*头像修改*/
+    .img-flex-box {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .icon-style {
+      font-size: 0.6rem;
+    }
+
+    .clip-border {
+      border-top: 10px solid #f0f0f0;
+    }
+
+    .end-box {
+      width: 40%;
+      margin: 1rem auto 0 auto;
+      padding: 0.5rem 0;
+      border-top: 1px solid #ccc;
+      color: #666;
+      position: relative;
+    }
+
+    .end-box div {
+      position: absolute;
+      font-size: 0.6rem;
+      top: -45%;
+      left: 40%;
+      background: #f0f0f0;
+      padding: 0 0.2rem;
+    }
+
+    /*选择地址*/
+    .big-box {
+      font-size: 0.7rem;
+      color: #666;
+      padding: 3%;
+      width: 94%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .picker-box {
+      width: 70%;
+      margin: 0 auto;
+      margin-bottom: 1rem;
+    }
+
+    .picker-box-city > * {
+      width: 0;
+      flex-grow: 1;
+    }
+
+    .picker-box-city {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .picker-btn-box {
+      width: 70%;
+      margin: 0 auto;
+      display: flex;
+      margin-bottom: 1rem;
+      justify-content: space-around;
+      border: 1px solid #666;
+      border-radius: 20px;
+      background-image: url("../../../assets/images/shuxian.png");
+      background-repeat: no-repeat;
+      background-size: 1% 100%;
+      background-position: center center;
+    }
+
+    .picker-btn-box div {
+      text-align: center;
+      flex: 1;
+      padding: 0.4rem 0;
+    }
+
+    .picker-btn-box div:first-child {
+      border-top-left-radius: 0.8rem;
+      border-bottom-left-radius: 0.8rem;
+    }
+
+    .picker-btn-box div:last-child {
+      border-top-right-radius: 0.8rem;
+      border-bottom-right-radius: 0.8rem;
+    }
+
+    .picker-btn-box div:active {
+      background: #bbb;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="content">
+    <div class="aui-padded-t-5 aui-padded-b-5">个人资料</div>
+    <!--第一块-->
+    <div class="list">
+      <ul>
+        <li class="" @click="openPicWin()">
+          <div>头像</div>
+          <div class="pull-right img-flex-box">
+            <img :src="form.avatarShow" alt="" class="img ">
+            <i class="iconfont icon-ziyuan2 icon-style"></i>
+          </div>
+        </li>
+        <li class="">
+          <div>用户名</div>
+          <div class="pull-right">
+            {{form.nickname}}
+          </div>
+        </li>
+        <li class="">
+          <div>个人推荐码</div>
+          <div class="pull-right">
+            {{form.recommendUser}}
+          </div>
+        </li>
+        <li class="" @click="openPicker('city')">
+          <div>城市</div>
+          <div class="pull-right">
+            {{form.city}}
+            <i class="iconfont icon-ziyuan2 icon-style"></i>
+          </div>
+        </li>
+        <li class="" @click="openChangeadd()">
+          <div>收货地址</div>
+          <div class="pull-right">
+            <i class="iconfont icon-ziyuan2 icon-style"></i>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="clip-border"></div>
+    <!--第二块-->
+    <div class="list">
+      <ul>
+        <li class="" @click="openPhone()">
+          <div>绑定手机</div>
+          <div class="pull-right">
+            {{form.mobile}}
+            <i class="iconfont icon-ziyuan2 icon-style"></i>
+          </div>
+        </li>
+        <li class="" @click="openChangecode()">
+          <div>密码</div>
+          <div class="pull-right">
+            修改
+            <i class="iconfont icon-ziyuan2 icon-style"></i>
+          </div>
+        </li>
+        <!--<li class="" @click="openChangeband()">-->
+        <!--<div>第三方账号绑定</div>-->
+        <!--<div class="pull-right">-->
+        <!--QQ,微信-->
+        <!--</div>-->
+        <!--</li>-->
+      </ul>
+    </div>
+    <div class="clip-border"></div>
+    <!--第三块-->
+    <div class="list">
+      <ul>
+        <li class="">
+          <div>会员等级</div>
+          <div class="pull-right">
+            <span v-show="form.level ==0">普通会员</span>
+            <span v-show="form.level ==1">高级会员</span>
+          </div>
+        </li>
+        <li class="">
+          <div>身份认证</div>
+          <div class="pull-right">
+            {{form.isUserAuth === "1" ? '已完成认证' : '未完成认证'}}
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="clip-border"></div>
+    <div class="list">
+      <ul>
+        <li class="" @click="openPicker('sex')">
+          <div>性别</div>
+          <div class="pull-right">
+            {{form.sex == '1' ? '男' : '女'}}
+            <i class="iconfont icon-ziyuan2 icon-style"></i>
+          </div>
+        </li>
+        <li class="" @click="openPicker('birthday')">
+          <div>生日</div>
+          <div class="pull-right">
+            {{form.birth}}
+            <i class="iconfont icon-ziyuan2 icon-style"></i>
+          </div>
+        </li>
+        <li class="">
+          <div>职业</div>
+          <div class="pull-right">
+            <input type="text" v-model="form.profession" @blur="professionChange"
+                   style="text-align: right;color:#666;font-size: 0.6rem;">
+          </div>
+        </li>
+        <li class="" @click="openPicker('time')">
+          <div>弹琴时间</div>
+          <div class="pull-right" v-show="form.playYear> 0 || form.playMonth >0">
+            {{form.playYear == 0 ? '' : form.playYear + '年' }}{{form.playMonth ==0 ? '' :form.playMonth
+            +'个月' }}
+            <i class="iconfont icon-ziyuan2 icon-style"></i>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="end-box">
+      <div>END</div>
+    </div>
+    <!--性别-->
+    <mt-popup v-model="SexpopupVisible"
+              position="bottom" style="width:100%;">
+      <div class="big-box">
+        <span>性别</span>
+        <div class='picker-box'>
+          <mt-picker :slots="changeSex" value-key="title" @change="onSexChange" ref="sexPicker">
+          </mt-picker>
+        </div>
+        <div class='picker-btn-box'>
+          <div @click="SexCancel">取消</div>
+          <div @click="SexConfirm">确定</div>
+        </div>
+      </div>
+    </mt-popup>
+    <!--选择城市-->
+    <mt-popup
+            v-model="cityPickerVisible"
+            position="bottom"
+            :closeOnClickModal="false" style="width:100%;">
+      <div style="padding: 1rem;">
+        选择地址
+      </div>
+      <div class="picker-box-city">
+        <mt-picker :slots="provinceList" :visible-item-count="3" value-key="city" @change="provinceChange"
+                   ref="province"></mt-picker>
+        <mt-picker :slots="cityList" :visible-item-count="3" value-key="city" @change="cityChange"
+                   ref="city"></mt-picker>
+        <mt-picker :slots="regionList" :visible-item-count="3" value-key="city" @change="regionChange"
+                   ref="region"></mt-picker>
+      </div>
+      <div class='picker-btn-box'>
+        <div @click="cancel">取消</div>
+        <div @click="cityConfirm">确定</div>
+      </div>
+    </mt-popup>
+    <!--选择生日-->
+    <mt-popup v-model="BirthdaypopupVisible"
+              position="bottom" style="width:100%;">
+      <div class="big-box">
+        <span>生日</span>
+        <div class='picker-box-city'>
+          <mt-picker :slots="changeBirthdayYear" value-key="title" visibleItemCount="3"
+                     @change="Yearchange" ref="Yearchange">
+          </mt-picker>
+          <mt-picker :slots="changeBirthdayMon" value-key="title" visibleItemCount="3"
+                     @change="Monthchange" ref="Monthchange">
+          </mt-picker>
+          <mt-picker :slots="changeBirthdayDay" value-key="title" visibleItemCount="3"
+                     @change="Daychange" ref="Daychange">
+          </mt-picker>
+        </div>
+        <div class='picker-btn-box'>
+          <div @click="BirthdayCancel">取消</div>
+          <div @click="BirthdayConfirm">确定</div>
+        </div>
+      </div>
+    </mt-popup>
+    <!--选择弹琴时间-->
+    <mt-popup v-model="TimepopupVisible"
+              position="bottom" style="width:100%;">
+      <div class="big-box">
+        <span>选择弹琴时间</span>
+        <div class='picker-box-city'>
+          <mt-picker :slots="playYearTime" value-key="title" visibleItemCount="3" @change="onTimeyearChange">
+          </mt-picker>
+          <mt-picker :slots="playMonthTime" value-key="title" visibleItemCount="3"
+                     @change="onTimeMonthChange">
+          </mt-picker>
+        </div>
+        <div class='picker-btn-box'>
+          <div @click="TimeCancel">取消</div>
+          <div @click="TimeConfirm">确定</div>
+        </div>
+      </div>
+    </mt-popup>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      form: {
+        avatar: '',
+        avatarShow: '',
+        nickname: '',
+        sex: '',
+        mobile: '',
+        address: '',
+        city: '',
+        birth: '',
+        supperExpire: '',
+        isQinAuth: '',
+        level: '',
+        wxBind: '',
+        qqBind: '',
+        playYear: '',
+        playMonth: '',
+        profession: '',
+        provinceCode: '',
+        cityCode: '',
+        regionCode: ''
+      },
+      formatImg: formatImg,
+      SexpopupVisible: false,  //性别
+      changeSex: [
+        {
+          flex: 1,
+          values: ['男性', '女性'],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],        //性别
+      sexTemp: '',
+      TimepopupVisible: false, //弹琴时间
+      playYearTime: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],        //弹琴时间
+      playMonthTime: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],  // 弹琴时间
+
+      playYear: '',  //弹琴时间(年)
+      playYearTemp: '',//（临时）
+      playMonth: '', //弹琴时间(月)
+      playMonthTemp: '', //(临时)
+      BirthdaypopupVisible: false, //生日
+      changeBirthdayYear: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],  //年
+      changeBirthdayMon: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],  //月
+      changeBirthdayDay: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'left'
+        }
+      ],  //日
+      yearTmep: '',
+      MonthTmep: '',
+      DayTmep: '',
+      // 三级联动
+      cityPickerVisible: false,
+      provinceList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      cityList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      regionList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      province: {},
+      city: {},
+      region: {},
+      provinceTemp: {},
+      cityTemp: {},
+      regionTemp: {},
+      cityAuto: false,
+      cityOnload: false,
+      msg: {
+        cityName: '',
+        provinceCode: '',
+        cityCode: '',
+        regionCode: ''
+      }
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.getUserInfo();
+        // 修改头像
+        api.addEventListener({
+          name: 'changeImg'
+        }, function (ret, err) {
+          app.getUserInfo();
+        });
+        // 城市
+        // 三级联动
+        var vueObj = app;
+        // 获取省市
+        vueObj.$nextTick(function () {
+          vueObj.selectAllCityDrop(1, null, function (provinceList) {
+            vueObj.provinceList[0].values = provinceList;
+            vueObj.provinceTemp = provinceList[0];
+
+            vueObj.selectAllCityDrop(2, provinceList[0].code, function (cityList) {
+              vueObj.cityList[0].values = cityList;
+              vueObj.cityTemp = cityList[0];
+
+              vueObj.selectAllCityDrop(3, cityList[0].code, function (regionList) {
+                vueObj.regionList[0].values = regionList;
+                vueObj.regionTemp = regionList[0];
+                vueObj.cityAuto = true;
+              })
+            })
+          });
+        });
+        // 生日
+        var date = new Date();
+        var year = date.getFullYear();
+        app.changeBirthdayYear[0].values = app.adddanwei(getSeq(101, year - 100), '年');
+        app.changeBirthdayMon[0].values = ['01月', '02月', '03月', '04月', '05月', '06月', '07月', '08月', '09月', '10月', '11月', '12月'];
+        app.getbirthDay();
+        // 弹琴时间
+        app.playYearTime[0].values = app.adddanwei(getSeq(50, 1), '年');
+        app.playMonthTime[0].values = app.adddanwei(getSeq(12, 1), '个月');
+
+        app.$nextTick(function () {
+          // 性别
+          app.initSexPicker();
+        });
+      };
+    },
+    methods: {
+      adddanwei: function (values, danwei) {
+        var arr = new Array(values.length);
+        for (var i = 0; i < values.length; i++) {
+          arr[i] = values[i] + danwei;
+        }
+        return arr;
+      },
+      // 获取用户个人资料
+      getUserInfo: function () {
+        var post = {
+          cmd: 'getUserInfo',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.form = res.data;
+          app.form.avatarShow = formatImg(res.data.avatar);
+        });
+      },
+      // 头像修改
+      openPicWin: function () {
+        openView('changeImg', 'member/message/changeImg', '选择头像', false, false, {
+          avatar: app.form.avatar
+        });
+      },
+      // 收货地址
+      openChangeadd: function () {
+        openView('addressList', 'member/message/addressList/addressList_fm', '收货地址列表', false, false, {
+          fromMy: true
+        });
+      },
+      // 修改手机
+      openPhone: function () {
+        openView('changePhone', 'member/message/changePhone/changePhone_fm', '修改登录手机', false, false, {
+          mobile: app.form.mobile
+        })
+      },
+      // 修改密码
+      openChangecode: function () {
+        openView('changeCode', 'member/message/changeCode/changeCode_fm', '修改登录密码', false, false, {
+          mobile: app.form.mobile
+        })
+      },
+//      修改三方（暂不做）
+      openChangeband: function () {
+        openView('sanFang', 'member/message/sanFang/sanFang_fm', '第三方绑定', false, false, {
+          qqBind: app.form.qqBind,
+          wxBind: app.form.wxBind
+        })
+      },
+//      修改性别,弹琴时间,城市,生日
+      openPicker: function (name) {
+        if (name === 'sex') {
+          app.SexpopupVisible = true;
+        } else if (name === 'city') {
+          app.cityPickerVisible = true;
+        } else if (name === 'time') {
+          app.TimepopupVisible = true;
+        } else {
+          app.BirthdaypopupVisible = true;
+        }
+      },
+//      性别选择
+      onSexChange: function (picker, values) {
+        if (values[0]) {
+          if (values[0] == '男性') {
+            this.sexTemp = 1;
+          } else {
+            this.sexTemp = 2;
+          }
+        }
+      },
+      SexCancel: function () {
+        if (app.form.sex === '1') {
+          app.sexTemp = '1';
+        } else {
+          app.sexTemp = '2';
+        }
+        app.SexpopupVisible = false;
+      },
+      initSexPicker: function () {
+////        性别
+        if (app.form.sex == '1') {
+          app.$refs.sexPicker.setSlotValue(0, '男性');
+        } else {
+          app.$refs.sexPicker.setSlotValue(0, '女性');
+        }
+////        生日
+//        if (app.form.birth != '' || app.form.birth != null) {
+//          var birthTemp = (app.form.birth).split('-');
+//          app.$refs.Yearchange.setSlotValue(0, birthTemp[0]);
+//          app.$refs.Monthchange.setSlotValue(0, birthTemp[1]);
+//          app.$refs.Daychange.setSlotValue(0, birthTemp[2]);
+//        }
+      },
+      SexConfirm: function () {
+        app.form.sex = app.sexTemp;
+        app.SexpopupVisible = false;
+        var post = {
+          cmd: 'saveUserInfo',
+          token: getToken(),
+          sex: app.form.sex,
+          birth: app.form.birth,
+          country: app.form.country,
+          city: app.form.city,
+          area: app.form.area
+        };
+        sendAjax(this, post, function (res) {
+          toastMsg('修改成功')
+        });
+      },
+      //三级联动开始城市选择
+      cancel: function () {
+        app.provinceTemp = app.province;
+        app.cityTemp = app.city;
+        app.regionTemp = app.region;
+        if (app.province.code && app.city.code && app.region.code) {
+          app.citySet(app.province.code, app.city.code, app.region.code);
+        }
+        app.msg.cityName = app.province.city + '-' + app.city.city + '-' + app.region.city;
+        app.cityPickerVisible = false;
+      },
+      cityConfirm: function () {
+        if (!app.cityOnload) {
+          app.province = app.provinceTemp;
+          app.city = app.cityTemp;
+          app.region = app.regionTemp;
+          app.form.provinceCode = app.province.code;
+          app.form.cityCode = app.city.code;
+          app.form.regionCode = app.region.code;
+          app.form.city = app.province.city + '-' + app.city.city + '-' + app.region.city;
+          app.cityPickerVisible = false;
+        }
+        var post = {
+          cmd: 'saveUserInfo',
+          token: getToken(),
+          birth: app.form.birth,
+          sex: app.form.sex,
+          country: app.form.provinceCode,
+          city: app.form.cityCode,
+          area: app.form.regionCode
+        };
+        sendAjax(this, post, function (res) {
+          toastMsg('修改成功');
+        });
+      },
+      getCityByCode: function (codeOrObj, cityList) {
+        if ((typeof codeOrObj) === 'string') {
+          for (var i = 0; i < cityList.length; i++) {
+            if (cityList[i].code === codeOrObj) {
+              return cityList[i];
+            }
+          }
+        } else {
+          return codeOrObj;
+        }
+      },
+      provinceChange: function (picker, values) {
+        if (this.cityAuto) {
+          app.cityOnload = true;
+          this.selectAllCityDrop(2, values[0].code, function (cityList) {
+            app.cityList[0].values = cityList;
+          })
+        }
+        this.provinceTemp = values[0];
+      },
+      cityChange: function (picker, values) {
+        var cityobj = this;
+        if (this.cityAuto) {
+          app.cityOnload = true;
+          app.selectAllCityDrop(3, values[0].code, function (regionList) {
+            app.regionList[0].values = regionList;
+            app.cityOnload = false;
+          })
+        }
+        this.cityTemp = values[0];
+      },
+      regionChange: function (picker, values) {
+        this.regionTemp = values[0];
+      },
+      // 把 省-市-区 设置为指定的省市区
+      citySet: function (province, city, region) {
+        app.cityAuto = false;
+        var provinceTemp = app.getCityByCode(province, app.provinceList[0].values);
+        app.$refs.province.setSlotValue(0, provinceTemp);
+        app.province = provinceTemp;
+        app.provinceTemp = provinceTemp;
+
+        app.selectAllCityDrop(2, provinceTemp.code, function (cityList) {
+          app.cityList[0].values = cityList;
+          var cityTemp = app.getCityByCode(city, app.cityList[0].values);
+          app.$refs.city.setSlotValue(0, cityTemp);
+          app.city = cityTemp;
+          app.cityTemp = cityTemp;
+
+          app.selectAllCityDrop(3, cityTemp.code, function (regionList) {
+            app.regionList[0].values = regionList;
+            var regionTemp = app.getCityByCode(region, app.regionList[0].values);
+            app.$refs.region.setSlotValue(0, regionTemp);
+            app.region = regionTemp;
+            app.regionTemp = regionTemp;
+
+            app.cityAuto = true;
+          })
+        })
+      },
+      // 获取全国城市三级联动下拉列表，type: {1: 省, 2: 市, 3: 区}
+      selectAllCityDrop: function (type, code, callback) {
+        var post = {
+          cmd: 'selectAllCityDrop'
+        };
+        switch (type) {
+          case 2:
+            post.provinceCode = code;
+            break;
+          case 3:
+            post.cityCode = code;
+            break;
+        }
+        sendAjax(app, post, function (res) {
+          if (callback) {
+            callback(res.data);
+          }
+        });
+      },
+//      三级联动结束
+      getbirthDay: function () {
+        this.changeBirthdayDay[0].values = this.adddanwei(getSeq(this.days(this.yearTmep, this.MonthTmep), 1), '日');
+      },
+//        生日选择
+      Yearchange: function (picker, values) {
+        if (values[0]) {
+          this.yearTmep = values[0].substr(0, 4);
+        }
+        this.getbirthDay();
+      },
+      Monthchange: function (picker, values) {
+        if (values[0]) {
+          this.MonthTmep = values[0].substr(0, 2);
+        }
+        this.getbirthDay();
+      },
+      Daychange: function (picker, values) {
+        if (values[0]) {
+          this.DayTmep = values[0].substr(0, 2);
+        }
+      },
+      days: function (year, month) {
+        var dayCount;
+        now = new Date(year, month, 0);
+        dayCount = now.getDate();
+        return dayCount;
+      },
+      //      取消
+      BirthdayCancel: function () {
+        app.BirthdaypopupVisible = false;
+      },
+      //      确定
+      BirthdayConfirm: function () {
+        app.form.birth = app.yearTmep + '-' + app.MonthTmep + '-' + app.DayTmep;
+        app.BirthdaypopupVisible = false;
+        var post = {
+          cmd: 'saveUserInfo',
+          token: getToken(),
+          birth: app.form.birth,
+          sex: app.form.sex,
+          country: app.form.country,
+          city: app.form.city,
+          area: app.form.area
+        };
+        sendAjax(this, post, function (res) {
+          toastMsg('修改成功')
+        });
+      },
+//      弹琴时间
+      onTimeyearChange: function (picker, values) {
+        if (values[0]) {
+          app.playYearTemp = values[0].substr(0, 2)
+        }
+      },
+      onTimeMonthChange: function (picker, values) {
+        if (values[0]) {
+          app.playMonthTemp = values[0].substr(0, 2)
+        }
+      },
+      TimeCancel: function () {
+        app.TimepopupVisible = false;
+      },
+      TimeConfirm: function () {
+        app.form.playYear = app.playYearTemp;
+        app.form.playMonth = app.playMonthTemp;
+        app.TimepopupVisible = false;
+//        上传弹琴时间
+        var post = {
+          cmd: 'updatePlayTime',
+          token: getToken(),
+          playYear: app.form.playYear,
+          playMonth: app.form.playMonth,
+          profession: app.form.profession
+        };
+        sendAjax(this, post, function (res) {
+          toastMsg('修改成功')
+        });
+      },
+//      上传职业
+      professionChange: function () {
+        var post = {
+          cmd: 'updatePlayTime',
+          token: getToken(),
+          playYear: app.form.playYear,
+          playMonth: app.form.playMonth,
+          profession: app.form.profession
+        };
+        sendAjax(this, post, function (res) {
+          toastMsg('修改成功')
+        });
+      }
+    }
+  })
+</script>

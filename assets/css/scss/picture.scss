@@ -1,0 +1,31 @@
+html {
+  height: 100%;
+
+  body {
+    height: 100%;
+  }
+}
+
+.photo {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background: black;
+
+  .mint-swipe {
+    width: 100%;
+
+
+    .mint-swipe-items-wrap, .mint-swipe-item {
+      div {
+        display: flex !important;
+        align-items: center;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+}

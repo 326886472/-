@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <link rel="stylesheet" href="../../../assets/css/swiper-3.4.2.min.css">
+  <style>
+
+    .mint-swipe-indicator {
+      width: 5px;
+      height: 5px;
+      display: inline-block;
+      border-radius: 100%;
+      margin: 0 3px;
+      border: 1px solid white;
+      opacity: 0.8;
+    }
+
+    #app {
+      background: rgb(248, 248, 248);
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .headerbox {
+      width: 100%;
+      height: 38%;
+      background: url('../../../assets/images/idnexheader.png');
+      background-size: 100% 100%;
+    }
+
+    .navimg {
+      width: 100%;
+      height: 5rem;
+      background: white;
+      margin-top: 0.5rem;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .imgli {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .texttitle {
+      text-align: center;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      font-size: 16px;
+      background: #f8f8f8;
+      font-weight: 100;
+    }
+
+    .bodybox {
+      width: 100%;
+      height: auto;
+      background: #f0f0f0;
+    }
+
+    .boxlist {
+      width: 100%;
+      height: 16rem;
+    }
+
+    .imgbox {
+      width: 100%;
+      height: 73%;
+      position: relative;
+    }
+
+    .imgbox span {
+      color: white;
+      font-size: 10px;
+    }
+
+    .boxtext {
+      text-align: center;
+      font-weight: 600;
+      background: white;
+      width: 100%;
+      height: 3.5rem;
+    }
+
+    .publiccourse {
+      flex: 1;
+    }
+
+    .leftcourse {
+      text-align: left;
+      padding-left: 20px;
+      box-sizing: border-box;
+      font-size: 13px;
+    }
+
+    .rightcourse {
+      text-align: right;
+      display: flex;
+      padding-top: 20px;
+      padding-right: 25px;
+      box-sizing: border-box;
+    }
+
+    .coursefont {
+      font-size: 19px;
+    }
+
+    .bottomborderbox {
+      width: 100%;
+      height: 5px;
+      background: red;
+    }
+
+    .contp {
+      font-size: 14px;
+      color: #a3a3a3;
+      display: inline-block;
+      width: 80%;
+      overflow: hidden; /*溢出隐藏*/
+      text-overflow: ellipsis; /*以省略号...显示*/
+      white-space: nowrap; /*强制不换行*/
+    }
+
+    .goodchange {
+      width: 100%;
+      text-align: center;
+      line-height: 2rem;
+      font-size: 15px;
+    }
+
+    .courseclubname {
+      font-size: 17px;
+    }
+
+    .imgbottom {
+      width: 100%;
+      height: auto;
+      padding-bottom: 0.5rem;
+      z-index: 10;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    .fontp {
+      font-size: 12px;
+      color: white;
+      text-align: center;
+    }
+
+    .newfont {
+      color: #ff4d4d;
+      float: left;
+      margin-right: 0.1rem;
+      font-size: 23px
+    }
+
+    .fontbox {
+      float: left;
+      border-right: 1px solid white;
+      margin-right: 0.6rem;
+      padding-left: 0.2rem;
+      padding-right: 0.6rem;
+      box-sizing: border-box;
+    }
+
+    .fontboxsecond {
+      float: left;
+      margin-right: 0.3rem;
+      padding-left: 0.2rem;
+      padding-right: 0.6rem;
+      box-sizing: border-box;
+    }
+
+    .album {
+      width: 3rem;
+      height: 1.2rem;
+      background: #f16051;
+      position: absolute;
+      top: 1rem;
+      left: 0;
+      color: white;
+      text-align: center;
+      line-height: 1.2rem;
+      border-bottom-right-radius: 7px;
+      border-top-right-radius: 7px;
+      font-size: 14px;
+    }
+
+    .freeclass {
+      width: 5rem;
+      height: 1.2rem;
+      background: #f16051;
+      position: absolute;
+      top: -0.5rem;
+      left: 0;
+      color: white;
+      text-align: center;
+      line-height: 1.2rem;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    .rock {
+      width: 3rem;
+      height: 1.2rem;
+      background: #f4b52f;
+      position: absolute;
+      top: 1rem;
+      left: 0;
+      color: white;
+      text-align: center;
+      line-height: 1.2rem;
+      border-bottom-right-radius: 7px;
+      border-top-right-radius: 7px;
+      font-size: 14px;
+    }
+
+    .publicbackground {
+      background-size: 100% 100%;
+    }
+
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+      margin-top: 1rem;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 20px;
+      height: 20px;
+      margin: auto;
+    }
+
+    .coursetype {
+      width: 90%;
+      height: 100%;
+      margin: 0 auto;
+      background-size: cover;
+      position: relative;
+      background-position: center;
+      display: flex;
+      align-items: center;
+    }
+
+    .coursetype .course-name {
+      color: white;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .coursetype .club-name {
+      color: white;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .coursebottomstyle {
+      display: flex;
+      font-size: 12px;
+      color: #646464;
+      line-height: 1.5rem;
+      background: transparent;
+    }
+
+    .formateimage {
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      height: 100%;
+    }
+
+    /*swiper轮播*/
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: black;
+      border: 1px solid red;
+    }
+
+    .swiper-pagination-bullet {
+      border: 1px solid white;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="loadStart"></div>
+  <div class="headerbox">
+    <!--<div class="swiper-container">-->
+    <!--<div class="swiper-wrapper">-->
+    <!--<div class="swiper-slide publicbackground" v-for="item in rolllist"-->
+    <!--:style="{'background-image':'url(' + formatImg(item.images) + ')'}"></div>-->
+
+    <!--</div>-->
+    <!--<div class="swiper-pagination"></div>-->
+    <!--</div>-->
+  </div>
+
+  <div class="navimg">
+    <ul style="display: flex">
+      <li class="imgli" v-for="(item,index) in minimg" @click="goup(index)">
+        <svg class="icon" aria-hidden="true" style="width: 3rem;height:3rem">
+          <use :xlink:href="item.font"></use>
+        </svg>
+        <span style="font-size: 14px;line-height: 1.2rem;text-align: center">{{item.listname}}</span>
+      </li>
+    </ul>
+  </div>
+  <div class="goodchange">-- 优质精选 --</div>
+  <div class="bodybox">
+    <div class="boxlist" v-for="(item,index) in homelist">
+      <div class="imgbox">
+        <div class="formateimage" @click="gotodetails(item.clubOrCourse,index)"
+             v-if="item.clubOrCourse == 1 || item.clubOrCourse == 2 || item.clubOrCourse == 3">
+          <div class="coursetype" :style="{'background-image':'url(' + formatImg(item.images,true) + ')'}">
+            <div class="freeclass" v-if="item.clubOrCourse==2" style="background: #49c6a4">免费体验课</div>
+            <div class="freeclass" v-if="item.clubOrCourse==1" style="background: #49c6a4">定期课程</div>
+            <div class="freeclass" v-if="item.clubOrCourse==3" style="background: #49c6a4">随到随学</div>
+            <div style="width: 100%;">
+              <div class="course-name">
+                {{item.courseName}}
+              </div>
+              <div class="club-name">
+                {{item.clubName}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="formateimage" @click="gotodetails(item.clubOrCourse,index)" v-if="item.clubOrCourse == 4"
+             :style="{'background-image':'url(' + formatImg(item.picName,true) + ')'}"></div>
+        <div class="formateimage" @click="gotodetails(item.clubOrCourse,index)" v-if="item.clubOrCourse == 5"
+             :style="{'background-image':'url(' + formatImg(item.images,true) + ')'}"></div>
+
+        <div class="imgbottom" v-if="item.clubOrCourse == 4||item.clubOrCourse == 5">
+          <div style="float: right">
+            <i class="iconfont newfont icon-shixin" v-if="item.ifAgree==1"></i>
+            <i style="color:white" class="iconfont newfont icon-ziyuan12" v-else></i>
+            <div class="fontbox">
+              <p class="fontp">支持</p>
+              <p class="fontp">{{item.countAgree}}</p>
+            </div>
+            <i style="color: white;float: left;font-size: 23px" class="iconfont icon-pinglun"></i>
+            <div class="fontboxsecond">
+              <p class="fontp">评论</p>
+              <p class="fontp">{{item.countEvaluate}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="album" v-if="item.clubOrCourse==4">琴馆</div>
+        <div class="rock" v-if="item.clubOrCourse==5">绝响</div>
+      </div>
+      <div class="boxtext" v-if="item.clubOrCourse==4||item.clubOrCourse==5">
+        <p style="line-height: 2rem" class="courseclubname" v-if="item.clubOrCourse!=5">{{item.clubName}}</p>
+        <p style="line-height: 2rem" class="courseclubname" v-if="item.clubOrCourse==5">{{item.goodName}}</p>
+        <p v-if="item.clubOrCourse==4" class="contp">{{item.desc}}</p>
+        <p v-if="item.clubOrCourse==5" class="contp">{{item.goodDesc}}</p>
+        <p class="contp">{{item.courseName}}</p>
+      </div>
+
+      <div class="boxtext coursebottomstyle" v-else>
+        <div class="leftcourse publiccourse">
+          <p>开讲时间：{{item.startDate}}</p>
+          <p>主讲人： {{item.teacher}}</p>
+        </div>
+        <div class="rightcourse">
+          <div style="flex: 1;text-align: right;margin-right: 3px;">
+            <i style="color: #ff7c7a" class="iconfont coursefont icon-ziyuan12" v-if="item.ifAgree==1"></i>
+            <i style="color:#909090" class="iconfont coursefont icon-ziyuan12" v-else></i>
+          </div>
+          <div style="text-align: left;line-height:13px;color: #909090;font-size: 10px">
+            <div style="line-height: 15px">支持</div>
+            <div style="text-align: center;padding-left: 6px">{{item.countAgree}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script type="text/javascript" src="../../../assets/js/swiper-3.4.2.min.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      topStatus: '',
+      //          轮播数组
+      rolllist: [],
+      minimg: [
+        {
+          font: '#icon-shitiqinguan',
+          listname: '实体琴馆'
+        },
+        {
+          font: '#icon-jiaoxuekecheng',
+          listname: '教学课程'
+        },
+        {
+          font: '#icon-juexiang',
+          listname: '绝响'
+        },
+        {
+          font: '#icon-paihangbang',
+          listname: '排行榜'
+        },
+        {
+          font: '#icon-guqinbiaozhi4',
+          listname: '产品认证'
+        }
+      ],
+      homelist: [],
+      codecity: 110000,
+      indexcode: '',
+      courseId: '',
+      pos: [],  // 给个坐标默认值 北京！天安门！
+      aMap: null,
+      rote: false,
+      overlate: false,
+      load: false,
+      page: 1,
+      perPage: 2
+    },
+    filters: {},
+    created: function () {
+//      $api.rmStorage('cityName');
+//      $api.rmStorage('cityCode');
+
+      apiready = function () {
+        app.uappHomeRollPic();
+
+        app.getGreatPickForuapp(1);  // 用户可能未定位过，先调这个方法
+        app.aMap = api.require('aMap');
+        app.openMap(function () {
+          app.getLocation(function (pos) {
+            app.pos[0] = pos.lon;
+            app.pos[1] = pos.lat;
+
+            if (!$api.getStorage('cityCode') || !$api.getStorage('cityName')) {
+              app.getNameFromCoords(function () {
+                api.sendEvent({name: 'cityReady'});
+                app.getGreatPickForuapp(1);
+              });
+            } else {
+              app.getGreatPickForuapp(1);
+            }
+          });
+        });
+
+
+        api.addEventListener({
+          name: 'changecity'
+        }, function (ret, err) {
+          MINT.Indicator.open('城市切换中...');
+          app.codecity = ret.value.citycode;
+          app.page = 1;
+          app.getGreatPickForuapp(1);
+        });
+
+        // 这个是监听滑动
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+          // 滑动时候改变的值
+        }, function (ret, err) {
+          app.load = true;//
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.getGreatPickForuapp();
+        });
+
+        api.setWinAttr({
+          slidBackEnabled: false
+        });
+
+        api.addEventListener({
+          name: 'keyback'
+        }, function () {
+          api.closeWidget();
+        });
+
+        api.addEventListener({
+          name: 'viewdisappear'
+        }, function (ret, err) {
+          closeWindow('login');
+        });
+
+        refresh(function () {
+          app.page = 1;
+          app.getGreatPickForuapp(1, function () {
+            loadEnd();
+            refreshDone();
+          });
+        });
+
+        app.$nextTick(function () {
+          var mySwiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            loop: false,
+            observer: true
+          })
+        });
+        api.addEventListener({
+          name: 'agreezan'
+        }, function (ret, err) {
+          app.getGreatPickForuapp(1);
+        });
+
+      };
+    },
+    methods: {
+      bounceDisable: function () {
+        api.setFrameAttr({
+          name: api.frameName,
+          bounces: false
+        });
+      },
+      bounceEnabled: function () {
+        api.setFrameAttr({
+          name: api.frameName,
+          bounces: true
+        });
+      },
+      // 页面5个nav跳转
+      goup: function (index) {
+        if (index == 0) {
+          api.sendEvent({
+            name: 'sendindex',
+            extra: {
+              navstatusindex: 0
+            }
+          });
+          api.setFrameGroupIndex({
+            name: 'index_fm',
+            scroll: true,
+            index: 1
+          });
+        }
+        if (index == 1) {
+          api.sendEvent({
+            name: 'sendindex',
+            extra: {
+              navstatusindex: 1
+            }
+          });
+          api.setFrameGroupIndex({
+            name: 'index_fm',
+            scroll: true,
+            index: 1
+          });
+        }
+        if (index == 2) {
+          api.setFrameGroupIndex({
+            name: 'index_fm',
+            scroll: true,
+            index: index
+          });
+        }
+
+        if (index == 3) {
+          openView('general', 'rank/general_fm', '排行榜', 'rank_win', false, false)
+        }
+
+        if (index == 4) {
+          openView('qinAuth_fm', 'qinAuth/qinAuth_fm', '产品认证');
+        }
+      },
+      gotodetails: function (res, index) {
+        if (res != 5) {
+          api.openWin({
+            name: 'catchdetails_win',
+            url: '../../find/catchdetails/catchdetails_win.html',
+            pageParam: {
+              clubId: app.homelist[index].clubId,
+              courseId: app.homelist[index].courseId,
+              distance: app.homelist[index].distance,
+              statustype: 0
+            }
+          });
+        } else if (res == 5) {
+          api.openWin({
+            name: 'shopdetails_win',
+            url: '../../juexiang/juexiang/shopdetails_win.html'
+          });
+        }
+      },
+      // 首页轮播
+      uappHomeRollPic: function () {
+        var post = {
+          cmd: 'uappHomeRollPic'
+        };
+        sendAjax(this, post, function (res) {
+          app.rolllist = res.data;
+          loadEnd();
+        });
+      },
+      // 获取地图 的  经纬度，
+      openMap: function (callback) {
+        this.aMap.open({
+          rect: {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0
+          }
+        }, function (ret, err) {
+          if (ret.status) {
+            if (callback) {
+              callback();
+            }
+          }
+        });
+      },
+      getLocation: function (callback) {
+        this.aMap.getLocation(function (ret, err) {
+          if (ret.status) {
+            if (callback) {
+              callback(ret);
+            }
+          }
+        });
+      },
+      getNameFromCoords: function (callback) {
+        this.aMap.getNameFromCoords({
+          lon: app.pos[0],
+          lat: app.pos[1]
+        }, function (ret, err) {
+          if (ret.status) {
+            if (api.systemType == "ios") {
+              // 如果为真，则不是直辖市，截四位
+              if (ret.city != ret.state) {
+                $api.setStorage('cityName', ret.city.replace('市', ''));
+                $api.setStorage('cityCode', ret.adcode.substr(0, 4) + '00');
+              } else {
+                $api.setStorage('cityName', ret.state.replace('市', ''));
+                $api.setStorage('cityCode', ret.adcode.substr(0, 2) + '0000');
+              }
+            } else {
+              // 如果为真，则不是直辖市，截四位
+              if (ret.city) {
+                $api.setStorage('cityName', ret.city.replace('市', ''));
+                $api.setStorage('cityCode', ret.adcode.substr(0, 4) + '00');
+              } else {
+                $api.setStorage('cityName', ret.state.replace('市', ''));
+                $api.setStorage('cityCode', ret.adcode.substr(0, 2) + '0000');
+              }
+            }
+
+            if (callback) {
+              callback();
+            }
+          }
+        });
+      },
+      // 优质精选
+      getGreatPickForuapp: function (ref, callback) {
+        var post = {
+          cmd: 'getGreatPickForuapp',
+          cityCode: getcitycode(),
+          token: getToken(),
+          page: app.page,
+          perPage: app.perPage,
+          currentposition: app.pos[0] + ',' + app.pos[1]
+        };
+
+        sendAjax(this, post, function (res) {
+          if (callback) {
+            callback(res);
+          }
+
+          loadEnd();
+          if (ref == 1) {
+            app.homelist = res.data.proList;
+            loadEnd();
+            app.rote = true;
+            app.load = false
+          } else {
+            app.homelist = app.homelist.concat(res.data.proList);
+            app.rote = true;
+            app.load = false
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+          MINT.Indicator.close();
+        });
+      }
+    }
+  })
+</script>

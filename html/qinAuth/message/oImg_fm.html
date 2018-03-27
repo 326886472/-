@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style type="text/css">
+    #app {
+      width: 100%;
+      height: auto;
+      background: #ededed;
+    }
+
+    .titlep {
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      background: #ededed;
+    }
+
+    .titlespan {
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    .headerbox {
+      width: 100%;
+      height: auto;
+      background: white;
+      padding-left: 20px;
+      box-sizing: border-box;
+      margin-bottom: 5px;
+    }
+
+    .biaozhi {
+      color: #F46C5A;
+    }
+
+    .forstop {
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      border-bottom: 1px solid gainsboro;
+      font-size: 14px;
+    }
+
+    .findmethods {
+      width: 100%;
+      height: auto;
+      background: white;
+      padding-left: 20px;
+      box-sizing: border-box;
+    }
+
+    .findimgbox {
+      width: 4rem;
+      height: 4rem;
+      border: 1px solid black;
+      margin-left: 10px;
+      text-align: center;
+      line-height: 4rem;
+    }
+
+    .findimgbox img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .publicfont {
+      font-size: 14px;
+    }
+
+    .bottomspan {
+      color: grey;
+      line-height: 2rem;
+    }
+
+    .zhaopian {
+      width: 100%;
+      height: auto;
+      padding-left: 20px;
+      box-sizing: border-box;
+      background: white;
+      margin-top: 5px;
+    }
+
+    .bigimgbox {
+      width: 10rem;
+      height: auto;
+    }
+
+    .albumimgbox {
+      width: 4rem;
+      height: 4rem;
+      border: 1px solid black;
+      text-align: center;
+      line-height: 4rem;
+      margin-top: 5px;
+      float: left;
+      margin-left: 10px;
+    }
+
+    .albumimgbox img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .surebtnbox {
+      width: 100%;
+      height: 6rem;
+      background: #ededed;
+      display: flex;
+    }
+
+    .surebtn {
+      width: 50%;
+      height: 1.8rem;
+      line-height: 1.8rem;
+      border: 1px solid black;
+      margin: auto;
+      font-size: 14px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .surebtn:active {
+      background: gainsboro;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <p class="forstop">
+    <span class="biaozhi" style="margin-left: 20px">*</span>
+    <span style="margin-right: 5px">购买时间:</span>
+    <input type="date" placeholder="请输入购买时间" class="datetime">
+  </p>
+
+  <div class="findmethods">
+    <p class="forstop" style="border-bottom:0px solid transparent">
+      <span class="biaozhi">*</span>
+      <span style="margin-right: 5px">认证方式:</span>
+      <span>票据或者收据</span>
+    </p>
+    <div class="findimgbox" @click="takephoto(1)">
+      <i class="iconfont publicfont icon-xiangji" v-show="!bill"></i>
+      <img :src="bill" alt="" class="publicfont" v-show="bill"/>
+    </div>
+    <p style="font-size: 12px">
+      <span class="bottomspan">图片文件不支持jpg.png格式单张不超过5M</span>
+    </p>
+  </div>
+
+  <div class="zhaopian">
+    <p class="forstop" style="border-bottom:0px solid transparent">
+      <span class="biaozhi">*</span>
+      <span style="margin-right: 5px">古琴照片:</span>
+    </p>
+    <div class="bigimgbox">
+
+      <div class="albumimgbox" v-for="(item, index) in qinPic" @click="takephoto(2, index)">
+        <i class="iconfont publicfont icon-xiangji" v-show="!item && index == 0"></i>
+        <span v-show="!item && index != 0">+</span>
+        <img :src="item" alt="" class="publicfont" v-show="item" />
+      </div>
+    </div>
+    <span class="bottomspan" style="font-size: 10px">图片文件不支持jpg.png格式单张不超过5M,允许上传4张高清图片</span>
+
+  </div>
+
+  <div class="surebtnbox">
+    <mt-button class="surebtn" @click="qinAuth">确认提交</mt-button>
+  </div>
+</div>
+</body>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      post: null,
+      bill: '',
+      qinPic: ['', '', '', ''],
+      billReal: '',
+      qinPicReal: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.post = api.pageParam.post;
+      }
+    },
+    methods: {
+      openSuccess: function () {
+      },
+      qinAuth: function () {
+        if (app.checkPost()) {
+          MINT.Indicator.open();
+          app.upQinAuthImgTmp(function (billReal) {
+            app.billReal = billReal;
+
+            app.upQinImgTmp(function (qinPicReal) {
+              app.qinPicReal = qinPicReal;
+
+              var post = app.post;
+              post.bill = app.billReal;
+              post.qinPic = app.qinPicReal;
+
+              sendAjax(app, post, function (res) {
+                MINT.Indicator.close();
+                openView('chengGong', 'qinAuth/chengGong/chenggong_fm', '提交成功');
+              });
+            });
+          });
+        }
+      },
+      upQinAuthImgTmp: function (callback) {
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "upQinAuthImgTmp",
+              "token": getToken()
+            },
+            files: {
+              "bill": app.bill
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            callback(ret.data.bill);
+          } else {
+            toastMsg('上传认证图片失败');
+          }
+        });
+      },
+      upQinImgTmp: function (callback) {
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "upQinImgTmp",
+              "token": getToken()
+            },
+            files: {
+              "qinPic[]": app.qinPic
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            callback(ret.data);
+          } else {
+            toastMsg('上传古琴照片失败');
+          }
+        });
+      },
+      // type: 1: 认证照片, 2: 古琴照片
+      takephoto: function (type, index) {
+        api.getPicture({
+          sourceType: 'album',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          if (type == 1) {
+            app.bill = ret.data
+          } else {
+            app.qinPic.splice(index, 1, ret.data);
+          }
+        });
+      },
+      checkPost: function () {
+        if (!app.bill) {
+          toastMsg('请上传认证图片');
+          return false;
+        } else if (!(app.qinPic[0] || app.qinPic[1] || app.qinPic[2] || app.qinPic[3])) {
+          toastMsg('请至少上传一张古琴照片');
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+  })
+</script>
+</html>

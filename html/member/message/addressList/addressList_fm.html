@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    .icon {
+      display: block;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .content-item {
+      padding: 0.3rem 0;
+
+      background: white;
+    }
+
+    .content-item-top {
+      padding: 0.2rem 1rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .content-item-top h5 {
+      font-size: 0.8rem;
+    }
+
+    .add-box {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .content-item-bottom {
+      padding: 0.3rem 1rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .content-item-bottom div {
+      flex: 1;
+    }
+
+    /*radio样式*/
+    .my-radio {
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 0.1rem;
+      background-color: #ffffff;
+      border: solid 1px #dddddd;
+      font-size: 0.3rem;
+      margin-right: 0.3rem;
+      padding: 0;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      cursor: default;
+      -webkit-appearance: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-transition: background-color ease 0.1s;
+      transition: background-color ease 0.1s;
+    }
+
+    .my-radio:checked {
+      border: solid 1px #F8A79C;
+      text-align: center;
+      background-clip: padding-box;
+    }
+
+    .my-radio:checked:before, .my-radio:checked:after {
+      content: '';
+      width: 0.5rem;
+      height: 0.3rem;
+      position: absolute;
+      top: 42%;
+      left: 46%;
+      margin-left: -0.25rem;
+      margin-top: -0.25rem;
+      background: transparent;
+      border: 1px solid #F8A79C;
+      border-top: none;
+      border-right: none;
+      z-index: 2;
+      -webkit-border-radius: 0;
+      border-radius: 0;
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+    }
+
+    .content-item-bottom-right {
+      flex-shrink: 0;
+      width: 30%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .btn-box {
+      margin-top: 10%;
+      width: 100%;
+    }
+
+    .btn-box div {
+      padding: 0.3rem 0;
+      text-align: center;
+      width: 60%;
+      margin: 0 auto;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      color: #666;
+      border: 1px solid #666;
+    }
+
+    .btn-box div:active {
+      background: gainsboro;
+    }
+
+    .flex-box {
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+  <ul class="content">
+    <li class="content-item aui-margin-t-5" v-for="(item, index) in list" @click="changeaddress(index)">
+      <div class="content-item-top">
+        <h5>{{item.name}}</h5>
+        <div>{{item.mobile}}</div>
+      </div>
+      <div class="add-box">
+        {{item.province + item.city + item.region + item.address}}
+      </div>
+      <div class="content-item-bottom">
+        <div @click.stop="setAddressIsDefault(item.addressId, index)">
+          <input type="checkbox" class="my-radio" name="demo1" value="1" :checked="item.isDefault === '1'"
+                 @click.prevent>{{item.isDefault === '1' ? '默认地址' : '设为默认地址'}}
+        </div>
+        <div class="content-item-bottom-right">
+                    <span class="aui-margin-r-15 flex-box" @click.stop="addchangeReceiptAddress(item.addressId)">
+                         <svg class="icon" aria-hidden="true">
+                              <use xlink:href="#icon-send"></use>
+                         </svg>
+                        编辑
+                    </span>
+          <span class="flex-box" @click.stop="delReceiptAddressInfo(item.addressId)">
+                         <svg class="icon" aria-hidden="true">
+                             <use xlink:href="#icon-shanchu"></use>
+                         </svg>
+                        删除
+                    </span>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="btn-box" @click="openAdd">
+    <div>+新增地址</div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      list: [],
+      fromMy: false
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.fromMy = api.pageParam.fromMy;
+
+        app.getReceiptAddressInfo(function () {
+          loadEnd();
+        });
+
+        api.addEventListener({
+          name: 'changeAdd'
+        }, function (ret, err) {
+          if (ret) {
+            app.getReceiptAddressInfo();
+          }
+        });
+      };
+    },
+    methods: {
+      // 获取收货地址列表
+      getReceiptAddressInfo: function (callback) {
+        var post = {
+          cmd: 'getUserAddressList',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.list = res.data;
+
+          if (callback) {
+            callback();
+          }
+        });
+      },
+//      设置默认地址
+      setAddressIsDefault: function (addressId, index) {
+        var post = {
+          cmd: 'setAddressIsDefault',
+          token: getToken(),
+          addressId: addressId,
+          isDefault: 1
+        };
+
+        sendAjax(this, post, function () {
+          app.getReceiptAddressInfo(function () {
+            toastMsg('设置默认地址成功');
+          });
+        });
+      },
+      // 编辑地址
+      addchangeReceiptAddress: function (addressId) {
+        openView('addAddress', 'member/message/changeAddress/changeAddress_fm', '修改收货地址', false, false, {
+          addressId: addressId
+        });
+      },
+      // 删除地址
+      delReceiptAddressInfo: function (addressId) {
+        api.confirm({
+          title: '确定删除？',
+          buttons: ['取消', '确定']
+        }, function (ret) {
+          if (ret.buttonIndex === 2) {
+            MINT.Indicator.open();
+            var post = {
+              cmd: 'delReceiptAddressInfo',
+              token: getToken(),
+              addressId: addressId
+            };
+            sendAjax(app, post, function () {
+              app.getReceiptAddressInfo(function () {
+                MINT.Indicator.close();
+                toastMsg('删除成功');
+              });
+            });
+          }
+        });
+      },
+      openAdd: function () {
+        openView('addAddress', 'member/message/addAddress/addAddress_fm', '添加收货地址')
+      },
+      changeaddress: function (ind) {
+        if (!app.fromMy) {
+          closeWindow();
+          api.sendEvent({
+            name: 'changeAddress',
+            extra: {
+              buyer: app.list[ind]
+            }
+          })
+        }
+      }
+    }
+  })
+</script>

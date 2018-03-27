@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app{
+            background: white;
+            width: 100%;
+        }
+        #header{
+            border-bottom:1px solid #ccc;
+            padding: 0 10px;
+            box-sizing: border-box;
+            width: 100%;
+            justify-content: space-between;
+            display: flex;
+        }
+        .ifont{
+            display: inline-block;
+        }
+        .titlename{
+            flex: 1;
+            text-align: center;
+        }
+        .ospan1{
+            width: 20%;
+            text-align: left;
+            display: inline-block;
+        }
+        .ospan2{
+            width: 20%;
+            text-align: right;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <header class="aui-bar aui-bar-nav" id="header">
+        <span class="ospan1" @click="closethiswin()"><i class="iconfont ifont icon-ziyuan2-copy"></i></span>
+        <span class="titlename">古琴名家</span>
+        <span class="ospan2"><i @click="sharebttn()" class="iconfont ifont icon-fenxiang1"></i></span>
+    </header>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            articleid:'',
+            cateid:''
+        },
+        filters: {},
+
+        created:function() {
+            apiready = function () {
+                app.articleid = api.pageParam.articleid;
+                app.cateid = api.pageParam.cateid;
+//                alert(app.cateid);
+                $api.fixStatusBar($api.dom('header'));
+                var posY = $api.offset($api.dom("header")).h;
+//                openFm('revisehome');
+                api.openFrame({
+                    name: 'revisehome',
+                    url: './revisehome_fm.html',
+                    rect: {
+                        x: 0,
+                        y: posY
+                    },
+                    pageParam: {
+                        articleid:app.articleid,
+                        cateid:app.cateid
+                    },
+                    bounces: true,
+                    hScrollBarEnabled: false,
+                    vScrollBarEnabled: false
+                });
+
+
+
+            };
+        },
+        methods: {
+          sharebttn:function(){
+            api.sendEvent({
+              name: 'sendshare'
+            });
+          },
+          closethiswin:function(){
+            api.closeWin()
+          }
+
+        }
+    })
+</script>

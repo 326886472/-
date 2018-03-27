@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style type="text/css">
+        #app{
+            width: 100%;
+            height: auto;
+            background: #ededed;
+        }
+        .titlep{
+            width: 100%;
+            height: 2rem;
+            line-height: 2rem;
+            background: #ededed;
+        }
+        .titlespan{
+            margin-left: 20px;
+            font-size: 14px;
+        }
+        .headerbox{
+            width: 100%;
+            height: auto;
+            background: white;
+            padding-left: 20px;
+            box-sizing: border-box;
+            margin-bottom: 5px;
+        }
+        .biaozhi{
+            color: #F46C5A;
+        }
+        .forstop{
+            width: 100%;
+            height: 2rem;
+            line-height: 2rem;
+            border-bottom: 1px solid gainsboro;
+            font-size: 14px;
+        }
+        .findmethods{
+            width: 100%;
+            height: auto;
+            background: white;
+            padding-left: 20px;
+            box-sizing: border-box;
+        }
+        .findimgbox{
+            width: 4rem;
+            height: 4rem;
+            border: 1px solid black;
+            margin-left: 1.5rem;
+            text-align: center;
+            line-height: 4rem;
+        }
+        .publicfont{
+            font-size: 14px;
+        }
+        .bottomspan{
+            color: grey;
+            line-height: 2rem;
+        }
+        .zhaopian{
+            width: 100%;
+            height: auto;
+            padding-left: 20px;
+            box-sizing: border-box;
+            background: white;
+            margin-top: 5px;
+        }
+        .bigimgbox{
+            width: 10rem;
+            height: auto;
+        }
+        .albumimgbox{
+            width: 4rem;
+            height: 4rem;
+            border: 1px solid black;
+            text-align: center;
+            line-height: 4rem;
+            margin-top: 5px;
+            float: left;
+            margin-left: 10px;
+        }
+        .surebtnbox{
+            width: 100%;
+            height: 6rem;
+            background: #ededed;
+            display: flex;
+        }
+
+        .surebtn{
+            width: 50%;
+            height: 1.8rem;
+            line-height: 1.8rem;
+            border: 1px solid black;
+            margin: auto;
+            font-size: 14px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .surebtn:active{
+            background: gainsboro;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+        <p class="forstop">
+            <span class="biaozhi" style="margin-left: 20px">*</span>
+            <span style="margin-right: 5px">购买时间:</span>
+            <input type="date" placeholder="请输入购买时间" class="datetime">
+        </p>
+
+
+
+    <div class="findmethods">
+        <p class="forstop" style="border-bottom:0px solid transparent">
+            <span class="biaozhi">*</span>
+            <span style="margin-right: 5px">认证方式:</span>
+            <span>票据或者收据</span>
+        </p>
+        <div class="findimgbox">
+            <i class="iconfont publicfont icon-xiangji"></i>
+        </div>
+        <p style="font-size: 12px">
+            <span class="bottomspan">图片文件不支持jpg.png格式单张不超过5M</span>
+        </p>
+    </div>
+
+    <div class="zhaopian">
+        <p class="forstop" style="border-bottom:0px solid transparent">
+            <span class="biaozhi">*</span>
+            <span style="margin-right: 5px">古琴照片:</span>
+        </p>
+        <div class="bigimgbox">
+
+            <div class="albumimgbox">
+                <i class="iconfont publicfont icon-xiangji"></i>
+            </div>
+
+            <div class="albumimgbox">
+                +
+            </div>
+
+            <div class="albumimgbox">
+                +
+            </div>
+
+            <div class="albumimgbox">
+                +
+            </div>
+
+        </div>
+        <span class="bottomspan" style="font-size: 10px">图片文件不支持jpg.png格式单张不超过5M,允许上传4张高清图片</span>
+
+    </div>
+
+    <div class="surebtnbox">
+        <mt-button class="surebtn">确认</mt-button>
+    </div>
+
+
+
+</div>
+</body>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+</html>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<security>
+    <item name="wxPay_appId" value="wxffb1842aa1a7b7a5"/>
+    <item name="wxPay_mchId" value="1480216742"/>
+    <item name="wxPay_partnerKey" value="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCB"/>
+    <item name="wxPay_notifyUrl" value="http://api.zhenglinc.com/Index/notifyUrlForWechat"/>
+</security>

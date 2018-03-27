@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <style>
+        html, body {
+            background: white;
+            color:#666;
+        }
+
+        #app {
+        }
+        .content{
+            padding:5% 0;
+            background: white;
+        }
+        .content-top{
+            width:50%;
+            margin:0 auto;
+            text-align: center;
+            font-size:0.7rem;
+        }
+        .icon{
+            width:1.5rem;
+            height:1.5rem;
+        }
+        .icon-top{
+            margin-bottom: 1rem;
+        }
+        .border-box{
+            padding:0.2rem;
+            background: #f0f0f0;
+        }
+        .content-bottom{
+            text-align: center;
+            background: white;
+        }
+        .content-bottom h5{
+            color:black;
+            padding:1rem 0;
+        }
+        .content-bottom .list{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content:space-between;
+            align-items: center;
+        }
+        .content-bottom .list li{
+            background: #f0f0f0;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            font-size:0.7rem;
+            flex-shrink: 0;
+            width:49%;
+            padding:1rem 0;
+        }
+        .list-item-content div{
+            text-align: left;
+            font-weight:800;
+            color:black;
+        }
+        .list-item-content span{
+            font-size: 0.6rem;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="content aui-margin-t-10">
+        <div class="content-top">
+            <svg class="icon icon-top" aria-hidden="true">
+                <use xlink:href="#icon-ziyuan5"></use>
+            </svg>
+            <div>恭喜您,提交资料成功</div>
+            <span>稍后会有客服人员与您联系详谈相关事宜</span>
+        </div>
+    </div>
+    <div class="border-box"></div>
+    <div class="content-bottom">
+        <h5>认证古琴享特权</h5>
+        <ul class="list">
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-zhongshenbaohuan"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>终生包换</div>
+                    <span>终生提供包换服务</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-zhongshenbaoxiu"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>终生保修</div>
+                    <span>终生提供保修服务</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-chuzuzhuanrang"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>出租转让</div>
+                    <span>提供出租转让服务</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-baozhizhihuan"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>保值置换</div>
+                    <span>终生提供保值置换</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-shenfenbiaoshinet"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>身份标识</div>
+                    <span>提供身份标识服务</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-huiyuanquanyi"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>会员权益</div>
+                    <span>提供会员权益服务</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        api.addEventListener({
+          name: 'viewappear'
+        }, function () {
+          closeWindow('message');
+          closeWindow('oImg_fm');
+        });
+      };
+    },
+    methods: {
+    }
+  })
+</script>
+</html>

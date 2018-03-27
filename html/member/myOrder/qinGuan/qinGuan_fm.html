@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+    }
+
+    /*tab样式*/
+    .menu-top-bar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      background: white;
+      font-size: 0.7rem;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .menu-top-bar div {
+      text-align: center;
+      width: 25%;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .mentAct {
+      color: #BEAB97;
+      border-bottom: 3px solid #BAA691;
+    }
+
+    /*订单开始*/
+    .my-margin {
+      height: 2rem;
+      background: #f0f0f0;
+    }
+
+    .content {
+      background: white;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    /*公共样式*/
+    .padding-box {
+      padding: 0 1rem;
+    }
+
+    /*头*/
+    .order-top-box {
+      font-size: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /*中间*/
+    .order-content-box {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .img-box {
+      flex-shrink: 0;
+      width: 25%;
+      margin-right: 1.2rem;
+    }
+
+    .img-box img {
+      width: 4rem;
+      height: 4rem;
+      margin-right: 1rem;
+    }
+
+    .content-center-box {
+      flex-shrink: 0;
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+    }
+
+    .content-center-box h6 {
+      padding-left: 0.4rem;
+      font-weight: 100;
+      color: black;
+      font-size: 0.7rem;
+    }
+
+    .content-center-box span {
+      padding-left: 0.4rem;
+      font-size: 0.6rem;
+    }
+
+    /*未通过*/
+    .order-middle-box-copy {
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+
+    }
+
+    /*一个子元素end 两个子元素bet*/
+    .end {
+      justify-content: flex-end;
+    }
+
+    .bet {
+      justify-content: space-between;
+    }
+
+    .order-middle-box-copy div {
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      border: 1px solid #666;
+      margin-right: 1rem;
+      color: black;
+    }
+
+    .order-middle-box-copy span {
+      width: 50%;
+      overflow: hidden;
+    }
+
+    /*底部上拉加载更多样式*/
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 1rem;
+      height: 1rem;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="loadStart"></div>
+  <ul>
+    <div class="menu-top-bar">
+      <div v-for="item in menuList" @click="chagneC(true, item.mIndex)"
+           :class="{'mentAct' : myIndex ===item.mIndex }">{{item.title}}
+      </div>
+    </div>
+    <div class="my-margin"></div>
+    <li v-for="item in proList">
+      <div class="content aui-margin-t-10">
+        <!--头-->
+        <div class="order-top-box aui-padded-t-10 padding-box aui-padded-b-5">
+          <div>订单编号:{{item.orderSn}}</div>
+          <div>{{item.createTime}}</div>
+        </div>
+        <!--中间-->
+        <div class="order-content-box padding-box" @click="openInfo(item.id)">
+          <div class="img-box">
+            <img :src="formatImg(item.banner)" alt="" class="img">
+          </div>
+          <div class="content-center-box">
+            <h6>{{item.clubName}}</h6>
+            <span>预约人:{{item.username}}</span>
+            <span>预约电话:{{item.mobile}}</span>
+          </div>
+        </div>
+        <!--底部-->
+        <div class="order-middle-box-copy end aui-padded-t-5 aui-padded-b-5">
+          <div v-show="item.status ==='1'" @click="prompt(item.id)">确认到店</div>
+          <div v-show="item.status ==='2'"
+               @click="openEvaluate(item.id, item.clubName, item.banner, item.address)">去评价
+          </div>
+          <!--<div v-show="item.status ==='4' ">删除订单</div>-->
+          <span v-show="item.status ==='4' ">商家不接单</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <!--v-if="rote"-->
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      myIndex: 1,
+      menuList: [
+        {
+          title: '全部',
+          mIndex: 1
+        },
+        {
+          title: '待到店',
+          mIndex: 5
+        },
+        {
+          title: '待评价',
+          mIndex: 4
+        }
+      ],
+      proList: [],
+      formatImg: formatImg,
+      perPage: 5,  //每页显示条数
+      page: 1,      //页数
+      rote: false,
+      load: false,
+      overlate: false,
+      firstCount: 0  //loader监听
+    },
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.myIndex) {
+          if (api.pageParam.myIndex == 3) {
+            app.myIndex = 1;
+          } else if (api.pageParam.myIndex == 2) {
+            app.myIndex = 1;
+          } else {
+            app.myIndex = api.pageParam.myIndex;
+          }
+          app.chagneC(true, app.myIndex, false, function () {
+            loadEnd();
+          });
+        } else {
+          app.chagneC(true, app.myIndex, false, function () {
+            loadEnd();
+          });
+        }
+        // 监听订单状态变化
+        api.addEventListener({
+          name: 'qinGuanOrderchange'
+        }, function (ret, err) {
+          app.chagneC(true, app.myIndex);
+        });
+        // 上拉加载更多
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 10
+          }
+        }, function (ret, err) {
+          app.load = true;
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.chagneC(false, app.myIndex, true);
+        });
+      };
+    },
+    methods: {
+      // 琴官订单列表
+      chagneC: function (ref, index, fromPull, callback) {
+        MINT.Indicator.open();
+
+        app.overlate = false;
+        app.myIndex = index;
+        if (!fromPull) {
+          app.page = 1;
+        }
+        if (index === 2) {
+          index = 1
+        }
+        var post = {
+          cmd: 'uappGetMyOrder',
+          token: getToken(),
+          orderType: 1,
+          pickType: index,
+          perPage: app.perPage,
+          page: app.page
+        };
+        sendAjax(this, post, function (res) {
+          if (ref) {
+            app.proList = res.data.proList;
+            app.rote = true;
+            app.load = false
+          } else {
+            app.proList = app.proList.concat(res.data.proList);
+            app.rote = true;
+            app.load = false
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+
+          MINT.Indicator.close();
+
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      // 琴官订单详情
+      openInfo: function (clubOrderId) {
+        openView('qinGuanOrderInfo', 'member/myOrder/qinGuanOrderInfo/qinGuanOrderInfo_fm', '订单详情', false, false, {
+          clubOrderId: clubOrderId
+        })
+      },
+      // 确认到店
+      prompt: function (clubOrderId) {
+        api.confirm({
+          title: '确认到店',
+          buttons: ['取消', '确定']
+        }, function (ret, err) {
+          var index = ret.buttonIndex;
+          if (index === 2) {
+            // 确认到店
+            var post = {
+              cmd: 'yuConfirmToClub',
+              token: getToken(),
+              clubOrderId: clubOrderId,
+              status: 1
+            };
+            sendAjax(app, post, function (res) {
+              api.sendEvent({
+                name: 'qinGuanOrderchange'
+              });
+            });
+          } else {
+          }
+        });
+      },
+      // 评价
+      openEvaluate: function (clubOrderId, clubName, banner, address) {
+        var clubInfo = {
+          clubOrderId: clubOrderId,
+          clubName: clubName,
+          banner: banner,
+          address: address
+        };
+        api.openWin({
+          name: 'qinGuanEvaluate',
+          url: '../qinGuanEvaluate/qinGuanEvaluate_win.html',
+          pageParam: {
+            clubInfo: clubInfo
+          }
+        });
+      }
+    }
+  })
+</script>

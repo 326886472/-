@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/complain.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div class="complain">
+        <div class="type">申诉类型</div>
+        <mt-radio
+                align="right"
+                v-model="type"
+                :options="typeOptions">
+        </mt-radio>
+        <!--描述详情-->
+        <div class="complain-details">
+            <div class="title">描述详情</div>
+            <mt-field placeholder="请将申诉的内容详细的阐述出来，以增加您的申诉成功！" type="textarea" rows="4" v-model="content"></mt-field>
+        </div>
+        <!--确认提交-->
+        <div class="sure">
+            <mt-button type="default" size="large" @click="complainComment()">确认提交</mt-button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            token: getToken(),
+            clubId: '',
+            id:'',
+            evaluateType: '',
+            typeOptions: [
+                {
+                    label: '该信息与实际不符',
+                    value: '1'
+                },
+                {
+                    label: '该信息涉嫌虚假广告',
+                    value: '2'
+                },
+                {
+                    label: '该信息涉嫌网络暴力',
+                    value: '3'
+                },
+                {
+                    label: '该信息涉嫌色情暴力',
+                    value: '4'
+                },
+                {
+                    label: '该信息涉嫌恶意攻击诋毁',
+                    value: '5'
+                }
+            ],
+            type: '',
+            content: ''
+        },
+        filters: {
+            dateFormat(date) {
+                if (date) {
+                    return date.substr(0, 10);
+                } else {
+                    return '';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+                app.id = api.pageParam.Id;
+                app.evaluateType = api.pageParam.evaluateType;
+            }
+        },
+        methods: {
+            complainComment() {
+                if (app.checkPost()) {
+                    var post = {
+                        cmd: 'complainComment',
+                        token: app.token,
+                        clubId: app.clubId,
+                        evaluateType: app.evaluateType,
+                        id: app.id,
+                        type: app.type,
+                        content: app.content
+                    };
+
+                    sendAjax(this, post,function () {
+                        api.sendEvent({
+                            name: 'complainSucc'
+                        });
+                        api.closeWin();
+                    });
+                }
+            },
+            checkPost() {
+                if (!app.type) {
+                    Toast('请选择投诉类型');
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+    });
+</script>

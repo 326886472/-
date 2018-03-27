@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+
+    }
+
+    #header {
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .beforeindex {
+      color: #f44336;
+    }
+
+    #footer {
+      width: 100%;
+      padding: 0.3rem 0;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #666;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+    }
+
+    .bottomindex {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <header class="aui-bar aui-bar-nav" id="header">
+    <a class="aui-padded-l-10 aui-pull-left aui-btn" @click="closeWindow()">
+      <i class="iconfont icon-ziyuan2-copy"></i>
+    </a>
+    <div class="aui-title">我的订单</div>
+  </header>
+  <footer class=" aui-bar-tab" id="footer">
+    <div v-for="(item,index) in footerlist" class="" @click="btncount(index)"
+         :class="{'beforeindex'  : minindex==index}">
+      <i class="iconfont" :class="item.src" style="font-size: 1rem;"></i>
+      <p>{{item.name}}</p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      footerlist: [
+        {
+          name: '琴馆',
+          src: 'icon-home'
+        },
+        {
+          name: '教学课程',
+          src: 'icon-kecheng1'
+        },
+        {
+          name: '商品',
+          src: 'icon-shangcheng'
+        }
+      ],
+      minindex: 0,  //footer index
+      myIndex: 0,    //我的页传参
+      orderType: 0   //默认index
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+        if (api.pageParam.myIndex) {
+          app.orderType = api.pageParam.orderType;
+          app.myIndex = api.pageParam.myIndex;
+        }
+        app.changeFmGroup();
+      };
+    },
+    methods: {
+      btncount: function (i) {
+        app.minindex = i;
+        api.setFrameGroupIndex({
+          name: 'orderGroup',
+          index: i,
+          scroll: true
+        });
+      },
+      changeFmGroup: function () {
+        api.openFrameGroup({
+          name: 'orderGroup',
+          scrollEnabled: false,
+          rect: {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto',
+            marginTop : $api.dom('header').offsetHeight,
+            marginBottom : $api.dom('footer').offsetHeight
+          },
+          bounces: true,
+          index: app.orderType,
+          preload: 0,
+          frames: [{
+            name: 'qinGuan',
+            url: './qinGuan/qinGuan_fm.html',
+            bgColor: '#f0f0f0',
+            pageParam: {
+              myIndex: app.myIndex
+            }
+          }, {
+            name: 'class',
+            url: './class/class_fm.html',
+            bgColor: '#f0f0f0',
+            pageParam: {
+              myIndex: app.myIndex
+            }
+          },
+            {
+              name: 'shop',
+              url: './shop/shop_fm.html',
+              bgColor: '#f0f0f0',
+              pageParam: {
+                myIndex: app.myIndex
+              }
+            }
+          ]
+        }, function (ret, err) {
+          app.minindex = ret.index;
+        });
+      },
+      closeWindow: function () {
+        closeWindow();
+      }
+    }
+  })
+</script>

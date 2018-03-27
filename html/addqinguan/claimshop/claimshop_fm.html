@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    hr {
+      height: 1px;
+      background-color: #f0f0f0;
+    }
+
+    .main {
+      position: relative;
+      margin-top: 10px;
+      width: 100%;
+      flex: 1;
+      background-color: #fff;
+      box-sizing: border-box;
+      padding: 0 15px;
+    }
+
+    .list {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      font-size: 14px;
+      color: #404040;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #d9d9d9;
+      box-sizing: border-box;
+    }
+
+    .title {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 60px;
+    }
+
+    .content {
+      padding-left: 15px;
+    }
+
+    .kerenling {
+      margin: auto 5px;
+      height: 14px;
+      line-height: 14px;
+      font-size: 12px;
+      background-color: #78b4ff;
+      padding: 0 2px;
+      color: #fff;
+      border-radius: 2px;
+    }
+
+    /*琴馆照片*/
+    .qgpic {
+      font-size: 14px;
+      color: #404040;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .qgpic p {
+      height: 40px;
+      line-height: 40px;
+    }
+
+    .img-wrap {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .img-wrap img {
+      width: 30%;
+      height: 100%;
+    }
+
+    /*确认上传按钮*/
+    .uploading {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .uploading button {
+      height: 1.5rem;
+      line-height: 1.5rem;
+      width: 11rem;
+      border: 1px solid #5a5a5a;
+      font-size: 0.8rem;
+      text-align: center;
+      border-radius: 0.8rem;
+      color: #5a5a5a;
+    }
+
+    .uploading p {
+      padding: 5px 0;
+      font-size: 0.1rem;
+      color: #878787;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <hr>
+  <div class="main">
+    <div class="list">
+      <p class="title"><span>城</span><span>市</span></p>:
+      <span class="content">{{details.cityName}}</span>
+    </div>
+    <div class="list">
+      <p class="title"><span>名</span><span>称</span></p>:
+      <span class="content">{{details.clubName}}</span>
+      <span class="kerenling">该琴馆可被认领</span>
+    </div>
+    <div class="list">
+      <p class="title"><span>地</span><span>址</span></p>:
+      <span class="content">{{details.address}}</span>
+    </div>
+    <div class="list">
+      <p class="title"><span>联</span><span>系</span><span>人</span></p>:
+      <span class="content">{{details.leader}}</span>
+    </div>
+    <div class="list">
+      <p class="title"><span>联</span><span>系</span><span>电</span><span>话</span></p>:
+      <span class="content">{{details.contactNum}}</span>
+    </div>
+    <div class="qgpic">
+      <p class="title"><span>琴</span><span>馆</span><span>照</span><span>片</span></p>
+      <div class="img-wrap">
+        <img :src="formatImg(img)" v-for="img in cutImgurl(details.banner)"/>
+      </div>
+    </div>
+    <div class="uploading">
+      <button @click="openchuantu">认领店铺</button>
+      <p>请确定您为该琴馆的实际运营者，请点击上方按钮认领店铺</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      clubId: null,
+      cityCode: null,
+      details: []
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.clubId = api.pageParam.clubId;
+        app.cityCode = api.pageParam.cityCode;
+        app.getPerClubDetail();
+      };
+    },
+    methods: {
+      openchuantu: function () {
+        openView('claimchuantu', 'addqinguan/claimshop/claimchuantu_fm', '认领店铺', 'chuantu', false, {
+          cityCode: app.cityCode,
+          details: app.details
+        });
+      },
+      getPerClubDetail: function () {
+        var post = {
+          cmd: 'getPerClubDetail',
+          clubId: app.clubId,
+          cityCode: getcitycode(),
+          token:getToken()
+        };
+        sendAjax(app, post, function (ret) {
+          app.details = ret.data;
+        })
+      }
+    }
+  })
+
+</script>
+
+
+<!--备注-->
+

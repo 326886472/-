@@ -1,0 +1,34 @@
+.mint-cell-title {
+  display: none;
+}
+
+.mint-cell-value {
+  > div {
+    display: flex;
+    align-items: center;
+    > img{
+      margin-right: 20px;
+    }
+    > span{
+      margin-right: 10px;
+    }
+  }
+}
+
+.detailsMessage {
+  display: flex;
+  padding-top: 5rem;
+  > div{
+    align-items: center;
+    position: relative;
+    margin: 0.5rem 2rem;
+    font-size: 16px;
+    img {
+      position: absolute;
+      left:0;
+      right:0;
+      margin: auto;
+      border-radius: 50%;
+    }
+  }
+}

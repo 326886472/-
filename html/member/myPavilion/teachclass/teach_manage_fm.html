@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/teach_manage_fm.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div id="loadStart"></div>
+    <section>
+        <div :class="{model: menuActive != 0}" @click="nonediv()"></div>
+        <div class="title_header">
+            <ul class="header_oul" style="z-index: 100;position: relative; border-bottom:1px solid #f0f0f0">
+                <li class="typeofe" @click="moretype(1)">类型<i :class="{'rr' : menuActive == 1}"
+                                                                                      class="iconfont icon-iconfontxiangxiajiantou "
+                                                                                      style="transition: 0.5s"></i></li>
+                <li class="typeofe" @click="moretype(2)">课程状态<i :class="{'gg' : menuActive == 2}"
+                                                                                      class="iconfont icon-iconfontxiangxiajiantou"
+                                                                                      style="transition: 0.5s"></i></li>
+            </ul>
+            <ul v-show="menuActive == 1" class="now_typelist">
+                <li @click="PickSecond(1)" :class="{active: type === 1}">全部 <i class="iconfont icon-iconfontxiangxiajiantou xiangyou"></i></li>
+                <li @click="PickSecond(2)" :class="{active: type === 2}">教学课程 <i class="iconfont icon-iconfontxiangxiajiantou xiangyou"></i></li>
+                <li @click="PickSecond(3)" :class="{active: type === 3}">活动雅集 <i class="iconfont icon-iconfontxiangxiajiantou xiangyou"></i></li>
+            </ul>
+            <ul class="SecondList" v-show="SecondList == 1 && menuActive == 1 && (type == 1 || type == 2 || type == 3)">
+                <li @click="PickLast(1)" :class="{active: SecondType == 1}">不限</li>
+                <li @click="PickLast(2)" :class="{active: SecondType == 2}">定期(课程)</li>
+                <li @click="PickLast(3)" :class="{active: SecondType == 3}">提高(课程)</li>
+                <li @click="PickLast(4)" :class="{active: SecondType == 4}">名师(课程)</li>
+                <li @click="PickLast(5)" :class="{active: SecondType == 5}">专项(课程)</li>
+                <li @click="PickLast(6)" :class="{active: SecondType == 6}">其他(课程)</li>
+                <li @click="PickLast(7)" :class="{active: SecondType == 7}">雅集(活动)</li>
+                <li @click="PickLast(8)" :class="{active: SecondType == 8}">讲座(活动)</li>
+                <li @click="PickLast(9)" :class="{active: SecondType == 9}">其他(活动)</li>
+            </ul>
+            <ul class="SecondList" v-show="SecondList == 2 && menuActive == 1 && (type == 1 || type == 2 || type == 3)">
+                <li @click="PickLast(10)" :class="{active: SecondType == 10}">不限</li>
+                <li @click="PickLast(2)" :class="{active: SecondType == 2}">定期</li>
+                <li @click="PickLast(3)" :class="{active: SecondType == 3}">提高</li>
+                <li @click="PickLast(4)" :class="{active: SecondType == 4}">名师</li>
+                <li @click="PickLast(5)" :class="{active: SecondType == 5}">专项</li>
+                <li @click="PickLast(6)" :class="{active: SecondType == 6}">其他</li>
+            </ul>
+            <ul class="SecondList" v-show="SecondList == 3 && menuActive == 1 && (type == 1 || type == 2 || type == 3)">
+                <li @click="PickLast(11)" :class="{active: SecondType == 11}">不限</li>
+                <li @click="PickLast(7)" :class="{active: SecondType == 7}">雅集</li>
+                <li @click="PickLast(8)" :class="{active: SecondType == 8}">讲座</li>
+                <li @click="PickLast(9)" :class="{active: SecondType == 9}">其他</li>
+            </ul>
+            <ul v-show="menuActive == 2" class="now_staticlist">
+                <li @click="appPickCourseList(6)" :class="{active: type === 6}">全部</li>
+                <li @click="appPickCourseList(4)" :class="{active: type === 4}">上线课程</li>
+                <li @click="appPickCourseList(5)" :class="{active: type === 5}">下线课程</li>
+            </ul>
+        </div>
+
+        <div class="passsbox" v-show="type != 0">
+            <!--<p class="manage_p">{{passclass | statusText}}</p>-->
+            <ul class="passed_list">
+                <li v-for="(item, index) in cList" style="background: white">
+                    <!--筛选条件免费课程，随到随学，免费体验里，审核中的数据（取消发布）-->
+                    <mt-cell-swipe v-show="item.status === '2'"
+                                   :right="[
+                                          {
+                                          content: '取消发布',
+                                        style: {background: '#484848', color: 'white', display: 'flex', alignItems: 'center', width: '6rem', justifyContent: 'center'},
+                                          handler: function () {
+                                              detailsbtn(item.id);
+                                            }
+                                          }
+                                        ]">
+                        <div class="listbox">
+                            <img class="manage_src" :src="formatImg(item.images)" @click="methods:openalterclass(item.id)">
+                            <div class="textbox">
+                <span class="manage_name"> <span class="functanic"
+                                                 :style="'background: ' + statuscolor(item.courseType)"></span>[{{item.courseType | typeText}}]{{item.courseName}}</span>
+                                <span>
+                                  <span class="manage_daytime"
+                                        v-if="item.courseType!=='3'">开课日期：{{item.startDate}}</span>
+                <span class="manage_hourtime"
+                      v-if="item.courseType!=='3'">{{item.startInterval}} ~ {{item.endInterval}}</span>
+                </span>
+                                <p class="manage_nowprice">¥{{item.vipPrice}}<span class="nprice">¥{{item.price}}</span></p>
+                            </div>
+                        </div>
+                    </mt-cell-swipe>
+
+                    <!--筛选条件免费课程，随到随学，免费体验里，审核未通过的数据（删除）-->
+                    <mt-cell-swipe v-show="item.status === '3'"
+                                   :right="[
+          {
+          content: '删除',
+        style: {background: '#484848', color: 'white', display: 'flex', alignItems: 'center', width: '6rem', justifyContent: 'center'},
+          handler: function () {
+              detail(item.id);
+            }
+          }
+        ]">
+                        <div class="listbox">
+                            <img class="manage_src" :src="formatImg(item.images)" @click="openalterclass(item.id)">
+                            <div class="textbox">
+                <span class="manage_name"><span class="functanic"
+                                                :style="'background: ' + statuscolor(item.courseType)"></span>[{{item.courseType | typeText}}]{{item.courseName}}</span>
+                                <span>
+                <span class="manage_daytime" v-if="item.courseType!=='3'">开课日期：{{item.startDate}}</span>
+                <span class="manage_hourtime"
+                      v-if="item.courseType!=='3'">{{item.startInterval}} ~ {{item.endInterval}}</span>
+                  </span>
+                                <p class="manage_nowprice">¥{{item.vipPrice}}<span class="nprice">¥{{item.price}}</span></p>
+                            </div>
+                        </div>
+                    </mt-cell-swipe>
+
+                    <!--筛选条件免费课程，随到随学，免费体验里，审核已经通过的数据（有 设置下线，删除，编辑）包括了下线，上线状态的筛选-->
+
+                    <div v-show="item.status === '0' || item.status === '1'">
+                        <div class="listbox">
+                            <img class="manage_src" :src="formatImg(item.images)" @click="openalterclass(item.id)">
+                            <div class="textbox">
+                <span class="manage_name"><span class="functanic"
+                                                :style="'background: ' + statuscolor(item.courseType)"></span>[{{item.courseType | typeText}}]{{item.courseName}}</span>
+                                <span>
+                <span class="manage_daytime" v-if="item.courseType!=='3'">开课日期：{{item.startDate}}</span>
+                <span class="manage_hourtime"
+                      v-if="item.courseType!=='3'">{{item.startInterval}} ~ {{item.endInterval}}</span>
+                  </span>
+                                <p class="manage_nowprice">¥{{item.vipPrice}}<span class="nprice">¥{{item.price}}</span></p>
+                                <p class="manage_nowprice">
+                                    <span
+                                        style="color:#8d8d8d"
+                                        class="formnum">已售{{item.countOrder}}</span><span
+                                        style="color:#8d8d8d"
+                                        class="formnum">限{{item.personCount}}人</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="typeoutline" v-show="['0', '1'].indexOf(item.status) !== -1">
+                            <mt-button plain class="typebtn" @click="setdownline(item.id)" v-show="item.status === '1'" plain>
+                                设置下线
+                            </mt-button>
+                            <mt-button plain class="typebtn-short"
+                                       style="float: right;font-size: 13px;width: 20%;height: 1.7rem;margin-right: 0.5rem"
+                                       @click="openclasshome(item.id)" v-show="item.status === '0'">编辑
+                            </mt-button>
+                            <mt-button plain class="typebtn-short"
+                                       style="float: right;font-size: 13px;width: 20%;height: 1.7rem;;margin-right: 0.5rem"
+                                       @click="delbtn(item.id)" v-show="item.status === '0'">删除
+                            </mt-button>
+                        </div>
+                    </div>
+                </li>
+                <li class="none" v-show="cList.length == 0">暂无课程</li>
+            </ul>
+        </div>
+        <!--进入教学管理的第一个页面，包括了所有课程以及状态-->
+        <div style="width: 100%;height:auto" v-show="type==0">
+            <!--<p class="manage_p">{{passclass | statusText}}</p>-->
+            <!--通过审核的所有状态（包括下线，上线）-->
+            <div class="passsbox">
+                <ul class="passed_list">
+                    <li v-for="(item, index) in cListPass" style="background: white">
+                        <div class="listbox">
+                            <img class="manage_src" :src="formatImg(item.images)" @click="openalterclass(item.id)">
+                            <div class="textbox">
+                <span class="manage_name"><span class="functanic"
+                                                :style="'background: ' + statuscolor(item.courseType)"></span>[{{item.courseType | typeText}}]{{item.courseName}}</span>
+                                <span>
+                <span class="manage_daytime" v-if="item.courseType!=='3'">开课日期：{{item.startDate}}</span>
+                <span class="manage_hourtime" v-if="item.courseType!=='3'"><span>{{item.startInterval}}</span> ~ <span>{{item.endInterval}}</span></span>
+                  </span>
+                                <p class="manage_nowprice">¥{{item.vipPrice}}<span class="nprice">¥{{item.price}}</span><span
+                                        style="color:#8d8d8d"
+                                        class="formnum"
+                                        v-show="item.courseType==='1'">已售{{item.countOrder}}</span><span
+                                        style="color:#8d8d8d"
+                                        class="formnum" v-show="item.courseType==='3'">限{{item.personCount}}人</span></p>
+                            </div>
+                        </div>
+                        <div class="typeoutline">
+                            <mt-button plain class="typebtn" @click="setdownline(item.id)" v-show="item.status==1" plain>设置下线
+                            </mt-button>
+                            <mt-button plain class="typebtn-short"
+                                       style="float: right;font-size: 13px;width: 20%;height: 1.7rem;margin-right: 0.5rem"
+                                       @click="openclasshome(item.id)" v-show="item.status==0">编辑
+                            </mt-button>
+                            <mt-button plain class="typebtn-short"
+                                       style="float: right;font-size: 13px;width: 20%;height: 1.7rem;;margin-right: 0.5rem"
+                                       @click="delbtn(item.id)" v-show="item.status==0">删除
+                            </mt-button>
+                        </div>
+                    </li>
+                    <li class="none" v-show="cListPass.length == 0">暂无课程</li>
+                </ul>
+            </div>
+            <!--审核未通过和审核中的大盒子包起来了-->
+            <!--<div class="referbox">-->
+                <!--<p class="refer">{{checkoutclass}}</p>-->
+                <!--<ul class="refer_list">-->
+                    <!--&lt;!&ndash;审核中所有的数据（取消发布），&ndash;&gt;-->
+                    <!--<mt-cell-swipe v-for="item in cListPassOn"-->
+                                   <!--:right="[-->
+        <!--{-->
+        <!--content: '取消发布',-->
+        <!--style: {background: '#484848', color: 'white', display: 'flex', alignItems: 'center', width: '6rem', justifyContent: 'center'},-->
+        <!--handler: function () {-->
+            <!--detailsbtn(item.id)-->
+          <!--}-->
+        <!--}-->
+        <!--]">-->
+                        <!--<li style="background: white">-->
+                            <!--<div class="listbox">-->
+                                <!--<img class="manage_src" :src="formatImg(item.images)"-->
+                                     <!--@click="openalterclass(item.id)">-->
+                                <!--<div class="textbox">-->
+                  <!--<span class="manage_name"><span class="functanic"-->
+                                                  <!--:style="'background: ' + statuscolor(item.courseType)"></span>[{{item.courseType | typeText}}]{{item.courseName}}</span>-->
+                                    <!--<span>-->
+                  <!--<span class="manage_daytime" v-if="item.courseType!=='3'">开课日期：{{item.startDate}}</span>-->
+                  <!--<span class="manage_hourtime" v-if="item.courseType!=='3'">{{item.startInterval}} ~ {{item.endInterval}}</span>-->
+                    <!--</span>-->
+                                    <!--<p class="manage_nowprice">¥{{item.vipPrice}}<span class="nprice">¥{{item.price}}</span>-->
+                                    <!--</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                    <!--</mt-cell-swipe>-->
+                    <!--<li class="none" v-show="cListPassOn.length == 0">暂无课程</li>-->
+                <!--</ul>-->
+                <!--<p class="refer">{{failclass}}</p>-->
+                <!--<ul class="refer_list">-->
+                    <!--<mt-cell-swipe v-for="item in cListNot"-->
+                                   <!--:right="[-->
+        <!--{-->
+        <!--content: '删除',-->
+        <!--style: {background: '#484848', color: 'white', display: 'flex', alignItems: 'center', width: '6rem', justifyContent: 'center'},-->
+        <!--handler: function () {-->
+            <!--detail(item.id)-->
+          <!--}-->
+        <!--}-->
+        <!--]">-->
+                        <!--<li style="background: white">-->
+                            <!--<div class="listbox">-->
+                                <!--<img class="manage_src" :src="formatImg(item.images)"-->
+                                     <!--@click="openalterclass(item.id)">-->
+                                <!--<div class="textbox">-->
+                  <!--<span class="manage_name"><span class="functanic"-->
+                                                  <!--:style="'background: ' + statuscolor(item.courseType)"></span>[{{item.courseType | typeText}}]{{item.courseName}}</span>-->
+                                    <!--<span>-->
+                  <!--<span class="manage_daytime" v-if="item.courseType!=='3'">开课日期：{{item.startDate}}</span>-->
+                  <!--<span class="manage_hourtime" v-if="item.courseType!=='3'">{{item.startInterval}} ~ {{item.endInterval}}</span>-->
+                   <!--</span>-->
+                                    <!--<p class="manage_nowprice">¥{{item.vipPrice}}<span class="nprice">¥{{item.price}}</span>-->
+                                    <!--</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                    <!--</mt-cell-swipe>-->
+                    <!--<li class="none" v-show="cListNot.length == 0">暂无课程</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            window: window,
+            token: getToken(),
+            clubId: '',
+            passclass: '已通过课程',
+            checkoutclass: '课程审核中',
+            failclass: '课程未通过',
+            menuActive: 0,
+            type: 0,
+            cList: [],  // 获取到的全部课程
+            cListPass: [],
+            cListPassOn: [],  // 审核中
+            cListNot: [],//未通过的，
+            SecondList: 0, //二级下拉列表
+            SecondType: 1
+        },
+        watch: {
+            refreshDone(value) {
+                if (value == 3) {
+                    refreshDone();
+                }
+            },
+            firstDone(value) {
+                if (value == 3) {
+                    loadEnd();
+                }
+            }
+        },
+        filters: {
+            typeText(courseType) {
+                switch (courseType) {
+                    case '1':
+                        return '定期课程';
+                    case '2':
+                        return '免费体验课';
+                    case '3':
+                        return '随到随学';
+                }
+            },
+            statusText(type) {
+                switch (type) {
+                    case 0:
+                        return '已通过审核课程';
+                    case 1:
+                        return '定期课程';
+                    case 2:
+                        return '免费体验课';
+                    case 3:
+                        return '随到随学';
+                    case 4:
+                        return '上线课程';
+                    case 5:
+                        return '下线课程';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+                api.setWinAttr({
+                    slidBackEnabled: false
+                });
+
+                api.addEventListener({
+                    name: 'keyback'
+                }, function () {
+                    return false;
+                });
+
+                app.appPickCourseList(0, function () {
+                    loadEnd()
+                });
+
+                refresh(function () {
+                    app.appPickCourseList(0 , function () {
+                        refreshDone();
+                    });
+                });
+
+                api.addEventListener({
+                    name: 'shuaxin'
+                }, function () {
+                    app.appPickCourseList(0);
+                    toastMsg('课程修改成功');
+                });
+            };
+        },
+        methods: {
+            PickLast (type, callback) {
+                    app.SecondType = type;
+                    app.menuActive = 0;
+                    MINT.Indicator.open();
+                    var post = {
+                        cmd: 'appPickCourseList',
+                        token: app.token,
+                        clubId: app.clubId,
+                        page: 1,
+                        perPage: 1000,
+                        courseType: app.SecondType
+                    };
+
+                    app.cListPass = [];
+                    app.cListPassOn = [];
+                    app.cListNot = [];
+                    sendAjax(this, post,function (res) {
+                        var cList = res.data.proList;
+                        MINT.Indicator.close();
+                        if (app.type === 0) {
+                            for (var i = 0; i < cList.length; i++) {
+                                switch (cList[i].status) {
+                                    case '0':
+                                    case '1':
+                                        app.cListPass.push(cList[i]);
+                                        break;
+                                    case '2':
+                                        app.cListPassOn.push(cList[i]);
+                                        break;
+                                    case '3':
+                                        app.cListNot.push(cList[i]);
+                                        break;
+                                }
+                            }
+                        } else {
+                            var cListPass = [];  // 审核过
+                            var cListPassOn = [];  // 审核中
+                            var cListNot = [];  // 审核未通过
+                            for (var i = 0; i < cList.length; i++) {
+                                switch (cList[i].status) {
+                                    case '0':
+                                    case '1':
+                                        cListPass.push(cList[i]);
+                                        break;
+                                    case '2':
+                                        cListPassOn.push(cList[i]);
+                                        break;
+                                    case '3':
+                                        cListNot.push(cList[i]);
+                                        break;
+                                }
+                            }
+                            app.cList = cListPass.concat(cListPassOn).concat(cListNot);
+                        }
+
+                        if (callback) {
+                            callback();
+                        }
+                    });
+            },
+            PickSecond: function (type) {
+                app.type = type;
+                app.SecondList = type;
+            },
+            statuscolor(courseType) {
+                switch (courseType) {
+                    case '1':
+                        return "#47c6a4";
+                    case '2':
+                        return "#f46c5a";
+                    case '3':
+                        return "#b02db2";
+                }
+            },
+
+            appPickCourseList(type, callback) {
+                app.menuActive = 0;
+                MINT.Indicator.open();
+                app.type = type;
+                app.passclass = type;
+                var post = {
+                    cmd: 'appPickCourseList',
+                    token: app.token,
+                    clubId: app.clubId,
+                    page: 1,
+                    perPage: 1000,
+                    courseType: app.SecondType
+                };
+
+                switch (app.type) {
+//                    case 1:
+//                        post.courseType = 1;
+//                        break;
+//                    case 2:
+//                        post.courseType = 2;
+//                        break;
+//                    case 3:
+//                        post.courseType = 3;
+//                        break;
+                    case 4:
+                        post.status = 1;
+                        break;
+                    case 5:
+                        post.status = 0;
+                        break;
+                    case 6:
+                        break;
+                }
+
+                app.cListPass = [];
+                app.cListPassOn = [];
+                app.cListNot = [];
+                sendAjax(this, post,function (res) {
+                    var cList = res.data.proList;
+                    MINT.Indicator.close();
+                    if (app.type === 0) {
+                        for (var i = 0; i < cList.length; i++) {
+                            switch (cList[i].status) {
+                                case '0':
+                                case '1':
+                                    app.cListPass.push(cList[i]);
+                                    break;
+                                case '2':
+                                    app.cListPassOn.push(cList[i]);
+                                    break;
+                                case '3':
+                                    app.cListNot.push(cList[i]);
+                                    break;
+                            }
+                        }
+                    } else {
+                        var cListPass = [];  // 审核过
+                        var cListPassOn = [];  // 审核中
+                        var cListNot = [];  // 审核未通过
+                        for (var i = 0; i < cList.length; i++) {
+                            switch (cList[i].status) {
+                                case '0':
+                                case '1':
+                                    cListPass.push(cList[i]);
+                                    break;
+                                case '2':
+                                    cListPassOn.push(cList[i]);
+                                    break;
+                                case '3':
+                                    cListNot.push(cList[i]);
+                                    break;
+                            }
+                        }
+                        app.cList = cListPass.concat(cListPassOn).concat(cListNot);
+                    }
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            },
+            nonediv() {
+                app.menuActive = 0;
+            },
+            //点击出下拉菜单方法A
+            moretype(menuActive) {
+                if (app.menuActive == menuActive) {
+                    app.menuActive = 0;
+                } else {
+                    app.menuActive = menuActive;
+                }
+            },
+            //跳转到详情页
+            openalterclass(id) {
+                openView('alter_class', 'member/myPavilion/teachclass/alter_class', '课程详情', false, false, {
+                    id: id,
+                    clubId: app.clubId
+                });
+            },
+            //跳转到修改页
+            openclasshome(id) {
+                openView('class_home', 'member/myPavilion/teachclass/class_home', '修改课程', false, false, {
+                    id: id,
+                    clubId: app.clubId
+                });
+            },
+            upAndDown(id) {
+                var post = {
+                    cmd: 'upAndDown',
+                    token: app.token,
+                    clubId: app.clubId,
+                    courseId: id
+                };
+                sendAjax(this, post,function (res) {
+                    toastMsg('已经成功设置下线');
+                });
+            },
+            setdownline(params) {
+                api.confirm({
+                    title: '确定下线？',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        app.upAndDown(params);
+                        app.appPickCourseList(0);
+                    }
+                });
+            },
+            appCancelPubCourse(id, x, callback) {
+                var post = {
+                    cmd: 'appCancelPubCourse',
+                    token: app.token,
+                    clubId: app.clubId,
+                    courseId: id,
+                    type: x
+                };
+                sendAjax(this, post,function (res) {
+                    if (callback) {
+                        callback(res);
+                    }
+                });
+            },
+            delbtn(params) {
+                api.confirm({
+                    title: '确定删除？',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        app.appCancelPubCourse(params, 2, function () {
+                            app.appPickCourseList(0);
+                            toastMsg('删除成功!');
+                        });
+                    }
+                });
+            },
+//            detailsbtn(id) {
+//                api.confirm({
+//                    title: '确定取消发布?',
+//                    buttons: ['取消', '确定']
+//                }, function (ret) {
+//                    if (ret.buttonIndex === 2) {
+//                        app.appCancelPubCourse({id: id}, 1, function () {
+//                            app.appPickCourseList(0);
+//                            toastMsg('取消发布成功!');
+//                        });
+//                    }
+//                });
+//            },
+            detail(id) {
+                api.confirm({
+                    title: '确定取消发布?',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        app.appCancelPubCourse({id: id}, 2, function () {
+                            app.appPickCourseList(0);
+                            toastMsg('删除成功!');
+                        });
+                    }
+                });
+            }
+        }
+    });
+</script>

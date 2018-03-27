@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .header {
+      width: 100%;
+      height: 35%;
+    }
+
+    .swiperstyle {
+      background-size: 100% 100%;
+    }
+
+    .toollist {
+      width: 100%;
+      height: 15rem;
+      background: white;
+      text-align: justify;
+    }
+
+    .leftlistbox {
+      width: 49%;
+      height: 4.5rem;
+      background: #e8e8e8;
+      background-size: 100% 100%;
+      margin-top: 0.5rem;
+      font-size: 12px;
+    }
+
+    .leftlistbox:nth-child(even) {
+      float: right;
+    }
+
+    .leftlistbox:nth-child(odd) {
+      float: left;
+    }
+
+    .rightlistbox {
+      width: 49%;
+      height: 4.5rem;
+      background: #e8e8e8;
+      float: right;
+      margin-top: 0.5rem;
+      font-size: 12px;
+    }
+
+    .english {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    .textbox {
+      width: 60%;
+      height: 4.5rem;
+      text-align: center;
+      float: left
+    }
+
+    .imgbox {
+      width: 40%;
+      height: 4.5rem;
+      float: left
+    }
+
+    .imgbox img {
+      width: 100%;
+      height: 100%;
+
+    }
+
+    .newmessage {
+      clear: both;
+      width: 100%;
+      height: 3rem;
+      background: white;
+      line-height: 3rem;
+    }
+
+    .newmessage span {
+      font-size: 15px;
+    }
+
+    .imgbottombox {
+      width: 100%;
+      height: 30%;
+    }
+
+    .newimg {
+      width: 100%;
+      height: 10rem;
+    }
+
+    .ablep {
+      font-size: 14px;
+      color: #676767;
+      height: 3rem;
+    }
+
+    .ablespan {
+      line-height: 1.2rem;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      white-space: normal !important;
+      -webkit-line-clamp: 2;
+      flex: 1;
+      -webkit-box-orient: vertical;
+    }
+
+    .newoimg {
+      position: absolute;
+      top: 15px;
+      left: -12px;
+    }
+
+    .morefont {
+      font-size: 12px;
+    }
+
+    /*加载*/
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 20px;
+      height: 20px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <div class="header">
+    <mt-swipe :auto="4000">
+      <mt-swipe-item class="swiperstyle" :style="{'background-image': 'url(' + formatImg(item.images) + ')'}"
+                     v-for="(item,index) in backlist" @touchstart.native="bounceDisable()"
+                     @touchend.native="bounceEnabled()">
+      </mt-swipe-item>
+    </mt-swipe>
+  </div>
+
+  <div class="toollist">
+    <div class="leftlistbox" @click="gotooldetails(index)" v-for="(item,index) in toolslist"
+         :style="{'background-image': 'url(' + (item.images) + ')'}">
+    </div>
+
+  </div>
+
+  <div class="newmessage">
+                <span style="margin-left: 20px;position: relative">
+                   <img src="../../../assets/images/bian.png" class="newoimg"> 最新资讯
+                </span>
+    <span style="margin-right: 20px;float: right;font-size: 15px" @click="morenew()">查看更多<i
+            class="iconfont morefont icon-ziyuan2"></i></span>
+  </div>
+
+  <div class="newbox" v-for="(item,index) in newlist" @click="moredetails(index)">
+    <div class="imgbottombox">
+      <img class="newimg" :src="formatImg(item.cover)">
+      <p class="ablep">
+        <span class="ablespan" style="margin-left: 10px">{{item.title}}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      sonCates: '',
+      backlist: [],
+      newlist: [],
+      allcatelist: [],
+      newmorelist: [],
+      countnum: 0,
+      toolslist: [
+        {
+          images: '../../../assets/images/toola.png'
+        },
+        {
+          images: '../../../assets/images/toolb.png'
+        },
+        {
+          images: '../../../assets/images/toolc.png'
+        },
+        {
+          images: '../../../assets/images/toold.png'
+        },
+        {
+          images: '../../../assets/images/toole.png'
+        },
+        {
+          images: '../../../assets/images/toolf.png'
+        }
+      ],
+      bookcour: [],
+      page: 1,
+      perPage: 3,
+      rote: false,
+      overlate: false,
+      load: false
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        refresh(function () {
+          app.getCulList(1, function () {
+            refreshDone();
+          });
+        });
+
+//      轮播
+        app.uappToolRollPic();
+        app.getAllCate();
+//        第一次
+        app.getCulList(1);
+
+        //这个是监听滑动
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+//                滑动时候改变的值
+        }, function (ret, err) {
+//                app.rote = true;
+          app.load = true;//
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.getCulList();
+        });
+      };
+    },
+    watch: {
+      'countnum': function (value) {
+        if (value == 1) {
+          loadEnd()
+        }
+      }
+    },
+    methods: {
+      bounceDisable: function () {
+        api.setFrameAttr({
+          name: api.frameName,
+          bounces: false
+        });
+      },
+      bounceEnabled: function () {
+        api.setFrameAttr({
+          name: api.frameName,
+          bounces: true
+        });
+      },
+      gotooldetails: function (index) {
+        if (index == 0) {
+          api.openWin({
+            name: 'bookwin_win',
+            url: '../book/bookwin_win.html',
+            pageParam: {
+              firstLevelCateId: 6,
+              sonCates: app.bookcour
+            }
+          });
+        }
+        if (index == 1) {
+
+          api.openWin({
+            name: 'listenhome_win',
+            url: '../listen/listenhome_win.html',
+            pageParam: {
+              firstLevelCateId: app.allcatelist[2].firstLevelCateId,
+              sonCates: app.allcatelist[2].sonCates
+            }
+          });
+        }
+        if (index == 2) {
+
+          api.openWin({
+            name: 'musichome_win',
+            url: '../music/musichome_win.html',
+            pageParam: {
+              firstLevelCateId: app.allcatelist[3].firstLevelCateId,
+              sonCates: app.allcatelist[3].sonCates
+            }
+          });
+        }
+        if (index == 3) {
+          openView('videohome_fm', 'tools/video/kaifa', '教学视频', false, false, {
+            firstLevelCateId: app.allcatelist[4].firstLevelCateId,
+            sonCates: app.allcatelist[4].sonCates
+          })
+        }
+        if (index == 4) {
+
+          api.openWin({
+            name: 'people_win',
+            url: '../people/people_win.html',
+            pageParam: {
+              firstLevelCateId: app.allcatelist[0].firstLevelCateId,
+              sonCates: app.allcatelist[0].sonCates
+            }
+          });
+        }
+        if (index == 5) {
+          api.openWin({
+            name: 'albumhome_win',
+            url: '../album/albumhome_win.html',
+            pageParam: {
+              firstLevelCateId: app.allcatelist[1].firstLevelCateId,
+              sonCates: app.allcatelist[1].sonCates
+            }
+          });
+        }
+      },
+
+
+      morenew: function () {
+
+        api.openWin({
+          name: 'morenew_win',
+          url: '../morenew/morenew_win.html',
+          pageParam: {
+            firstLevelCateId: app.newmorelist.firstLevelCateId,
+            sonCates: app.newmorelist.sonCates
+          }
+        });
+      },
+      //那六个大类
+      getAllCate: function () {
+        var post = {
+          cmd: 'getAllCate'
+        };
+        sendAjax(this, post, function (res) {
+          app.allcatelist = res.data;
+          app.bookcour = app.allcatelist[5].sonCates;
+          app.newmorelist = res.data[0];
+          app.allcatelist.splice(0, 1);
+          app.laber()
+        });
+      },
+
+      moredetails: function (index) {
+        api.openWin({
+          name: 'newdetails_win',
+          url: '../morenew/newdetails_win.html',
+          pageParam: {
+            articleid: app.newlist[index].id,
+            cateid: app.newlist[index].cateId
+          }
+        });
+      },
+      // 获取新闻信息（页面上的最新咨询）
+      getCulList: function (ref, callback) {
+        var post = {
+          cmd: 'getCulList',
+          firstLevelCateId: 1,
+          page: app.page,
+          perPage: app.perPage
+        };
+        sendAjax(this, post, function (res) {
+          if (callback) {
+            callback()
+          }
+
+          if (ref == 1) {
+            app.newlist = res.data.proList;
+            app.laber();
+            app.rote = true;
+            app.load = false
+          } else {
+            app.newlist = app.newlist.concat(res.data.proList);
+            app.rote = true;
+            app.load = false
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+        });
+      },
+      laber: function () {
+        app.countnum++;
+      },
+//      轮播
+      uappToolRollPic: function () {
+        var post = {
+          cmd: 'uappToolRollPic'
+        };
+        sendAjax(this, post, function (res) {
+          console.log(JSON.stringify(res.data));
+          app.backlist = res.data;
+        })
+      }
+    }
+  })
+</script>

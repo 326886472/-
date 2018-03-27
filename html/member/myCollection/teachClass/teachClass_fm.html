@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+
+        .icon {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .list {
+            font-size: 0.7rem;
+            padding: 0 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .list-item {
+            background: white;
+            width: 48%;
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+        }
+
+        .list-item img {
+            width: 100%;
+            height: 9rem;
+        }
+
+        .img-box {
+            position: relative;
+        }
+
+        .text-cover {
+            position: absolute;
+            bottom: 2%;
+            width: 100%;
+            padding: 0.3rem 0;
+            text-align: center;
+            color: white;
+            background: rgba(0, 0, 0, .5);
+        }
+
+        .time-box {
+            font-size: 0.6rem;
+            color: #ccc;
+        }
+
+        .price-box {
+            color: #FF7358;
+            padding: 0.2rem 0;
+        }
+
+        .laber-box {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .laber-box span {
+            font-size: 0.6rem;
+            margin-right: 0.3rem;
+            padding: 0 0.1rem;
+        }
+
+        .brand-box {
+            color: #F89C90;
+            border: 1px solid #F89C90;
+            border-radius: 2px;
+        }
+
+        .year-box {
+            color: #A7E0CF;
+            border: 1px solid #A7E0CF;
+            border-radius: 2px;
+        }
+
+        .bottom-box {
+            width: 100%;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .bottom-box span {
+            margin-left: 0.6rem;
+        }
+
+        .xinxin {
+            padding-right: 0.2rem;
+            border-right: 1px solid #ccc;
+        }
+
+        .shoucangfont {
+            color: #FCBD54
+        }
+
+        .ixin {
+            color: #d83615;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div id="loadStart"></div>
+    <ul class="list">
+        <li class="list-item" v-for="(item,index) in proList">
+            <div class="img-box">
+                <div class="text-cover">
+                    {{item.clubName}}
+                </div>
+                <img :src="formatImg(item.coursePic)" alt="" @click="getClassInfo(item.courseId)">
+            </div>
+            <div class="aui-padded-l-5 aui-padded-r-5">
+                <div class="aui-padded-t-5">{{item.courseName}}</div>
+                <span class="time-box">
+                【开课日期】{{item.startDate}}
+            </span>
+                <div class="price-box">
+                    ￥{{item.coursePrice}}/课时
+                </div>
+                <div class="laber-box">
+                    <span class="brand-box" v-show="item.courseType ==='1'">定期课程</span>
+                    <span class="brand-box" v-show="item.courseType ==='2'">免费体验课</span>
+                    <span class="brand-box" v-show="item.courseType ==='3'">随到随学</span>
+                    <span class="year-box" v-show="item.level ==='1'">入门</span>
+                    <span class="year-box" v-show="item.level ==='2'">提高班</span>
+                    <span class="year-box" v-show="item.level ==='3' && item.courseType ==='1'">进修班</span>
+                </div>
+                <div class="bottom-box">
+                    <span style="text-align: left" @click="collectCommon(index,2,2)">
+                    <i v-if="item.ifAgree==1" class="iconfont ixin icon-xin"></i>
+                    <i v-else class="iconfont icon-ziyuan8"></i>
+                    </span>
+                    <span style="text-align: right" @click="collectCommon(index,2,1)">
+                            <i style="color: #FCBD54" v-if="item.ifCollect==1"
+                               class="iconfont shoucangfont icon-shoucang"></i>
+                            <i style="color: black" v-else class="iconfont icon-shoucang1"></i>
+                </span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      type: '2',
+      proList: [],
+      formatImg: formatImg,
+      firstCount: 0  //loader监听
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.uappGetCollectList();
+      };
+    },
+    methods: {
+//      获取课程收藏列表
+      uappGetCollectList: function () {
+        var post = {
+          cmd: 'uappGetCollectList',
+          token: getToken(),
+          type: app.type
+        };
+        sendAjax(this, post, function (res) {
+          app.loaderChange();
+          app.proList = res.data.proList;
+        });
+      },
+      getClassInfo: function (id) {
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../../../find/catchdetails/catchdetails_win.html',
+          pageParam: {
+            statustype: 1,
+            courseId: id
+          }
+        });
+      },
+      //      loader加载
+      loaderChange: function () {
+        app.firstCount++;
+      },
+      //      琴馆点赞/支持 （取消或支持）
+      collectCommon: function (index, type, agreeOrCollect) {
+        if (type == 2) {
+          if (agreeOrCollect == 1 && getToken() != null) {
+            if (app.proList[index].ifCollect == 1) {
+              app.proList[index].ifCollect = -1;
+            } else {
+              app.proList[index].ifCollect = 1
+            }
+          }
+          if (agreeOrCollect == 2 && getToken() != null) {
+            if (app.proList[index].ifAgree == 1) {
+              app.proList[index].ifAgree = -1;
+            } else {
+              app.proList[index].ifAgree = 1
+            }
+          }
+        }
+
+        var post = {
+          cmd: 'collectCommon',
+          token: getToken(),
+          id: app.proList[index].courseId,
+          type: type,
+          agreeOrCollect: agreeOrCollect,
+          cityCode: getcitycode()
+        };
+        sendAjax(this, post, function (res) {
+          api.sendEvent({
+            name: 'sendtype'
+          });
+        });
+      }
+    }
+  })
+</script>

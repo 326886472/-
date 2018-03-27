@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title>总排行榜</title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/swiper-3.4.2.min.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    /*top标志*/
+    .top-wrap {
+      position: absolute;
+      top: 0rem;
+      right: 0rem;
+      width: 1.8rem;
+      height: 1.8rem;
+      overflow: hidden;
+      border-radius: 1rem;
+      color: #fff;
+    }
+
+    .beijing {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .top1 {
+      background-color: #f46c5a;
+    }
+
+    .top2 {
+      background-color: #ffbb28;
+    }
+
+    .top3 {
+      background-color: #5a9bf4;
+    }
+
+    /*头部*/
+    .top-title {
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .top-title img {
+      width: 100%;
+    }
+
+    /*通用滑块样式*/
+    .swiper-container {
+      height: 8rem;
+      /*width: 100%;*/
+      background-color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .swiper-slide {
+      padding: 0.5rem;
+    }
+
+    .slider-wrap {
+      position: relative;
+      width: 5rem;
+      height: 5rem;
+      /*background-color: #ff4949;*/
+      text-align: center;
+      margin-top: 0.5rem;
+      /*padding: 0.5rem;*/
+      font-size: 0.6rem;
+    }
+
+    .slider-wrap span {
+      display: block;
+    }
+
+    .slider-img {
+      /*width: 5rem;*/
+      flex: 1;
+      height: 5rem;
+    }
+
+    .slider-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .slider-last {
+      width: 100%;
+      height: 3.5rem;
+      background-color: #ececec;
+      padding-top: 1.5rem;
+      color: #111111;
+      /*text-align: center;*/
+    }
+
+    .slider-last span {
+      margin: 0 auto;
+      width: 3rem;
+    }
+
+    /*琴界新闻滑块*/
+    .swiper7 .slider-wrap1 {
+      position: relative;
+      width: 10rem;
+      height: 5rem;
+      /*background-color: #ff4949;*/
+      margin-top: 0.5rem;
+      font-size: 0.6rem;
+    }
+
+    .swiper7 .slider-wrap1 p {
+      flex: 1;
+      vertical-align: middle;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      white-space: normal !important;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    /*琴曲滑块*/
+    .slider-wrap p {
+      flex: 1;
+      text-align: left;
+    }
+
+    /*结尾*/
+    .end {
+      margin-top: -0.5rem;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+    }
+
+    .end span {
+      color: #5a5a5a;
+      font-size: 0.6rem;
+    }
+
+    .sm-hr {
+      width: 2rem;
+      margin: 0 0.5rem;
+      height: 1px;
+      background-color: #5a5a5a;
+      opacity: 0.2;
+    }
+
+    /*单行文本超出后省略号*/
+    .hideMore{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+  <!--注释：qg：琴馆；qghot：琴馆人气排行；qgpingfen：琴馆评分排行-->
+  <!--古琴馆人气排行榜-->
+  <div class="top-title qinguan" @click="openFrame('qinguanhot')">
+    <img src="../../assets/images/rank/qghot1.png" alt="古琴馆人气排行榜">
+  </div>
+  <div class="swiper-container swiper1">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slider-wrap" v-for="(qghot,index) in qghotList" @click="openqghot(index)">
+        <!--<div class="slider-wrap" >-->
+        <div class="top-wrap top1" v-show="qghot.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="qghot.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="qghot.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+          </div>
+        </div>
+        <div class="slider-img">
+          <img :src="formatImg(qghot.picName)"/>
+        </div>
+        <span>{{qghot.clubName}}</span>
+        <!--</div>-->
+      </div>
+      <div class="swiper-slide ">
+        <div class="slider-wrap" @click="openFrame('qinguanhot')">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--古琴馆评分排行榜-->
+  <div class="top-title qinguan" @click="openFrame('qinguanpingfen')">
+    <img src="../../assets/images/rank/qgpingfen1.png" alt="古琴馆评分排行榜">
+  </div>
+  <div class="swiper-container swiper2">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slider-wrap" v-for="(qgpingfen,index) in qgpingfenList" @click="openqg(index)">
+        <!--<div class="slider-wrap" >-->
+        <div class="top-wrap top1" v-show="qgpingfen.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="qgpingfen.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="qgpingfen.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+          </div>
+        </div>
+        <div class="slider-img">
+          <img :src="formatImg(qgpingfen.picName)"/>
+        </div>
+        <span>{{qgpingfen.clubName}}</span>
+        <!--</div>-->
+      </div>
+      <div class="swiper-slide">
+        <div class="slider-wrap" @click="openFrame('qinguanpingfen')">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--注释：kc:课程；kchot：课程人气排行；kcpingfen：课程评分排行-->
+  <!--教学课程人气排行榜-->
+  <div class="top-title kecheng" @click="openFrame('kechenghot')">
+    <img src="../../assets/images/rank/kchot1.png" alt="教学课程人气排行榜">
+  </div>
+  <div class="swiper-container swiper3">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slider-wrap" v-for="(kchot,index) in kchotList" @click="openkchot(index)">
+        <!--<div class="slider-wrap" >-->
+        <div class="top-wrap top1" v-show="kchot.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="kchot.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="kchot.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+          </div>
+        </div>
+        <div class="slider-img">
+          <img :src="formatImg(kchot.images)"/>
+        </div>
+        <!--<span>{{kchot.type}}</span>-->
+        <span>{{kchot.courseName}}</span>
+        <!--</div>-->
+      </div>
+      <div class="swiper-slide" @click="openFrame('kechenghot')">
+        <div class="slider-wrap">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--教学课程评分排行榜-->
+  <div class="top-title kecheng" @click="openFrame('kechengpingfen')">
+    <img src="../../assets/images/rank/kcpingfen1.png" alt="教学课程评分排行榜">
+  </div>
+  <div class="swiper-container swiper4">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slider-wrap" v-for="(kcpingfen,index) in kcpingfenList" @click="openkc(index)">
+        <!--<div class="slider-wrap" >-->
+        <div class="top-wrap top1" v-show="kcpingfen.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="kcpingfen.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="kcpingfen.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+          </div>
+        </div>
+        <div class="slider-img">
+          <img :src="formatImg(kcpingfen.images)"/>
+        </div>
+        <!--<span>{{kcpingfen.type}}</span>-->
+        <span>{{kcpingfen.courseName}}</span>
+        <!--</div>-->
+      </div>
+      <div class="swiper-slide" @click="openFrame('kechengpingfen')">
+        <div class="slider-wrap">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--注释：cp:产品；cphot：产品人气排行；cpsell：产品销量排行-->
+  <!--产品热度排行榜 @click="openFrame('chanpinhot')"-->
+  <div class="top-title chanpin" v-if="ifCP">
+    <img src="../../assets/images/rank/cphot1.png" alt="产品热度排行榜">
+  </div>
+  <div class="swiper-container swiper5" v-if="ifCP">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" v-for="cphot in cphotList">
+        <div class="slider-wrap">
+          <div class="top-wrap top1" v-show="cphot.rankId==='1'"><!--排行前三-->
+            <div class="beijing">
+              <i>
+                <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                  <use xlink:href="#icon-huangguan"></use>
+                </svg>
+              </i>
+              <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+            </div>
+          </div>
+          <div class="top-wrap top2" v-show="cphot.rankId==='2'"><!--排行前三-->
+            <div class="beijing">
+              <i>
+                <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                  <use xlink:href="#icon-huangguan"></use>
+                </svg>
+              </i>
+              <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+            </div>
+          </div>
+          <div class="top-wrap top3" v-show="cphot.rankId==='3'"><!--排行前三-->
+            <div class="beijing">
+              <i>
+                <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                  <use xlink:href="#icon-huangguan"></use>
+                </svg>
+              </i>
+              <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+            </div>
+          </div>
+          <div class="slider-img">
+            <img :src="cphot.src"/>
+          </div>
+          <span style="font-family:宋体;">【{{cphot.jibie}}】</span>
+          <span>{{cphot.name}}</span>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="slider-wrap">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--产品销量排行榜 @click="openFrame('chanpinsell')"-->
+  <div class="top-title chanpin" v-if="ifCP">
+    <img src="../../assets/images/rank/cpsell1.png" alt="产品销量排行榜">
+  </div>
+  <div class="swiper-container swiper6" v-if="ifCP">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slider-wrap" v-for="cpsell in cpsellList">
+        <!--<div class="slider-wrap">-->
+        <div class="top-wrap top1" v-show="cpsell.rankId===1"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="cpsell.rankId===2"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="cpsell.rankId===3"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+          </div>
+        </div>
+        <div class="slider-img">
+          <img :src="cpsell.src"/>
+        </div>
+        <span>【{{cpsell.jibie}}】</span>
+        <span>{{cpsell.name}}</span>
+        <!--</div>-->
+      </div>
+      <div class="swiper-slide">
+        <div class="slider-wrap">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--news:新闻-->
+  <!--琴界新闻排行榜-->
+  <div class="top-title news" @click="openFrame('qinjienews')">
+    <img src="../../assets/images/rank/qjnews1.png" alt="琴界新闻排行榜">
+  </div>
+  <div class="swiper-container swiper7">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slider-wrap1" v-for="(news,index) in newsList" @click="opennews(index)">
+        <div class="top-wrap top1" v-show="news.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="news.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="news.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+          </div>
+        </div>
+        <div class="slider-img">
+          <img :src="formatImg(news.cover)"/>
+        </div>
+        <p>
+          {{news.title}}
+        </p>
+      </div>
+      <div class="swiper-slide" @click="openFrame('qinjienews')">
+        <div class="slider-wrap">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--qinqu:琴曲-->
+  <!--琴曲排行榜-->
+  <div class="top-title qinqu" @click="openFrame('qinqu')">
+    <img src="../../assets/images/rank/qinqu1.png" alt="琴曲排行榜">
+  </div>
+  <div class="swiper-container swiper8">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slider-wrap" v-for="(qinqu,index) in qinquList" @click="openqinqu(index)">
+        <div class="top-wrap top1" v-show="qinqu.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="qinqu.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="qinqu.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+          </div>
+        </div>
+        <div class="slider-img">
+          <img :src="formatImg(qinqu.cover)"/>
+        </div>
+        <p>【{{qinqu.title}}】</p>
+        <p>{{qinqu.author}}</p>
+      </div>
+      <div class="swiper-slide" @click="openFrame('qinqu')">
+        <div class="slider-wrap">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--qinpu:琴谱-->
+  <!--琴谱排行榜-->
+  <div class="top-title qinpu" @click="openFrame('qinpu')">
+    <img src="../../assets/images/rank/qinpu1.png" alt="琴谱排行榜">
+  </div>
+  <div class="swiper-container swiper9">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide slider-wrap" v-for="(qinpu,ind) in qinpuList" @click="openqinpu(ind)">
+        <div class="top-wrap top1" v-show="qinpu.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="qinpu.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="qinpu.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;margin-top: -5px">TOP3</span>
+          </div>
+        </div>
+        <div class="slider-img">
+          <img :src="formatImg(qinpu.cover)"/>
+        </div>
+        <p class="hideMore" style="width: 100%">{{qinpu.title}}</p>
+        <p>{{qinpu.author}}</p>
+      </div>
+      <div class="swiper-slide" @click="openFrame('qinpu')">
+        <div class="slider-wrap">
+          <div class="slider-last">
+            <span style="border-bottom: 1px solid #bbb">查看更多</span>
+            <hr>
+            <span>MORE</span>
+          </div>
+          <span>查看更多</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!--END-->
+  <div class="end">
+    <div class="sm-hr"></div>
+    <span>END</span>
+    <div class="sm-hr"></div>
+
+  </div>
+</div>
+</body>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script src="../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../assets/js/swiper-3.4.2.min.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: "#app",
+    data: {
+      storelist: [],
+      qghotList: [],
+      qgpingfenList: [],
+      kchotList: [],
+      kcpingfenList: [],
+      cphotList: [],
+      cpsellList: [],
+      newsList: [],
+      qinquList: [],
+      qinpuList: [],
+      loading: false,
+      firstCount: 0,
+      ifCP:false
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 7) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.getqgRank(function () {
+          app.firstCount++;
+        });
+        app.getqghotRank(function () {
+          app.firstCount++;
+        });
+        app.getkcRank(function () {
+          app.firstCount++;
+        });
+        app.getkchotRank(function () {
+          app.firstCount++;
+        });
+        app.getnewsRank(function () {
+          app.firstCount++;
+        });
+        app.getqinquRank(function () {
+          app.firstCount++;
+        });
+        app.getqinpuRank(function () {
+          app.firstCount++;
+        });
+        app.$nextTick(function () {
+          var Swiper1 = new Swiper('.swiper1', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 100,
+            observer: true,
+            observeParents: true
+          });
+//          app.firstCount++;
+          var Swiper2 = new Swiper('.swiper2', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 100,
+            observer: true,
+            observeParents: true
+          });
+          var Swiper3 = new Swiper('.swiper3', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 100,
+            observer: true,
+            observeParents: true
+          });
+          var swiper4 = new Swiper('.swiper4', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 100,
+            observer: true,
+            observeParents: true
+          });
+          var swiper5 = new Swiper('.swiper5', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 100
+          });
+          var swiper6 = new Swiper('.swiper6', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 100
+          });
+          var swiper7 = new Swiper('.swiper7', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 260,
+            observer: true,
+            observeParents: true,
+            width: 600
+          });
+          var swiper8 = new Swiper('.swiper8', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 100,
+            observer: true,
+            observeParents: true
+          });
+          var swiper9 = new Swiper('.swiper9', {
+            slidesPerView: 3,
+            freeMode: true,
+            slidesOffsetAfter: 100,
+            observer: true,
+            observeParents: true
+          });
+
+        });
+      }
+    },
+    methods: {
+      openFrame: function (ret) {
+        var fmUrl = 'rank/' + ret + '_fm';
+        openView('ret', fmUrl, '排行榜', false, false);
+      },
+      //获取接口
+      getqgRank: function (callback) {
+        var post1 = {
+          cmd: 'rankClubList',
+          cityCode: getcitycode(),
+          rank: 1
+        };
+        sendAjax(this, post1, function (res) {
+          app.qgpingfenList = app.cutList(res.data);
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      getqghotRank: function (callback) {
+        var post2 = {
+          cmd: 'rankClubList',
+          cityCode: getcitycode(),
+          rank: 2,
+          token: getToken
+        };
+        sendAjax(this, post2, function (res) {
+          app.qghotList = app.cutList(res.data);
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      getkcRank: function (callback) {
+        var post3 = {
+          cmd: 'rankCourseList',
+          cityCode: getcitycode(),
+          rank: 1
+        };
+        sendAjax(this, post3, function (res) {
+          app.kcpingfenList = app.cutList(res.data);
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      getkchotRank: function (callback) {
+        var post4 = {
+          cmd: 'rankCourseList',
+          cityCode: getcitycode(),
+          rank: 2
+        };
+        sendAjax(this, post4, function (res) {
+          app.kchotList = app.cutList(res.data);
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      getnewsRank: function (callback) {
+        var post5 = {
+          cmd: 'rankCultureList',
+          type: '3'
+        };
+        sendAjax(this, post5, function (res) {
+          app.newsList = app.cutList(res.data);
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      getqinquRank: function (callback) {
+        var post6 = {
+          cmd: 'rankCultureList',
+          type: '4'
+        };
+        sendAjax(this, post6, function (res) {
+          app.qinquList = app.cutList(res.data);
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      getqinpuRank: function (callback) {
+        var post7 = {
+          cmd: 'rankCultureList',
+          type: '2'
+        };
+        sendAjax(this, post7, function (res) {
+          app.qinpuList = app.cutList(res.data);
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      cutList: function (arr) {
+        if (arr.length > 5) {
+          var mm = arr.slice(0, 5);
+//                    for(var i =0;i<5;i++){
+//                        mm[i]=arr[i];
+//                    }
+          return mm;
+        } else {
+          return arr;
+        }
+
+      },
+      //点击排行列表跳转
+      openqg: function (ret) {
+        //打开琴馆评分列表预约购买
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../find/catchdetails/catchdetails_win.html',
+          pageParam: {
+            statustype: 0,
+            clubId: app.qgpingfenList[ret].clubId
+          }
+        });
+      },
+      openqghot: function (ret) {
+        //打开琴馆人气列表预约购买
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../find/catchdetails/catchdetails_win.html',
+          pageParam: {
+            statustype: 0,
+            clubId: app.qghotList[ret].clubId
+          }
+        });
+      },
+      openkc: function (ret) {
+        //打开课程评分排名课程
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../find/catchdetails/catchdetails_win.html',
+          pageParam: {
+            statustype: 1,
+            courseId: app.kcpingfenList[ret].courseId
+          }
+        });
+      },
+      openkchot: function (ret) {
+        //打开课程人气排名课程
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../find/catchdetails/catchdetails_win.html',
+          pageParam: {
+            statustype: 1,
+            courseId: app.kchotList[ret].courseId
+          }
+        });
+      },
+      opennews: function (ret) {
+        api.openWin({
+          name: 'newdetails_win',
+          url: '../tools/morenew/newdetails_win.html',
+          pageParam: {
+            cateid: app.newsList[ret].cateId,
+            articleid: app.newsList[ret].articleId
+          }
+        });
+      },
+      openqinqu: function (ind) {
+        api.openWin({
+          name: 'listendetails_win',
+          url: '../tools/listen/listendetails_win.html',
+          pageParam: {
+            cateid: app.qinquList[ind].cateId,
+            articleid: app.qinquList[ind].articleId
+          }
+        });
+      },
+      openqinpu: function (ret) {
+        api.openWin({
+          name:'musicdetails_win',
+          url:'../tools/music/musicdetails_win.html',
+          pageParam:{
+            cateid: app.qinpuList[ret].cateId,
+            articleid: app.qinpuList[ret].articleId
+          }
+        });
+      }
+    }
+  });
+
+
+</script>
+</html>

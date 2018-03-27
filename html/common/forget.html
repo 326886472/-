@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+        }
+
+        #header {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .content {
+            padding: 0 5%;
+        }
+
+        .input-box {
+            display: flex;
+            font-size: 0.7rem;
+            color: #666;
+            align-items: center;
+            padding: 1rem 0 0.5rem 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .input-box input {
+            padding-left: 0.3rem;
+            font-size: 0.7rem;
+        }
+
+        .code {
+            text-align: center;
+            padding: 0.3rem 0.3rem;
+            border-radius: 20px;
+            border: 1px solid #666;
+        }
+
+        .code:active {
+            background: gainsboro;
+        }
+
+        .btn-box {
+            margin-top: 20%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-box button {
+            width: 70%;
+            border: 1px solid #666;
+            border-radius: 20px;
+            padding: 0.5rem 0;
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .btn-box button:active {
+            background: gainsboro;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="content">
+        <div class="input-box">
+            <div class="aui-col-xs-3">+86</div>
+            <input type="tel" placeholder="请输入用户名" class="aui-col-xs-9" v-model="mobile">
+        </div>
+        <div class="input-box">
+            <div class="aui-col-xs-3">验证码</div>
+            <input type="number" placeholder="请输入短信验证码" class="aui-col-xs-5" v-model="code" @blur="checkCode">
+            <button class="aui-col-xs-4 code" :disabled="onCount" @click="sendSms">{{sendText}}</button>
+        </div>
+        <div class="btn-box">
+            <button @click="checkCode">下一步</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      mobile: '',
+      code: '',
+      onCount: false,
+      countTime: 60,
+      sendText: "获取验证码",
+      fromLaunch:false
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        if(api.pageParam.fromLaunch){
+          app.fromLaunch = api.pageParam.fromLaunch;
+        }
+      };
+    },
+    methods: {
+//            发送验证码
+      sendSms: function () {
+        if (app.mobile === '') {
+          app.onCount = false;
+          toastMsg('手机号不能为空');
+        } else if ((mobileReg.test(app.mobile))) {
+          app.onCount = true;
+          app.countDownFn();
+          var post = {
+            cmd: 'sendSms',
+            mobile: app.mobile,
+            type: 'zhaohui'
+          };
+          sendAjax(this, post, function (res) {
+          });
+        } else {
+          app.onCount = false;
+          toastMsg('手机号格式有误');
+        }
+      },
+      //          验证码是否可用
+      checkCode: function () {
+        if( (mobileReg.test(app.mobile))){
+          if ((/^\d{4}$/.test(app.code)) === true) {
+            var post = {
+              cmd: 'checkCode',
+              mobile: app.mobile,
+              code: app.code
+            };
+            sendAjax(this, post, function (res) {
+              app.openNext();
+            });
+          } else {
+            toastMsg('验证码输入有误');
+          }
+        }else{
+          toastMsg('手机号格式不正确');
+        }
+      },
+//            下一步
+      openNext: function () {
+        openView('newPass', 'common/newPass', '输入新密码', false, false, {
+          mobile: app.mobile,
+          code: app.code,
+          fromLaunch:app.fromLaunch
+        })
+      },
+      //  倒计时
+      countDownFn: function () {
+        app.sendText = app.countTime + "s后重试";
+        var countDown = setInterval(function () {
+          if (app.countTime > 1) {
+            app.onCount = true;
+            app.countTime--;
+            app.sendText = app.countTime + "s后重试";
+          } else {
+            app.onCount = false;
+            app.sendText = '获取验证码';
+            app.countTime = 60;
+            clearInterval(countDown);
+          }
+        }, 1000);
+      }
+    }
+  })
+</script>

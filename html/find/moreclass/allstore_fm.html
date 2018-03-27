@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+            background: white;
+            width: 100%;
+            height: auto;
+        }
+
+        html, body {
+            width: 100%;
+            height: auto;
+            background: #f0f0f0;
+        }
+        .classmessage{
+            width: 100%;
+            height: 13rem;
+        }
+        .classmessage img{
+            width: 100%;
+            height: 8rem;
+        }
+        .bottommessage{
+            display: flex;
+            line-height: 2rem;
+        }
+        .bottommessage span{
+            flex: 1;
+        }
+        .leftmessage{
+            flex: 1;
+            text-align: left;
+            margin-left: 15px;
+            color: orangered;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .rightmessage{
+            flex: 1;
+            text-align: right;
+            color: darkgray;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+        .ordertag{
+            border: 1px solid green;
+            color: green;
+            font-size: 12px;
+        }
+        .orderup{
+            border: 1px solid orange;
+            color: orange;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="classmessage" v-for="(item,index) in moreclasslist" @click="fotocatchdetails(index)">
+        <img :src="formatImg(item.images)">
+        <span style="font-size: 15px;margin-left: 15px">{{item.courseName}}</span>
+        <span class="ordertag">{{item.courseType | typeText}}</span>
+        <span class="orderup"  v-if="item.level != ''">{{item.level | gradeText}}</span>
+        <p class="bottommessage">
+            <span class="leftmessage">￥{{item.price}}</span>
+            <span class="rightmessage">已售{{item.joinCount}}人</span>
+        </p>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            moreclasslist:[]
+        },
+      filters: {
+        typeText: function (courseType) {
+          switch (courseType) {
+            case '1':
+              return '定期课程';
+            case '2':
+              return '免费体验课';
+            case '3':
+              return '随到随学';
+          }
+        },
+        gradeText: function (level) {
+          switch (level) {
+            case '1':
+              return '入门级';
+            case '2':
+              return '提高班';
+            case '3':
+              return '进修班';
+          }
+        }
+      },
+        created: function () {
+            apiready = function () {
+                app.moreclasslist = api.pageParam.moreclasslist;
+            };
+        },
+        methods: {
+
+          fotocatchdetails:function(index) {
+
+            api.sendEvent({
+              name: 'moreclass',
+              extra: {
+                courseId: app.moreclasslist[index].courseId
+              }
+            });
+            api.closeWin();
+          }
+        }
+    })
+</script>
+
+
+
+

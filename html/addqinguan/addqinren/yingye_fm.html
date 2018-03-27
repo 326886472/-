@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #app {
+      position: relative;
+      flex: 1;
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    /*营业日与营业时间段*/
+    .add-title {
+      width: 100%;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      font-size: 0.7rem;
+      padding-left: 1rem;
+      color: #5a5a5a;
+      box-sizing: border-box;
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .workdate, .worktime {
+      width: 100%;
+      background-color: #fff;
+      font-size: 0.7rem;
+      box-sizing: border-box;
+      color: #5a5a5a;
+    }
+
+    .workdate {
+      height: 2rem;
+      padding: 0.5rem 1rem;
+    }
+
+    .worktime {
+      padding: 0 1rem;
+    }
+
+    .allday, .duan {
+      height: 2rem;
+      line-height: 2rem;
+    }
+
+    .allday {
+      border-bottom: 1px solid #8d8d8d;
+    }
+
+    /*修改按钮*/
+    .uploading {
+      position: absolute;
+      bottom: 0;
+      padding: 1.5rem 0;
+      display: flex;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .uploading button {
+      height: 45px;
+      line-height: 45px;
+      width: 60%;
+      border: 1px solid #5a5a5a;
+      font-size: 16px;
+      text-align: center;
+      border-radius: 35px;
+      outline: none;
+    }
+
+    .uploading button:active {
+      background: #888;
+    }
+
+    /*弹出框背景*/
+    .mint-popup-bottom {
+      width: 100%;
+    }
+
+    .xingqi-wrap {
+      width: 100%;
+      padding: 1.5rem 1.5rem 0.5rem;
+      font-size: 0.7rem;
+      background: #ffffff;
+      box-sizing: border-box;
+    }
+
+    .xingqi {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .xingqi span {
+      height: 1.5rem;
+      width: 24%;
+      line-height: 1.5rem;
+      border-bottom: 1px solid #d9d9d9;
+      margin: 0.2rem;
+      text-align: center;
+      color: #404040;
+    }
+    .xingqi span .iconfont{
+      font-size: 12px;
+      padding-left: 2px;
+    }
+    .red {
+      color: #f46c5a;
+    }
+
+    /*选择工作日*/
+    .select-xinqi {
+      margin: 20px auto;
+      width: 180px;
+      border: 1px solid #d9d9d9;
+      color: #404040;
+      height: 30px;
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+
+    .select-xinqi button {
+      width: 90px;
+      border-left: 1px solid #d9d9d9;
+    }
+
+    /*时间选择器样式*/
+    .datetime {
+      display: flex;
+    }
+
+    .timer {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 15px;
+      box-sizing: border-box;
+    }
+
+    .timer .time-head {
+      width: 100%;
+      display: flex;
+    }
+
+    .timer .time-head span {
+      width: 50%;
+      text-align: center;
+      font-size: 0.8rem;
+      padding: 15px;
+    }
+
+    .time-btn {
+      width: 60%;
+      height: 2rem;
+      margin: 10px auto;
+      border: 1px solid #CCCCCC;
+      border-radius: 1.1rem;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .time-btn button {
+      width: 50%;
+      font-size: 0.8rem;
+      outline: none;
+      border-right: 1px solid #CCCCCC;
+    }
+
+    .time-btn button:active {
+      background-color: gainsboro;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <!--选择营业日-->
+  <mt-popup
+          v-model="popupDate"
+          position="bottom" modal="true">
+    <div class="xingqi-wrap">
+      <div class="xingqi">
+        <span v-for="(date, index) in dates" @click="changeSelect(index)">{{date}}<i class="iconfont" :class="selects[index] === false ? 'icon-ziyuan9' : 'icon-ziyuan10 red'"></i></span>
+        <span style="border: none"></span>
+        <span style="border: none"></span>
+      </div>
+      <div class="select-xinqi">
+        <button @click="dateBtn(0)">取消</button>
+        <button  @click="dateBtn(1)">确定</button>
+      </div>
+    </div>
+  </mt-popup>
+  <!--选择营业时间-->
+  <mt-popup v-model="popuptime"
+            position="bottom" :class="{datetime: popuptime}" class="timer">
+    <div class="time-head">
+      <span>开始时间</span>
+      <span>结束时间</span>
+    </div>
+    <mt-picker :slots="slot1" style="width: 100%;" :visible-item-count="3" @change="onValuesChange" ref="timePicker">
+    </mt-picker>
+    <div class="time-btn">
+      <button @click="cancel()">取消</button>
+      <button @click="confrim()">确定</button>
+    </div>
+  </mt-popup>
+  <div class="add-title ">
+    添加每周营业日
+  </div>
+  <div class="workdate flex-between" @click="popup">
+    <span>每周营业日</span>
+    <span>{{openHours}} <i class="iconfont icon-ziyuan2" style="font-size: 0.3rem;padding-left: 0.2rem"></i></span>
+  </div>
+  <div class="add-title">
+    添加营业时间段
+  </div>
+  <div class="worktime">
+    <div class="allday flex-between" @click="changeAllday">
+      <span>全天24小时</span>
+      <i class="iconfont" :class="isAllHours===true ? 'icon-ziyuan10 red' : 'icon-ziyuan9'"></i>
+    </div>
+    <div class="duan flex-between" @click="opentime()">
+      <span>营业时间段</span>
+      <span>{{openTime}} <i class="iconfont icon-ziyuan2"
+                            style="font-size: 0.3rem;padding-left: 0.2rem"></i></span>
+    </div>
+  </div>
+  <div class="uploading" @click="modify">
+    <button>修改</button>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      popuptime: false,
+      popupDate: false,
+      slot1: [
+        {
+          flex: 1,
+          values: getSeq(24),
+          className: 'slot1',
+          textAlign: 'center'
+        }, {
+          divider: true,
+          content: ':',
+          className: 'slot2'
+        }, {
+          flex: 1,
+          values: getSeq(60),
+          className: 'slot3',
+          textAlign: 'center'
+        }, {
+          flex: 1,
+          values: getSeq(24),
+          className: 'slot4',
+          textAlign: 'center'
+        }, {
+          divider: true,
+          content: ':',
+          className: 'slot5'
+        }, {
+          flex: 1,
+          values: getSeq(60),
+          className: 'slot6',
+          textAlign: 'center'
+        }
+      ],
+      times: ['00', '00', '00', '00'],
+      tempTimes: ['', '', '', ''],
+      openTime: '09:00-18:00',
+      onHandle: false,
+      dates: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
+      selects: [false,false,false,false,false,false,false],
+      isAllHours: false,
+      openHours: ''
+    },
+    mounted: function () {
+      this.setValus(['09', '00', '18', '00']);
+    },
+    created:function(){
+      loadEnd();
+    },
+    methods: {
+      popup: function () {
+        app.popupDate = true;
+      },
+      modify: function () {
+        api.sendEvent({
+          name:'openHours',
+          extra:{
+            openHours:app.openHours,
+            openTime:app.openTime
+          }
+        });
+        closeWindow();
+      },
+      opentime: function () {
+        if (app.isAllHours === false) {
+          app.popuptime = true;
+        }
+      },
+      onValuesChange: function (picker, values) {
+        if (!this.onHandle) {
+          if (values[2] < values[0]) {
+            picker.setSlotValue(2, values[0]);
+          }
+          if (values[2] == values[0]) {
+            if (values[3] < values[1]) {
+              picker.setSlotValue(3, values[1]);
+            }
+          }
+        }
+        for (var i = 0; i < values.length; i++) {
+          if (values[i]) {
+            this.tempTimes[i] = values[i];
+          } else {
+            this.tempTimes[i] = '00';
+          }
+        }
+      },
+      confrim: function () {
+        for (var i = 0; i < app.tempTimes.length; i++) {
+          app.times[i] = app.tempTimes[i];
+        }
+        app.openTime = app.times[0] + ':' + app.times[1] + '-' + app.times[2] + ':' + app.times[3];
+        app.popuptime = false;
+      },
+      cancel: function () {
+        app.tempTimes = app.times;
+        app.openTime = app.times[0] + ':' + app.times[1] + '-' + app.times[2] + ':' + app.times[3];
+        app.setValus(app.tempTimes);
+        app.popuptime = false;
+      },
+      setValus: function (values) {
+        this.onHandle = true;
+        for (var i = 0; i < values.length; i++) {
+          this.$refs.timePicker.setSlotValue(i, values[i]);
+        }
+        this.$nextTick(function () {
+          app.onHandle = false;
+        });
+      },
+      changeSelect: function (ind) {
+        if (app.selects[ind] === 1) {
+          app.selects.splice(ind, 1, 0);
+        } else {
+          app.selects.splice(ind, 1, 1);
+        }
+      },
+      changeAllday:function () {
+        app.isAllHours = !app.isAllHours;
+        if(app.isAllHours === true){
+          app.openTime = '00:00-24:00';
+        }
+      },
+      formatOpenHours:function(res) {
+        if (res) {
+          if (res[0] && res[1] && res[2] && res[3] && res[4] && res[5] && res[6]) {
+            return '整周';
+          } else if (res[0] && res[1] && res[2] && res[3] && res[4] && !res[5] && !res[6]) {
+            return '周一到周五';
+          } else {
+            var resText = '';
+            for (var i = 0; i < res.length; i++) {
+              if (res[i]) {
+                var dayText = '';
+                switch (i) {
+                  case 0:
+                    dayText = '周一';
+                    break;
+                  case 1:
+                    dayText = '周二';
+                    break;
+                  case 2:
+                    dayText = '周三';
+                    break;
+                  case 3:
+                    dayText = '周四';
+                    break;
+                  case 4:
+                    dayText = '周五';
+                    break;
+                  case 5:
+                    dayText = '周六';
+                    break;
+                  case 6:
+                    dayText = '周日';
+                    break;
+                }
+                resText += dayText + ',';
+              }
+            }
+            resText = resText.substr(0, resText.length - 1);
+            return resText;
+          }
+        } else {
+          return '';
+        }
+      },
+      dateBtn:function (res) {
+        if(res===0){
+          app.popupDate = false;
+        }else{
+          app.openHours = app.formatOpenHours(app.selects);
+          app.popupDate = false;
+        }
+      }
+    }
+  })
+
+</script>
+
+
+<!--备注-->
+

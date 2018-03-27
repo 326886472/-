@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+            width: 100%;
+            height: 100%;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+        }
+        .teachdetails{
+            width: 100%;
+            height: 8rem;
+            background: gainsboro;
+            display: flex;
+        }
+        .teachimg{
+            width: 5.5rem;
+            height: 5.5rem;
+            border-radius: 50%;
+            background: white;
+            margin: auto;
+            background-size: 100% 100%;
+        }
+        .teachname{
+            font-size: 14px;
+            width: 100%;
+            height: 3rem;
+            line-height: 3rem;
+            background: white;
+            border-bottom: 1px solid gainsboro;
+        }
+        .teachmessage{
+            width: 100%;
+            background: white;
+            height: 50%;
+            border-bottom: 1px solid gainsboro;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="teachdetails">
+            <div class="teachimg" :style="{'background-image':'url(' + formatImg(teachimage) + ')'}" ></div>
+    </div>
+    <div class="teachname">
+        <span style="font-weight: bold;margin-left: 15px">任课教师：</span>
+        <span>{{teachname}}</span>
+    </div>
+    <div class="teachmessage">
+        <span style="font-weight: bold;font-size: 14px">教师简介：</span>
+        <p style="font-size: 14px">{{teachdesc}}</p>
+    </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+          teachname:'',
+          teachdesc:'',
+          teachimage:''
+        },
+        filters: {},
+        created: function () {
+            apiready = function () {
+                app.teachname = api.pageParam.teachname;
+                app.teachdesc = api.pageParam.teachdesc;
+                app.teachimage = api.pageParam.teachimage;
+            };
+        },
+        methods: {
+        }
+    })
+</script>
+
+
+
+

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0.5rem;
+      border-radius: 0.3rem;
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .content-item {
+      background: white;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+    }
+
+    .content-item:active {
+      background: gainsboro;
+    }
+
+    .big-box {
+      position: relative;
+    }
+
+    .label-box {
+      position: absolute;
+      right: -10%;
+      top: -10%;
+      background: red;
+      color: white;
+      padding: 0 0.2rem;
+      font-size: 12px;
+      border-radius: 40%;
+    }
+
+    .content-right {
+      flex-shrink: 0;
+      width: 80%;
+      padding-left: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <ul class="content aui-margin-t-10">
+    <li class="content-item" v-for="(item,index) in list"
+        @click="openChildWin(item.name, item.url, item.title,item.sonTypeId)">
+      <div class="big-box">
+        <div class="label-box" v-show="item.New !=0 ">{{item.New}}</div>
+        <svg class="icon" aria-hidden="true" :style=" 'background:' + item.style">
+          <use :xlink:href="item.icon"></use>
+        </svg>
+      </div>
+      <div class="content-right">
+        <span>{{item.title}}</span>
+        <span>{{item.time}}</span>
+      </div>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      list: [
+        {
+          name: 'admin',
+          title: '系统通知',
+          time: '2017-06-14',
+          style: '#77B4FD',
+          New: '',
+          sonTypeId: '1',
+          icon: '#icon-xitongtongzhi',
+          url: 'member/news/admin/admin_fm'
+        },
+        {
+          name: 'order',
+          title: '订单通知',
+          time: '2017-06-14',
+          style: '#47C6A4',
+          New: '',
+          sonTypeId: '2',
+          icon: '#icon-xiaoxi-dingdan',
+          url: 'member/news/order/order_fm'
+        },
+        {
+          name: 'evaluate',
+          title: '评价留言',
+          time: '2017-06-14',
+          style: '#F46C5A',
+          New: '',
+          sonTypeId: '3',
+          icon: '#icon-liuyan1',
+          url: 'member/news/evaluate/evaluate_fm'
+        },
+        {
+          name: 'zhangHu',
+          title: '账户信息',
+          time: '2017-06-14',
+          style: '#FFBB28',
+          New: '',
+          sonTypeId: '4',
+          icon: '#icon-zhanghuxinxi',
+          url: 'member/news/zhangHu/zhangHu_fm'
+        },
+        {
+          name: 'huiYuan',
+          title: '会员动态',
+          time: '2017-06-14',
+          style: '#FF8500',
+          New: '',
+          sonTypeId: '5',
+          icon: '#icon-zhinanzhen',
+          url: 'member/news/huiYuan/huiYuan_fm'
+        }
+      ],
+      countList: [],
+      firstCount: 0  //loader监听
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.uappGetSystemNotify();
+        api.addEventListener({
+          name: 'NotifyOk'
+        }, function (ret, err) {
+          app.uappGetSystemNotify();
+        });
+      };
+    },
+    methods: {
+//      获取未读信息数量个数
+      uappGetSystemNotify: function () {
+        var post = {
+          cmd: 'uappGetSystemNotify',
+          token: getToken(),
+          typeId: '2'
+        };
+        sendAjax(this, post, function (res) {
+          app.loaderChange();
+          for (var i = 0; i < app.list.length; i++) {
+            app.list[i].New = res.data[i];
+          }
+        });
+      },
+//      打开对应消息类型
+      openChildWin: function (name, url, title, sonTypeId) {
+        openView(name, url, title, false, false, {
+          sonTypeId: sonTypeId
+        });
+      },
+      //      loader加载
+      loaderChange: function () {
+        app.firstCount++;
+      }
+    }
+  })
+</script>

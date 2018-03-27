@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+    }
+
+    #header {
+      border-bottom: 1px solid #ccc;
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .icon {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .block {
+      margin: 0 auto 1rem auto;
+      display: block;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .top-box {
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .message-box {
+      padding: 1rem;
+    }
+
+    .btn-box {
+      margin-top: 20%;
+      width: 100%;
+      text-align: center;
+    }
+
+    .btn-box button {
+      width: 70%;
+      border: 1px solid #666;
+      border-radius: 20px;
+      padding: 0.5rem 0;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .btn-box div {
+      padding-top: 0.7rem;
+      font-size: 0.7rem;
+      color: #9d9d9d;
+      text-decoration: underline;
+    }
+
+    .btn-box button:active {
+      background: gainsboro;
+    }
+
+    .aui-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* 分享 */
+    .bottompoup {
+      width: 100%;
+      height: 12rem;
+      background: white;
+    }
+
+    .fourkind {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .minkind {
+      flex: 1;
+      text-align: center;
+    }
+
+    .publicfont {
+      font-size: 50px;
+    }
+
+    .minkind p {
+      font-size: 14px;
+    }
+
+    .sharetitle {
+      line-height: 2.5rem;
+      font-size: 15px;
+    }
+
+    .canclebox {
+      width: 100%;
+      height: 5rem;
+      display: flex;
+    }
+
+    .cancelinput {
+      width: 70%;
+      height: 2rem;
+      line-height: 2rem;
+      border-radius: 20px;
+      border: 1px solid #9f9f9f;
+      text-align: center;
+      font-size: 14px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <header class="aui-bar aui-bar-nav" id="header">
+    <a class="aui-padded-l-5 aui-pull-left aui-btn" @click="closeWindow()">
+      <i class="iconfont icon-ziyuan2-copy"></i>
+    </a>
+    <div class="aui-title aui-font-size-16">会员注册</div>
+    <div class="aui-pull-right" style="font-size: 0.6rem;" @click="bler = true">
+      <i class="iconfont icon-fenxiang"></i>
+    </div>
+  </header>
+  <div class="content">
+    <div class="top-box">
+      <svg class="icon block" aria-hidden="true">
+        <use xlink:href="#icon-ziyuan5"></use>
+      </svg>
+      恭喜您注册成功
+    </div>
+    <div class="message-box">
+      <div class="aui-padded-b-10">亲爱的用户:{{nickname}}</div>
+      <div>为了给您更好的服务,您可以完成实名认证获得特权</div>
+    </div>
+    <div class="btn-box">
+      <button @click="openAuth">立即认证</button>
+      <div @click="openIndexWin">进入页面</div>
+    </div>
+  </div>
+
+  <mt-popup class="bottompoup"
+            v-model="bler"
+            position="bottom">
+
+    <p class="sharetitle"><span style="margin-left: 10px">分享到</span></p>
+    <div class="fourkind">
+      <div class="minkind" @click="shareto(1)">
+        <i style="color: #20cb33" class="iconfont publicfont icon-weixin-copy"></i>
+        <p>微信好友</p>
+      </div>
+
+      <div class="minkind" @click="shareto(2)">
+        <i style="color: #20cb33" class="iconfont publicfont icon-pengyouquan"></i>
+        <p>朋友圈</p>
+      </div>
+      <div class="minkind" @click="shareto(3)">
+        <i style="color: #24bbff" class="iconfont publicfont icon-qq"></i>
+        <p>QQ</p>
+      </div>
+      <div class="minkind" @click="shareto(4)">
+        <i style="color: #f7c000" class="iconfont publicfont icon-qqkongjian"></i>
+        <p>QQ空间</p>
+      </div>
+
+    </div>
+    <div class="canclebox">
+      <mt-button class="cancelinput" @click="falsebtn()">取消</mt-button>
+    </div>
+  </mt-popup>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      nickname: '',
+      fromLaunch: false,
+      bler: false
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+        if (api.pageParam.nickname) {
+          app.nickname = api.pageParam.nickname;
+        }
+
+        api.addEventListener({
+          name: 'viewappear'
+        }, function (ret, err) {
+          closeWindow('reg');
+          closeWindow('regInfo');
+        });
+      };
+    },
+    methods: {
+      // 立即认证
+      openAuth: function () {
+        api.openWin({
+          name: 'leaguer',
+          url: '../leaguer/leaguer_win.html',
+          pageParam: {
+            index: 1,
+            regLock: true
+          }
+        });
+      },
+      openIndexWin: function () {
+        api.openWin({
+          name: 'root',
+          url: '../index/index/index_win.html'
+        });
+      },
+      // 分享
+      shareto: function (ind) {
+        var wx = api.require('wx');
+        var qq = api.require('QQPlus');
+        app.bler = false;
+        switch (ind) {
+          case 1 : {
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'session',
+              title: '正麟网',
+              description: '一家古琴艺术深度交流平台',
+              thumb: '../../assets/images/thelogo.png',
+              contentUrl: wapUrl + 'wap/html2/download/download.html?2'
+            }, function (ret, err) {
+              if (ret.status) {
+                api.toast({
+                  msg: '分享成功！'
+                });
+              } else {
+                if (err.code == 2) {
+                  api.toast({
+                    msg: '取消分享'
+                  });
+                } else {
+                  qpi.toast({
+                    msg: '分享失败'
+                  })
+                }
+              }
+            });
+            break;
+          }
+          case 2 : {
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'timeline',
+              title: 正麟网,
+              description: '一家古琴艺术深度交流平台',
+              thumb: '../../assets/images/thelogo.png',
+              contentUrl: wapUrl + 'wap/html2/download/download.html?2'
+            }, function (ret, err) {
+              if (ret.status) {
+                toastMsg('分享成功');
+              } else {
+                toastMsg('取消分享');
+              }
+            });
+            break;
+          }
+          case 3 : {
+            qq.shareNews({
+              url: wapUrl + 'wap/html2/download/download.html?2',
+              title: '正麟网',
+              description: '一家古琴艺术深度交流平台',
+              imgUrl: '../../assets/images/thelogo.png',
+              type: 'QFriend'
+            }, function (ret, err) {
+            });
+            break;
+          }
+          case 4 : {
+            qq.shareNews({
+              url: wapUrl + 'wap/html2/download/download.html?2',
+              title: '正麟网',
+              description: '一家古琴艺术深度交流平台',
+              imgUrl: '../../assets/images/thelogo.png',
+              type: 'QZone'
+            }, function (ret, err) {
+            });
+            break;
+          }
+        }
+      }
+    }
+  })
+</script>

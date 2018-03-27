@@ -1,0 +1,82 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  section {
+    width: 100%;
+    height: 100%;
+    .headerimg {
+      width: 100%;
+      height: 6rem;
+      background: #f0f0f0;
+      display: flex;
+      .btnimg {
+        width: 5rem;
+        height: 5rem;
+        margin: auto;
+        font-size: 12px;
+        color: #8b8b8b;
+        text-align: center;
+        border-radius: 70%;
+        background: white;
+      }
+    }
+    .bodycont {
+      width: 100%;
+      height: auto;
+      .body_oul {
+        width: 100%;
+        font-size: 18px;
+        li {
+          line-height: 3rem;
+          border-bottom: 1px solid gainsboro;
+          span {
+            margin-left: 1rem;
+          }
+          p {
+            margin-left: 1rem;
+          }
+        }
+        .countmessage {
+          border-bottom: 1px solid transparent;
+          .textarea {
+            width: 90%;
+            height: 1rem;
+            margin: 0 5%;
+            color: #8b8b8b;
+            outline: none;
+            padding-bottom: 4rem;
+          }
+        }
+
+      }
+    }
+    .sure_btn {
+      width: 100%;
+      height: 7rem;
+      background: #f0f0f0;
+      display: flex;
+      .sure {
+        width: 50%;
+        color: white;
+        margin: auto;
+        background: #3c3c3c;
+      }
+    }
+    .mint-popup-bottom{
+      width: 100%;
+      ul{
+        width: 100%;
+        li{
+          line-height: 4rem;
+          border-bottom: 1px solid gainsboro;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

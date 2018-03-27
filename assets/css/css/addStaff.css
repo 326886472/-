@@ -1,0 +1,38 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 1rem; }
+  .list .item {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd; }
+    .list .item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px; }
+    .list .item span {
+      margin-left: 2rem; }
+
+.addMt-button {
+  margin-bottom: 3rem; }
+
+.mint-button {
+  width: 70%;
+  margin: 0 15%; }
+
+.detailsMessage {
+  display: flex;
+  padding-top: 5rem; }
+  .detailsMessage > div {
+    align-items: center;
+    position: relative;
+    margin: 0.5rem 2rem;
+    font-size: 16px; }
+    .detailsMessage > div img {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      border-radius: 50%; }

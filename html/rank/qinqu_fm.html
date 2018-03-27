@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title>琴曲排行榜</title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    /*top标志*/
+    .top-wrap {
+      position: absolute;
+      top: -0.3rem;
+      left: -0.3rem;
+      width: 2rem;
+      height: 2rem;
+      overflow: hidden;
+      border-radius: 1rem;
+      color: #fff;
+    }
+
+    .beijing {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+    }
+
+    .top1 {
+      background-color: #f46c5a;
+    }
+
+    .top2 {
+      background-color: #ffbb28;
+    }
+
+    .top3 {
+      background-color: #5a9bf4;
+    }
+
+    /*头部*/
+    .top-title {
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .top-title img {
+      width: 100%;
+    }
+
+    .list-wrap {
+      display: flex;
+      flex-direction: row;
+      background-color: #fff;
+      padding: 0.5rem;
+      width: 100%;
+      /*height: 5rem;*/
+      color: #5a5a5a;
+      font-size: 0.7rem;
+      margin-bottom: 0.2rem;
+      box-sizing: border-box;
+    }
+
+    .left-img {
+      position: relative;
+      width: 4.5rem;
+      height: 4.5rem;
+      /*padding: 0.5rem;*/
+      flex-shrink: 0;
+    }
+
+    .left-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .right-content {
+      position: relative;
+      padding-left: 0.5rem;
+      /*padding: 0 0.8rem 0 0.5rem;*/
+      flex: 1;
+      box-sizing: border-box;
+    }
+
+    .title {
+      color: #000;
+      font-size: 0.6rem;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .paiming {
+      padding: 0.1rem 0 0 0.5rem;
+    }
+
+    .foot {
+      font-size: 0.6rem;
+      padding: 1rem 0.1rem 0 0;
+      justify-content: space-between;
+    }
+
+    .shoucang1 {
+      padding-right: 0.5rem;
+      border-right: 1px solid #ccc;
+      font-size: 12px;
+      /*margin-top: -2px;*/
+    }
+
+    .shoucang2 {
+      padding-left: 0.5rem;
+      font-size: 12px;
+    }
+
+    .rightarea span {
+      text-align: center;
+    }
+
+    .leftarea p {
+      width: 6.5rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <div class="top-title qinqu">
+    <img src="../../assets/images/rank/qinqu.png" alt="琴曲排行榜">
+  </div>
+
+  <div v-for="(item,ind) in items">
+    <div class="list-wrap" @click="openqinqu(ind)">
+      <div class="left-img">
+        <div class="top-wrap top1" v-show="item.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="item.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="item.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;">TOP3</span>
+          </div>
+        </div>
+        <img :src="formatImg(item.src)">
+      </div>
+      <div class="right-content flex-col">
+        <div class="title">
+          <div class="flex-row">
+            <h3><span>【{{item.title}}】</span>{{item.author}}</h3>
+            <span class="paiming" v-show="item.rankId>3" style="color:#f46c5a ">排名{{item.rankId}}</span>
+          </div>
+          <p style="padding-left: 2px">播放量&nbsp;<span>{{item.conuter}}</span></p>
+        </div>
+        <div class="foot flex-row">
+          <div class="leftarea">
+            <p>{{item.desc}}</p>
+            <!--<p>据《》<span>({{item.year}}年)</span></p>-->
+          </div>
+          <div class="rightarea flex-row">
+            <div class="shoucang1 flex-col" @click.stop="changeAgree(ind,'2')">
+              <i style="color: #ff8500;" class="iconfont icon-xingxing1" v-if="item.ifCollect==='1'"></i>
+              <i class="iconfont icon-xingxing" v-else></i>
+              <span>{{item.countCollect}}</span>
+            </div>
+            <div class="shoucang2 flex-col" @click.stop="changeAgree(ind,'1')">
+              <i style="color: #ff4949;" class="iconfont icon-xin" v-if="item.ifAgree==='1'"></i>
+              <i style="" class="iconfont icon-ziyuan8" v-else></i>
+              <span>{{item.countAgree}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script src="../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: "#app",
+    data: {
+      items: [],
+      firstCount: 0
+    },
+    created: function () {
+      this.getRank(function () {
+        app.firstCount++;
+      });
+      apiready = function () {
+
+      };
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    methods: {
+      getRank: function (callback) {
+        var post = {
+          cmd: 'rankCultureList',
+          type: '4',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.items = res.data;
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      openqinqu: function (ind) {
+        api.openWin({
+          name: 'listendetails_win',
+          url: '../tools/listen/listendetails_win.html',
+          pageParam: {
+            cateid: app.items[ind].cateId,
+            articleid: app.items[ind].articleId
+          }
+        });
+      },
+      changeAgree: function (index, res) {
+        if (res === '1') {
+          if (app.items[index].ifAgree === '1') {
+            app.items[index].ifAgree = '0';
+            app.items[index].countAgree--;
+          } else if (app.items[index].ifAgree === '0') {
+            app.items[index].ifAgree = '1';
+            app.items[index].countAgree++;
+          }
+        } else {
+          if (app.items[index].ifCollect === '1') {
+            app.items[index].ifCollect = '0';
+            app.items[index].countCollect--;
+          } else if (app.items[index].ifCollect === '0') {
+            app.items[index].ifCollect = '1';
+            app.items[index].countCollect++;
+          }
+        }
+        app.culDoAgree(index, res);
+      },
+      culDoAgree: function (ind, res) {
+        var post = {
+          cmd: 'culDoAgree',
+          token: getToken(),
+          articleId: app.items[ind].articleId,
+          agreeOrCollect: res
+        };
+        sendAjax(this, post, function (ret) {
+        });
+      }
+    }
+  })
+
+</script>
+
+
+<!--备注-->
+<!--没有懒加载-->
+

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: rgb(248, 248, 248);
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: auto;
+    }
+
+    .publiccity {
+      font-size: 14px;
+      padding: 8px 12px 8px 12px;
+      background: white;
+      margin: 5px;
+    }
+
+    .localcityhere {
+      padding-left: 5px;
+      font-size: 14px;
+      color: #ADADAD;
+      line-height: 2rem;
+    }
+
+    .titlebox {
+      width: 100%;
+      height: 2.5rem;
+      line-height: 2.5rem;
+      background: white;
+      padding-left: 20px;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="titlebox">
+    <span>当前：</span><span>{{nowcity}}</span>
+  </div>
+  <p class="localcityhere">定位城市</p>
+  <span class="publiccity" @click="surecity([localcity],0)" v-show="localcity.cityName">{{localcity.cityName}}</span>
+  <span class="publiccity" @click="surecity([localcity],0)" v-show="!localcity.cityName">{{'定位未开启'}}</span>
+  <p class="localcityhere" v-show="oldcitylist.length>0">历史访问城市</p>
+  <span class="publiccity" v-for="(item,index) in oldcitylist"
+        @click="surecity(oldcitylist,index)">{{item.cityName}}</span>
+  <p class="localcityhere">全部城市</p>
+  <span class="" v-for="(item,index) in citylistShow">
+      <span class="publiccity" @click="surecity(citylistShow, index)">{{item.cityName}}</span>
+    </span>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      citylist: [],
+      citylistShow: [],
+      // 当前城市
+      lon: '',
+      lat: '',
+      localcity: {
+        cityName: '',
+        cityCode: ''
+      },
+      oldcitylist: [],
+      // 当前城市：城市名与code
+      cityCode: '',
+      nowcity: '',
+//      获取全部城市姓名 切除 市
+      cityNamelist:[]
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.nowcity = getcityname();
+        app.open(function () {
+          app.getLocation(function () {
+            app.getNameFromCoords(function () {
+              if (!$api.getStorage('cityName')) {
+                app.nowcity = app.localcity.cityName;
+              } else {
+                app.nowcity = getcityname();
+              }
+            });
+          });
+        });
+
+        app.getCityCode();
+
+        if ($api.getStorage('getcitylist')) {
+          app.oldcitylist = $api.getStorage('getcitylist').splice(0, 5);
+        }
+
+        api.addEventListener({
+          name: 'sendcotyname'
+        }, function (ret, err) {
+          if (ret) {
+            app.searchCityForuapp(ret.value.search);
+          }
+        });
+      };
+    },
+    methods: {
+      searchCityForuapp: function (search) {
+        if (search) {
+          this.citylistShow = [];
+          for (var i = 0; i < this.citylist.length; i++) {
+            if (this.citylist[i].cityName.indexOf(search) != -1) {
+              this.citylistShow.push(this.citylist[i]);
+            }
+          }
+        } else {
+          this.citylistShow = this.citylist;
+        }
+      },
+      getCityCode: function () {
+        var post = {
+          cmd: 'getSwitchCity'
+        };
+        sendAjax(this, post, function (res) {
+          for (var i = 0; i < res.data.length; i++) {
+            res.data[i].cityName = res.data[i].cityName.replace('市', '');
+          }
+
+          app.citylist = res.data;
+          app.citylistShow = res.data;
+          for(var i=0;i<res.data.length;i++){
+            app.cityName = res.data[i].cityName.replace(/市/g,'');
+            app.cityNamelist.push(app.cityName)
+          }
+        })
+      },
+      // 选择城市i
+      surecity: function (arr, index) {
+        api.closeWin();
+        $api.setStorage('cityCode', arr[index].cityCode);
+        $api.setStorage('cityName', arr[index].cityName);
+        app.nowcity = arr[index].cityName;
+        var old = [];
+        var j = 0;
+        for (var i = 0; i < app.oldcitylist.length; i++) {
+          if (app.oldcitylist[i].cityName !== arr[index].cityName) {
+            old[j] = app.oldcitylist[i];
+            j++;
+          }
+        }
+        app.oldcitylist = old;
+        app.oldcitylist.unshift({cityName: arr[index].cityName, cityCode: arr[index].cityCode});
+        $api.setStorage('getcitylist', app.oldcitylist);
+        api.sendEvent({
+          name: 'changecity',
+          extra: {
+            cityname: arr[index].cityName,
+            citycode: arr[index].cityCode
+          }
+        });
+      },
+      //获取当前定位城市：getNameFromCoords；；getLocation
+      open: function (callback) {
+        var aMap = api.require('aMap');
+        aMap.open({
+          rect: {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0
+          }
+        }, function (ret, err) {
+          if (ret.status === true) {
+            if (callback) {
+              callback();
+            }
+          }
+        });
+      },
+      getLocation: function (callback) {
+        var aMap = api.require('aMap');
+        aMap.getLocation(function (ret, err) {
+          if (ret.status === true) {
+            app.lon = ret.lon;
+            app.lat = ret.lat;
+            if (callback) {
+              callback()
+            }
+          } else {
+            //回调错误信息
+          }
+        });
+      },
+      getNameFromCoords: function (callback) {
+        var aMap = api.require('aMap');
+        aMap.getNameFromCoords({
+          lon: app.lon,
+          lat: app.lat
+        }, function (ret, err) {
+          if (ret.status) {
+            if (api.systemType == "ios") {
+              // 如果为真，则不是直辖市，截四位
+              if (ret.city != ret.state) {
+                app.localcity.cityCode = ret.adcode.substr(0, 4) + '00';
+                app.localcity.cityName = ret.city.replace('市', '');
+              } else {
+                app.localcity.cityCode = ret.adcode.substr(0, 2) + '0000';
+                app.localcity.cityName = ret.state.replace('市', '');
+              }
+            } else {
+              // 如果为真，则不是直辖市，截四位
+              if (ret.city) {
+                app.localcity.cityCode = ret.adcode.substr(0, 4) + '00';
+                app.localcity.cityName = ret.city.replace('市', '');
+              } else {
+                app.localcity.cityCode = ret.adcode.substr(0, 2) + '0000';
+                app.localcity.cityName = ret.state.replace('市', '');
+              }
+            }
+            if (callback) {
+              callback()
+            }
+          }
+        });
+      }
+    }
+  })
+</script>

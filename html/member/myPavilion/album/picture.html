@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/picture.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div id="loadStart"></div>
+    <div class="photo">
+        <mt-swipe ref="swiper" :auto="0" :showIndicators="false" @change="handelChange" :continuous="false">
+            <mt-swipe-item v-for="item in picList">
+                <img :src="formatImg(item.picName)" alt="">
+            </mt-swipe-item>
+        </mt-swipe>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+
+<script type="text/javascript">
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                clubId: '',
+                index: '',
+                picList: ''
+            },
+            watch: {
+                loadDone(value) {
+                    if (value == 2) {
+                        loadEnd();
+                    }
+                }
+            },
+            created: function () {
+                apiready = function () {
+
+                    app.clubId = api.pageParam.clubId;
+
+                    app.index = api.pageParam.index;
+
+                    app.picList = api.pageParam.picList;
+
+                    app.$refs.swiper.defaultIndex = app.index;
+
+                    api.setWinAttr({
+                        slidBackEnabled: false
+                    });
+
+                    api.addEventListener({
+                        name: 'keyback'
+                    }, function () {
+                        return false;
+                    });
+
+                    api.addEventListener({
+                        name: 'picDelete'
+                    }, function () {
+                        app.delPerPic();
+                    });
+                    loadEnd();
+                }
+            },
+            methods: {
+                delPerPic() {
+                    api.confirm({
+                        title: '确定删除？',
+                        buttons: ['取消', '确定']
+                    }, function (ret) {
+                        if (ret.buttonIndex === 2) {
+                            var pic = app.picList[app.index];
+
+                            var post = {
+                                cmd: 'delPerPic',
+                                token: app.token,
+                                clubId: app.clubId,
+                                albumId: pic.albumId,
+                                picId: pic.id
+                            };
+                            sendAjax(this, post, function () {
+                                api.sendEvent({
+                                    name: 'picDelete'
+                                });
+                                api.closeWin();
+                            });
+                        }
+                    });
+                },
+                handelChange(index) {
+                    app.index = index;
+                    api.sendEvent({
+                        name: 'titleChange',
+                        extra: (index + 1) + '/' + app.picList.length
+                    });
+                }
+            }
+        });
+</script>

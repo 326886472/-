@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    .class-box {
+      font-size: 0.7rem;
+      color: #666;
+      padding: 1rem 1rem 0.5rem 1rem;
+      background: white;
+    }
+
+    .fz-box {
+      font-size: 0.6rem;
+    }
+
+    .icon {
+      width: 1rem;
+      height: 1rem;
+      display: block;
+    }
+
+    .flex-box {
+      display: flex;
+    }
+
+    .bet {
+      justify-content: space-between;
+    }
+
+    .label-box span {
+      border-radius: 0.2rem;
+      padding: 0.2rem;
+    }
+
+    .price-color {
+      font-size: 0.8rem;
+      color: red;
+    }
+
+    /*课程详情*/
+    .img-box {
+      width: 28%;
+      min-height: 5rem;
+      flex-shrink: 0;
+      overflow: hidden;
+      background-size: cover;
+    }
+
+    .message-box {
+      font-size: 0.7rem;
+      width: 70%;
+      flex-shrink: 0;
+    }
+
+    /*评价盒子*/
+    .text-box {
+      text-align: center;
+    }
+
+    .text-box textarea {
+      min-height: 4rem;
+      width: 90%;
+      background: white;
+      padding: 5%;
+      font-size: 0.7rem;
+    }
+
+    .shops-box {
+      padding: 1rem 1rem 0.5rem 1rem;
+      background: white;
+    }
+
+    /*地址*/
+    .add-box {
+      flex-shrink: 0;
+      margin-right: 0.5rem;
+    }
+
+    /*上传盒子*/
+    .up-img-box {
+      padding: 0.5rem 0.5rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .up-img-box img {
+      max-width: 3rem;
+      max-height: 3rem;
+      border-radius: 0.1rem;
+    }
+
+    .Choice-box {
+      padding-right: 0.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: initial;
+      font-size: 0.7rem;
+      color: #666;
+      border: 1px solid #666;
+      width: 2.3rem;
+      height: 2.3rem;
+      text-align: center;
+      border-radius: 0.1rem;
+    }
+
+    .last-box {
+      margin-bottom: 2rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.7rem;
+      background: white;
+    }
+
+    .last-content-box li {
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .last-content-box li div, .last-content-box li i {
+      margin-right: 0.5rem;
+    }
+
+    .icon-xingxing {
+      font-size: 0.8rem;
+    }
+
+    /*上传图片弹出框*/
+    .mint-popup-bottom {
+      width: 100%;
+    }
+
+    .moreoul {
+      width: 100%;
+    }
+
+    .moreoul li {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      text-align: center;
+    }
+
+    /*认证弹出框样式*/
+    .mint-popup {
+      border-radius: 10px;
+    }
+
+    .pop-wrap {
+      width: 15rem;
+      height: 8rem;
+    }
+
+    .certi-pop {
+      color: #666;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      box-sizing: border-box;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .certi-pop p {
+      font-size: 0.7rem;
+    }
+
+    .popbutton {
+      width: 80%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .popbutton button {
+      color: #666;
+      padding: 0.4rem 1rem;
+      font-size: 0.6rem;
+      border: 1px solid #888;
+      border-radius: 15px;
+      outline: none;
+    }
+
+    .popbutton button:active {
+      background: gainsboro;
+    }
+
+    .icon-shoucang {
+      color: #FF8500;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="class-box">
+    <div class="flex-box aui-padded-b-5" style="color: #666;">
+      <svg class="icon aui-margin-r-5" aria-hidden="true" style="font-size: 0.8rem;">
+        <use xlink:href="#icon-shangjia"></use>
+      </svg>
+      {{form.clubName || '正麟殿官方'}}
+    </div>
+    <!--课程详情-->
+    <div class="flex-box">
+      <!--图片-->
+      <div class="img-box aui-margin-r-10" :style="{'background-image': 'url(' + formatImg(form.images, true) + ')'}">
+      </div>
+      <!--信息-->
+      <div class="message-box">
+        <div style="color:black;font-size: 0.8rem;">{{form.goodName}}</div>
+        <div class="flex-box bet aui-padded-t-5 aui-padded-b-5">
+          <div class="fz-box label-box">
+            <div class="fz-box label-box">
+            </div>
+          </div>
+          <div class="flex-box price-color">
+            <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+              <use xlink:href="#icon-qian-copy"></use>
+            </svg>
+            {{form.price}}
+          </div>
+        </div>
+        <div class="flex-box bet aui-padded-b-5">
+          <div></div>
+          <div class="fz-box">
+            X{{form.amount}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--课程评价-->
+  <div class="text-box aui-margin-t-10">
+    <textarea name="" cols="30" rows="10" placeholder="请留下您宝贝建议" v-model="contentC"></textarea>
+  </div>
+  <!--店铺详情-->
+  <div class="shops-box aui-margin-t-10" v-if="app.form.goodId != '1'">
+    <!--课程详情-->
+    <div class="flex-box">
+      <!--图片-->
+      <div class="img-box aui-margin-r-10" :style="{'background-image': 'url(' + formatImg(form.images, true) + ')'}">
+      </div>
+      <!--信息-->
+      <div class="message-box">
+        <div style="color:black;font-size: 0.8rem;">{{form.clubName}}</div>
+        <div class="flex-box aui-padded-t-15 aui-padded-b-5 fz-box">
+          <div class="add-box">地址:</div>
+          <div>{{form.address}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--店铺评价-->
+  <div class="text-box aui-margin-t-10" v-if="app.form.goodId != '1'">
+    <textarea name="" placeholder="请留下您宝贝建议"></textarea>
+  </div>
+  <!--上传图片-->
+  <div class="up-img-box">
+    <img :src="photo" alt="" class="aui-margin-r-15" v-for="photo in photos">
+    <div class="Choice-box fz-box" @click="ImgpopupVisible = true" v-show="images.length < 5">
+      <svg class="icon aui-margin-l-15" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-xiangji"></use>
+      </svg>
+      {{images.length}}/5
+    </div>
+  </div>
+  <!--打分-->
+  <div class="last-box">
+    <div class="flex-box">
+      <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-kecheng1"></use>
+      </svg>
+      产品评价
+    </div>
+    <ul class="last-content-box">
+      <li>
+        <div>综合评分</div>
+        <div class="star-sorce">
+          <i class="iconfont "
+             :class="Math.floor(overallScoreC) >= index + 1 ? 'icon-shoucang' : 'icon-xingxing'"
+             v-for="(i,index) in 5" @click="changeStar('1', index)"></i>
+          <span v-if="overallScoreC !== '' ">{{overallScoreC}}分</span>
+        </div>
+      </li>
+      <li>
+        <div>教学环境</div>
+        <div class="star-sorce">
+          <i class="iconfont "
+             :class="Math.floor(envirScoreC) >= index + 1 ? 'icon-shoucang' : 'icon-xingxing'"
+             v-for="(i,index) in 5" @click="changeStar('2',index)"></i>
+          <span v-if="envirScoreC !== '' ">{{envirScoreC}}分</span>
+        </div>
+      </li>
+      <li>
+        <div>师资力量</div>
+        <div class="star-sorce">
+          <i class="iconfont"
+             :class="Math.floor(teachScoreC) >= index + 1 ? 'icon-shoucang' : 'icon-xingxing'"
+             v-for="(i,index) in 5" @click="changeStar('3',index)"></i>
+          <span v-if="teachScoreC !== '' ">{{teachScoreC}}分</span>
+        </div>
+      </li>
+      <li>
+        <div>服务态度</div>
+        <div class="star-sorce">
+          <i class="iconfont "
+             :class="Math.floor(serverScoreC) >= index + 1 ? 'icon-shoucang' : 'icon-xingxing'"
+             v-for="(i, index) in 5" @click="changeStar('4',index)"></i>
+          <span v-if="serverScoreC !== '' ">{{serverScoreC}}分</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <mt-popup v-model="ImgpopupVisible" position="bottom">
+    <ul class="moreoul">
+      <li @click="takephoto">拍照</li>
+      <li @click="myphotos">从相册中选择</li>
+      <li @click="ImgpopupVisible = false" style="border-top: 2px solid #f0f0f0">取消</li>
+    </ul>
+  </mt-popup>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      form: {},
+      user: {},
+      contentC: '',
+      photos: [],  // 页面展示
+      imgs: [],   // 要传的参数
+      images: [],
+      updataimg: '',
+      showText: false,
+      formatImg: formatImg,
+      overallScoreC: '1',
+      envirScoreC: '1',
+      serverScoreC: '1',
+      teachScoreC: '1',
+      goodOrderId: '1',   // 产品订单id
+      ImgpopupVisible: false //上传图片弹框
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.goodOrderId) {
+          app.goodOrderId = api.pageParam.goodOrderId;
+          app.getMyGoodInfo();
+          app.getUserInfo();
+        }
+      };
+    },
+    methods: {
+      getUserInfo: function () {
+        // 获取用户个人信息
+        var post4 = {
+          cmd: 'getUserInfo',
+          token: getToken()
+        };
+        console.log(JSON.stringify(post4.token));
+        sendAjax(this, post4, function (res) {
+          app.user = res.data;
+        });
+      },
+      // 获取产品订单详情
+      getMyGoodInfo: function () {
+        var post = {
+          cmd: 'getMyGoodInfo',
+          token: getToken(),
+          goodOrderId: app.goodOrderId
+        };
+        sendAjax(this, post, function (res) {
+          app.form = res.data;
+        });
+      },
+      // 上传图片
+      myphotos: function () {
+        api.getPicture({
+          sourceType: 'album',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.ImgpopupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.upEvaluateImgTmp(ret.data);
+          }
+        });
+      },
+      // 拍照
+      takephoto: function () {
+        api.getPicture({
+          sourceType: 'camera',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.ImgpopupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.upEvaluateImgTmp(ret.data);
+          }
+        });
+      },
+      // 转化图片
+      upEvaluateImgTmp: function (res) {
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "upEvaluateImgTmp",
+              "token": getToken()
+            },
+            files: {
+              "images": res
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            app.photos.push(res);
+            app.imgs.push(ret.data);
+          }
+        });
+      },
+      // 评分
+      changeStar: function (code, i) {
+        if (code === '1') {
+          app.overallScoreC = i + 1;
+        } else if (code === '2') {
+          app.envirScoreC = i + 1;
+        } else if (code === '3') {
+          app.teachScoreC = i + 1;
+        } else {
+          app.serverScoreC = i + 1;
+        }
+      },
+      // 产品订单提交评价
+      goodEvaluate: function () {
+        MINT.Indicator.open();
+
+        // 评价内容不为空
+        if (app.contentC !== '') {
+          var post = {
+            cmd: 'goodEvaluate',
+            token: getToken(),
+            goodOrderId: app.goodOrderId,
+            contentC: app.contentC,
+            overallScoreC: app.overallScoreC,
+            envirScoreC: app.envirScoreC,
+            serverScoreC: app.serverScoreC,
+            teachScoreC: app.teachScoreC,
+            goodImages: app.imgs.join(',')
+          };
+          sendAjax(this, post, function (res) {
+            api.sendEvent({
+              name: 'shopOrderchange'
+            });
+            MINT.Indicator.close();
+            app.getEvSuccess();
+          });
+        } else {
+          toastMsg('请输入评价内容')
+        }
+      },
+      // 评价成功跳转(传参先不做)
+      getEvSuccess: function () {
+        api.openWin({
+          name: 'evaluateSuccess',
+          url: '../evaluateSuccess/evaluateSuccess_win.html',
+          pageParam: {
+            name: 'test'
+          }
+        });
+      }
+    }
+  })
+</script>

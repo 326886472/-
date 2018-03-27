@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+        }
+
+        .content {
+            padding-left: 1rem;
+            background: white;
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .content li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.4rem 0.5rem 0.4rem 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .content li:last-child {
+            border: none;
+        }
+
+        .flex-box {
+            display: flex;
+        }
+
+        .input-box {
+            width: 80%;
+            text-align: left;
+        }
+
+        .input-box textarea {
+            padding: 0 0.3rem;
+            width: 95%;
+            min-height: 4rem;
+        }
+
+        .icon-style {
+            font-size: 0.7rem;
+        }
+
+        .text-box {
+            width: 97%;
+            padding-right: 3%;
+            font-size: 0.6rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-box {
+            position: absolute;
+            bottom: 10%;
+            left: 20%;
+            width: 60%;
+            text-align: center;
+        }
+
+        .btn-box div {
+            font-size: 0.7rem;
+            color: #666;
+            padding: 0.3rem 0;
+            border-radius: 20px;
+            border: 1px solid #666;
+        }
+
+        .btn-box div:active {
+            background: gainsboro;
+        }
+
+        /*选择地址*/
+        .mint-popup {
+            width: 100%;
+        }
+
+        .big-box {
+            font-size: 0.7rem;
+            color: #666;
+            padding: 3%;
+            width: 94%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .picker-box {
+            width: 70%;
+            margin: 0 auto;
+            margin-bottom: 1rem;
+        }
+
+        .picker-btn-box {
+            width: 60%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            border: 1px solid #666;
+            border-radius: 20px;
+            background-image: url("../../../../assets/images/shuxian.png");
+            background-repeat: no-repeat;
+            background-size: 1% 100%;
+            background-position: center center;
+        }
+
+        .picker-btn-box div {
+            text-align: center;
+            flex: 1;
+            padding: 0.5rem 0;
+        }
+
+        .picker-btn-box div:first-child {
+            border-top-left-radius: 0.8rem;
+            border-bottom-left-radius: 0.8rem;
+        }
+
+        .picker-btn-box div:last-child {
+            border-top-right-radius: 0.8rem;
+            border-bottom-right-radius: 0.8rem;
+        }
+
+        .picker-btn-box div:active {
+            background: #bbb;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <mt-popup v-model="MonthpopupVisible"
+              position="bottom" style="width:100%;">
+        <div class="big-box">
+            <span>单价</span>
+            <div class='picker-box'>
+                <mt-picker :slots="changeMonth" value-key="title" @change="onTimeChange" ref="MonthPicker">
+                </mt-picker>
+            </div>
+            <div class='picker-btn-box'>
+                <div @click="QinGuancancel">取消</div>
+                <div @click="QinGuanConfirm">确定</div>
+            </div>
+        </div>
+    </mt-popup>
+    <ul class="content aui-margin-t-10">
+        <li>
+            <div>
+                产品价格:
+            </div>
+            <div class="input-box">
+                <input type="number" placeholder="请输入产品价格" v-model="leasePrice">
+            </div>
+        </li>
+        <li>
+            <div>
+                单价:
+            </div>
+            <div>
+                {{pricePerMonth}}{{timePick}}
+                <i class="iconfont icon-ziyuan2 icon-style"></i>
+            </div>
+        </li>
+        <li @click="openMonthPicker">
+            <div>租期:</div>
+            <div>
+                {{leaseMonth}}
+                <i class="iconfont icon-ziyuan2 icon-style"></i>
+            </div>
+        </li>
+        <div class="aui-padded-t-10">
+            <div class="flex-box">
+                <div>出价理由:</div>
+                <div class="input-box aui-padded-t-5">
+                    <textarea name="" id="" maxlength="500" placeholder="请输入出价理由" v-model="reason"></textarea>
+                </div>
+            </div>
+            <div class="text-box">
+                <div>{{reason.length}}/500</div>
+            </div>
+        </div>
+    </ul>
+    <div class="btn-box" @click="uappApplyRentSell">
+        <div>确认提交</div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      qinAuthId: '',
+      leaseType: '1',
+      reason: '',
+      leasePrice: '',
+      leaseMonth: '1个月',
+      timePick: '元/月',
+      MonthpopupVisible: false,
+      changeMonth: [
+        {
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }],
+      MonthTemp: ''
+    },
+    computed: {
+      pricePerMonth: function () {
+        var ppm = this.leasePrice / this.leaseMonth.replace('个月', '');
+        if (!isNaN(ppm)) {
+          return ppm.toFixed(2);
+        } else {
+          return 0;
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.qinAuthId) {
+          app.qinAuthId = api.pageParam.qinAuthId
+        }
+        app.changeMonth[0].values = app.adddanwei(app.getSeq(12, 1), '个月');
+      };
+    },
+    methods: {
+//      申请出租
+      uappApplyRentSell: function () {
+        var month = '';
+        if (app.leaseMonth.length == 3) {
+          month = app.leaseMonth.substr(0, 1);
+        } else {
+          month = app.leaseMonth.substr(0, 2);
+        }
+        var post = {
+          cmd: 'uappApplyRentSell',
+          token: getToken(),
+          qinAuthId: app.qinAuthId,
+          leaseType: app.leaseType,
+          reason: app.reason,
+          leasePrice: app.leasePrice,
+          leaseMonth: month
+        };
+        sendAjax(this, post, function (res) {
+          api.sendEvent({
+            name: 'AuthOrderChange'
+          });
+          closeWindow();
+          app.openSuccess();
+        });
+      },
+//      提交成功跳转
+      openSuccess: function () {
+        openView('ApplySuccess', 'member/myAuth/ApplySuccess/ApplySuccess_fm', '申请成功')
+      },
+      getSeq: function (length, initial) {
+        var arr = new Array(length);
+        if (!initial) {
+          initial = 0;
+        }
+        for (var i = 0; i < arr.length; i++) {
+
+          if (initial + i < 10) {
+            arr[i] = i + initial;
+          } else {
+            arr[i] = i + initial;
+          }
+        }
+        return arr;
+      },
+      adddanwei: function (values, danwei) {
+        var arr = new Array(values.length);
+        for (var i = 0; i < values.length; i++) {
+          arr[i] = values[i] + danwei;
+        }
+        return arr;
+      },
+      //      取消
+      QinGuancancel: function () {
+        app.MonthTemp = app.leaseMonth;
+        app.$refs.MonthPicker.setSlotValue(0, app.MonthTemp);
+        app.MonthpopupVisible = false;
+      },
+      //      确定
+      QinGuanConfirm: function () {
+        app.leaseMonth = app.MonthTemp;
+        app.MonthpopupVisible = false;
+      },
+      openMonthPicker: function () {
+        app.MonthpopupVisible = true;
+      },
+      onTimeChange: function (picker, values) {
+        app.MonthTemp = values[0];
+      }
+    }
+  })
+</script>

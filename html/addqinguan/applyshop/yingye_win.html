@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+
+</head>
+<body>
+<div id='app'>
+    <!--头部-->
+    <header class="aui-bar aui-bar-nav">
+        <a class="aui-padded-l-5 aui-pull-left aui-btn">
+            <i class="iconfont icon-ziyuan2-copy"></i>
+        </a>
+        <div class="aui-title aui-font-size-16">营业时间</div>
+        <a class="aui-pull-right aui-btn" >
+            <span></span>
+        </a>
+    </header>
+
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+    var app=new Vue({
+        el:"#app"
+    })
+    apiready=function(){
+        $api.fixStatusBar($api.dom('header'));
+        api.openFrame({
+            name:'_fm',
+            url:"./_fm.html",
+            rect:{
+                x:0,
+                y:$api.offset($api.dom('header')).h,
+                w:'auto',
+                h:'auto'
+            },
+            bounce:false
+        })
+    }
+</script>
+
+
+<!--备注-->

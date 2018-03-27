@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: white;
+        }
+
+        #app {
+
+        }
+
+        #header {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .title{
+            min-height: 2.25rem;
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            margin: 0;
+            text-align: center;
+            white-space: nowrap;
+            right: 5rem;
+            left: 5rem;
+            width: auto;
+            text-overflow: ellipsis;
+            z-index: 2;
+        }
+        .title div{
+            flex: 1;
+        }
+        .titleAct{
+            color:#C1AF9D;
+            border-bottom: 3px solid #AB9277;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <header class="aui-bar aui-bar-nav" id="header">
+        <a class="aui-padded-l-10 aui-pull-left aui-btn" @click="closeWindow()">
+            <i class="iconfont icon-ziyuan2-copy"></i>
+        </a>
+        <div class="title">
+            <div  v-for="item in title" :class="{'titleAct' : titleIndex ===  item.index}" @click="changeBar(item.index)">{{item.title}}</div>
+        </div>
+    </header>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      title:[
+        {
+          title:'公告',
+          index:0
+        },
+        {
+          title:'消息',
+          index:1
+        }
+      ],
+      titleIndex:0
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+        app.openFrameGroup();
+      };
+    },
+    methods: {
+      closeWindow:function(){
+        closeWindow();
+      },
+      openFrameGroup:function(){
+        api.openFrameGroup({
+          name: 'group1',
+          scrollEnabled:false,
+          rect: {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto',
+            marginTop: $api.dom('header').offsetHeight + 1
+          },
+          index: 0,
+          preload:0,
+          frames: [{
+            name: 'Notice',
+            url: './Notice_fm.html',
+            bgColor: '#f0f0f0'
+          }, {
+            name: 'news',
+            url: 'news_fm.html',
+            bgColor: '#f0f0f0'
+          }]
+        }, function(ret, err) {
+           app.titleIndex= ret.index;
+        });
+      },
+      changeBar:function(i){
+        app. titleIndex =i;
+        api.setFrameGroupIndex({
+          name: 'group1',
+          index: i,
+          scroll: true
+        });
+      }
+    }
+  })
+</script>

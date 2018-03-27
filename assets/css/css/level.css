@@ -1,0 +1,60 @@
+html, body {
+  background: #f0f0f0; }
+
+.level-index .listView-text-score .iconfont {
+  font-size: 14px; }
+
+.level-index .level-box {
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+  background: white; }
+  .level-index .level-box > img {
+    width: 7rem;
+    height: 7rem; }
+  .level-index .level-box .info {
+    font-size: 14px;
+    margin-left: 1rem; }
+    .level-index .level-box .info .title {
+      font-size: 16px; }
+    .level-index .level-box .info .overall {
+      margin-top: 0.5rem; }
+    .level-index .level-box .info .rate-box {
+      margin-top: 1rem;
+      line-height: 1.5; }
+      .level-index .level-box .info .rate-box > div {
+        color: #a3a3a3; }
+
+.level-index .expires {
+  background: white;
+  margin-top: 0.5rem;
+  color: #a3a3a3;
+  padding: 0.7rem; }
+
+.level-index .re-apply {
+  background: white;
+  margin-top: 0.5rem;
+  text-align: center;
+  padding: 2rem 0; }
+
+.level-index .btn-box {
+  text-align: center;
+  padding: 1rem 0; }
+  .level-index .btn-box .mint-button {
+    width: 60%; }
+
+.listView-text-score {
+  display: inline-flex; }
+  .listView-text-score .icon-xingxing {
+    color: #FF8500;
+    font-size: 1rem; }
+    .listView-text-score .icon-xingxing.grey-star {
+      color: #BFBFBF; }
+  .listView-text-score .icon-yibanxingxing1 {
+    color: #ff8500; }
+  .listView-text-score .number {
+    color: #FFAA2A; }
+  .listView-text-score .iconfont {
+    margin-right: 0.2rem; }
+    .listView-text-score .iconfont:nth-child(5) {
+      margin-right: 0; }

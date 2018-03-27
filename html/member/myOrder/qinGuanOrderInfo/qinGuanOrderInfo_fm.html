@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <style>
+        html, body {
+            background: #f0f0f0;
+        }
+
+        #app {
+
+        }
+
+        .fz-box {
+            font-size: 0.6rem;
+        }
+
+        .icon {
+            width: 0.8rem;
+            height: 0.8rem;
+            display: block;
+        }
+
+        .icon-dfk {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .content {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        /*公共头*/
+        .box-header {
+            padding: 0.2rem 0 0.2rem 1rem;
+        }
+
+        .flex-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .qinguan-flex-box {
+            display: flex;
+        }
+
+        .flex-box-add {
+            display: flex;
+        }
+
+        .bet {
+            justify-content: space-between;
+        }
+
+        .aound {
+            justify-content: space-around;
+        }
+
+        .content li {
+            padding: 0.5rem 1rem;
+            background: white;
+        }
+
+        .label-box span {
+            border-radius: 0.2rem;
+            padding: 0.2rem;
+        }
+
+        /*课程详情*/
+        .img-box {
+            width: 28%;
+            min-height: 5rem;
+            flex-shrink: 0;
+            overflow: hidden;
+            background-size: cover;
+        }
+
+        /*地址*/
+        .add-box {
+            flex-shrink: 0;
+            margin-right: 0.5rem;
+        }
+
+        .message-box {
+            width: 70%;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: flex-start;
+        }
+
+        .bottom-box {
+            font-size: 0.7rem;
+            color: #666;
+            padding: 0.5rem 1rem;
+            background: white;
+        }
+
+        .btn-box {
+            margin-top: 0.75rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+            color: #666;
+            background: white;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-box div {
+            width: 20%;
+            text-align: center;
+            padding: 0.2rem 0.5rem;
+            border: 1px solid #666;
+            border-radius: 20px;
+            margin-left: 1rem;
+        }
+
+        .btn-box div:active {
+            background: gainsboro;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="content">
+        <div class="box-header">
+            订单编号:{{form.orderSn}}
+        </div>
+        <!--三种状态  根据class_fm传值判断显示-->
+        <!--等待到店-->
+        <li class="order-box flex-box aound" v-show="form.status === '1' ">
+            <div>
+                <div>等待买家到店</div>
+            </div>
+            <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-jiudianbinguan"></use>
+            </svg>
+        </li>
+        <!--完成付款-->
+        <li class="order-box flex-box aound" v-show="form.status === '2' || form.status ==='3' ">
+            <div>
+                <div>交易完成</div>
+            </div>
+            <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-wancheng"></use>
+            </svg>
+        </li>
+        <!--不接单-->
+        <li class="order-box flex-box aound" v-show="form.status === '4' ">
+            <div>
+                <div>商家不接单</div>
+            </div>
+            <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-dingdan"></use>
+            </svg>
+        </li>
+        <div class="box-header">
+            买家信息
+        </div>
+        <li class="Buyers-box">
+            <div class="flex-box aui-margin-b-15">
+                <div class="flex-box">
+                    <svg class="icon aui-margin-r-10" aria-hidden="true" style="font-size: 0.8rem">
+                        <use xlink:href="#icon-shouhuorenxinxi"></use>
+                    </svg>
+                    买家:
+                </div>
+                <div class="aui-margin-l-5">
+                    {{form.username}}
+                </div>
+            </div>
+            <div class="flex-box">
+                <div class="flex-box">
+                    <svg class="icon aui-margin-r-10" aria-hidden="true" style="font-size: 0.8rem">
+                        <use xlink:href="#icon-dingwei1"></use>
+                    </svg>
+                    联系电话:
+                </div>
+                <div class="aui-margin-l-5">
+                    {{form.mobile}}
+                </div>
+            </div>
+        </li>
+        <div class="box-header">
+            琴馆信息
+        </div>
+        <li>
+            <!--店铺详情-->
+            <div class="shops-box">
+                <!--课程详情-->
+                <div class="qinguan-flex-box">
+                    <!--图片-->
+                    <div class="img-box" :style="{'background-image': 'url(' + formatImg(form.picName) + ')'}">
+                    </div>
+                    <!--信息-->
+                    <div class="aui-padded-l-10 message-box">
+                        <div style="color:black;font-size: 0.8rem;">{{form.clubName}}</div>
+                        <div class="flex-box-add bet aui-padded-t-15 aui-padded-b-5 fz-box">
+                            <div class="add-box">地址:</div>
+                            <div>{{form.address}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="bottom-box aui-margin-t-5">
+        <div class="flex-box">
+            <div class="aui-margin-r-10">创建时间:</div>
+            <div>
+                {{form.createTime}}
+            </div>
+        </div>
+        <!--<div class="flex-box">-->
+        <!--<div class="aui-margin-r-10">到店时间:</div>-->
+        <!--<div>-->
+        <!--2017-04-10 18:47-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+    <!--对应各种状态btn-->
+    <div class="btn-box" v-show="form.status !=='3' ">
+        <div @click="prompt" v-show="form.status === '1' ">确认到店</div>
+        <div v-show="form.status === '2' " @click="openEvaluate(clubOrderId,form.clubName,form.picName,form.address)">
+            去评价
+        </div>
+        <!--<div v-show="form.status === '4' ">删除订单</div>-->
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      form: {},
+      clubOrderId: '',
+      formatImg: formatImg
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        //        监听订单状态变化
+        api.addEventListener({
+          name: 'qinGuanOrderchange'
+        }, function (ret, err) {
+          app.getMyClubInfo();
+        });
+        app.clubOrderId = api.pageParam.clubOrderId;
+        app.getMyClubInfo();
+      };
+    },
+    methods: {
+//      获取琴官订单详情
+      getMyClubInfo: function () {
+        var post = {
+          cmd: 'getMyClubInfo',
+          token: getToken(),
+          clubOrderId: app.clubOrderId
+        };
+        sendAjax(this, post, function (res) {
+          console.log(JSON.stringify(res.data));
+          app.form = res.data;
+        });
+      },
+//      确认到店
+      prompt: function () {
+        api.confirm({
+          title: '确认到店',
+          buttons: ['取消', '确定']
+        }, function (ret, err) {
+          var index = ret.buttonIndex;
+          if (index === 2) {
+//            确认到店
+            var post = {
+              cmd: 'yuConfirmToClub',
+              token: getToken(),
+              clubOrderId: app.clubOrderId,
+              status: 1
+            };
+            sendAjax(app, post, function (res) {
+              app.getMyClubInfo();
+              api.sendEvent({
+                name: 'qinGuanOrderchange'
+              });
+            })
+          } else {
+//            取消
+          }
+        });
+      },
+//      评价
+      openEvaluate: function (clubOrderId, clubName, banner, address) {
+        var clubInfo = {
+          clubOrderId: clubOrderId,
+          clubName: clubName,
+          banner: banner,
+          address: address
+        };
+        api.openWin({
+          name: 'qinGuanEvaluate',
+          url: '../qinGuanEvaluate/qinGuanEvaluate_win.html',
+          pageParam: {
+            clubInfo: clubInfo
+          }
+        });
+      }
+    }
+  })
+</script>

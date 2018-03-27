@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <style>
+        #app {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .text-box {
+            padding: 1rem 0;
+        }
+
+        .btn-box {
+            position: absolute;
+            bottom: 55%;
+            width: 100%;
+        }
+
+        .pass-box {
+            width: 65%;
+            margin: 0 auto;
+        }
+        .pass-box textarea{
+            width: 75%;
+            height: 1.6rem;
+            border: 1px solid #ccc;
+            padding: 0.2rem 0.8rem;
+            letter-spacing:1rem;
+        }
+        .pass-box input {
+            width: 80%;
+            height: 1.6rem;
+            border: 1px solid #ccc;
+            padding: 0.2rem 1rem;
+            letter-spacing:1.6rem;
+            background: url("../../../../assets/images/icon-shuxian.png") no-repeat 17% 100%,
+                        url("../../../../assets/images/icon-shuxian.png") no-repeat 34% 100%,
+                        url("../../../../assets/images/icon-shuxian.png") no-repeat 51% 100%,
+                        url("../../../../assets/images/icon-shuxian.png") no-repeat 68% 100%,
+                        url("../../../../assets/images/icon-shuxian.png") no-repeat 85% 100%;
+        }
+        .btn-box div {
+            padding: 0.3rem 0;
+            text-align: center;
+            width: 60%;
+            margin: 0 auto;
+            border-radius: 0.5rem;
+            font-size: 0.7rem;
+            color: #666;
+            border: 1px solid #666;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="text-box">
+        设置6位数字支付密码
+    </div>
+    <div class="pass-box">
+        <input type="password" maxlength="6" placeholder="123456">
+    </div>
+    <div class="btn-box">
+        <div>完成</div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {}
+  })
+</script>

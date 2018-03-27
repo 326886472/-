@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <link rel="stylesheet" href="../../../assets/css/swiper-3.4.2.min.css">
+  <style>
+    #app {
+      height: 100%;
+      width: 100%;
+      scrollbar-base-color: transparent;
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    .headerbackground {
+      background-size: 100% 100%;
+      width: 100%;
+      height: 13rem;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    .iconbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 10px 5px 10px;
+      box-sizing: border-box;
+      font-size: 18px;
+      z-index: 100;
+      transition: 0.5s;
+    }
+
+    .rightfont {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      /*flex: 1;*/
+      color: white;
+      /*text-align: center;*/
+    }
+
+    .tokenfont {
+      flex: 1;
+      color: white;
+      text-align: left;
+      font-size: 12px;
+      margin-left: 0.2rem;
+    }
+
+    .righticon {
+      margin-right: 0.6rem;
+      text-align: right;
+      font-size: 18px;
+    }
+
+    .levelbox {
+      width: 100%;
+      height: auto;
+      background: white;
+      font-size: 14px;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .leveltitle {
+      line-height: 1.5rem;
+    }
+
+    .levelxingxing {
+      display: flex;
+    }
+
+    .shoperdate {
+      width: 100%;
+      height: auto;
+      background: #ededed;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .shopertitle {
+      line-height: 1.5rem;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .detailsmessage {
+      display: flex;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .detailsmessage p {
+      line-height: 1.5rem;
+    }
+
+    .alldata {
+      width: 100%;
+      display: flex;
+    }
+
+    .alldatabtn {
+      margin: auto;
+      border-radius: 20px;
+      border: 1px solid #515151;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      font-size: 14px;
+      margin-top: 0.5rem;
+      background: #ededed;
+      color: #515151
+    }
+
+    .shopmessage {
+      width: 100%;
+      height: auto;
+      background: white;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .shopercount {
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      white-space: normal !important;
+      -webkit-line-clamp: 2;
+      flex: 1;
+      -webkit-box-orient: vertical;
+      font-size: 12px;
+    }
+
+    .teacherstrong {
+      width: 100%;
+      height: auto;
+      background: #ededed;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .swiper-container {
+      font-size: 13px;
+      width: 100%;
+      height: 30%;
+    }
+
+    .publicmove {
+      width: auto;
+      height: 100%;
+      text-align: center;
+      box-sizing: border-box;
+      margin-right: 20px;
+    }
+
+    .teachimg {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      color: #515151;
+    }
+
+    .teachmessage {
+      width: 4rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+      text-align: center;
+      color: #515151;
+    }
+
+    .albumbox {
+      width: 100%;
+      height: auto;
+      background: white;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .albumimgbox {
+      width: 70%;
+      height: 70%;
+      background-size: 100% 100%;
+    }
+
+    .albumimg {
+      width: 100%;
+      height: 7rem;
+      background-size: cover;
+    }
+
+    .swiper-containere {
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .albummessage {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .albumtype {
+      border: 1px solid green;
+      border-radius: 3px;
+      padding: 3px 5px 3px 5px;
+      color: green;
+      font-size: 12px;
+    }
+
+    .albumprice {
+      width: 100%;
+      color: orangered;
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 1.5rem;
+      display: flex;
+    }
+
+    .albumprice span {
+      flex: 1;
+    }
+
+    .mapbox {
+      width: 100%;
+      height: auto;
+      padding: 15px;
+      box-sizing: border-box;
+      background: white;
+    }
+
+    .mitler {
+      float: right;
+      margin-right: 0.5rem;
+      font-size: 11px;
+      line-height: 2rem;
+      color: #333333;
+      margin-bottom: 1.5rem;
+    }
+
+    .map {
+      width: 100%;
+      height: 7rem;
+      background: skyblue;
+    }
+
+    .tokentitle {
+      width: 100%;
+      background: #ededed;
+      line-height: 3rem;
+      height: 3rem;
+    }
+
+    .messagebox {
+      width: 100%;
+      height: auto;
+      background: #ededed;
+      padding: 15px;
+    }
+
+    .tokendetails {
+      width: 100%;
+      height: auto;
+      margin: auto;
+      border-bottom: 1px solid gainsboro;
+      font-size: 14px;
+      display: flex;
+      padding: 20px 15px 5px 10px;
+      box-sizing: border-box;
+    }
+
+    .detailsbox {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+    }
+
+    .detailsbox img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .ifont {
+      position: absolute;
+      bottom: -5%;
+      z-index: 10;
+      left: 50%;
+      margin-left: -1rem;
+      width: 2rem;
+      background: #FF8500;
+      color: white;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .rightbox {
+      flex: 1;
+    }
+
+    .nametime {
+      line-height: 1.5rem;
+      display: flex;
+    }
+
+    .addTime {
+      font-size: 13px;
+      flex: 1;
+      text-align: right;
+      margin-right: 0.2rem;
+      color: #8b8b8b
+    }
+
+    .artical {
+      width: 100%;
+      font-size: 13px;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      word-break: break-all;
+      white-space: normal !important;
+      /*-webkit-line-clamp: 2;*/
+      color: #676767;
+      flex: 1;
+      -webkit-box-orient: vertical;
+    }
+
+    .ixin {
+      color: #fe5353;
+      margin-right: 5px;
+    }
+
+    .allartic {
+      line-height: 2rem;
+    }
+
+    .tokenimg {
+      width: 100%;
+      height: auto;
+    }
+
+    .bottomall {
+      width: 100%;
+      height: 3rem;
+      background: #ededed;
+      display: flex;
+    }
+
+    .allmessage {
+      margin: auto;
+      border-radius: 20px;
+      border: 1px solid #515151;
+      height: 1.5rem;
+      font-size: 14px;
+      line-height: 1.5rem;
+      color: #515151;
+    }
+
+    /*为您推荐*/
+    .foryou {
+      width: 100%;
+      padding: 15px;
+      background: white;
+      box-sizing: border-box;
+    }
+
+    .groomtitle {
+      font-size: 15px;
+      font-weight: bold;
+      line-height: 2rem;
+    }
+
+    .topbox {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .bottombox {
+      flex: 1;
+      display: flex
+    }
+
+    .pwrapper {
+      width: 100%;
+    }
+
+    .pwrapper p {
+      text-align: left;
+      width: 100%;
+      font-size: 14px;
+      margin-top: 5px;
+      /*display: -webkit-box;*/
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      /*word-wrap: break-word;*/
+      /*white-space: normal !important;*/
+      /*-webkit-line-clamp: 2;*/
+      /*flex: 1;*/
+      /*-webkit-box-orient: vertical;*/
+    }
+
+    .obshoper {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      text-align: center;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+
+    .groomimg {
+      width: 100%;
+      height: 5rem;
+    }
+
+    .groomimg img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .groomlocal {
+      font-size: 11px;
+      display: flex;
+      color: #838383;
+      padding-right: 3px;
+      padding-left: 3px;
+      box-sizing: border-box;
+      line-height: 1rem;
+    }
+
+    .groomlocal span {
+      flex: 1;
+      color: #838383;
+    }
+
+    .hurry {
+      width: 100%;
+      height: 3rem;
+    }
+
+    .fixbox {
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      background: orange;
+      color: white;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+    }
+
+    .buyinput {
+      width: 100%;
+      background: white;
+      height: auto;
+      position: fixed;
+      padding: 10px;
+      box-sizing: border-box;
+      top: 30%;
+      display: none;
+      font-size: 14px;
+    }
+
+    .buyinput p {
+      line-height: 2.5rem;
+      border-bottom: 1px solid gainsboro;
+      display: flex;
+    }
+
+    .beforeinput {
+      z-index: 100;
+      display: block;
+    }
+
+    .beforeinputtwo {
+      display: block;
+      width: 100%;
+      background: white;
+      height: auto;
+      position: fixed;
+      padding: 10px;
+      box-sizing: border-box;
+      top: 10%;
+      font-size: 14px;
+      z-index: 10;
+    }
+
+    .mikebox {
+      z-index: 100;
+      position: fixed;
+      background: black;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      opacity: 0.5;
+    }
+
+    .newapp {
+      overflow-y: hidden;
+    }
+
+    .mikeboxtwo {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      background: black;
+      opacity: 0.5;
+      overflow: auto;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    .bottomsure {
+      width: 100%;
+      display: flex;
+      height: auto;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    .surebtn {
+      border-radius: 20px;
+      border: 1px solid gainsboro;
+      width: 60%;
+      height: 1.8rem;
+      line-height: 1.8rem;
+      font-size: 14px;
+    }
+
+    /*.fixbox{*/
+    /*width: 100%;*/
+    /*height: 3rem;*/
+    /*line-height: 3rem;*/
+    /*background: orange;*/
+    /*color: white;*/
+    /*text-align: center;*/
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    /*z-index: 100;*/
+    /*display: flex;*/
+    /*}*/
+    .leftbottombox {
+      width: 60%;
+      background: white;
+      color: orangered;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: left;
+      padding-left: 10px;
+      box-sizing: border-box;
+    }
+
+    .rightbottombox {
+      width: 40%;
+      background: orangered;
+      color: white;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .timeclass {
+      border: 1px solid green;
+      color: green;
+      font-size: 10px;
+      line-height: 1rem;
+      padding-left: 3px;
+      padding-right: 3px;
+      border-radius: 3px;
+    }
+
+    .allprice {
+      color: #f65742;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .allprice > span {
+      color: #888;
+    }
+
+    .buyhurry {
+      width: 100%;
+      background: white;
+      height: auto;
+      box-sizing: border-box;
+      font-size: 14px;
+      z-index: 100;
+      display: block;
+    }
+
+    .buytop {
+      width: 100%;
+      height: auto;
+      display: flex;
+      padding: 10px;
+      box-sizing: border-box;
+      position: relative;
+      border-bottom: 1px solid #ececec;
+    }
+
+    .buylefttop {
+      width: 5rem;
+      height: 5rem;
+    }
+
+    .buylefttop img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .buyrighttop {
+      flex: 1;
+      padding-left: 10px;
+      box-sizing: border-box;
+    }
+
+    .buyprice {
+      font-size: 14px;
+      font-weight: bold;
+      color: orangered;
+    }
+
+    .onevone {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .middlebox {
+      width: 100%;
+      height: 3rem;
+      display: flex;
+      align-items: baseline;
+      flex: 1;
+      border-bottom: 1px solid #ececec;
+    }
+
+    .buymethods {
+      font-size: 15px;
+      font-weight: bold;
+      line-height: 1rem;
+      padding: 20px;
+    }
+
+    .publicbuy {
+      margin-left: 20px;
+    }
+
+    .pubicsbuypan {
+      border: 1px solid #666;
+      color: #666;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-size: 12px;
+      line-height: 1.3rem;
+      border-radius: 20px;
+    }
+
+    .beforebuy {
+      color: #F46C5A;
+      border: 1px solid #F46C5A;
+    }
+
+    .buynum {
+      height: 2rem;
+      background: white;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ececec;
+    }
+
+    .plubnum {
+      flex: 1;
+    }
+
+    .numtitle {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .btnbutton {
+      padding: 4px 15px 4px 15px;
+      font-size: 15px;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    .allnumprice {
+      display: flex;
+      padding-top: 10px;
+      text-align: right;
+    }
+
+    .buybottombox {
+      width: 100%;
+      height: 4rem;
+      display: flex;
+    }
+
+    .buysurebtn {
+      border-radius: 20px;
+      border: 1px solid black;
+      margin: auto;
+      width: 60%;
+      line-height: 1.8rem;
+      font-size: 14px;
+    }
+
+    .closefm {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      z-index: 11;
+      font-size: 20px;
+    }
+
+    .nonebuyhurry {
+      display: block;
+      z-index: 100;
+    }
+
+    .pubmin {
+      font-size: 10px;
+      line-height: 1.2rem;
+    }
+
+    .alreadysell {
+      float: right;
+      color: #585858;
+      margin-right: 0.5rem;
+      font-weight: 200;
+    }
+
+    .titlebigbox {
+      width: 100%;
+      height: auto;
+    }
+
+    .beofreopcity {
+      /*background: orange;*/
+      /*transition: 0.5s;*/
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .jianbian {
+      background: -moz-linear-gradient(top, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4e4e4e), color-stop(100%, rgba(255, 255, 255, 0)));
+      background: -webkit-linear-gradient(top, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      background: -o-linear-gradient(top, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      background: -ms-linear-gradient(top, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      background: linear-gradient(to bottom, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      transition: 0.5s;
+    }
+
+    .hurryup:active {
+      opacity: 0.5;
+    }
+
+    /*底部分享*/
+    .bottompoup {
+      width: 100%;
+      height: 12rem;
+      background: white;
+    }
+
+    .fourkind {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .minkind {
+      flex: 1;
+      text-align: center;
+    }
+
+    .publicfont {
+      font-size: 50px;
+    }
+
+    .minkind p {
+      font-size: 14px;
+    }
+
+    .sharetitle {
+      line-height: 2.5rem;
+      font-size: 15px;
+    }
+
+    .canclebox {
+      width: 100%;
+      height: 5rem;
+      display: flex;
+    }
+
+    .cancelinput {
+      width: 70%;
+      height: 2rem;
+      line-height: 2rem;
+      border-radius: 20px;
+      border: 1px solid #9f9f9f;
+      text-align: center;
+      font-size: 14px;
+      margin: auto;
+    }
+
+    .pagebox {
+      position: absolute;
+      font-size: 12px;
+      color: white;
+      right: 10px;
+      bottom: 3px;
+      z-index: 100;
+    }
+
+    .publicswiper {
+      background-size: cover;
+    }
+
+    .teachermessage {
+      color: #0d0d0d;
+      font-size: 12px;
+    }
+
+    .buyboxbtn {
+      width: 100%;
+      height: auto;
+    }
+
+    .mint-indicator-wrapper {
+      z-index: 10000;
+    }
+
+    .mint-indicator-mask {
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app' :class="{newapp: deforebure || buytanbox}">
+  <div :class="{mikebox: deforebure}" @click="mikebtn()"></div>
+  <div class="titlebigbox">
+    <div class="headerbackground">
+      <div class="iconbox" :class="{beofreopcity:blurefont,jianbian:!blurefont}">
+        <div @click="closethswin()" class="leftfont" style="flex: 1">
+          <i style="color: white;font-size: 18px" class="iconfont icon-ziyuan2-copy"></i>
+        </div>
+        <div class="rightfont">
+          <!--琴管赞 收藏-->
+          <span @click="collectCommon(newcitycode,courseorclubId,typenumer,1)" v-if="ostatusindex==0">
+          <i v-if="clubheaderlist.isCollect==1" style="color: white" class="iconfont righticon icon-xingxing1"></i>
+          <i v-else style="color: white" class="iconfont righticon icon-xingxing"></i>
+          </span>
+
+          <span @click="collectCommon(newcitycode,courseorclubId,typenumer,2)" v-if="ostatusindex==0">
+          <i v-if="clubheaderlist.ifAgree==1" style="color: white" class="iconfont righticon icon-xin"></i>
+          <i v-else style="color: white" class="iconfont righticon icon-ziyuan8"></i>
+          </span>
+
+          <!--课程赞 收藏-->
+          <span @click="collectCommon(newcitycode,courseorclubId,typenumer,1)" v-if="ostatusindex==1">
+          <i v-if="headerlist.isCollect==1" style="color: white" class="iconfont righticon icon-xingxing1"></i>
+          <i v-else style="color: white" class="iconfont righticon icon-xingxing"></i>
+          </span>
+
+          <span @click="collectCommon(newcitycode,courseorclubId,typenumer,2)" v-if="ostatusindex==1">
+          <i v-if="headerlist.ifAgree==1" style="color: white" class="iconfont righticon icon-xin"></i>
+          <i v-else style="color: white" class="iconfont righticon icon-ziyuan8"></i>
+          </span>
+
+          <i style="color: white" class="iconfont righticon icon-fenxiang1" @click="sharebttn()"></i>
+          <i style="color: white" class="iconfont righticon icon-baocuo" @click="gofalse()" v-if="ostatusindex==0"></i>
+        </div>
+      </div>
+      <mt-swipe :show-indicators="false" @change="handleChange" v-if="clubbannerimg.length != 0">
+        <mt-swipe-item class="publicswiper" v-for="itemimage in clubbannerimg"
+                       :style="{'background-image': 'url(' + formatImg(itemimage, true) + ')'}">
+        </mt-swipe-item>
+      </mt-swipe>
+      <div class="pagebox">{{pagenum}}/{{clubbannerimg.length}}</div>
+    </div>
+
+    <div class="levelbox">
+      <p class="leveltitle">
+        <span v-if="ostatusindex==1" style="font-size: 16px;font-weight: bold">{{headerlist.courseName}}</span>
+        <span v-if="ostatusindex==0" style="font-size: 16px;font-weight: bold">{{clubheaderlist.clubName}}</span>
+        <span class="timeclass" v-if="ostatusindex==1"
+              :style="'border-color:' + typeColor(headerlist.courseType) + '; color:' + typeColor(headerlist.courseType)">{{headerlist.courseType | typeText}}</span>
+        <span class="timeclass" style="color: #b4e7d8;border-color: #b4e7d8"
+              v-if="ostatusindex==1&&headerlist.level != ''">{{headerlist.level | gradeText}}</span>
+      </p>
+      <p v-if="ostatusindex==1" class="allprice">￥{{headerlist.price}}</p>
+      <p class="levelxingxing">
+        <span v-if="ostatusindex==0">
+        <i v-if="headerlist.overallScore!=0" v-for="headerfont in starscore" style="color:#ff8500"
+           class="iconfont righticon icon-xingxing1"></i><i v-if="headerlist.overallScore!=1"
+                                                            v-for="headerfont in 5-starscore"
+                                                            class="iconfont righticon icon-xingxing1 gray"></i>
+        <span>{{clubheaderlist.overallScore}} | 5.0</span>
+        </span>
+        <span v-if="ostatusindex==1">
+        <i v-if="clubheaderlist.overallScore!=0" v-for="headerfont in starscore" style="color:#ff8500"
+           class="iconfont righticon icon-xingxing1"></i><i v-if="headerlist.overallScore!=1"
+                                                            v-for="headerfont in 5-starscore"
+                                                            class="iconfont righticon icon-xingxing1 gray"></i>
+        <span>{{headerlist.overallScore}} | 5.0</span>
+        </span>
+
+        <span style="flex: 1;text-align: right;margin-right: 10px" v-if="ostatusindex==1">{{headerlist.countCourseEvaluate}}条评论</span>
+        <span style="flex: 1;text-align: right;margin-right: 10px" v-else>{{clubheaderlist.countClubEvaluate}}条评论</span>
+      </p>
+    </div>
+
+    <!--商家参数-->
+    <div class="shoperdate" v-if="ostatusindex==0">
+      <p class="shopertitle">商家参数</p>
+      <div class="detailsmessage">
+        <div class="leftmessage" style="flex: 1">
+          <p>
+                    <span>
+                        <i class="iconfont righticon icon-chuanglishijian"></i>
+                        创立时间:
+                    </span>
+            {{clubheaderlist.createTime}}
+          </p>
+          <p>
+                    <span>
+                        <i class="iconfont righticon icon-jingyingnianxian"></i>
+                        经营年限:
+                    </span>
+            {{clubheaderlist.operateYear}}年
+          </p>
+        </div>
+        <div class="rightmessage" style="flex: 1">
+          <p>
+                    <span>
+                        <i class="iconfont righticon icon-pinpai"></i>
+                        主要品牌:
+                    </span>
+            <span>{{clubheaderlist.brand}}</span>
+          </p>
+          <p>
+                    <span>
+                        <i class="iconfont righticon icon-kecheng"></i>
+                        琴馆课程:
+                    </span>
+            <span>
+              {{clubheaderlist.courseType}}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="alldata">
+        <mt-button class="alldatabtn" @click="checkoutdata()">查看全部参数</mt-button>
+      </div>
+
+    </div>
+    <!--课程详情-->
+    <div class="shoperdate" v-if="ostatusindex==1">
+      <p class="shopertitle">课程信息</p>
+      <div class="detailsmessage">
+        <div class="leftmessage" style="flex: 1">
+          <p>
+            <span>
+                <i class="iconfont righticon icon-hone"></i>
+                开课机构
+            </span>
+            {{ headerlist.clubName }}
+          </p>
+          <p>
+            <span>
+                <i class="iconfont righticon icon-kecheng"></i>
+                课程名称
+            </span>
+            {{headerlist.courseName}}
+          </p>
+
+          <p>
+            <span>
+                <i class="iconfont righticon icon-chuanglishijian"></i>
+                开课日期
+            </span>
+            {{headerlist.startDate}}至{{headerlist.endDate}} {{headerlist.startInterval}}-{{headerlist.endInterval}}
+          </p>
+        </div>
+      </div>
+
+      <div class="alldata">
+        <mt-button class="alldatabtn" @click="coursecheck()">查看全部信息</mt-button>
+      </div>
+
+    </div>
+
+    <div class="shopmessage">
+      <p class="shopertitle" v-if="ostatusindex==0">商家简介</p>
+      <p class="shopercount" v-if="ostatusindex==0">{{clubheaderlist.desc}}</p>
+      <p class="shopertitle" v-if="ostatusindex==1">课程简介</p>
+      <p class="shopercount" v-if="ostatusindex==1">{{headerlist.courseDesc}}</p>
+      <div class="alldata" v-if="ostatusindex==0">
+        <mt-button class="alldatabtn" style="background: white" @click="checkoutall()">查看全部</mt-button>
+      </div>
+      <div class="alldata" v-if="ostatusindex==1">
+        <mt-button class="alldatabtn" style="background: white" @click="coursecheckoutall()">查看全部</mt-button>
+      </div>
+    </div>
+    <!--教师力量(琴管的)-->
+    <div class="teacherstrong" v-if="ostatusindex==0">
+      <p class="shopertitle">师资力量</p>
+
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide publicmove" v-for="(item,index) in teacherlist">
+            <img class="teachimg" :src="formatImg(item.teacherAvatar)" @click="countoimg(index)"/>
+            <p>{{item.teacher}}</p>
+            <p class="teachmessage">{{item.teacherDesc}}</p>
+          </div>
+
+          <div class="swiper-slide publicmove" @click="moreteach()">
+            <div class="teachimg">
+              <img style="width: 100%;height: 100%" src="../../../assets/images/mroepng.png">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!--教师力量（课程的）-->
+    <div class="teacherstrong" v-if="ostatusindex==1">
+      <p class="shopertitle">师资力量</p>
+
+      <div class="publicmove">
+        <img class="teachimg" :src="formatImg(headerlist.teacherAvatar)" @click="coursecountoimg()"/>
+        <p class="teachermessage">{{headerlist.teacher}}</p>
+        <p class="teachermessage" style="font-size: 13px">{{headerlist.teacherDesc}}</p>
+      </div>
+    </div>
+
+
+    <!--琴管课程/课程的其他课程-->
+    <div class="albumbox">
+      <p class="shopertitle" v-if="classtitle==0">本店其他课程</p>
+      <p class="shopertitle" v-else>琴馆课程</p>
+      <div class="swiper-containere" style="width: 100%">
+        <div class="swiper-wrapper" style="width: 100%">
+          <div class="swiper-slide albumimgbox" v-for="(item,index) in clubclasslist" @click="gotodetails(index)">
+            <div class="albumimg" :style="{'background-image': 'url(' + formatImg(item.images, true) + ')'}"></div>
+            <p class="albummessage">{{item.courseName}}</p>
+            <span class="albumtype" style="color: #f8b5a7;border-color: #f8b5a7">{{item.courseType | typeText}}</span>
+            <span class="albumtype" style="color: #47c6a4;border-color: #47c6a4" v-if="item.level != ''">{{item.level | gradeText}}</span>
+            <p class="albumprice">
+              <span style="text-align: left">{{item.price}}</span>
+              <span style="text-align: right;font-size: 12px;color: #a8a8a8">已售{{item.joinCount}}人</span>
+            </p>
+          </div>
+          <div @click="moreclass()" class="swiper-slide" style="width: 100%;height: 70%">
+            <img style="width: 50%;height: 7rem" src="../../../assets/images/reacrmore.png">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--琴管产品-->
+    <div class="albumbox" v-if="classtitle!=0">
+      <p class="shopertitle">琴馆产品</p>
+
+      <div class="swiper-containere" style="width: 100%">
+        <div class="swiper-wrapper" style="width: 100%">
+          <div class="swiper-slide albumimgbox" v-for="item in clubIdprojectlist">
+            <div class="albumimg" :style="{'background-image': 'url(' + formatImg(item.goodCover, true) + ')'}"></div>
+            <p class="albummessage">{{item.goodName}}</p>
+            <p class="albumprice">{{item.vipPrice}}<span class="alreadysell">已售88</span></p>
+          </div>
+          <div @click="gotojuexiang()" class="swiper-slide" style="width: 100%;height: 70%">
+            <img style="width: 50%;height: 7rem" src="../../../assets/images/reacrmore.png">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!--位置地图-->
+    <div class="mapbox">
+      <p>
+        <span style="font-size: 16px;font-weight: bold;line-height: 2rem">琴馆位置</span>
+        <span class="mitler">
+                <i style="font-size: 11px" class="iconfont icon-dingwei1"></i>
+               据您{{distance}}km
+            </span>
+
+      </p>
+
+      <div class="map" id="labelor" @click="thisbtn()">
+
+      </div>
+      <p style="font-size: 14px;line-height: 2rem" v-show="ostatusindex==0">{{clubheaderlist.address}}</p>
+      <p style="font-size: 14px;line-height: 2rem" v-show="ostatusindex==1">{{headerlist.address}}</p>
+    </div>
+    <div class="titlebigbox">
+      <div class="tokentitle">
+        <span v-if="ostatusindex==0"
+              style="margin-left: 15px;font-size: 15px">点评（{{clubtokenlist.countEvaluate}}）</span>
+        <span v-if="ostatusindex==1" style="margin-left: 15px;font-size: 15px">点评（{{allmessagelist.count}}）</span>
+      </div>
+
+      <!--琴管留言-->
+      <div class="tokendetails" v-for="(item,index) in clubevaluatelist" v-show="ostatusindex==0">
+
+        <div class="detailsbox" style="position: relative">
+          <img :src="formatImg(item.avatar)">
+          <div class="ifont" v-if="item.authStatus == 1">V认证</div>
+        </div>
+        <div class="rightbox">
+          <div class="nametime">
+            <span style="margin-left: 0.2rem">{{item.nickname}}<i v-if="item.level == 1" style="color:#ffbb28"
+                                                                  class="iconfont icon-huangguan-copy"></i></span>
+            <span class="addTime">{{item.addTime}}</span>
+          </div>
+          <div class="tokenfont">
+            <i :style="{color: i <= item.overallScore ? '#ff8500' : '#b2b2b2'}"  v-if="item.overallScore != 0" style="font-size: 15px" v-for="i in 5" class="iconfont pubmin icon-xingxing1"></i>
+          </div>
+          <div class="artical">
+            {{item.content}}
+          </div>
+          <!--<p class="allartic">全文</p>-->
+          <div class="tokenimg">
+            <img style="width: 3rem;height: 3rem;margin-right: 5px" :src="formatImg(img)"
+                 v-for="img in cutImgurl(item.images)"/>
+          </div>
+          <div style="width: 100%;line-height: 2rem;text-align: left;margin-right: 20px">
+                <span>
+                    <i v-if="item.ifAgree==1" class="iconfont ixin icon-xin"
+                       @click="agreeEvaluate(newcitycode,index, 1, 1)"></i>
+                    <i v-else class="iconfont ixin icon-ziyuan8" @click="agreeEvaluate(newcitycode,index, 1, 1)"></i>
+                    {{item.countEvaluateAgree}}
+                </span>
+            <p v-for="reply in item.replyEvaluate"><span style="color: #f58887">{{reply.nickname}}：</span><span>{{reply.replyContent}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--课程留言-->
+      <div class="tokendetails" v-for="(item,index) in classtokenlist" v-show="ostatusindex==1">
+
+        <div class="detailsbox" style="position: relative">
+          <img :src="formatImg(item.avatar)">
+          <div class="ifont" v-if="item.authStatus == 1">V认证</div>
+        </div>
+        <div class="rightbox">
+          <div class="nametime">
+            <span style="margin-left: 0.2rem">{{item.nickname}}<i v-if="item.level == 1" style="color:#ffbb28"
+                                                                  class="iconfont icon-huangguan-copy"></i></span>
+            <span class="addTime">{{item.addTime}}</span>
+          </div>
+          <div class="tokenfont">
+            <i v-if="item.overallScore != 0" style="color:#ff8500;font-size: 15px"
+               v-for="yellowstar in item.overallScore" class="iconfont pubmin icon-xingxing1"></i><i
+            v-if="item.overallScore != 5" style="color:#b2b2b2;font-size: 15px"
+            v-for="yellowstar in 5 - item.overallScore" class="iconfont pubmin icon-xingxing1"></i>
+          </div>
+          <div class="artical">
+            {{item.content}}
+          </div>
+          <p class="allartic">全文</p>
+          <div class="tokenimg">
+            <img style="width: 3rem;height: 3rem;margin-right: 5px" :src="formatImg(img)"
+                 v-for="img in cutImgurl(item.images)"/>
+          </div>
+          <div style="width: 100%;line-height: 2rem;text-align: left;margin-right: 20px">
+                <span>
+                    <i v-if="item.ifAgree==1" class="iconfont ixin icon-xin"
+                       @click="agreeEvaluate(newcitycode,index, 2, 2)"></i>
+                    <i v-else class="iconfont ixin icon-ziyuan8" @click="agreeEvaluate(newcitycode,index, 2, 2)"></i>
+                    {{item.countEvaluateAgree}}
+                </span>
+            <p v-for="reply in item.replyEvaluate"><span style="color: #f58887">{{reply.nickname}}：</span><span>{{reply.replyContent}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottomall">
+        <mt-button style="background: #ededed" class="allmessage" @click="checkall()">查看全部</mt-button>
+      </div>
+    </div>
+    <!--为您推荐-->
+    <div class="foryou">
+      <p class="groomtitle">为您推荐</p>
+      <div class="topbox">
+        <div class="obshoper" v-for="(item,index) in forprojectlist" @click='changegoin(index)'>
+          <div class="groomimg">
+            <img v-if="ostatusindex==0" :src="formatImg(item.picName)">
+            <img v-if="ostatusindex==1" :src="formatImg(item.images)">
+          </div>
+
+          <div class="pwrapper" v-if="ostatusindex==0">
+            <p class="topboxp" v-text="item.clubName"></p>
+            <p class="topboxp" style="font-size: 13px">{{item.cityName}}{{item.regionName}}</p>
+          </div>
+
+          <div class="pwrapper" v-if="ostatusindex==1">
+            <p class="topboxp" v-text="item.courseName"></p>
+            <p class="topboxp" style="font-size: 13px">{{item.cityName}}{{item.regionName}}</p>
+          </div>
+
+          <p class="groomlocal" v-if="ostatusindex==0"><span style="text-align: left">{{item.cityName}}</span><span
+            style="text-align: right">成交{{item.countOrder}}笔</span>
+          </p>
+          <p class="groomlocal" v-if="ostatusindex==1"><span style="text-align: left">{{item.cityName}}</span><span
+            style="text-align: right">成交{{item.personCount}}笔</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hurry">
+
+    </div>
+  </div>
+
+  <!--琴馆预约-->
+  <div class="buyinput" :class="{beforeinput: deforebure}">
+    <p><span style="width: 20%">姓名</span><input style="flex: 1" type="text" placeholder="请输入姓名" v-model="username"></p>
+    <p><span style="width:20%">手机号</span><input style="flex: 1" type="text" placeholder="请输入手机号" v-model="mobile"></p>
+    <div class="bottomsure">
+      <mt-button class="projectbtn" style="margin: auto" @click="clubListenOrder()">确认</mt-button>
+    </div>
+  </div>
+
+  <!--预约购买弹窗-->
+  <mt-popup class="buyboxbtn"
+            v-model="brforestyle"
+            position="bottom">
+    <div class="buyhurry">
+
+      <div class="buytop">
+        <div class="closefm" @click="ladould()">X</div>
+        <div class="buylefttop">
+          <img :src="formatImg(clubbannerimg[0])">
+        </div>
+        <div class="buyrighttop">
+          <p class="onevone">{{headerlist.courseName}}</p>
+          <p class="buyprice">￥{{headerlist.price}}元</p>
+        </div>
+      </div>
+
+      <p class="buymethods">购买方式</p>
+      <div class="middlebox">
+        <div class="publicbuy" v-for="(item,index) in buymethodslist" @click="buybtn(index)">
+          <span class="pubicsbuypan" :class="{beforebuy: buyindex == index}">{{item.name}}</span>
+        </div>
+      </div>
+
+
+      <div class="buynum">
+        <div class="plubnum">
+          <span class="numtitle">购买数量</span>
+        </div>
+        <div class="plubnum" style="text-align: right">
+          <span style="background: #f1f1f1;color: #b1b1b1" class="btnbutton" @click="downbtn()">-</span>
+          <span class="btnbutton">{{onum}}</span>
+          <span style="background: #f2f2f2;color: #5a5a5a" class="btnbutton" @click="upbtn()">+</span>
+        </div>
+
+      </div>
+
+      <p class="allnumprice">
+            <span style="flex: 1;text-align: right;padding: 10px;">
+            <span style="margin-right: 20px">共计{{onum}}份</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span>总计：<span style="font-size: 15px;color: orangered">¥ {{numprice}}</span> 元</span>
+            </span>
+      </p>
+      <div class="buybottombox">
+        <mt-button class="projectbtn" @click="sruebuybtn()">确认</mt-button>
+      </div>
+
+    </div>
+  </mt-popup>
+  <!--琴馆footer-->
+  <a href="javascript:scroll(0,30)" style="color: white">
+    <div class="fixbox" @click="hurrybuy()" v-show="ostatusindex == 0">
+      <div style="flex: 1;text-align: center" class="hurryup">立即预约</div>
+    </div>
+  </a>
+  <!--教学footer-->
+  <a href="javascript:scroll(0,0)" style="color: white">
+    <div class="fixbox" v-show="ostatusindex==1">
+      <div class="leftbottombox">￥{{headerlist.price}}</div>
+      <div class="rightbottombox" @click="alreadybuy()">预约购买</div>
+    </div>
+  </a>
+  <!--分享到...-->
+  <mt-popup class="bottompoup"
+            v-model="popupVisible"
+            position="bottom">
+
+    <p class="sharetitle"><span style="margin-left: 10px">分享到</span></p>
+    <div class="fourkind">
+      <div class="minkind" @click="shareto(1)">
+        <i style="color: #20cb33" class="iconfont publicfont icon-weixin-copy"></i>
+        <p>微信好友</p>
+      </div>
+
+      <div class="minkind" @click="shareto(2)">
+        <i style="color: #20cb33" class="iconfont publicfont icon-pengyouquan"></i>
+        <p>朋友圈</p>
+      </div>
+      <div class="minkind" @click="shareto(3)">
+        <i style="color: #24bbff" class="iconfont publicfont icon-qq"></i>
+        <p>QQ</p>
+      </div>
+      <div class="minkind" @click="shareto(4)">
+        <i style="color: #f7c000" class="iconfont publicfont icon-qqkongjian"></i>
+        <p>QQ空间</p>
+      </div>
+
+    </div>
+    <div class="canclebox">
+      <mt-button class="cancelinput" @click="falsebtn()">取消</mt-button>
+    </div>
+  </mt-popup>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script type="text/javascript" src="../../../assets/js/swiper-3.4.2.min.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  document.body.onscroll = function () {
+    event.preventDefault();
+    if (document.body.scrollTop == 0) {
+      event.preventDefault();
+      app.blurefont = false;
+    } else {
+      app.blurefont = true;
+    }
+  };
+
+  var app = new Vue({
+
+    el: '#app',
+    data: {
+      ostatusindex: null,
+      topStatus: '',
+      buyindex: 0,
+      onum: '1',
+      shopprice: '3000',
+      numprice: '',
+      deforebure: false,
+      overfloowy: false,
+//      预约购买的弹窗判断
+      brforestyle: false,
+      buymethodslist: [
+        {
+          name: '全额付款'
+        },
+        {
+          name: '定金支付'
+        },
+        {
+          name: '免费预约'
+        }
+      ],
+//      顶部下来时的判断
+      blurefont: false,
+//      轮播的第几个
+      pagenum: 1,
+//                接口数据
+//              琴管课程/课程的其他课程
+      clubclasslist: [],
+      otherclasslist: [],
+//              教师力量
+      teacherlist: [],
+//      更多教师力量(这是传递给更多教师页面的数据)
+      allteacherlist: [],
+//              琴管课程
+      clubIdprojectlist: [],
+//              所在城市的clubId
+      clubId: '',
+      courseId: '',
+      forprojectlist: [],
+//              琴管的点评列表
+      clubtokenlist: [],
+      clubevaluatelist: [],
+//              留言照片
+      tokenoimg: [],
+//              课程的点评列表
+      classtokenlist: [],
+//      课程全部留言数
+      allmessagelist: '',
+      classtitle: 1,
+//      立即预约电话信息
+      mobile: '',
+//      立即预约姓名
+      username: '',
+//      点赞/收藏 的数据
+      //琴管还是课程
+      typenumer: '',
+      //获取 琴管ID/课程ID的变量
+      courseorclubId: '',
+//      底部分享的布尔值
+      popupVisible: false,
+//      获取提交订单页面
+      getorderlist: [],
+      aMap: null,
+//      经纬度默认值   琴管/课程坐标
+      pos: [117.21451000000002, 39.116949],  // 给个坐标默认值
+//      详情头部信息
+      headerlist: [],
+//      琴管头部信息
+      clubheaderlist: [],
+//      banner琴管
+      clubbannerimg: [],
+//      地图div
+      labelor: '',
+//      琴管地图判断距离顶部距离的高度
+      mapReady: 0,
+//      课程地图判断距离顶部距离的高度
+      courseready: 0,
+//      地图经纬度
+      positionlist: [],//默认坐标 北京天安门
+//    琴管页面加载时间
+      loadready: 0,
+//      课程页面加载时间
+      courseloadr: 0,
+//      评分参数
+      starscore: '',
+
+//      存储citycode
+      newcitycode: getcitycode(),
+//      获取本地坐标
+      localpos: [],
+//      微信模块信息
+      sharename: '',
+      sharecount: '',
+      shareimg: '',
+//      底部苒圹
+      bottomalertbox: false,
+//      距离
+      distance: '',
+      buytanbox: '',
+//      验证手机号
+      IDRagular: /^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\d{8}$/
+    },
+    watch: {
+      'loadready': function (value) {
+        if (value == 3) {
+          loadEnd()
+        }
+      },
+      'courseloadr': function (value) {
+        if (value == 2) {
+          loadEnd()
+        }
+      },
+      'mapReady': function (value) {
+        if (value == 3) {
+          app.$nextTick(function () {
+            app.labelor = document.getElementById('labelor').offsetTop;
+            app.openwinmap(function () {
+              app.getLocation(function (pos) {
+                app.localpos[0] = pos.lon;
+                app.localpos[1] = pos.lat;
+                app.getPerClubDetail(app.newcitycode)
+              });
+            });
+          });
+        }
+      },
+      'courseready': function (value) {
+        if (value == 2) {
+          app.$nextTick(function () {
+            app.labelor = document.getElementById('labelor').offsetTop;
+            app.openwinmap(function () {
+              app.getLocation(function (pos) {
+                app.localpos[0] = pos.lon;
+                app.localpos[1] = pos.lat;
+                app.getPerCourseDetail(app.newcitycode, function (res) {
+                  app.distance = res.data.distance;
+                });
+              });
+            });
+          });
+        }
+      },
+      'brforestyle': function (value) {
+        if (!value) {
+          app.buytanbox = false
+        }
+      }
+    },
+    filters: {
+      typeText: function (courseType) {
+        switch (courseType) {
+          case '1':
+            return '定期课程';
+          case '2':
+            return '免费体验课';
+          case '3':
+            return '随到随学';
+        }
+      },
+      gradeText: function (level) {
+        switch (level) {
+          case '1':
+            return '入门级';
+          case '2':
+            return '提高班';
+          case '3':
+            return '进修班';
+        }
+      }
+    },
+    created: function () {
+      var blurefont = false;
+      apiready = function () {
+        api.addEventListener({
+          name: 'moreclass'
+        }, function (ret, err) {
+          app.courseId = ret.value.courseId;
+          app.moregoup(app.courseId)
+        });
+
+        // 获取琴管/课程 的 假判断
+        app.ostatusindex = api.pageParam.statustype;
+        // 获取琴管clubid
+        app.clubId = api.pageParam.clubId;
+        // 获取课程courseid
+        app.courseId = api.pageParam.courseId;
+        // 获取distance距离参数
+        app.distance = api.pageParam.distance;
+        // 判断琴管还是课程
+        if (app.courseId == undefined) {
+          app.ostatusindex = 0;
+          app.typenumer = 1;
+          app.courseorclubId = app.clubId;
+
+          app.getClubShow();
+          app.getTeachPower(app.newcitycode, function (res) {
+
+            if (res.code === -74) {
+              app.newcitycode = res.data.cityCode;
+              app.getTeachPower(app.newcitycode, function (res) {
+                app.teacherlist = res.data.splice(0, 4);
+                app.laber();
+                app.mapReady++;
+              });
+            } else {
+              app.teacherlist = res.data.splice(0, 4);
+              app.laber();
+              app.mapReady++;
+            }
+            app.getClubShow();
+            app.getOwnGoodRecom(app.newcitycode)//666
+            app.getOwnClubCourse(app.newcitycode, app.clubId, 1, function () {
+              app.mapReady++;
+            }); //666
+            app.clubGetUserEvaluate(app.newcitycode); //666
+            app.getPerClubAlbum();
+            app.getPerClubDetail(app.newcitycode, function () {
+              app.mapReady++;
+            });//666
+          }); //这个是有citycode的改变的
+        } else {
+          app.ostatusindex = 1;
+          app.typenumer = 2;
+          app.courseorclubId = app.courseId;
+          app.classtitle = 0;
+          app.getCourseShow();
+          app.getPerCourseDetail(app.newcitycode, function (res) {
+            if (res.code === -73) {
+              app.newcitycode = res.data.cityCode;
+              app.getPerCourseDetail(app.newcitycode, function (res) {
+                app.courseready++;
+                app.courselaber();
+                app.headerlist = res.data;
+                app.distance = res.data.distance;
+                app.sharename = app.headerlist.courseClubName;
+                app.sharecount = app.headerlist.courseDesc;
+                app.starscore = Math.floor(app.headerlist.overallScore);
+                app.clubbannerimg = app.headerlist.images.split(',');
+                app.shareimg = app.clubbannerimg[0];
+              });
+            } else {
+              app.getCourseShow();
+              app.courselaber();
+              app.headerlist = res.data;
+              app.distance = res.data.distance;
+              app.starscore = Math.floor(app.headerlist.overallScore);
+              app.clubbannerimg = app.headerlist.images.split(',');
+              app.courseready++;
+              app.sharename = app.headerlist.courseName;
+              app.sharecount = app.headerlist.courseDesc;
+              app.shareimg = app.clubbannerimg[0];
+            }
+            app.courseGetUserEvaluate(app.newcitycode); //777
+            app.getOwnClubCourse(app.newcitycode, app.courseId, 2, function () {
+              app.courseready++;
+            });//777
+          });//777
+        }
+
+
+//      app.courseId = api.pageParam.courseId;
+        app.$nextTick(function () {
+          app.titlebigbox = $api.offset($api.dom('.titlebigbox')).h;
+          app.headerbackground = $api.offset($api.dom('.headerbackground')).h;
+          var mySwiper = new Swiper('.swiper-container', {
+            slidesPerView: 3.5,
+            freeMode: true,
+            spaceBetween: 15,
+            observer: true,
+            observeParents: true
+          });
+          var mySwiper = new Swiper('.swiper-containere', {
+            slidesPerView: 1.4,
+            spaceBetween: 20,
+            freeMode: true,
+            observer: true,
+            observeParents: true
+          });
+//监听下滑事件
+          api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+              threshold: app.titlebigbox - app.headerbackground
+            }
+          }, function (ret, err) {
+            app.blurefont = true;
+          });
+        });
+      }
+    },
+    methods: {
+      getPerClubAlbum: function () {
+        var post = {
+          cmd: 'getPerClubAlbum',
+          cityCode: getcitycode(),
+          clubOrCourse: 1,  // 1 是琴馆
+          clubId: app.clubId
+        };
+        sendAjax(this, post, function (res) {
+          app.clubbannerimg = [];
+          if (res.data.length != 0) {
+            var album = null;
+            for (var i = 0; i < res.data.length; i++) {
+              if (res.data[i].isDefault == '1') {
+                album = res.data[i];
+                break;
+              }
+            }
+            if (album) {
+              if (!album.albumId) {
+                album = res.data[0];
+              }
+              for (i = 0; i < album.sub.length; i++) {
+                app.clubbannerimg.push(album.sub[i].picName);
+              }
+            }
+          }
+        });
+      },
+      getBuyCourse: function () {
+        MINT.Indicator.open();
+        var post = {
+          cmd: 'getBuyCourse',
+          token: getToken(),
+          cityCode: getcitycode(),
+          courseId: app.courseId,
+          payType: app.buyindex + 1,
+          amount: app.onum
+        };
+        sendAjax(this, post, function (res) {
+          app.numprice = res.data.realPrice;
+          MINT.Indicator.close();
+        });
+      },
+      typeColor: function (courseType) {
+        switch (courseType) {
+          case '1':
+            return '#f68778';
+          case '2':
+            return '#80b8ff';
+          case '3':
+            return '#ff941f';
+        }
+      },
+      urlCreate: function () {
+        var url = wapUrl + 'wap/html2/find/catchdetails/catchdetails_fm.html';
+        if (app.typenumer == 1) {
+          url += '?2';
+          url += ',' + app.courseorclubId;
+          url += ',' + getcitycode();
+          url += ',' + app.clubheaderlist.distance;
+          url += ',' + app.clubheaderlist.position;
+        } else {
+          url += '?1';
+          url += ',' + app.courseorclubId;
+          url += ',' + getcitycode();
+          url += ',' + app.headerlist.distance;
+          url += ',' + app.headerlist.position;
+        }
+
+        return url;
+      },
+      // 微信/QQ分享
+      shareto: function (ind) {
+        var wx = api.require('wx');
+        var qq = api.require('QQPlus');
+        app.popupVisible = false;
+
+        switch (ind) {
+          case 1 : {
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'session',
+              title: app.sharename,
+              description: app.sharecount,
+              thumb: formatShareImg(app.shareimg),
+              contentUrl: app.urlCreate()
+//              contentUrl: wapUrl + 'wap/html2/download/download.html?2'
+            }, function (ret, err) {
+              if (ret.status) {
+                toastMsg('分享成功');
+              } else {
+                toastMsg('取消发送');
+              }
+            });
+            break;
+          }
+          case 2 : {
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'timeline',
+              title: app.sharename,
+              description: app.sharecount,
+              thumb: formatShareImg(app.shareimg),
+              contentUrl: app.urlCreate()
+//              contentUrl: wapUrl + 'wap/html2/download/download.html?2'
+            }, function (ret, err) {
+              if (ret.status) {
+                toastMsg('分享成功');
+              } else {
+                toastMsg('取消发送');
+              }
+            });
+            break;
+          }
+          case 3 : {
+            qq.shareNews({
+              url: app.urlCreate(),
+//              url: wapUrl + 'wap/html2/download/download.html?2',
+              title: app.sharename,
+              description: app.sharecount,
+              imgUrl: formatShareImg(app.shareimg),
+              type: 'QFriend'
+            }, function (ret, err) {
+            });
+            break;
+          }
+          case 4 : {
+            qq.shareNews({
+              url: app.urlCreate(),
+//              url: wapUrl + 'wap/html2/download/download.html?2',
+              title: app.sharename,
+              description: app.sharecount,
+              imgUrl: formatShareImg(app.shareimg),
+              type: 'QZone'
+            }, function (ret, err) {
+
+            });
+            break;
+          }
+        }
+      },
+      //        轮播切换
+      handleChange: function (index) {
+        app.pagenum = index + 1
+      },
+//      琴管跳转
+      gotodetails: function (index) {
+        api.openFrame({
+          name: 'catchdetails' + Math.floor(Math.random() * 10000),
+          url: './catchdetails_fm.html',
+          reload: true,
+          rect: {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+          },
+          pageParam: {
+            statustype: app.statustype,
+            clubId: app.clubId,
+            courseId: app.clubclasslist[index].courseId,
+            distance: app.distance
+          }
+        });
+      },
+//      更多跳转
+      moregoup: function (morecourseId) {
+        api.openFrame({
+          name: 'catchdetails' + Math.floor(Math.random() * 10000),
+          url: './catchdetails_fm.html',
+          reload: true,
+          rect: {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+          },
+          pageParam: {
+            courseId: morecourseId
+          }
+        });
+      },
+      checkoutdata: function () {
+        openView('checkout_fm', 'find/checkoutdata/checkout_fm', '商家参数', false, false, {
+          maketime: app.clubheaderlist.createTime,
+          mainshop: app.clubheaderlist.brand,
+          makeyear: app.clubheaderlist.operateYear,
+          classcount: app.clubheaderlist.courseType,
+          busyweek: app.clubheaderlist.openHours,
+          openTime: app.clubheaderlist.openTime,
+          minprice: app.clubheaderlist.MINPrice,
+          maxprice: app.clubheaderlist.MAXPrice,
+          othershop: app.clubheaderlist.productTag
+        })
+      },
+      coursecheck: function () {
+        openView('checkout_fm', 'find/checkoutdata/coursecheckout_fm', '课程详情', false, false, {
+          starclass: app.headerlist.courseName,
+          classname: app.headerlist.courseName,
+          startime: app.headerlist.startDate,
+          classtype: app.headerlist.courseType,
+          classnumer: app.headerlist.personCount
+        })
+      },
+      checkoutall: function () {
+        openView('checkoutall_fm', 'find/checkoutall/checkoutall_fm', '商家简介', false, false, {
+          alltextcount: app.clubheaderlist.desc
+        })
+      },
+
+      coursecheckoutall: function () {
+        openView('coursecheckoutall_fm', 'find/checkoutall/coursecheckoutall_fm', '课程简介', false, false, {
+          allcoursecount: app.headerlist.courseDesc
+        })
+      },
+//      跳转教师详情
+      countoimg: function (index) {
+        openView('teachdetails_fm', 'find/teachdetails/teachdetails_fm', '老师介绍', false, false, {
+          teachname: app.teacherlist[index].teacher,
+          teachdesc: app.teacherlist[index].teacherDesc,
+          teachimage: app.teacherlist[index].teacherAvatar
+        })
+      },
+//      课程跳转教师详情
+      coursecountoimg: function () {
+        openView('teachdetails_fm', 'find/teachdetails/teachdetails_fm', '老师介绍', false, false, {
+          teachname: app.headerlist.teacher,
+          teachdesc: app.headerlist.teacherDesc,
+          teachimage: app.headerlist.teacherAvatar
+        })
+      },
+//      跳转更多教师
+      moreteach: function () {
+        openView('teachstrong_fm', 'find/teachstrong/teachstrong_fm', '老师介绍', false, false, {
+          clubId: app.clubId,
+          citycode: app.newcitycode
+        })
+      },
+//      更多产品 跳转绝响
+
+      gotojuexiang: function () {
+        api.openWin({
+          name: 'shopdetails_win',
+          url: '../../juexiang/juexiang/shopdetails_win.html'
+        });
+      },
+      moreclass: function () {
+        openView('allstore_fm', 'find/moreclass/allstore_fm', '本店课程', false, false, {
+          moreclasslist: app.clubclasslist
+        })
+      },
+      checkall: function () {
+        api.openWin({
+          name: 'alltoken',
+          url: '../alltoken/alltoken_win.html',
+          pageParam: {
+            clubId: app.clubId,
+            courseId: app.courseId
+          }
+        });
+        //openView('allstore_fm','catch/moreclass/allstore_fm', '本店课程', 'alltoken_win', 'catch/moreclass/allstore_win')
+      },
+      hurrybuy: function () {
+        isLogined(this, function (logined) {
+          if (logined) {
+            app.deforebure = true;
+          } else {
+            openLogin();
+          }
+        });
+      },
+      mikebtn: function () {
+        app.deforebure = false;
+      },
+      // 获取立即预约+确认跳转到预约成功界面
+      clubListenOrder: function () {
+        if (!app.IDRagular.test(app.mobile)) {
+          api.toast({
+            msg: '请输入正确的手机号！'
+          })
+        } else {
+          var post = {
+            cmd: 'clubListenOrder',
+            clubId: app.clubId,
+            cityCode: getcitycode(),
+            token: getToken(),
+            username: app.username,
+            mobile: app.mobile
+          };
+          sendAjax(this, post, function (res) {
+            if (res.code == 1) {
+              app.deforebure = false;
+              api.sendEvent({
+                name: 'OrderSubmit'
+              });
+              openView('success_fm', 'find/buysuccess/success_fm', '预约成功', false, false);
+            }
+          });
+        }
+      },
+//      底部分享
+      sharebttn: function () {
+        app.popupVisible = true
+      },
+//      底部分享取消
+      falsebtn: function () {
+        app.popupVisible = false
+      },
+//      前往门店报错
+      gofalse: function () {
+        isLogined(this, function (logined) {
+          if (logined) {
+            openView('findfalse_fm', 'find/findfalse/findfalse_fm', '门店报错', false, false, {
+              clubId: app.clubId,
+              courseId: app.courseId
+            })
+          } else {
+            openLogin();
+          }
+        });
+      },
+//      弹框购买方式选择确认键
+      buybtn: function (index) {
+        app.buyindex = index;
+        app.getBuyCourse();
+      },
+      downbtn: function () {
+        app.onum--;
+        if (app.onum <= 0) {
+          app.onum = 0;
+          app.numprice = 0
+        }
+        app.getBuyCourse();
+      },
+      // 增加购买数量
+      upbtn: function () {
+        if (app.headerlist.courseType == 2 && app.onum >= 1) {
+          app.onum = 1;
+        } else {
+          app.onum++;
+        }
+        app.getBuyCourse();
+      },
+//       关闭弹框
+      ladould: function () {
+        app.brforestyle = false;
+        app.buytanbox = false;
+        app.onum = 1;
+        app.numprice = 0
+      },
+//       预约购买 显示弹框键
+      alreadybuy: function () {
+        isLogined(this, function (logined) {
+          if (logined) {
+            app.brforestyle = true;
+            app.buytanbox = true;
+            app.getBuyCourse();
+          } else {
+            openLogin();
+          }
+        });
+      },
+//       弹框 确认按键
+      sruebuybtn: function () {
+        app.brforestyle = false;
+        openView('checkoutall_fm', 'find/classdetails/classdetails_fm', '提交订单', false, false, {
+          buymethods: app.buyindex,
+          buynumber: app.onum,
+          courseId: app.courseId,
+          coursetype: app.headerlist.courseType
+        })
+      },
+      closethswin: function () {
+        api.closeWin();
+      },
+//        接口部分
+
+//      获取教师力量接口 //666
+      getTeachPower: function (citycodelead, callback) {
+        var post = {
+          cmd: 'getTeachPower',
+          clubId: app.clubId,
+          cityCode: citycodelead
+        };
+        sendAjax(this, post, function (res) {
+          if (callback) {
+            callback(res);
+          }
+
+        });
+      },
+//      获取实体琴管推荐接口  需要citycode
+      getClubShow: function (callback) {
+        var post = {
+          cmd: 'getClubShow',
+          cityCode: getcitycode(),
+          type: 2,
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.forprojectlist = res.data.splice(0, 4);
+          app.laber();
+          if (callback) {
+            callback();
+          }
+        });
+      },
+//      获取课程推荐接口  需要citycode
+      getCourseShow: function () {
+        var post = {
+          cmd: 'getCourseShow',
+          cityCode: getcitycode(),
+          type: 2,
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.forprojectlist = res.data.splice(0, 4);
+          app.courselaber()
+        });
+      },
+//      获取琴管产品  需要citycode //666
+      getOwnGoodRecom: function (citycodelead, callback) {
+        var post = {
+          cmd: 'getOwnGoodRecom',
+          cityCode: citycodelead,
+          clubId: app.clubId,
+          token: getToken(),
+          perPage: 5,
+          page: 1
+        };
+        sendAjax(this, post, function (res) {
+          app.clubIdprojectlist = res.data.proList;
+          app.laber();
+          if (callback) {
+            callback();
+          }
+        });
+      },
+//      clubOrCourse: {1: 琴管, 2: 课程} 拿到琴管课程/课程其他课程   需要citycode  //666
+      getOwnClubCourse: function (citycodelead, id, clubOrCourse, callback) {
+        var post = {
+          cmd: 'getOwnClubCourse',
+          cityCode: citycodelead,
+          clubOrCourse: clubOrCourse
+        };
+
+        if (clubOrCourse == 1) {
+          post.clubId = id;
+        } else {
+          post.courseId = id;
+        }
+
+        sendAjax(this, post, function (res) {
+          app.clubclasslist = res.data;
+          app.laber();
+          app.courselaber();
+          if (callback) {
+            callback();
+          }
+        });
+      },
+//      琴管的获取点评列表   需要citycode  //666
+      clubGetUserEvaluate: function (citycodelead) {
+        var post = {
+          cmd: 'clubGetUserEvaluate',
+          cityCode: citycodelead,
+          token: getToken(),
+          clubId: app.clubId,
+          page: 1,
+          perPage: 3
+        };
+        sendAjax(this, post, function (res) {
+          app.clubtokenlist = res.data.proList;
+          app.clubevaluatelist = res.data.proList.evaluate;
+          app.laber()
+        });
+      },
+//      教学课程获取点评列表
+      courseGetUserEvaluate: function (citycodelead) {
+        var post = {
+          cmd: 'courseGetUserEvaluate',
+          cityCode: citycodelead,
+          token: getToken(),
+          courseId: app.courseId,
+          page: 1,
+          perPage: 3
+        };
+        sendAjax(this, post, function (res) {
+          app.classtokenlist = res.data.proList.evaluate;
+          app.allmessagelist = res.data;
+          app.courselaber();
+        });
+      },
+      // 点赞取消/收藏取消，需要citycode
+      collectCommon: function (citycodelead, publicid, typenumer, agreeOrCollect) {
+        var post = {
+          cmd: 'collectCommon',
+          token: getToken(),
+          id: publicid,
+          type: typenumer,
+          agreeOrCollect: agreeOrCollect,
+          cityCode: citycodelead
+        };
+        sendAjax(this, post, function (res) {
+
+          api.sendEvent({
+            name: 'agreezan'
+          });
+
+
+          if (typenumer == 1) {
+            if (agreeOrCollect == 1 && getToken() != null) {
+              if (app.clubheaderlist.isCollect == 1) {
+                app.clubheaderlist.isCollect = 0;
+              } else {
+                app.clubheaderlist.isCollect = 1
+              }
+            }
+            if (agreeOrCollect == 2 && getToken() != null) {
+              if (app.clubheaderlist.ifAgree == 1) {
+                app.clubheaderlist.ifAgree = 0;
+              } else {
+                app.clubheaderlist.ifAgree = 1
+              }
+            }
+          }
+          if (typenumer == 2) {
+            if (agreeOrCollect == 1 && getToken() != null) {
+              if (app.headerlist.isCollect == 1) {
+                app.headerlist.isCollect = 0;
+              } else {
+                app.headerlist.isCollect = 1
+              }
+            }
+            if (agreeOrCollect == 2 && getToken() != null) {
+              if (app.headerlist.ifAgree == 1) {
+                app.headerlist.ifAgree = 0;
+              } else {
+                app.headerlist.ifAgree = 1
+              }
+            }
+          }
+        });
+      },
+//      网友评论的点赞或取消   ;
+//      clubagreeorcourseid判断琴管/课程 1为琴管 2是课程
+//      tokentypenum 是判断琴管评论支持 1是琴管  2是课程  需要citycode //666  //777
+      agreeEvaluate: function (citycodelead, index, tokentypenum, clubagreeorcourseid) {
+
+//        假装实现的点赞/取消的效果   需要citycode
+        if (app.ostatusindex == 1) {
+          if (getToken() != null) {
+            if (app.classtokenlist[index].ifAgree == 1) {
+              app.classtokenlist[index].ifAgree = 0;
+              app.classtokenlist[index].countEvaluateAgree--
+            } else {
+              app.classtokenlist[index].ifAgree = 1;
+              app.classtokenlist[index].countEvaluateAgree++
+            }
+          }
+        } else if (app.ostatusindex == 0) {
+          if (getToken() != null) {
+            if (app.clubevaluatelist[index].ifAgree == 1) {
+              app.clubevaluatelist[index].ifAgree = 0;
+              app.clubevaluatelist[index].countEvaluateAgree--
+            } else {
+              app.clubevaluatelist[index].ifAgree = 1;
+              app.clubevaluatelist[index].countEvaluateAgree++
+            }
+          }
+        }
+
+        var post = {
+          cmd: 'agreeEvaluate',
+          token: citycodelead,
+          cityCode: getcitycode(),
+          type: tokentypenum
+        };
+
+        if (clubagreeorcourseid == 1) {
+
+          post.clubId = app.clubId;
+          post.clubEvaluateId = app.clubevaluatelist[index].evaluateId
+        } else {
+          post.courseId = app.courseId;
+          post.courseEvaluateId = app.classtokenlist[index].evaluateId
+        }
+        sendAjax(this, post, function (res) {
+        });
+      },
+//      获取课程的 头部的基本信息  //777
+      getPerCourseDetail: function (citycodelead, callback) {
+        var post = {
+          cmd: 'getPerCourseDetail',
+          token: getToken(),
+          cityCode: citycodelead,
+          courseId: app.courseId,
+          app: 1,
+          currentposition: app.localpos[0] + ',' + app.localpos[1]
+        };
+        sendAjax(this, post, function (res) {
+          app.positionlist = res.data.position.split(',');
+          if (callback) {
+            callback(res);
+          }
+        });
+
+      },
+      // 获取琴管的 头部基本信息   需要citycode
+      getPerClubDetail: function (citycodelead, callback) {
+        var post = {
+          cmd: 'getPerClubDetail',
+          token: getToken(),
+          cityCode: citycodelead,
+          clubId: app.clubId,
+          distance: app.distance,
+          app: 1,
+          currentposition: app.localpos[0] + ',' + app.localpos[1]
+        };
+        sendAjax(this, post, function (res) {
+          app.clubheaderlist = res.data;
+          app.sharename = app.clubheaderlist.clubName;
+          app.sharecount = app.clubheaderlist.desc;
+          app.distance = res.data.distance;
+          app.positionlist = app.clubheaderlist.position.split(',');
+          app.shareimg = app.positionlist[0];
+          app.starscore = Math.floor(app.clubheaderlist.overallScore);
+//          if (app.clubheaderlist.banner) {
+//            app.clubbannerimg = app.clubheaderlist.banner.split(',');
+//          } else {
+//            app.clubbannerimg = [];
+//          }
+            if (app.aMap) {
+              app.setCenter(app.positionlist[0], app.positionlist[1]);
+              app.addAnnotations(app.positionlist[0], app.positionlist[1]);
+            }
+          app.laber();
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      setCenter: function(lon, lat) {
+        app.aMap.setCenter({
+          coords: {
+            lon: lon,
+            lat: lat
+          },
+          animation: false
+        });
+      },
+      addAnnotations: function (lon, lat) {
+        app.aMap.addAnnotations({
+          annotations: [{
+            id: 1,
+            lon: lon,
+            lat: lat
+          }],
+          icons: ['widget://assets/images/local.png']
+        }, function(ret) {
+          if (ret.eventType == 'click') {
+            // 点击的时候
+          }
+        });
+      },
+      // 获取地图+位置
+      openwinmap: function (callback) {
+        app.aMap = api.require('aMap');
+        app.aMap.open({
+          rect: {
+            x: 0,
+            y: app.labelor,
+            w: 'auto',
+            h: 150
+          },
+          showUserLocation: true,
+          zoomLevel: 17,
+          center: {
+            lon: app.positionlist[0],
+            lat: app.positionlist[1]
+          },
+          fixedOn: api.frameName,
+          fixed: false
+        }, function (ret, err) {
+          if (ret.status) {
+            if (callback) {
+              callback();
+            }
+          }
+        });
+      },
+      // 通过地图的位置 先调用上面的方法  再调用该方法， 获取位置
+      getLocation: function (callback) {
+        app.aMap.getLocation(function (ret, err) {
+          if (ret.status) {
+            if (callback) {
+              callback(ret);
+            }
+          }
+        });
+      },
+      // 推荐的跳转
+      changegoin: function (index) {
+        api.openFrame({
+          name: 'catchdetails' + Math.floor(Math.random() * 10000),
+          url: './catchdetails_fm.html',
+          reload: true,
+          rect: {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+          },
+          pageParam: {
+            statustype: app.statustype,
+            clubId: app.forprojectlist[index].clubId,
+            courseId: app.forprojectlist[index].courseId,
+            distance: app.distance
+          }
+        });
+      },
+//      计算初始时动画时间（琴管）
+      laber: function () {
+        app.loadready++
+      },
+//      计算初始时动画时间（课程）
+      courselaber: function () {
+        app.courseloadr++
+      }
+    }
+  })
+</script>

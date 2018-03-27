@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+        .icon{
+            width:1rem;
+            height:1rem;
+        }
+        .list{
+            font-size:0.7rem;
+            padding:0 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .list-item{
+            background: white;
+            width:48%;
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+        }
+        .list-item img{
+            width:100%;
+            height:9rem;
+        }
+        .img-box{
+            position: relative;
+        }
+        .bottom-box{
+            padding:0.5rem 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .xinxin{
+            padding-right: 0.2rem;
+            border-right: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="list">
+        <li class="list-item">
+            <div class="img-box">
+                <img src="../../../../assets/images/findbackground.png" alt="">
+            </div>
+            <div class="aui-padded-l-5 aui-padded-r-5">
+                <div class="aui-padded-t-5">管平湖</div>
+                <div class="bottom-box">
+                    <div>
+                        <svg class="icon xinxin" aria-hidden="true">
+                            <use :xlink:href="item.ifAgree ==='1' ? '#icon-dianzan' : '#icon-ziyuan8'"></use>
+                        </svg>
+                        <svg class="icon" aria-hidden="true">
+                            <use :xlink:href="item.ifCollect ==='1' ? '#icon-shoucang' : '#icon-shoucang1'"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+      };
+    },
+    methods: {}
+  })
+</script>

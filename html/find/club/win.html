@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    #app {
+
+    }
+
+    .content {
+      padding: 5% 5% 0 5%;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <mt-header title="会员登录" id="header"></mt-header>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    filters: {},
+    created: function () {
+      apiready = function () {
+//        $api.fixStatusBar($api.dom('header'));
+//        api.openFrame({
+//          name: 'login',
+//          url: './login_fm.html',
+//          rect: {
+//            x: 0,
+//            y: $api.dom('#header').offsetHeight,
+//            w: 'auto',
+//            h: 'auto'
+//          },
+//          bounces: true
+//        });
+      };
+    },
+    methods: {}
+  })
+</script>

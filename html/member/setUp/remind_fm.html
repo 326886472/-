@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+        .list{
+            font-size:0.7rem;
+
+        }
+        .list li {
+            padding:0.8rem 0.5rem;
+            font-size: 0.7rem;
+            background: white;
+            position: relative;
+        }
+        .list li div {
+            flex: 1;
+        }
+        .pull-right {
+            color: #666;
+            font-size: 0.7rem;
+            text-align: right;
+            padding-right: 0.75rem;
+
+        }
+        .my-switch{
+            position: absolute;
+            right: 0.8rem;
+            top:0.6rem;
+        }
+        .text{
+            padding-top:0.5rem;
+            font-size:0.6rem;
+            color:#ccc;
+        }
+        .border-box{
+            border-top:3px solid #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="list">
+        <li class="">
+            <div>新消息提醒</div>
+            <div class="text" v-show="!message">开启后可接受消息提醒</div>
+            <div class="pull-right">
+                <mt-switch class="my-switch" v-model="message"></mt-switch>
+            </div>
+        </li>
+        <div class="aui-padded-l-10 aui-padded-t-5 aui-padded-b-5">
+            提示音
+        </div>
+        <li class="">
+            <div>铃声</div>
+            <div class="text" v-show="!music">通知铃声提醒</div>
+            <div class="pull-right">
+                <mt-switch class="my-switch" v-model="music"></mt-switch>
+            </div>
+        </li>
+        <li class="border-box">
+            <div>振动</div>
+            <div class="pull-right">
+                <mt-switch class="my-switch" v-model="value"></mt-switch>
+            </div>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message:false,    //新消息提醒
+      music:false,     //铃声
+      value:false   //振动
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {}
+  })
+</script>

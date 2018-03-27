@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/class_details.css">
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+    <section>
+        <ul>
+            <li>
+                <span>课时：</span>
+                <span>{{classHour}}</span>
+            </li>
+            <!--<li>-->
+                <!--<span>课节：</span>-->
+                <!--<span>{{Lesson}}</span>-->
+            <!--</li>-->
+            <li>
+                <span>人数：</span>
+                <span>{{personCount}}</span>
+            </li>
+            <li>
+                <span>开课日期：</span>
+                <span>{{startDate}} — {{endDate}}</span>
+            </li>
+            <li>
+                <span>时间段：</span>
+                <span>{{startInterval}} — {{endInterval}}</span>
+            </li>
+            <li><span>提前预约：</span><span>需提前<span
+                    style="padding: 0 10px;">{{reserveDay}}</span>天预约</span></li>
+        </ul>
+    </section>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+
+<script>
+    new FastClick(document.body);
+</script>
+
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            pickerValue: true,
+            startDate: '',
+            endDate: '',
+            classHour: '',
+            Lesson: '',
+            personCount: '',
+            startInterval: '',
+            endInterval: '',
+            reserveDay: '',
+            classlist: [],
+            value: {
+                year: '',
+                mounth: '',
+                day: ''
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.startDate = api.pageParam.startDate; //开课日期 开始
+                app.endDate = api.pageParam.endDate;  // 开课日期 结束
+                app.classHour = api.pageParam.classHour; // 课时
+                app.Lesson = api.pageParam.Lesson; // 课节
+                app.personCount = api.pageParam.personCount; //人数
+                app.startInterval = api.pageParam.startInterval; // 时间段 开始
+                app.endInterval = api.pageParam.endInterval;// 时间段 结束
+                app.reserveDay = api.pageParam.reserveDay;// 预约
+                loadEnd();
+            };
+        }
+
+    })
+</script>
+</html>

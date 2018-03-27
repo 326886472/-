@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../assets/css/css/evaluate_fm.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div id="loadStart"></div>
+    <div class="evaluate">
+        <div class="header">
+            <div class="score">
+                <div class="mark">{{top.overallScore}} / 5</div>
+                <span class="listView-text-score">
+                    <div class="star-sorce">
+                        <i class="iconfont" :class="starClass(i, top.overallScore)" v-for="i in 5"></i>
+                        <span v-if="false"><span class="number">{{top.overallScore}} / 5</span> <span class="score">分</span></span>
+                    </div>
+                 </span>
+            </div>
+            <div class="shu"></div>
+            <div class="shop">
+                <div class="shop-name">{{top.clubName}}</div>
+                <div class="number">
+                    <div class="support">
+                        <i class="iconfont icon-dianzan dianzan"></i>
+                        <div style="margin-left: 7px">支持 <span class="num">{{top.countAgree}}</span></div>
+                    </div>
+                    <div class="support assess">
+                        <i class="iconfont icon-pinglun pinglun"></i>
+                        <div style="margin-left: 7px">评论 <span class="num">{{top.countEvaluate}}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="title_header">
+            <ul class="header_oul">
+                <li class="typeofe" @click="moretype()">&nbsp;&nbsp;&nbsp;全部评价
+                    <i :class="{'rr' : isc}" class="iconfont icon-iconfontxiangxiajiantou"
+                    ></i>
+                </li>
+                <li class="typeofe" @click="moremethods()">&nbsp;星级评分
+                    <i :class="{'rr' : isI}" class="iconfont icon-iconfontxiangxiajiantou"
+                    ></i>
+                </li>
+                <li class="typeofe" @click="morestatic()">&nbsp;&nbsp;&nbsp;评价种类
+                    <i :class="{'rr' : isF}" class="iconfont icon-iconfontxiangxiajiantou"
+                    ></i>
+                </li>
+            </ul>
+            <ul :class="{ 'more_typelist': isA, 'now_typelist': isB }">
+                <li @click="changeFilter(1)" :class="{active: pick === 1}">晒图评价</li>
+                <li @click="changeFilter(2)" :class="{active: pick === 2}">消费评价</li>
+                <li @click="changeFilter(3)" :class="{active: pick === 3}">琴友留言</li>
+            </ul>
+            <ul :class="{ 'more_stars': isG, 'now_stars': isH }">
+                <li @click="changeFilter(4, 5)" :class="{active: pick === 4 && score === 5}">
+                    五星
+                </li>
+                <li @click="changeFilter(4, 4)" :class="{active: pick === 4 && score === 4}">
+                    四星
+                </li>
+                <li @click="changeFilter(4, 3)" :class="{active: pick === 4 && score === 3}">
+                    三星
+                </li>
+                <li @click="changeFilter(4,2)" :class="{active: pick === 4 && score === 2}">
+                    二星
+                </li>
+                <li @click="changeFilter(4, 1)" :class="{active: pick === 4 && score === 1}">
+                    一星
+                </li>
+            </ul>
+            <ul :class="{ 'more_staticlist': isD, 'now_staticlist': isE }">
+                <li @click="changeFilter(5)" :class="{active: pick === 5}">实体琴馆</li>
+                <li @click="changeFilter(6)" :class="{active: pick === 6}">教学课程</li>
+                <li @click="changeFilter(7)" :class="{active: pick === 7}">古琴产品</li>
+            </ul>
+        </div>
+        <div class="list-box">
+            <div class="list" v-for="(item, index) in orderList">
+                <div class="inner-box">
+                    <div class="username">
+                        <div class="left">
+                            <div style="position: relative" class="head-picture">
+                                <img :src="formatImg(item.avatar)"/>
+                                <div class="vsure" v-show="item.isUserAuth==='1'">V认证</div>
+                            </div>
+                            <div class="nickname">
+                                <div class="xinxi">
+                                    {{item.nickname}}<i class="iconfont icon-huiyuan" v-show="item.level === '1'"></i>
+                                </div>
+                                <span class="listView-text-score">
+                                    <div class="star-sorce">
+                                        <i class="iconfont" :class="starClass(i, item.overallScore)" v-for="i in 5"></i>
+                                        <span v-if="false"><span class="number">{{item.overallScore}} / 5</span> <span class="score">分</span></span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="date" style="color:#8d8d8d">{{item.evaluateTime | dateFormat}}</div>
+                            <div class="dianzan">
+                                <i class="iconfont icon-dianzan"></i>
+                                <div style="color:#8d8d8d">{{item.countAgreeEvaluate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <div class="text">
+                            <div class="content">
+                                {{item.content}}
+                            </div>
+                            <!--<span>......</span>-->
+                        </div>
+                        <!--<div class="full-text">全文</div>-->
+                        <!--<div class="pack">收起</div>-->
+                        <div class="image">
+                            <div class="flex-img" v-for="(img, imgIndex) in item.images">
+                                <img :src="formatImg(img)" @click="openPhoto(index, imgIndex)"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button">
+                        <div class="goods-type">
+                            <!--<div>桐木 </div>-->
+                            <div class="buy-date" style="color:#8d8d8d">购买日期：{{item.buyTime | dateFormat}}</div>
+                        </div>
+                        <div class="reply-complain">
+                            <div class="reply" @click="replyShow(index)" v-show="item.replyContent.length == 0">
+                                <i class="iconfont icon-shangjiahuifu"></i>
+                                <div style="font-size: 12px;color:#8d8d8d">商家回复</div>
+                            </div>
+                            <div class="complain">
+                                <i class="iconfont icon-tousu"></i>
+                                <div style="font-size: 12px;color:#8d8d8d"
+                                     @click="complain(item.id, item.evaluateType)">申诉
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="replay-input clearfix" v-show="item.replyShow">
+                        <textarea v-model="item.replay"></textarea>
+                        <mt-button @click="clubReplyUserEvaluate(index)">回复</mt-button>
+                    </div>
+                    <div class="seller-reply" v-for="replay in item.replyContent">
+                        <div class="seller-name">
+                            <i class="iconfont icon-shangjiahuifu"></i>
+                            商家回复：<span class="reply-content">{{replay.replyContent}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pull-up" v-show="orderList.length != 0">
+                <span v-show="!loadAll">-------------- 上拉加载 --------------</span>
+                <span v-show="loadAll">-------------- 已加载全部 --------------</span>
+            </div>
+            <div class="list none" v-show="orderList.length == 0">
+                暂无评价
+            </div>
+            <div class="modal" v-show="isB || isH || isE"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            token: getToken(),
+            clubId: '',
+            isA: true,
+            isB: false,
+            isc: false,
+            isD: true,
+            isE: false,
+            isF: false,
+            isG: true,
+            isH: false,
+            isI: false,
+            orderList: [],
+            evaFilter: [
+                {label: '晒图评价', value: 1},
+                {label: '消费评价', value: 2},
+                {label: '琴友评价', value: 3}
+            ],
+            pick: '',
+            score: '',
+            top: {
+                overallScore: '0.0',
+                clubName: '',
+                countAgree: 0,
+                countEvaluate: 0
+            },
+            first: true,
+            loadAll: false,
+            page: 1
+        },
+        filters: {
+            dateFormat(date) {
+                if (date) {
+                    return date.substr(0, 10);
+                } else {
+                    return '';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.UILoading = api.require('UILoading');
+                app.clubId = api.pageParam.clubId;
+                app.appGetOrderListByUser(function() {
+                    loadEnd();
+                });
+                refresh(function() {
+                    app.first = true;
+                    app.loadAll = false;
+                    app.page = 1;
+                    app.appGetOrderListByUser(function () {
+                        refreshDone();
+                    });
+                });
+                api.addEventListener({
+                    name: 'complainSucc'
+                }, function () {
+                    toastMsg('申诉成功');
+                });
+
+                api.addEventListener({
+                    name: 'scrolltobottom',
+                    extra: {
+                        threshold: 10
+                    }
+                },function () {
+                    app.appGetOrderListByUser();
+                });
+            };
+
+        },
+        methods: {
+            starClass(index, score) {
+                var score = parseFloat(score);
+                if (score % 1 === 0) {
+                    if (index <= score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                } else {
+                    if (score - index < 0 && score - index > -1) {
+                        return 'icon-yibanxingxing1';
+                    } else if (index < score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                }
+            },
+            openPhoto(index, img) {
+                var images = app.orderList[index].images;
+                for (var i = 0; i < images.length; i++) {
+                    images[i] = formatImg(images[i]);
+                }
+
+                var photoBrowser = api.require('photoBrowser');
+                photoBrowser.open({
+                    images: images,
+                    activeIndex: img,
+                    bgColor: '#000'
+                }, function (ret, err) {
+                    if (ret.eventType == 'click') {
+                        photoBrowser.close();
+                    }
+                });
+            },
+            changeFilter(pick, score) {
+
+                app.first = true;
+                app.loadAll = false;
+                app.page = 1;
+
+                app.pick = pick;
+                if (app.pick === 4) {
+                    app.score = score;
+                } else {
+                    app.score = '';
+                }
+                switch (app.pick) {
+                    case 1:
+                    case 2:
+                    case 3:
+                        app.moretype();
+                        break;
+                    case 4:
+                        app.moremethods();
+                        break;
+                    case 5:
+                    case 6:
+                    case 7:
+                        app.morestatic();
+                        break;
+                }
+
+                app.appGetOrderListByUser();
+            },
+            appGetOrderListByUser(callback) {
+                if (!app.loadAll) {
+                    app.UILoading.keyFrame({
+                        rect: {
+                            w: 80,
+                            h: 100
+                        },
+                        styles: {
+                            bg: 'rgba(0,0,0,0.5)',
+                            corner: 5,
+                            interval: 50,
+                            frame:{
+                                w: 80,
+                                h: 80
+                            }
+                        }
+                    });
+                    var post = {
+                        cmd: 'appGetOrderListByUser',
+                        token: app.token,
+                        clubId: app.clubId,
+                        page: app.page
+                    };
+
+                    if (app.pick) {
+                        post.pick = app.pick;
+                        if (app.pick === 4) {
+                            post.score = app.score;
+                        }
+                    }
+
+                    sendAjax(this, post,function (res) {
+                        app.UILoading.closeKeyFrame();
+                        app.top = res.data.top;
+                        app.orderListFormat(res.data.proList);
+
+                        if (app.first) {
+                            if (res.data.proList.length != 0) {
+                                app.orderList = res.data.proList;
+                            } else {
+                                app.orderList = [];
+                                app.loadAll = true;
+                            }
+                            app.first = false;
+                        } else {
+                            if (res.data.proList.length != 0) {
+                                app.orderList = app.orderList.concat(res.data.proList);
+                            } else {
+                                app.loadAll = true;
+                            }
+                        }
+                        app.page++;
+
+                        if (callback) {
+                            callback();
+                        }
+                    });
+                }
+            },
+            orderListFormat(orderList) {
+                for (var i = 0; i < orderList.length; i++) {
+                    if (orderList[i].images) {
+                        orderList[i].images = orderList[i].images.split(',');
+                    } else {
+                        orderList[i].images = [];
+                    }
+
+                    orderList[i].replyShow = false;
+
+                    orderList.replay = '';
+                }
+            },
+            moretype() {
+                if (app.isA) {
+                    app.isA = false;
+                    app.isB = true;
+                    app.isc = true;
+                    app.mobuile = true;
+                    if (app.isE) {
+                        app.morestatic();
+                        app.mobuile = true;
+                    } else if (app.isH) {
+                        app.moremethods();
+                        app.mobuile = true;
+                    }
+                }
+                else if (app.isB) {
+                    app.isA = true;
+                    app.isB = false;
+                    app.isc = false;
+                    app.mobuile = false;
+                }
+            },//点击出下拉菜单方法A
+            morestatic() {
+                if (app.isD) {
+                    app.isD = false;
+                    app.isE = true;
+                    app.isF = true;
+                    app.mobuile = true;
+                    if (app.isB) {
+                        app.moretype();
+                        app.mobuile = true;
+                    } else if (app.isH) {
+                        app.moremethods();
+                        app.mobuile = true;
+                    }
+
+                }
+                else if (app.isE) {
+                    app.isD = true;
+                    app.isE = false;
+                    app.isF = false;
+                    app.mobuile = false;
+                }
+            },//点击出下拉菜单方法B
+            moremethods() {
+                if (app.isG) {
+                    app.isG = false;
+                    app.isI = true;
+                    app.isH = true;
+                    app.mobuile = true;
+                    if (app.isB) {
+                        app.moretype();
+                        app.mobuile = true;
+                    }
+                    else if (app.isE) {
+                        app.morestatic();
+                        app.mobuile = true;
+                    }
+                }
+                else if (app.isH) {
+                    app.isG = true;
+                    app.isH = false;
+                    app.isI = false;
+                    app.mobuile = false;
+                }
+            },//点击出下拉菜单方法C
+            replyShow(params) {
+                var order = app.orderList[params];
+                order.replyShow = !order.replyShow;
+            },
+            complain(id, evaluateType) {
+                openView('complain', 'member/myPavilion/evaluate/complain', '申诉', false, false, {
+                    id: id,
+                    evaluateType: evaluateType,
+                    clubId: app.clubId
+                });
+
+            },
+            clubReplyUserEvaluate(params) {
+                var reply = app.orderList[params];
+
+                if (!trim(reply.replay)) {
+                    Toast('内容不能为空');
+                } else {
+                    var post = {
+                        cmd: 'clubReplyUserEvaluate',
+                        token: app.token,
+                        clubId: app.clubId,
+                        cate: reply.evaluateType,
+                        evaluateId: reply.id,
+                        content: reply.replay
+                    };
+
+                    sendAjax(this, post, function (res) {
+                        reply.replyShow = false;
+                        reply.replyContent.push({replyContent: reply.replay});
+                    });
+                }
+            }
+        }
+    });
+</script>

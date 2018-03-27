@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+            background: #f0f0f0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+        }
+
+        #app {
+            height: 100%;
+        }
+        .headernav{
+            width: 100%;
+            background: white;
+        }
+        .changbox{
+            flex: 1;
+            text-align: center;
+            font-size: 14px;
+            color:#585858;
+            line-height: 2rem;
+        }
+        .beforeclass{
+            border-bottom: 2px solid #ab9277;
+            color: #ab9277;
+        }
+
+        .rightbox p{
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .backfroundimg{
+            width: 100%;
+            height: 35%;
+            margin-top: 0.5rem;
+            background-size: 100% 100%;
+        }
+        .backfroundimg p {
+            text-align: center;
+            line-height: 2rem;
+            color: white;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div id="loadStart"></div>
+    <div class="headernav">
+        <div style="width: 95%;margin: 0 auto;height: 2rem;display: flex">
+            <div class="changbox" v-for="(item,index) in sonCates" :class="{beforeclass:changeindex==index}" @click="change(index)">
+                {{item.cateName}}
+            </div>
+        </div>
+    </div>
+
+    <div class="backfroundimg" :style="{'background-image':'url(' + formatImg(item.cover) + ')'}" v-for="(item,index) in peoplelist" @click="videodetails(index)">
+        <p>{{item.title}}</p>
+        <p>{{item.desc}} / {{item.editTime}}</p>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            changeindex:0,
+            textlist:[
+                {
+                    name:'入门'
+                },
+                {
+                    name:'精修'
+                },
+                {
+                    name:'名家视频'
+                },
+                {
+                    name:'普通视频'
+                }
+            ],
+            oimglist:[
+                {
+                    src:'../../../assets/images/video.png',
+                    text:'古法指教学课程、领略古琴文化',
+                    datatime:'#/古琴教学/12"15'
+                },
+                {
+                    src:'../../../assets/images/video.png',
+                    text:'古法指教学课程、领略古琴文化',
+                    datatime:'#/古琴教学/12"15'
+                },
+                {
+                    src:'../../../assets/images/video.png',
+                    text:'古法指教学课程、领略古琴文化',
+                    datatime:'#/古琴教学/12"15'
+                },
+                {
+                    src:'../../../assets/images/video.png',
+                    text:'古法指教学课程、领略古琴文化',
+                    datatime:'#/古琴教学/12"15'
+                },
+                {
+                    src:'../../../assets/images/video.png',
+                    text:'古法指教学课程、领略古琴文化',
+                    datatime:'#/古琴教学/12"15'
+                },
+                {
+                    src:'../../../assets/images/video.png',
+                    text:'古法指教学课程、领略古琴文化',
+                    datatime:'#/古琴教学/12"15'
+                }
+            ],
+            sonCates:[],
+            peoplelist:[],
+            countnum:0
+        },
+        filters: {},
+      watch:{
+        'countnum':function(value){
+          if(value==1){
+            loadEnd()
+          }
+        }
+      },
+        created: function () {
+            apiready = function () {
+                app.sonCates = api.pageParam.sonCates;
+                app.cateName = api.pageParam.sonCates.cateName;
+                app.firstLevelCateId = api.pageParam.firstLevelCateId;
+                app.getCulList(api.pageParam.sonCates[0].cateId);
+            };
+        },
+        methods: {
+            change:function(index) {
+                app.changeindex = index;
+                app.getCulList(app.sonCates[index].cateId);
+            },
+            videodetails:function(index) {
+                api.openWin({
+                    name: 'videodetails_win',
+                    url: '../video/videodetails_win.html',
+                    pageParam: {
+                        articleid:app.peoplelist[index].id,
+                        cateid:app.sonCates[app.changeindex].cateId
+                    }
+                });
+            },
+            getCulList:function(cateId){
+                var post = {
+                    cmd: 'getCulList',
+                    cateId:cateId
+                };
+                sendAjax(this, post, function (res) {
+                    app.peoplelist = res.data.proList;
+                  toastMsg(JSON.stringify(res.data));
+                    console.log(app.peoplelist);
+                    app.laber()
+                });
+            },
+          laber:function(){
+              app.countnum++
+          }
+        }
+    })
+</script>

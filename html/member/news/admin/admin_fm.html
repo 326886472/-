@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    .icon {
+      padding: 0.2rem;
+      border-radius: 0.2rem;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .icon-xt {
+      background: #77B4FD
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .content li {
+      position: relative;
+    }
+
+    .content-item {
+      background: white;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+    }
+
+    .content-right {
+      flex-shrink: 0;
+      width: 90%;
+      padding-left: 0.5rem;
+      display: flex;
+      align-content: center;
+      justify-content: space-between;
+    }
+
+    .content-right span {
+      text-align: center;
+      flex: 1;
+    }
+
+    .content-bottom {
+      min-height: 4rem;
+      background: white;
+      padding: 0.5rem 1rem;
+    }
+
+    /*未读消息红点*/
+    .label-box {
+      width: 0.3rem;
+      height: 0.3rem;
+      border-radius: 50%;
+      background: red;
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      z-index: 10;
+    }
+
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: #8d8d8d;
+    }
+
+    .bottomdiv span {
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="loadStart"></div>
+  <ul class="content aui-margin-t-10">
+    <li class="aui-margin-t-5" v-for="item in proList" @click="openNewsInfo(item.id)">
+      <span class="label-box" v-show="item.isRead === '0'"></span>
+      <div class="content-item">
+        <div>
+          <svg class="icon icon-xt" aria-hidden="true">
+            <use xlink:href="#icon-xitongtongzhi"></use>
+          </svg>
+        </div>
+        <div class="content-right">
+          <span style="text-align: left;">{{item.title}}</span>
+          <span>{{item.addTime}}</span>
+        </div>
+      </div>
+      <div class="content-bottom aui-ellipsis-2">
+        {{item.content}}
+      </div>
+    </li>
+    <!--<li class="aui-margin-t-5">-->
+
+    <!--<div class="content-item">-->
+    <!--<div>-->
+    <!--<svg class="icon icon-xt" aria-hidden="true">-->
+    <!--<use xlink:href="#icon-xitongtongzhi"></use>-->
+    <!--</svg>-->
+    <!--</div>-->
+    <!--<div class="content-right">-->
+    <!--<span>琴馆审核琴馆审核琴馆审核琴馆审核</span>-->
+    <!--<span>2017-3-12 09:30:20</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="content-bottom">-->
+    <!--您上传的琴馆已通过审核,请登录商户版查看-->
+    <!--</div>-->
+    <!--</li>-->
+  </ul>
+  <div class="bottomdiv">
+    <span v-if="rote">---上拉加载---</span>
+    <i v-if="load" class="iconfont publicfont icon-jiazai"></i>
+    <span v-if="overlate">已无更多</span>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      sonTypeId: '',
+      proList: [],
+      rote: true,
+      load: false,
+      overlate: false,
+      page: 1
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.sonTypeId = api.pageParam.sonTypeId;
+        app.uappGetSystemNotify(function () {
+          loadEnd();
+        });
+
+        refresh(function () {
+          app.pageReset();
+          app.uappGetSystemNotify(function () {
+            refreshDone();
+          });
+        });
+
+        api.addEventListener({
+          name: 'NotifyOk'
+        }, function (ret, err) {
+          app.pageReset();
+          app.uappGetSystemNotify();
+        });
+
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+        }, function (ret, err) {
+          if (!app.load) {
+            app.load = true;
+            app.rote = false;
+            app.overlate = false;
+
+            if (app.page <= app.totalPage) {
+              app.uappGetSystemNotify(function () {
+                app.load = false;
+                app.rote = true;
+              });
+            } else {
+              app.load = false;
+              app.rote = false;
+              app.overlate = true;
+            }
+          }
+        });
+      };
+    },
+    methods: {
+      pageReset: function () {
+        app.proList = [];
+        app.rote = true;
+        app.load = false;
+        app.overlate = false;
+        app.page = 1;
+      },
+      // 获取消息列表
+      uappGetSystemNotify: function (callback) {
+        var post = {
+          cmd: 'uappGetSystemNotify',
+          token: getToken(),
+          typeId: '2',
+          sonTypeId: app.sonTypeId,
+          page: app.page
+        };
+        sendAjax(this, post, function (res) {
+          notifyTitleSub(res.data.proList);
+
+          if (app.proList.length == 0) {
+            app.proList = res.data.proList;
+          } else {
+            app.proList = app.proList.concat(res.data.proList);
+          }
+          app.totalPage = res.data.totalPage;
+          app.page++;
+
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      openNewsInfo: function (id) {
+        openView('newsInfo', 'member/news/newsInfo/newsInfo_fm', '系统通知', false, false, {
+          sonTypeId: app.sonTypeId,
+          messId: id
+        })
+      }
+    }
+  })
+</script>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>产品认证</title>
+    <link rel="stylesheet" href="../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        html, body {
+            width: 100%;
+            background: #f0f0f0;
+        }
+
+        .flex-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .content-top {
+            font-size: 0.7rem;
+            background: white;
+            text-align: center;
+            padding-bottom: 0.5rem;
+        }
+
+        .content-top-center {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .content-top-right span {
+            border: 1px solid #ccc;
+            padding: 0.2rem 0.3rem;
+            border-radius: 0.5rem;
+        }
+
+        .content-top-right span:active {
+            color: #AB9277;
+        }
+
+        .border-box {
+            border: 2px solid #ccc;
+        }
+
+        .message-box {
+            padding: 0.5rem 0;
+            margin: 5% auto 0 auto;
+            width: 70%;
+            position: relative;
+            color: #666;
+            font-size: 0.6rem;
+        }
+
+        .text-box {
+            width: 45%;
+            background: white;
+            position: absolute;
+            top: -9%;
+            left: 27.5%;
+            font-size: 0.8rem;
+            color: black;
+        }
+
+        .message-box p {
+            padding-bottom: 0.2rem;
+        }
+
+        /*认证古琴享特权*/
+        .icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .content-bottom {
+            text-align: center;
+            background: white;
+            padding-bottom: 2rem;
+        }
+
+        .content-bottom h5 {
+            color: black;
+            padding: 0.5rem 0 1rem 0;
+            border-top: 5px solid #f0f0f0;
+        }
+
+        .content-bottom .list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-bottom .list li {
+            background: #f0f0f0;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            width: 49%;
+            padding: 1rem 0;
+        }
+
+        .list-item-content div {
+            text-align: left;
+            font-weight: 800;
+            color: black;
+        }
+
+        .list-item-content span {
+            font-size: 0.6rem;
+        }
+
+        .btn-box {
+            margin: 0.5rem auto 2rem auto;
+            padding: 0.3rem 0;
+            width: 50%;
+            border: 1px solid #ccc;
+            border-radius: 0.7rem;
+            font-size: 0.7rem;
+            color: #666;
+            text-align: center;
+        }
+
+        /*自主认证按钮*/
+        .self-box {
+            position: absolute;
+            bottom: 10%;
+            left: 25%;
+            padding: 0.3rem 0;
+            width: 50%;
+            border: 1px solid #ccc;
+            border-radius: 0.7rem;
+            font-size: 0.7rem;
+            color: #666;
+            text-align: center;
+        }
+
+        .btn-box:active, .self-box:active {
+            background: gainsboro;
+        }
+
+        .new-list li:nth-child(2n+1) {
+            background: #f0f0f0;
+        }
+
+        .new-list li:nth-child(2n) {
+            background: white;
+        }
+
+        /*查询列表开始*/
+        .content {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        /*公共样式*/
+        .padding-box {
+            padding: 0 1rem;
+        }
+
+        /*头*/
+        .order-top-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /*中间*/
+        .order-content-box {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .img-box img {
+            width: 4rem;
+            height: 4rem;
+            margin-right: 0.5rem;
+            border-top-left-radius: 0.3rem;
+            border-bottom-left-radius: 0.3rem;
+        }
+
+        .content-center-box {
+            width: 52%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-around;
+        }
+
+        .content-center-box h6 {
+            font-weight: 100;
+            color: black;
+            font-size: 0.7rem;
+        }
+
+        .content-center-box span {
+            padding-left: 0.4rem;
+            font-size: 0.6rem;
+        }
+
+        /*价格*/
+        .price-box {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        /*未通过*/
+        .order-middle-box-copy {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .order-middle-box-copy div {
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #666;
+            margin-right: 1rem;
+            color: black;
+        }
+
+        .order-middle-box-copy div:active {
+            background: gainsboro;
+        }
+
+        /*意向购买*/
+        .popup-box {
+            width: 96%;
+            padding: 2%;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        .popup-box ul li {
+            display: flex;
+            align-items: center;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .name-box {
+            text-align: center;
+            flex-shrink: 0;
+            padding: 0 1rem;
+        }
+
+        .Prompt-box {
+            width: 100%;
+            text-align: left;
+            margin: 0.5rem 0 0.2rem 1rem;
+            color: #F8AEA6;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+        }
+
+        .sure-btn {
+            border: 1px solid #ccc;
+            padding: 0.5rem 2rem;
+            border-radius: 1rem;
+        }
+
+        .sure-btn:active {
+            background: gainsboro;
+        }
+
+        /*底部上拉加载更多样式*/
+        .bottomdiv {
+            width: 100%;
+            height: 2rem;
+            text-align: center;
+            line-height: 2rem;
+            background: #f0f0f0;
+            color: black;
+        }
+
+        .uptext {
+            color: #bfbfbf;
+            font-size: 13px;
+        }
+
+        .publicfont {
+            width: 1rem;
+            height: 1rem;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="content-top aui-margin-t-5">
+        <div class="flex-box" style="padding:0.25rem;">
+            <div class="content-top-left aui-col-xs-3">认证查询</div>
+            <div class="content-top-center aui-col-xs-6">
+                <input type="text" placeholder="请输入查询内容" v-model="searchBox">
+            </div>
+            <div class="content-top-right aui-col-xs-3" @click="searchQinWithNum()">
+                <span>查询</span>
+            </div>
+        </div>
+        <!--查询条件-->
+        <div class="message-box border-box" v-show="showResult == 0">
+            <div class="text-box">认证查询条件</div>
+            <p class="aui-padded-t-10">快用"认证查询"一探究竟</p>
+            <p>品牌,价格,材质,年份,级别,款式,归属等一目了然</p>
+            <p>亦支持琴友已购的认证古琴查询</p>
+            <p>满足您对古琴的喜好追求</p>
+            <p>让你的选琴之路便捷,方便</p>
+        </div>
+        <!--未找到-->
+        <div class="message-box" v-show="showResult == 2">
+            <div class="aui-padded-b-15">查询结果</div>
+            <p>抱歉,您查找的内容,未能找到</p>
+            <p>建议您采取自主认证</p>
+            <p>为您的爱琴获得更多的服务</p>
+        </div>
+    </div>
+    <!--默认显示-->
+    <div class="content-bottom" v-show="showResult == 0">
+        <h5>认证古琴享特权</h5>
+        <ul class="list">
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-zhongshenbaohuan"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>终生包换</div>
+                    <span>终生提供包换服务</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-zhongshenbaoxiu"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>终生保修</div>
+                    <span>终生提供保修服务</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-chuzuzhuanrang"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>出租转让</div>
+                    <span>提供出租转让服务</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-baozhizhihuan"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>保值置换</div>
+                    <span>终生提供保值置换</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-shenfenbiaoshinet"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>身份标识</div>
+                    <span>提供身份标识服务</span>
+                </div>
+            </li>
+            <li class="list-item">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-huiyuanquanyi"></use>
+                </svg>
+                <div class="list-item-content">
+                    <div>会员权益</div>
+                    <span>提供会员权益服务</span>
+                </div>
+            </li>
+        </ul>
+        <div class="btn-box" @click="openMessage">立即认证</div>
+    </div>
+    <!--查询列表-->
+    <ul class="new-list" v-show="proList.length > 0">
+        <li v-for="item in proList">
+            <div class="content">
+                <!--头-->
+                <div class="order-top-box aui-padded-t-10 padding-box aui-padded-b-5">
+                    <div>来源：{{item.clubName}}</div>
+                    <div>编号：{{item.qinSn}}</div>
+                </div>
+                <!--中间-->
+                <div class="order-content-box padding-box">
+                    <div class="img-box">
+                        <img :src="formatImg(item.qinPic)" alt="" class="img">
+                    </div>
+                    <div class="content-center-box">
+                        <h6>{{item.qinName}}</h6>
+                        <span>品牌：{{item.clubName}}</span>
+                        <!--<span>款式:神农氏</span>-->
+                        <!--<span>材质:杉木</span>-->
+                    </div>
+                    <!--价格-->
+                    <div class="price-box">
+                        <span>{{item.price}}元</span>
+                    </div>
+                </div>
+                <!--底部-->
+                <div class="order-middle-box-copy padding-box aui-padded-t-10 aui-padded-b-10">
+                    <div @click="preQinWantToBuy(item.qinId)" v-show="item.isLease == '0'">意向购买
+                    </div>
+                    <div @click="openBiangeng(item.qinId, item.qinSn, item.qinName, item.price, item.clubId)">变更认证</div>
+                </div>
+            </div>
+        </li>
+        <!--<li>-->
+        <!--<div class="content">-->
+        <!--&lt;!&ndash;头&ndash;&gt;-->
+        <!--<div class="order-top-box aui-padded-t-10 padding-box aui-padded-b-5">-->
+        <!--<div>来源:雅风国乐古琴店</div>-->
+        <!--<div>编号:Als25223</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;中间&ndash;&gt;-->
+        <!--<div class="order-content-box padding-box">-->
+        <!--<div class="img-box">-->
+        <!--<img src="../../assets/images/min_01.png" alt="" class="img">-->
+        <!--</div>-->
+        <!--<div class="content-center-box">-->
+        <!--<h6>【上善若水】正麟古琴店</h6>-->
+        <!--<span>品牌:雅风国乐古琴馆</span>-->
+        <!--<span>款式:神农氏</span>-->
+        <!--<span>材质:杉木</span>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;价格&ndash;&gt;-->
+        <!--<div class="price-box">-->
+        <!--<span>3280.00元</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;底部&ndash;&gt;-->
+        <!--<div class="order-middle-box-copy padding-box aui-padded-t-10 aui-padded-b-10">-->
+        <!--<div>意向购买</div>-->
+        <!--<div>变更认证</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</li>-->
+    </ul>
+    <!--<div class="self-box" v-show="false" @click="openMessage">自主认证</div>-->
+    <mt-popup class="popup-box"
+              v-model="popupVisible"
+              position="bottom">
+        <ul>
+            <span class="aui-margin-b-15">填写信息</span>
+            <li>
+                <div class="name-box">姓　名</div>
+                <div>
+                    <input type="text" placeholder="请输入姓名" v-model="buyer"/>
+                </div>
+            </li>
+            <li>
+                <div class="name-box">手机号</div>
+                <div>
+                    <input type="tel" placeholder="请输入手机号" v-model="mobile"/>
+                </div>
+            </li>
+            <div class="Prompt-box">*此消息仅此琴所有人可见</div>
+        </ul>
+        <button class="sure-btn" @click="qinWantToBuy()">确认</button>
+    </mt-popup>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      searchBox: '',
+      proList: [],
+      formatImg: formatImg,
+      page: 1,
+      perPage: 50,   // 查询条数写死
+      popupVisible: false,  //意向购买
+      buyer: '',
+      mobile: '',
+      showResult: 0,  // 0: 未查询, 1: 有结果, 2: 无结果
+      buyId: ''  // 点击意向购买时，把选择的琴的 qinId 临时存放到这个变量中
+    },
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+      // 用户查询古琴
+      searchQinWithNum: function () {
+        isLogined(this, function (logined) {
+          if (logined) {
+            if (app.searchBox) {
+              var post = {
+                cmd: 'searchQinWithNum',
+                token: getToken(),
+                searchBox: app.searchBox,
+                page: app.page,
+                perPage: app.perPage
+              };
+              sendAjax(app, post, function (res) {
+                if (res.data.proList.length == 0) {
+                  app.showResult = 2;
+                } else {
+                  app.showResult = 1;
+                  app.proList = res.data.proList;
+                }
+              });
+            } else {
+              toastMsg('请输入查询内容')
+            }
+          } else {
+            openLogin();
+          }
+        });
+      },
+      preQinWantToBuy: function (qinId) {
+        this.popupVisible = true;
+        this.buyId = qinId;
+      },
+      // 意向购买
+      qinWantToBuy: function () {
+        var post = {
+          cmd: 'qinWantToBuy',
+          buyer: app.buyer,
+          mobile: app.mobile,
+          qinId: this.buyId
+        };
+        sendAjax(this, post, function () {
+          app.popupVisible = false;
+          toastMsg('购买申请提交成功');
+        });
+      },
+      // 立即认证
+      openMessage: function () {
+        isLogined(this, function (logined) {
+          if (logined) {
+            openView('message', 'qinAuth/message/message_fm', '立即认证');
+          } else {
+            openLogin();
+          }
+        });
+      },
+      // 变更认证
+      openBiangeng: function (qinId, qinSn, qinName, price, clubId) {
+        var qinInfo = {
+          qinId: qinId,
+          qinSn: qinSn,
+          qinName: qinName,
+          price: price,
+          clubId: clubId
+        };
+        openView('bianGeng', 'qinAuth/bianGeng/bianGeng_fm', '变更认证', false, false, {
+          qinInfo: qinInfo
+        });
+      }
+    }
+  })
+</script>

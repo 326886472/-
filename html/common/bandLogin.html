@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+    }
+
+    #header {
+      border-bottom: 1px solid #ccc;
+    }
+
+    .content {
+      padding: 10% 5% 0 5%;
+      font-size: 0.7rem;
+    }
+
+    .my-color {
+      color: #666;
+    }
+
+    .my-font {
+      font-size: 0.6rem;
+    }
+
+    /*头像*/
+    .img-box {
+      width: 3rem;
+      height: 3rem;
+      margin: 0 auto;
+      border-radius: 50%;
+    }
+
+    .img-box img {
+      width: 100%;
+      height: 100%;
+    }
+
+    /*登录框*/
+    .login-box {
+      margin-top: 10%;
+    }
+
+    .input-box {
+      display: flex;
+      font-size: 0.7rem;
+      color: #666;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .input-box input {
+      padding-left: 0.3rem;
+      font-size: 0.7rem;
+    }
+
+    .code {
+      text-align: center;
+      padding: 0.3rem 0.3rem;
+      border-radius: 0.5rem;
+      border: 1px solid #666;
+    }
+
+    .code:active {
+      background: gainsboro;
+    }
+
+    .btn-box {
+      margin-top: 20%;
+      width: 100%;
+      text-align: center;
+    }
+
+    .btn-box button {
+      width: 70%;
+      border: 1px solid #666;
+      border-radius: 0.7rem;
+      padding: 0.5rem 0;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .btn-box button:active {
+      background: gainsboro;
+    }
+
+    .btn-box div {
+      padding-top: 0.7rem;
+      font-size: 0.7rem;
+      color: #737373;
+      text-decoration: underline
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <!--绑定登录-->
+  <div class="content">
+    <div class="img-box">
+      <img :src="formatImg(avatar, true)" alt="">
+    </div>
+    <div class="aui-margin-t-15">亲爱的微信用户: {{nickname}}</div>
+    <div class="aui-margin-t-5 my-color">为了给您更好的服务,请您绑定手机号登录</div>
+    <div class="login-box">
+      <div class="input-box">
+        <div class="aui-col-xs-2 center">
+          <i class="iconfont icon-huiyuan"></i>
+        </div>
+        <input type="tel" placeholder="请输入手机号" class="aui-col-xs-8" v-model="mobile"/>
+        <div class="aui-col-xs-2 center">
+          <i class="iconfont icon-weitongguo" v-show="mobile != '' " @click="mobile = ''"></i>
+        </div>
+      </div>
+      <div class="input-box">
+        <div class="aui-col-xs-2 center">
+          <i class="iconfont icon-mima"></i>
+        </div>
+        <input type="tel" placeholder="请输入验证码" class="aui-col-xs-5" v-model="code">
+        <button class="aui-col-xs-3 code" :disabled="onCount" @click="sendSms">{{sendText}}</button>
+      </div>
+      <div class="my-color my-font aui-padded-t-5">绑定后,您的微信账号和正麟账号都可以登录</div>
+      <div class="btn-box">
+        <button @click="bindWeChat()">确认登录</button>
+        <!--<div class="have" @click="openReg()">没有账号，立即注册</div>-->
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      mobile: '',
+      code: '',
+      onCount: false,
+      countTime: 60,
+      sendText: "获取验证码",
+      unionid: '',
+      nickname: '',
+      avatar: '',
+      access_token: '',
+      openid: '',
+      sex: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+        app.unionid = api.pageParam.unionid;
+        app.access_token = api.pageParam.access_token;
+        app.openid = api.pageParam.openid;
+        app.nickname = api.pageParam.nickname;
+        app.avatar = api.pageParam.avatar;
+        app.sex = api.pageParam.sex;
+      };
+    },
+    methods: {
+      openReg: function () {
+        openView('reg', 'common/reg', '绑定注册', false, false, {
+          fromBind: true,
+          unionid: app.unionid
+        });
+      },
+      // 发送验证码
+      sendSms: function () {
+        if (!app.mobile) {
+          toastMsg('请输入手机号');
+        } else if (!mobileReg.test(app.mobile)) {
+          toastMsg('请输入正确的手机号');
+        } else {
+          var post = {
+            cmd: 'sendSms',
+            mobile: app.mobile,
+            type: 3  // 身份验证
+          };
+          sendAjax(this, post, function (res) {
+            app.onCount = true;
+            app.countDownFn();
+          });
+        }
+      },
+      // 倒计时
+      countDownFn: function () {
+        app.sendText = app.countTime + "s后重试";
+        var countDown = setInterval(function () {
+          if (app.countTime > 1) {
+            app.onCount = true;
+            app.countTime--;
+            app.sendText = app.countTime + "s后重试";
+          } else {
+            app.onCount = false;
+            app.sendText = '获取验证码';
+            app.countTime = 60;
+            clearInterval(countDown);
+          }
+        }, 1000);
+      },
+      checkPost: function (callback) {
+        if (!app.mobile) {
+          toastMsg('请输入手机号');
+        } else if (!mobileReg.test(app.mobile)) {
+          toastMsg('请输入正确的手机号');
+        } else if (!app.code) {
+          toastMsg('请输入验证码');
+        } else {
+          callback();
+        }
+      },
+      bindWeChat: function () {
+        MINT.Indicator.open();
+
+        app.checkPost(function () {
+          var post = {
+            cmd: 'bindWeChat',
+            mobile: app.mobile,
+            unionid: app.unionid,
+            newCode: app.code,
+            app: 1
+          };
+
+          sendAjax(app, post, function () {
+            app.uappWXLogin(function () {
+              MINT.Indicator.close();
+            });
+          });
+        });
+      },
+      uappWXLogin: function (callback) {
+        var post = {
+          cmd: 'uappWXLogin',
+          unionid: app.unionid,
+          access_token: app.access_token,
+          openid: app.openid
+        };
+
+        sendAjax(app, post, function (res) {
+          // 按理说 status 肯定会返回1
+          if (res.data.status == 1) {
+            $api.setStorage('token', res.data.token);
+            $api.setStorage('mobile', res.data.info.mobile);
+
+            if (api.pageParam.fromLaunch) {
+              api.openWin({
+                name: 'root',
+                url: '../index/index/index_win.html'
+              });
+            } else {
+              api.closeToWin({
+                name: 'index_win'
+              });
+            }
+          }
+
+          if (callback) {
+            callback();
+          }
+        })
+      }
+    }
+  })
+</script>

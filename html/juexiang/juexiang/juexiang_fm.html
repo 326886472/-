@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    /*广告图*/
+    .adpic {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .adpic img {
+      width: 100%;
+    }
+
+    /*商品*/
+    .shangpin {
+      width: 100%;
+      background-color: #fff;
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .left-img {
+      width: 90px;
+      height: 90px;
+    }
+
+    .left-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .right-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding-left: 10px;
+    }
+
+    .right-content h4 {
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .surplus {
+      padding: 5px 0;
+      font-size: 10px;
+      color: #8d8d8d;
+    }
+
+    .price {
+      color: #FF6000;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .right-content button {
+      position: absolute;
+      right: 5px;
+      bottom: 0;
+      font-size: 14px;
+      color: #fff;
+      height: 23px;
+      padding: 5px 10px;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .jieshi {
+      height: 50px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .jieshi hr {
+      width: 45px;
+      height: 1px;
+      background-color: #8D8D8D;
+    }
+
+    .jieshi span {
+      font-size: 10px;
+      color: #8d8d8d;
+      margin: 0 15px;
+    }
+
+    .shangpin:active {
+      background-color: gainsboro;
+    }
+
+    .quick {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10000;
+    }
+
+    .orange {
+      background: orange;
+    }
+
+    .gray {
+      background-color: #8d8d8d;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <!--广告图-->
+  <div class="adpic">
+    <img src="http://api.zhenglinc.com/Public/uploads/juexiang_ad.jpg" alt="绝响">
+  </div>
+  <div class="shangpin" @click="goshopdetails()">
+    <div class="left-img">
+      <img :src="formatImg(details.images)" alt="绝响">
+    </div>
+    <div class="right-content">
+      <h4>{{details.goodName}}</h4>
+      <span class="surplus">剩余：{{details.stock ? details.stock : 0}}套</span>
+      <span class="price" v-if="switcher=== '-1'">&yen;?</span>
+      <span class="price" v-else>&yen;{{details.price}}</span>
+      <button :class="{orange: switcher === '1', gray: switcher === '-1'}">立即订购</button>
+    </div>
+  </div>
+  <div class="jieshi">
+    <hr />
+    <span>正麟对本活动保有最终解释权</span>
+    <hr />
+  </div>
+  <!--<img src="../../../../assets/img/quick.jpg" alt="" class="quick" v-show="quick" v-tap="{methods: quickHide}"/>-->
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      details: [],
+      surplus: '?',
+      //加载中
+      loading: false,
+      firstCount: 0,
+      switcher:'-1'
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 2) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.getJueXiangDetail(function () {
+          app.firstCount++;
+        });
+        app.switch_app(function () {
+          app.firstCount++;
+        });
+
+        refresh(function () {
+          app.getJueXiangDetail(function () {
+            app.switch_app(function () {
+              refreshDone();
+            });
+          });
+        });
+
+        api.addEventListener({
+          name: 'jxStockChange'
+        }, function () {
+          app.getJueXiangDetail();
+        });
+      };
+    },
+    methods: {
+      //绝响开关
+      switch_app:function (callback) {
+        var post = {
+          cmd:'switch_app',
+          switchType:6
+        };
+        sendAjax(app,post,function (res) {
+          app.switcher=res.data;
+          if(callback){
+            callback();
+          }
+        })
+      },
+      quickHide: function () {
+        app.quick = false;
+      },
+      goshopdetails: function () {
+        api.openWin({
+          name: 'shopdetails',
+          url: 'shopdetails_win.html',
+          bounces: false
+        });
+      },
+      getJueXiangDetail: function (callback) {
+        var post = {
+          cmd: 'getJueXiangDetail',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.details = res.data;
+          if(app.details.vipPrice){
+            app.details.price = app.details.vipPrice;
+          }else{
+            app.details.price = app.details.oldPrice;
+          }
+          if(callback){
+            callback();
+          }
+        })
+      }
+    }
+  })
+</script>

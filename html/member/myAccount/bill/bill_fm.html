@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+
+        .list-box {
+            font-size: 0.7rem;
+        }
+
+        .list-header-box {
+            padding: 0.3rem 1rem;
+        }
+
+        .list-content-box {
+            background: white;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .list-left-box {
+            padding:0 0.5rem;
+            width: 10%;
+            text-align: center;
+            border-right: 1px solid #ccc;
+            color: #666;
+        }
+        .list-center-box{
+            padding: 0 0.5rem;
+            /*flex: 1;*/
+            width: 55%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .list-center-box span{
+            color:#666;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size:0.6rem;
+        }
+        .list-right-box{
+            color:#666;
+            width: 20%;
+            text-align: center;
+        }
+        .text{
+            color:#FF825F;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="list-box">
+        <li class="list-header-box">本月</li>
+        <li class="list-content-box">
+            <div class="list-left-box">
+                <span>今天</span>
+                <span>08:56</span>
+            </div>
+            <div class="list-center-box">
+                <div class="aui-margin-b-10">消费</div>
+                <span class="aui-ellipsis-1">正麟殿古琴【龙吟鹤响】中级演奏精品课程</span>
+            </div>
+            <div class="list-right-box">
+                <div class="aui-margin-b-10 text">+3000.00</div>
+                <div>全额支付</div>
+            </div>
+        </li>
+        <li class="list-content-box">
+            <div class="list-left-box">
+                <span>今天</span>
+                <span>08:56</span>
+            </div>
+            <div class="list-center-box">
+                <div class="aui-margin-b-10">消费</div>
+                <span class="aui-ellipsis-1">正麟殿古琴【龙吟鹤响】中级演奏精品课程</span>
+            </div>
+            <div class="list-right-box">
+                <div class="aui-margin-b-10 text">+3000.00</div>
+                <div>全额支付</div>
+            </div>
+        </li>
+        <li class="list-content-box">
+            <div class="list-left-box">
+                <span>今天</span>
+                <span>08:56</span>
+            </div>
+            <div class="list-center-box">
+                <div class="aui-margin-b-10">消费</div>
+                <span class="aui-ellipsis-1">正麟殿古琴【龙吟鹤响】中级演奏精品课程</span>
+            </div>
+            <div class="list-right-box">
+                <div class="aui-margin-b-10 text">+3000.00</div>
+                <div>全额支付</div>
+            </div>
+        </li>
+        <li class="list-header-box">3月</li>
+        <li class="list-content-box">
+            <div class="list-left-box">
+                <span>今天</span>
+                <span>08:56</span>
+            </div>
+            <div class="list-center-box">
+                <div class="aui-margin-b-10">消费</div>
+                <span class="aui-ellipsis-1">正麟殿古琴【龙吟鹤响】中级演奏精品课程</span>
+            </div>
+            <div class="list-right-box">
+                <div class="aui-margin-b-10 text">+3000.00</div>
+                <div>全额支付</div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {},
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('header'));
+      };
+    },
+    methods: {}
+  })
+</script>

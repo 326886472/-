@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    .icon {
+      padding: 0.2rem;
+      border-radius: 0.2rem;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .icon-xt {
+      background: #FFBB28
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .content-item {
+      background: white;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+    }
+
+    .content-right {
+      flex-shrink: 0;
+      width: 90%;
+      padding-left: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .content-right span {
+      text-align: center;
+      flex: 1;
+    }
+
+    .content-bottom {
+      min-height: 4rem;
+      background: white;
+      padding: 0.5rem 1rem;
+    }
+
+    /*未读消息红点*/
+    .content li {
+      position: relative;
+    }
+
+    .label-box {
+      width: 0.3rem;
+      height: 0.3rem;
+      border-radius: 50%;
+      background: red;
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <ul class="content aui-margin-t-10">
+    <li class="aui-margin-t-5" v-for="item in proList" @click="openNewsInfo(item.id)">
+      <span class="label-box" v-show="item.isRead === '0'"></span>
+      <div class="content-item">
+        <div>
+          <svg class="icon icon-xt" aria-hidden="true">
+            <use xlink:href="#icon-zhanghuxinxi"></use>
+          </svg>
+        </div>
+        <div class="content-right">
+          <span style="text-align: left;">{{item.title}}</span>
+          <span>{{item.addTime}}</span>
+        </div>
+      </div>
+      <div class="content-bottom aui-ellipsis-2">
+        {{item.content}}
+      </div>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      sonTypeId: '',
+      proList: []
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.sonTypeId = api.pageParam.sonTypeId;
+        app.uappGetSystemNotify(function () {
+          loadEnd();
+        });
+
+        refresh(function () {
+          app.uappGetSystemNotify(function () {
+            refreshDone();
+          });
+        });
+
+        api.addEventListener({
+          name: 'NotifyOk'
+        }, function (ret, err) {
+          app.uappGetSystemNotify();
+        });
+      };
+    },
+    methods: {
+//      获取消息列表
+      uappGetSystemNotify: function (callback) {
+        var post = {
+          cmd: 'uappGetSystemNotify',
+          token: getToken(),
+          typeId: '2',
+          sonTypeId: app.sonTypeId
+        };
+        sendAjax(this, post, function (res) {
+          notifyTitleSub(res.data.proList);
+          app.proList = res.data.proList;
+
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      openNewsInfo: function (id) {
+        openView('newsInfo', 'member/news/newsInfo/newsInfo_fm', '订单通知', false, false, {
+          sonTypeId: app.sonTypeId,
+          messId: id
+        })
+      }
+    }
+  })
+</script>

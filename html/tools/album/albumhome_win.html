@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app{
+            background: white;
+            width: 100%;
+        }
+        #header{
+            border-bottom:1px solid #ccc;
+            width: 100%;
+            display: flex;
+        }
+        .ifont{
+            display: inline-block;
+        }
+        .titlename{
+            flex: 1;
+            text-align: center;
+        }
+        .ospan{
+            width: 20%;
+            text-align: center;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <header class="aui-bar aui-bar-nav" id="header">
+        <span class="ospan" style="text-align: left;padding-left: 10px"><i class="iconfont ifont icon-ziyuan2-copy" @click="closethiswin()"></i></span>
+        <span class="titlename">古琴调音器</span>
+        <span class="ospan"><i class="iconfont ifont icon-fenxiang1"></i></span>
+    </header>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {},
+        filters: {},
+        created:function() {
+            apiready = function () {
+                $api.fixStatusBar($api.dom('header'));
+                openFm('albumhome');
+            };
+        },
+        methods: {
+          closethiswin:function(){
+            api.closeWin()
+          }
+        }
+    })
+</script>

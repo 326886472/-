@@ -1,0 +1,382 @@
+html, body {
+  height: 100%; }
+
+.vsure {
+  font-size: 12px;
+  position: absolute;
+  height: 1rem;
+  line-height: 0.9rem;
+  text-align: center;
+  background: #ff8500;
+  color: white;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 40px;
+  border-radius: 2px; }
+
+.evaluate {
+  display: flex;
+  flex-direction: column;
+  height: 100%; }
+  .evaluate .mobuile {
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.5;
+    z-index: 9;
+    position: fixed; }
+  .evaluate .header {
+    display: flex;
+    padding: 0.8rem;
+    border-bottom: 0.5rem solid #f0f0f0;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0; }
+    .evaluate .header .score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-right: 4%; }
+      .evaluate .header .score .mark {
+        padding-bottom: 3px;
+        font-size: 24px;
+        color: #ff8500;
+        font-weight: bold; }
+    .evaluate .header .shu {
+      border-right: 1px solid #333;
+      height: 50px;
+      margin: 0 10px; }
+    .evaluate .header .shop {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding-left: 4%; }
+      .evaluate .header .shop .shop-name {
+        padding-bottom: 0.7rem;
+        display: flex;
+        color: #5a5958; }
+      .evaluate .header .shop .number {
+        display: flex;
+        font-size: 0.8rem; }
+        .evaluate .header .shop .number .support {
+          display: flex;
+          flex: none;
+          align-items: center; }
+          .evaluate .header .shop .number .support .dianzan {
+            font-size: 14px;
+            position: relative;
+            top: 2px; }
+          .evaluate .header .shop .number .support .num {
+            font-size: 16px;
+            vertical-align: -1px; }
+        .evaluate .header .shop .number .assess {
+          margin-left: 20px; }
+          .evaluate .header .shop .number .assess .pinglun {
+            position: relative;
+            top: 2px;
+            font-size: 14px; }
+  .evaluate .title_header {
+    border-bottom: 1px solid #d9d9d9;
+    flex-shrink: 0; }
+    .evaluate .title_header li.active {
+      background: gainsboro; }
+    .evaluate .title_header .header_oul {
+      z-index: 100;
+      position: relative;
+      display: flex; }
+      .evaluate .title_header .header_oul li {
+        line-height: 1rem;
+        margin: 1rem 0;
+        border-right: 0.1rem solid #999999;
+        width: 0;
+        flex-grow: 1; }
+        .evaluate .title_header .header_oul li:last-child {
+          border-right: none; }
+        .evaluate .title_header .header_oul li .icon-iconfontxiangxiajiantou {
+          transition: 0.5s; }
+    .evaluate .title_header .rr {
+      transform: rotate(180deg);
+      transform-origin: 50% 45%;
+      display: inline-block; }
+    .evaluate .title_header .now_typelist {
+      position: absolute;
+      left: 0;
+      display: block;
+      width: 33%;
+      z-index: 11; }
+      .evaluate .title_header .now_typelist li {
+        width: 100%;
+        clear: both;
+        height: 2rem;
+        border-top: 1px solid gainsboro;
+        font-size: 15px; }
+    .evaluate .title_header .now_stars {
+      position: absolute;
+      left: 33%;
+      display: block;
+      background: white;
+      width: 33%;
+      z-index: 11; }
+      .evaluate .title_header .now_stars li {
+        width: 100%;
+        clear: both;
+        height: 2rem;
+        border-top: 1px solid gainsboro;
+        font-size: 15px; }
+    .evaluate .title_header .now_staticlist {
+      position: absolute;
+      right: 0;
+      display: block;
+      width: 33%;
+      z-index: 11; }
+      .evaluate .title_header .now_staticlist li {
+        width: 100%;
+        clear: both;
+        height: 2rem;
+        border-top: 1px solid gainsboro;
+        font-size: 15px; }
+    .evaluate .title_header .more_typelist {
+      position: absolute;
+      top: -16rem;
+      left: 0;
+      width: 33%; }
+      .evaluate .title_header .more_typelist li {
+        width: 100%;
+        clear: both;
+        height: 3rem;
+        border-top: 1px solid gainsboro; }
+    .evaluate .title_header .more_stars {
+      position: absolute;
+      top: -16rem;
+      left: 33.33333%;
+      width: 33%;
+      z-index: 11; }
+      .evaluate .title_header .more_stars li {
+        width: 100%;
+        clear: both;
+        height: 3rem;
+        border-top: 1px solid gainsboro; }
+    .evaluate .title_header .more_staticlist {
+      position: absolute;
+      top: -16rem;
+      right: 0;
+      width: 33%; }
+      .evaluate .title_header .more_staticlist li {
+        width: 100%;
+        clear: both;
+        height: 1.5rem;
+        border-top: 1px solid gainsboro; }
+    .evaluate .title_header ul {
+      width: 100%;
+      display: inline-block; }
+      .evaluate .title_header ul .typeofe {
+        z-index: 100;
+        font-size: 15px; }
+      .evaluate .title_header ul li {
+        z-index: 100;
+        width: 50%;
+        float: left;
+        text-align: center;
+        line-height: 2rem;
+        background: white; }
+  .evaluate .list-box {
+    position: relative;
+    flex-grow: 1; }
+    .evaluate .list-box .list {
+      border-top: 0.5rem solid #f0f0f0; }
+      .evaluate .list-box .list:first-child {
+        border-top: 0; }
+      .evaluate .list-box .list.none {
+        padding: 1rem;
+        box-sizing: border-box;
+        text-align: center; }
+      .evaluate .list-box .list .inner-box {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 0.3rem solid #F0F0F0;
+        box-sizing: border-box; }
+        .evaluate .list-box .list .inner-box:last-child {
+          border-bottom: none; }
+        .evaluate .list-box .list .inner-box .username {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px solid #d9d9d9;
+          padding: 0.5rem 0.8rem 1rem; }
+          .evaluate .list-box .list .inner-box .username .left {
+            display: flex; }
+            .evaluate .list-box .list .inner-box .username .left .head-picture {
+              width: 3.3rem;
+              height: 3.3rem;
+              margin-right: 0.6rem; }
+              .evaluate .list-box .list .inner-box .username .left .head-picture img {
+                width: 100%;
+                height: 100%;
+                border-radius: 100%; }
+            .evaluate .list-box .list .inner-box .username .left .nickname {
+              display: flex;
+              flex-direction: column;
+              padding-top: 8px; }
+              .evaluate .list-box .list .inner-box .username .left .nickname .xinxi {
+                font-size: 14px;
+                padding-bottom: 0.3rem; }
+                .evaluate .list-box .list .inner-box .username .left .nickname .xinxi .icon-huiyuan {
+                  color: #FFBB28;
+                  padding-left: 0.2rem; }
+              .evaluate .list-box .list .inner-box .username .left .nickname .star-sorce > .iconfont {
+                font-size: 13px; }
+          .evaluate .list-box .list .inner-box .username .right {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8rem;
+            flex: none;
+            align-items: flex-end;
+            position: relative; }
+            .evaluate .list-box .list .inner-box .username .right .dianzan {
+              display: flex;
+              align-items: center;
+              position: absolute;
+              bottom: -5px;
+              right: 0; }
+              .evaluate .list-box .list .inner-box .username .right .dianzan .icon-dianzan {
+                color: #FFAA2A;
+                font-size: 0.8rem;
+                padding: 0.1rem 0.3rem 0 0; }
+        .evaluate .list-box .list .inner-box .message {
+          display: flex;
+          flex-direction: column;
+          font-size: 0.8rem;
+          margin-left: 2rem;
+          padding: 0.5rem 0.7rem 0 0; }
+          .evaluate .list-box .list .inner-box .message .text .content {
+            overflow: hidden;
+            height: auto;
+            line-height: 1.3rem;
+            font-size: 13px; }
+          .evaluate .list-box .list .inner-box .message .full-text, .evaluate .list-box .list .inner-box .message .pack {
+            padding-top: 0.6rem; }
+          .evaluate .list-box .list .inner-box .message .pack {
+            display: none; }
+          .evaluate .list-box .list .inner-box .message .image {
+            display: flex;
+            flex-flow: row wrap;
+            padding: 0.5rem 0; }
+            .evaluate .list-box .list .inner-box .message .image .flex-img {
+              width: 5rem;
+              height: 5rem;
+              margin-right: 3%;
+              margin-bottom: 3%; }
+              .evaluate .list-box .list .inner-box .message .image .flex-img:nth-child(3n) {
+                margin-right: 0; }
+              .evaluate .list-box .list .inner-box .message .image .flex-img img {
+                width: 100%;
+                height: 100%;
+                border-radius: 0.3rem; }
+        .evaluate .list-box .list .inner-box .button {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 0.8rem;
+          margin-left: 2rem;
+          margin-right: 0.8rem;
+          padding-bottom: 12px; }
+          .evaluate .list-box .list .inner-box .button .goods-type {
+            display: flex;
+            flex: 1;
+            flex-direction: column; }
+            .evaluate .list-box .list .inner-box .button .goods-type .buy-date {
+              margin-top: 0.2rem;
+              font-size: 13px; }
+          .evaluate .list-box .list .inner-box .button .reply-complain {
+            display: flex;
+            flex: 0.8;
+            justify-content: flex-end; }
+            .evaluate .list-box .list .inner-box .button .reply-complain .icon-shangjiahuifu, .evaluate .list-box .list .inner-box .button .reply-complain .icon-tousu {
+              font-size: 0.8rem;
+              margin-right: 0.3rem; }
+            .evaluate .list-box .list .inner-box .button .reply-complain .reply, .evaluate .list-box .list .inner-box .button .reply-complain .complain {
+              display: flex;
+              align-items: center;
+              justify-content: center; }
+            .evaluate .list-box .list .inner-box .button .reply-complain .complain {
+              margin-left: 8px; }
+            .evaluate .list-box .list .inner-box .button .reply-complain .reply {
+              margin-right: 0.3rem; }
+        .evaluate .list-box .list .inner-box .replay-input {
+          margin-left: 2rem;
+          margin-right: 0.8rem;
+          padding-bottom: 10px; }
+          .evaluate .list-box .list .inner-box .replay-input textarea {
+            width: 100%;
+            border: 1px solid #bbb;
+            resize: none;
+            height: 3rem;
+            margin-bottom: 8px;
+            background: #eee;
+            box-sizing: border-box;
+            padding: 3px; }
+          .evaluate .list-box .list .inner-box .replay-input .mint-button {
+            float: right;
+            height: 23px;
+            font-size: 13px; }
+        .evaluate .list-box .list .inner-box .seller-reply {
+          font-size: 0.8rem;
+          margin: 0 0.8rem 0.6rem 1.2rem;
+          padding-left: 20px;
+          padding-top: 8px;
+          flex: none;
+          display: flex;
+          flex-direction: column;
+          border-top: 1px solid #d9d9d9; }
+          .evaluate .list-box .list .inner-box .seller-reply:first-child {
+            border-top: 0.1rem solid #f0f0f0; }
+          .evaluate .list-box .list .inner-box .seller-reply .icon-shangjiahuifu {
+            font-size: 12px;
+            margin-right: 4px; }
+          .evaluate .list-box .list .inner-box .seller-reply .seller-name {
+            font-size: 12px; }
+            .evaluate .list-box .list .inner-box .seller-reply .seller-name .reply-content {
+              color: #979797;
+              display: inline;
+              line-height: 1.3; }
+        .evaluate .list-box .list .inner-box .all {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0.8rem 1.2rem 0 4.8rem;
+          color: #979797;
+          font-size: 0.8rem; }
+    .evaluate .list-box .modal {
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0.5;
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0; }
+
+.listView-text-score {
+  display: inline-flex; }
+  .listView-text-score .icon-xingxing {
+    color: #FF8500;
+    font-size: 1rem; }
+    .listView-text-score .icon-xingxing.grey-star {
+      color: #BFBFBF; }
+  .listView-text-score .icon-yibanxingxing1 {
+    color: #ff8500; }
+  .listView-text-score .number {
+    color: #FFAA2A; }
+  .listView-text-score .iconfont {
+    margin-right: 0.2rem; }
+    .listView-text-score .iconfont:nth-child(5) {
+      margin-right: 0; }
+
+.pull-up span {
+  padding: 1rem 0;
+  display: block;
+  text-align: center;
+  font-size: 15px; }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+       .video-box{
+       }
+       .video-box img{
+           width: 100%;
+           height: 10rem;
+       }
+       .content{
+           font-size:0.7rem;
+           color:#666;
+           margin-top: 5px;
+       }
+       .content li{
+           padding:0.5rem 0.3rem;
+           background: white;
+           display: flex;
+           justify-content: space-between;
+           border-bottom: 1px solid #f0f0f0;
+       }
+        .btn-box{
+            position: absolute;
+            bottom:10%;
+            left:20%;
+            width:60%;
+            text-align: center;
+        }
+        .btn-box div{
+            font-size:0.7rem;
+            color:#666;
+            padding:0.3rem 0;
+            border-radius: 0.8rem;
+            border:1px solid #666;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div class="video-box">
+        <img src="../../../assets/images/bg-my.png" alt="">
+    </div>
+    <ul class="content">
+        <li @click="openProblem">
+            <div>
+                常见问题
+            </div>
+            <div class="aui-pull-right">
+                <i class="iconfont icon-ziyuan2"></i>
+            </div>
+        </li>
+        <li @click="openFeedback">
+            <div>
+                意见反馈
+            </div>
+            <div class="aui-pull-right">
+                <i class="iconfont icon-ziyuan2"></i>
+            </div>
+        </li>
+    </ul>
+    <div class="btn-box">
+        <div>联系电话:010-53269166</div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+      openProblem:function () {
+            openView('problem','member/service/problem','常见问题')
+      },
+      openFeedback:function () {
+        openView('feedback','member/service/feedback_fm','意见反馈')
+      }
+    }
+  })
+</script>

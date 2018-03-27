@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    body {
+      height: 100%;
+    }
+
+    #app {
+      position: relative;
+      background-color: #f0f0f0;
+      flex: 1;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.15rem;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    /*等待付款*/
+    .wait-wrap {
+      padding: 0.5rem;
+      height: 6rem;
+      width: 100%;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+
+    .remaining h4 {
+      font-size: 16px;
+      padding: 1rem 1rem 0.5rem 1rem;
+    }
+
+    .remaining p {
+      font-size: 14px;
+      padding: 0 1rem 0.5rem 1rem;
+    }
+
+    .wait-pay i {
+      font-size: 30px;
+    }
+
+    /*订单详情*/
+    .p-title {
+      font-size: 16px;
+      padding: 0.5rem 1rem;
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /*收货人信息*/
+    .cusmsg-wrap {
+      width: 100%;
+      background-color: #fff;
+      font-size: 0.7rem;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+    }
+
+    .list-head {
+      width: 30%;
+      height: 1.5rem;
+      color: #5a5a5a;
+      padding-left: 0.5rem;
+    }
+
+    .list-content {
+      width: 70%;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      box-sizing: border-box;
+    }
+
+    .list-content span {
+      padding-right: 0.5rem;
+    }
+
+    .more {
+      width: 1rem;
+      text-align: right;
+      padding-right: 10px;
+    }
+
+    /*提货人*/
+    .cusmsg-wrap1 {
+      width: 100%;
+      background-color: #fff;
+      font-size: 0.7rem;
+      padding: 0 0.5rem;
+      box-sizing: border-box;
+    }
+
+    /*产品详情*/
+    .product-dettail-wrap {
+      width: 100%;
+      padding: 1rem;
+      background-color: #fff;
+      margin-bottom: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    .mingpian {
+      color: #5a5a5a;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .left-img {
+      width: 4rem;
+      height: 4rem;
+    }
+
+    .left-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .right-content {
+      width: 70%;
+      padding-left: 0.5rem;
+      font-size: 0.7rem;
+    }
+
+    .price-list {
+      margin-top: 1rem;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #ff8500;
+    }
+
+    .under-list {
+      height: 2rem;
+      line-height: 2rem;
+      padding: 0 1rem;
+      background-color: #fff;
+      font-size: 0.7rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .liuyan {
+      outline: none;
+      width: 70%;
+    }
+
+    .total {
+      height: 2rem;
+      line-height: 2rem;
+      font-size: 0.7rem;
+      text-align: right;
+      background-color: #fff;
+      padding-right: 1rem;
+      margin-bottom: 50px;
+    }
+
+    /*付款详情*/
+    .mint-popup-bottom {
+      width: 100%;
+    }
+
+    #fukuan {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      background: black;
+      z-index: 20;
+      opacity: 0.5;
+
+    }
+
+    .payname {
+      height: 2rem;
+      line-height: 2rem;
+      font-size: 16px;
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .pay-detail {
+      width: 100%;
+      /*position: fixed;*/
+      /*bottom: 0;*/
+      background-color: #f0f0f0;
+    }
+
+    .zindex1 {
+      z-index: 21;
+    }
+
+    .zindex2 {
+      z-index: 22;
+    }
+
+    .pay-title, .yue {
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      font-size: 0.7rem;
+      background-color: #fff;
+      margin: 1px 0;
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+
+    .yue {
+      color: #5a5a5a;
+    }
+
+    .box {
+      font-size: 0.8rem;
+      color: #f16051;
+    }
+
+    .sure {
+      height: 3rem;
+      line-height: 3rem;
+      background-color: #fff;
+      text-align: center;
+    }
+
+    .sure button {
+      font-size: 0.7rem;
+      padding: 0.3rem 1.5rem;
+      border-radius: 0.8rem;
+      border: 1px solid #5a5a5a;
+      color: #5a5a5a;
+      outline: none;
+    }
+
+    /*开通会员*/
+    .warning {
+      position: absolute;
+      top: 11rem;
+      width: 100%;
+      height: 8rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .zindex3 {
+      z-index: 23;
+    }
+
+    .warn-wrap {
+      width: 11rem;
+      background-color: #fff;
+      height: 8rem;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .warn-content {
+      height: 6rem;
+    }
+
+    .warn-content h5 {
+      margin: 0.5rem 1rem;
+      font-weight: normal;
+    }
+
+    .warn-content p {
+      line-height: 1rem;
+      font-size: 0.7rem;
+      padding: 0 1rem;
+      color: #5a5a5a;
+    }
+
+    .warn-button {
+      height: 2rem;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+
+    .warn-button button {
+      width: 50%;
+      height: 2rem;
+      outline: none;
+      border-top: 1px solid #ccc;
+      border-left: 1px solid #ccc;
+      font-size: 0.8rem;
+    }
+
+    /*页尾提交订单*/
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 44px;
+      line-height: 44px;
+      font-size: 0.8rem;
+      text-align: right;
+      background-color: #fff;
+      border-top: 1px solid #f0f0f0;
+      box-sizing: border-box;
+    }
+
+    /*页脚提交订单*/
+    footer span {
+      color: #ff8500;
+      font-weight: bold;
+    }
+
+    footer button {
+      height: 100%;
+      width: 7rem;
+      background-color: #ff8500;
+      color: #fff;
+      margin-left: 0.5rem;
+    }
+
+    footer button.disabled {
+      background-color: #888;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <!--/*选择付款详情*/-->
+  <mt-popup
+          v-model="isfukuan"
+          position="bottom" modal="true">
+    <div class="pay-detail">
+      <div class="pay-title flex-between">
+        <span>&nbsp;</span>
+        <span>付款详情</span>
+        <button @click="cancelfukuan"><i class="iconfont icon-x"></i></button>
+      </div>
+      <div>
+        <div class="yue flex-between" @click="changepay(0)" v-if="wpayAllow == 1">
+          <div><i>
+            <svg class="icon" aria-hidden="true" style="font-size: 16px">
+              <use xlink:href="#icon-weixin1"></use>
+            </svg>
+          </i><span class="aui-margin-l-5 payname">微信支付</span>
+          </div>
+          <i class="box iconfont icon-ziyuan10" v-if="payindex===0" style="color:indianred">
+          </i>
+        </div>
+        <div class="yue flex-between" @click="changepay(1)" v-if="zfbAllow == 1">
+          <div><i>
+            <svg class="icon" aria-hidden="true" style="font-size: 16px">
+              <use xlink:href="#icon-zhifubao"></use>
+            </svg>
+          </i><span class="aui-margin-l-5 payname">支付宝支付</span>
+          </div>
+          <i class="box iconfont icon-ziyuan10" v-if="payindex===1" style="color:indianred">
+          </i>
+        </div>
+      </div>
+      <!--<div v-for="(pay,index) in payitems">-->
+      <!--<div class="yue flex-between" @click="changepay(index)">-->
+      <!--<div><i>-->
+      <!--<svg class="icon" aria-hidden="true" style="font-size: 16px">-->
+      <!--<use :xlink:href="pay.icon1"></use>-->
+      <!--</svg>-->
+      <!--</i><span class="aui-margin-l-5 payname">{{pay.name}}</span>-->
+      <!--</div>-->
+      <!--<i class="box iconfont icon-ziyuan10" v-if="payindex===index" style="color:indianred">-->
+      <!--</i>-->
+      <!--</div>-->
+      <!--</div>-->
+      <div class="sure">
+        <button @click="gotopay">确认</button>
+      </div>
+    </div>
+  </mt-popup>
+
+  <!--弹出选择支付方式层-->
+  <mt-popup
+          v-model="choosew"
+          position="bottom" modal="true">
+    <div class="pay-detail">
+      <div class="pay-title" style="text-align: center">
+        <span>支付方式</span>
+      </div>
+      <span>线上付,正麟发</span>
+      <!--<div v-for="(way,index) in wayitems">-->
+      <!--<div class="yue flex-between" @click="changeway(index)">-->
+      <!--<div>{{way.name}}</div>-->
+      <!--<i class="box iconfont icon-ziyuan10" v-if="wayindex===index" style="color:indianred">-->
+      <!--</i>-->
+      <!--</div>-->
+      <!--</div>-->
+      <div class="sure" @click="way">
+        <button>确认</button>
+      </div>
+    </div>
+  </mt-popup>
+
+  <!--高级会员提示;暂时未设置弹出-->
+  <div id="fukuan" v-show="isVIP"></div>
+  <div class="warning zindex3" v-show="isVIP">
+    <div class="warn-wrap">
+      <div class="warn-content">
+        <h5>温馨提示</h5>
+        <p>需要高级会员才能下单，开通后享受会员价格。</p>
+      </div>
+      <div class="warn-button">
+        <button>取消</button>
+        <button>去开通</button>
+      </div>
+    </div>
+  </div>
+  <!--等待付款-->
+  <div class="wait-wrap flex-between" v-show="qufukuan">
+    <div class="remaining">
+      <h4>等待买家付款</h4>
+      <p>剩余1天23小时自动关闭</p>
+    </div>
+    <div class="wait-pay" style="margin-right: 40px; padding-top: 10px;">
+      <i>
+        <svg class="icon" aria-hidden="true" style="font-size: 3rem">
+          <use xlink:href="#icon-daifukuan"></use>
+        </svg>
+      </i>
+    </div>
+  </div>
+  <!--主要部分-->
+  <!--正麟发-->
+  <div v-if="buyindex===2">
+    <p class="p-title">收货人信息</p>
+    <div class="cusmsg-wrap" @click="editaddress">
+      <div class="flex-row">
+        <div class="list-head">
+          <i>
+            <svg class="icon" aria-hidden="true" style="font-size: 0.6rem">
+              <use xlink:href="#icon-shouhuorenxinxi"></use>
+            </svg>
+          </i>
+          <span>收货人:</span>
+        </div>
+        <div class="list-content">
+          <span>{{buyer.name}}</span>
+          <span>{{buyer.mobile}}</span>
+        </div>
+        <div class="more"></div>
+      </div>
+      <div class="flex-row">
+        <div class="list-head">
+          <i>
+            <svg class="icon" aria-hidden="true" style="font-size: 0.6rem">
+              <use xlink:href="#icon-dingwei1"></use>
+            </svg>
+          </i>
+          <span>收货地址:</span>
+        </div>
+        <div class="list-content">{{buyer.address}}</div>
+        <div class="more">
+          <i>
+            <svg class="icon" aria-hidden="true" style="font-size: 0.6rem">
+              <use xlink:href="#icon-fangxiang"></use>
+            </svg>
+          </i>
+        </div>
+      </div>
+    </div>
+    <p class="p-title">货品详情</p>
+    <div class="product-dettail-wrap">
+      <div class="mingpian">
+        <i>
+          <svg class="icon" aria-hidden="true" style="font-size: 1rem; vertical-align: -6px">
+            <use xlink:href="#icon-shenfenrenzheng"></use>
+          </svg>
+        </i>
+        <span style="font-size: 16px;">正麟网官方</span>
+      </div>
+      <div class="product-list flex-row">
+        <div class="left-img">
+          <img :src="formatImg(details.images)"/>
+        </div>
+        <div class="right-content">
+          <p v-text="details.goodName"></p>
+          <p class="price-list flex-between">
+            <span class="price">&yen;{{price}}</span>
+            <span class="number">&times;{{num}}</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!--琴馆提-->
+  <div v-if="buyindex!==2">
+    <p class="p-title">选择琴馆</p>
+    <div class="cusmsg-wrap">
+      <div class="flex-row">
+        <div class="list-head">
+          <i>
+            <svg class="icon" aria-hidden="true" style="font-size: 0.6rem;color: #5a5a5a;">
+              <use xlink:href="#icon-qinguan"></use>
+            </svg>
+          </i>
+          <span>琴馆名称:</span>
+        </div>
+        <div class="list-content">
+          <span>{{qinguan.name}}</span>
+        </div>
+        <div class="more"></div>
+      </div>
+      <div class="flex-row">
+        <div class="list-head">
+          <i>
+            <svg class="icon" aria-hidden="true" style="font-size: 0.6rem">
+              <use xlink:href="#icon-dingwei1"></use>
+            </svg>
+          </i>
+          <span>琴馆地址:</span>
+        </div>
+        <div class="list-content">{{qinguan.address}}</div>
+        <div class="more" @click="opensearchqg">
+          <i>
+            <svg class="icon" aria-hidden="true" style="font-size: 0.6rem">
+              <use xlink:href="#icon-fangxiang"></use>
+            </svg>
+          </i>
+        </div>
+      </div>
+    </div>
+    <p class="p-title" v-show="buyindex==1">提货人信息</p>
+    <p class="p-title" v-show="buyindex==3">预约人信息</p>
+    <div class="cusmsg-wrap1">
+      <div class="flex-row aui-padded-t-10">
+        <div class="list-head">
+          <i>
+            <svg class="icon" aria-hidden="true" style="font-size: 0.6rem">
+              <use xlink:href="#icon-shouhuorenxinxi"></use>
+            </svg>
+          </i>
+          <span>联系人:</span>
+        </div>
+        <div class="list-content">
+          <span>{{buyer.name}}</span>
+        </div>
+        <div class="more"></div>
+      </div>
+    </div>
+    <div class="cusmsg-wrap1">
+      <div class="flex-row aui-padded-t-10">
+        <div class="list-head">
+          <i>
+            <svg class="icon" aria-hidden="true" style="font-size: 0.6rem">
+              <use xlink:href="#icon-shouji"></use>
+            </svg>
+          </i>
+          <span>手机号:</span>
+        </div>
+        <div class="list-content">{{buyer.mobile}}</div>
+        <div class="more"></div>
+      </div>
+    </div>
+    <p class="p-title">货品详情</p>
+    <div class="product-dettail-wrap">
+      <div class="product-list flex-row">
+        <div class="left-img">
+          <img :src="formatImg(details.images)"/>
+        </div>
+        <div class="right-content">
+          <p v-text="details.goodName"></p>
+          <p class="price-list flex-between">
+            <span class="price">&yen;{{price}}</span>
+            <span class="number">&times;{{num}}</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="under-list flex-between">
+    <span>运费</span><span>快递&yen;{{yunfei | fliterway}}</span>
+  </div>
+  <div class="under-list flex-between">
+    <span>支付方式</span>
+    <!--{{buyindex | fliterpayway}}<i>-->
+    <!--<svg class="icon" aria-hidden="true" style="font-size: 0.6rem">-->
+    <!--<use xlink:href="#icon-ziyuan2"></use>-->
+    <!--</svg>-->
+    <!--</i>-->
+    <span>线上付,正麟发</span>
+  </div>
+  <div class="under-list flex-between">
+    <span>买家留言</span><input type="text" placeholder="填写您需要告知卖家的事宜" class="liuyan" maxlength="30" v-model="buyermsg">
+  </div>
+  <div class="total">
+    <div>
+      共<span>{{num}}</span>件商品&nbsp;合计：<span>{{total}}</span>元 <span>(含运费{{yunfei}}元)</span>
+    </div>
+  </div>
+  <footer>
+    总计：<span>&yen;{{total}}</span>
+    <button @click="order()" v-if="!qufukuan" :class="{disabled: !app.buyer.addressId}">提交订单</button>
+    <button @click="selectPay()" v-else>立即付款</button>
+  </footer>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      isVIP: false,
+      isWait: false,
+      isfukuan: false,
+      choosew: false,
+      wayindex: 0,
+      payindex: 0,
+      buyindex: null,
+      payitems: [
+//        {
+//          name: '账户余额',
+//          icon1: '#icon-ziyuan7'
+//        },
+        {
+          name: '微信支付',
+          icon1: '#icon-weixin1'
+        },
+        {
+          name: '支付宝支付',
+          icon1: '#icon-zhifubao'
+        }
+//        {
+//          name: '中国建设银行储蓄卡(4849)',
+//          icon1: '#icon-jianhang'
+//        }
+      ],
+      wayitems: [
+        {
+          name: '线上付,正麟发'
+        },
+        {
+          name: '线上付,琴馆提'
+        },
+        {
+          name: '免费预约'
+        }
+      ],
+      buyer: {
+//                name: '殷久艳',
+//                mobile: '18511112222',
+//                address: '北京北京市光华路光华里2号金茂公寓3单元401室'
+      },
+      qinguan: {
+        name: '北京琴韵古琴馆',
+        address: '北京北京市光华路光华里2号金茂公寓3单元401室'
+      },
+      total: 0,
+      yunfei: 0,
+      price: 0,
+      num: 0,
+      addressId: null,
+      details: '',
+      zfbAllow: -1,
+      wpayAllow: -1,
+      buyermsg: '',
+      qufukuan: false,
+      orderId: '',
+      firstCount: 0
+    },
+    watch: {
+      firstCount: function (val) {
+        if (val == 1) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        // 2-正麟发；1-琴馆提；3-免费预约
+        app.buyindex = api.pageParam.buyindex;
+        app.total = api.pageParam.numprice;
+        app.price = api.pageParam.shopprice;
+        app.num = api.pageParam.onum;
+        app.details = api.pageParam.details;
+
+        app.$nextTick(function () {
+          app.getUserAddressList(function () {
+            app.firstCount++
+          });
+        });
+
+        //       支付宝
+        app.switch_app(3, function (allow) {
+          app.zfbAllow = allow;
+        });
+
+        // 微信
+        app.switch_app(4, function (allow) {
+          app.wpayAllow = allow;
+        });
+
+        //更改地址
+        api.addEventListener({
+          name: 'changeAddress'
+        }, function (res, err) {
+          if (res) {
+            app.buyer = res.value.buyer;
+            app.buyer.address = res.value.buyer.province + res.value.buyer.city + res.value.buyer.region + res.value.buyer.address;
+          }
+        })
+      }
+    },
+    filters: {
+      fliterpayway: function (index) {
+        switch (index) {
+          case 2:
+            return '线上付，正麟发';
+          case 1:
+            return '线上付，琴馆提';
+          case 3:
+            return '免费预约';
+        }
+      },
+      filterway: function () {
+        switch (app.buyindex) {
+          case 0:
+            return 12;
+          case 1:
+            return 0;
+          case 2:
+            return 0;
+        }
+      }
+    },
+    methods: {
+      // 获取绝响详情
+      getJueXiangDetail: function (callback) {
+        var post = {
+          cmd: 'getJueXiangDetail',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          callback(res.data.stock);
+        })
+      },
+      //      支付方式
+//      支付开关 4：支付宝；3：微信 5:银联
+      switch_app: function (switchType, callback) {
+        var post = {
+          cmd: 'switch_app',
+          switchType: switchType
+        };
+        sendAjax(this, post, function (res) {
+          console.log(JSON.stringify(res));
+          if (callback) {
+            callback(res.data);
+          }
+        });
+      },
+      changepay: function (ret) {
+        app.payindex = ret;
+      },
+      changeway: function (ret) {
+        app.wayindex = ret;
+      },
+      cancelfukuan: function () {
+        this.isfukuan = false;
+        this.isWait = true;
+      },
+      //选择付款方式
+      selectPay: function () {
+        app.isfukuan = true;
+      },
+      //去付款
+      gotopay: function () {
+        app.getJueXiangDetail(function (stock) {
+          if (stock == null || stock == '0') {
+            toastMsg('库存不足');
+            api.closeWin();
+          } else {
+            app.isfukuan = false;
+            var i = app.payindex;
+            switch (i) {
+              case 0:
+                app.wxPayOfMarketPackage();
+                break;
+              case 1:
+                app.aliPayOfMarketPackage();
+                break;
+            }
+          }
+        });
+      },
+      wxPayOfMarketPackage: function () {
+        api.showProgress({
+          title: '努力加载中...',
+          text: '先喝杯茶...',
+          modal: false
+        });
+        var post = {
+          cmd: 'wxPayapiForJX',
+          token: getToken(),
+          orderId: app.orderId,
+          app: 1
+        };
+        sendAjax(app, post, function (res) {
+          var payInfo = res.data.htmlResult;
+          var wxPay = api.require('wxPay');
+          wxPay.payOrder({
+            orderId: payInfo.prepay_id,
+            mchId: payInfo.mch_id,
+            nonceStr: payInfo.nonce_str,
+            timeStamp: payInfo.timeStamp,
+            sign: payInfo.sign
+          }, function (ret, err) {
+            api.hideProgress();
+            if (ret.status) {
+              api.sendEvent({name: 'jxStockChange'});
+              toastMsg('支付成功！');
+              openView('shopOrderInfo_fm', 'member/myOrder/shopOrderInfo/shopOrderInfo_fm', '订单详情', 'shopOrderInfo_win', false, {
+                goodOrderId: app.orderId
+              })
+            } else {
+              toastMsg('支付失败');
+              api.hideProgress();
+            }
+          });
+        });
+      },
+      // 支付宝
+      aliPayOfMarketPackage: function () {
+        api.showProgress({
+          title: '努力加载中...',
+          text: '先喝杯茶...',
+          modal: false
+        });
+        var post = {
+          cmd: 'jxAlipayapi',
+          token: getToken(),
+          orderId: app.orderId,
+          app: 1
+        };
+        sendAjax(app, post, function (res) {
+          var aliPayPlus = api.require('aliPayPlus');
+          aliPayPlus.payOrder({
+            orderInfo: res.data.htmlResult
+          }, function (ret, err) {
+            api.hideProgress();
+            if (ret.code == 9000) {
+              api.sendEvent({name: 'jxStockChange'});
+              toastMsg('支付成功');
+              openView('shopOrderInfo_fm', 'member/myOrder/shopOrderInfo/shopOrderInfo_fm', '订单详情', 'shopOrderInfo_win', false, {
+                goodOrderId: app.orderId
+              })
+            } else {
+              api.hideProgress();
+            }
+          });
+        });
+      },
+      way: function () {
+        // 确认付款方式
+        this.choosew = false;
+        app.buyindex = app.wayindex;
+      },
+      order: function () {
+        if (!app.buyer.addressId) {
+          toastMsg('请选择或添加一条收货地址');
+        } else {
+          app.JXOrderSubmit();
+        }
+//        app.isfukuan = true;
+      },
+      chooseway: function () {
+        app.choosew = true;
+      },
+      opensearchqg: function () {
+        openView('searchqg', 'juexiang/qinguan/searchqg', '琴馆选择', false, false)
+      },
+      editaddress: function () {
+        openView('address', 'member/message/addressList/addressList_fm', '收货地址列表', false, false)
+      },
+      JXOrderSubmit: function () {
+        var post1 = {
+          cmd: 'JXOrderSubmit',
+          token: getToken(),
+          payType: app.buyindex,
+          amount: app.num,
+          addressId: app.buyer.addressId,
+          message: app.buyermsg
+        };
+        sendAjax(this, post1, function (res) {
+          if (res.code == 1) {
+            app.orderId = res.data;
+            app.qufukuan = true;
+            app.isfukuan = true;
+            api.sendEvent({
+              name: 'OrderSubmit'
+            })
+          }
+        });
+      },
+      getUserAddressList: function (callback) {
+        var post1 = {
+          cmd: 'getUserAddressList',
+          token: getToken()
+        };
+        sendAjax(app, post1, function (res) {
+          var data = res.data;
+          var jj = 0;
+          var thebuyer = {};
+          if (res.data.length === 0) {
+            openView('addressList_fm', 'member/message/addressList/addressList_fm', '收货地址', 'addressList_win', false, false);
+          } else {
+            for (var i = 0; i < data.length; i++) {
+              if (data[i].isDefault == 1) {
+                thebuyer.address = data[i].province + data[i].city + data[i].region + data[i].address;
+                thebuyer.zipcode = data[i].zipcode;
+                thebuyer.name = data[i].name;
+                thebuyer.mobile = data[i].mobile;
+                thebuyer.addressId = data[i].addressId;
+                jj = 1;
+              }
+            }
+            if (jj === 0) {
+              thebuyer.address = data[0].province + data[0].city + data[0].region + data[0].address;
+              thebuyer.zipcode = data[0].zipcode;
+              thebuyer.name = data[0].name;
+              thebuyer.mobile = data[0].mobile;
+              thebuyer.addressId = data[0].addressId;
+            }
+          }
+          app.buyer = thebuyer;
+          if (callback) {
+            callback();
+          }
+        });
+      }
+    }
+  });
+</script>

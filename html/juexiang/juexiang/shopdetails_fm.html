@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .newappstyle {
+      overflow-y: hidden;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    .headerback {
+      width: 100%;
+      height: 18rem;
+      background-size: cover;
+    }
+
+    .lablebox {
+      font-size: 15px;
+      font-weight: bold;
+      padding-top: 1rem;
+      background: white;
+    }
+
+    .lableop {
+      width: 100%;
+    }
+
+    .lableprice {
+      font-size: 22px;
+      font-weight: bolder;
+      color: #ff3c00;
+    }
+
+    .lablebottom {
+      width: 100%;
+      display: flex;
+    }
+
+    .lablebottom div {
+      flex: 1;
+      text-align: center;
+      font-weight: 100;
+      font-size: 14px;
+      line-height: 2rem;
+    }
+
+    .messagebox {
+      height: auto;
+      /*padding-left: 10px;*/
+      background: #ededed;
+      box-sizing: border-box;
+      margin: 10px;
+    }
+
+    .messagebox p {
+      font-size: 24px;
+      padding: 10px 0;
+      box-sizing: border-box;
+    }
+
+    .messagespan {
+      margin-left: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .projectspan {
+      font-size: 14px;
+      margin-left: 20px;
+    }
+
+    .projectul li {
+      line-height: 2.5rem;
+      background: white;
+      border-bottom: 1px solid gainsboro;
+    }
+
+    .swiperstyle {
+      background-size: 100% 100%;
+      color: white;
+      box-sizing: inherit;
+      background-repeat: no-repeat;
+      display: flex;
+    }
+
+    .projectdetails {
+      width: 100%;
+      height: 4rem;
+      line-height: 4rem;
+      background: #f0f0f0;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .detailsbox {
+      width: 100%;
+      height: auto;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+
+    .detailsbox * {
+      max-width: 100% !important;
+    }
+
+    .detailsbox img {
+      max-width: 100%;
+    }
+
+    .allbtn {
+      border-radius: 20px;
+      border: 1px solid #5a5a5a;
+      width: 40%;
+      line-height: 1.8rem;
+      height: 1.8rem;
+      text-align: center;
+      color: #5a5a5a;
+      font-size: 15px;
+      background: #ffffff;
+    }
+
+    .huangguan {
+      font-size: 10px;
+      /*float: right;*/
+      /*margin-right: 0.4rem;*/
+      color: #ffbb28
+    }
+
+    /*评价留言*/
+    .listbox {
+      width: 100%;
+      height: auto;
+      padding: 20px 10px 0;
+      border-bottom: 1px solid gainsboro;
+      box-sizing: border-box;
+    }
+
+    .friendmessage {
+      position: relative;
+      width: 100%;
+      height: auto;
+      display: flex;
+      box-sizing: border-box;
+
+    }
+
+    .vsure {
+      position: absolute;
+      left: 0.2rem;
+      top: 2rem;
+      /*bottom: -0.1rem;*/
+      width: 2rem;
+      /*background-color: #ff8500;*/
+      color: #fff;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .rightbox {
+      flex: 1;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      padding-left: 5px;
+      box-sizing: border-box;
+    }
+
+    .righttop {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .rightbottom {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      color: #676767;
+    }
+
+    .listimg {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      /*margin-left: 10px;*/
+      flex-shrink: 0;
+    }
+
+    .titlename {
+      font-size: 14px;
+      /*margin-left: 10px;*/
+      /*text-align: center;*/
+      flex-direction: column;
+      display: flex;
+    }
+
+    .titlename .icon-huangguan {
+      font-size: 16px;
+    }
+
+    .titletime {
+      flex: 1;
+      text-align: right;
+      font-size: 14px;
+      color: #a1a1a1;
+      line-height: 1rem;
+    }
+
+    .xingxing i {
+      margin-right: 2px;
+      font-size: 12px;
+      line-height: 1.5rem;
+    }
+
+    .gray {
+      color: #ccc;
+    }
+
+    .yellow {
+      color: #ff8500;
+    }
+
+    .artical {
+      font-size: 14px;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      white-space: normal !important;
+      -webkit-line-clamp: 2;
+      flex: 1;
+      -webkit-box-orient: vertical;
+    }
+
+    .img-wrap {
+      width: 100%;
+      box-sizing: border-box;
+      flex: 1;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .img-wrap div {
+      margin: 5px;
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+    }
+
+    /*产品选择*/
+
+    .buyhurry {
+      width: 100%;
+      background: white;
+      height: auto;
+      position: fixed;
+      box-sizing: border-box;
+      bottom: 44px;
+      font-size: 14px;
+      z-index: 100;
+      display: none;
+    }
+
+    .buytop {
+      width: 100%;
+      height: auto;
+      display: flex;
+      padding: 10px;
+      box-sizing: border-box;
+      position: relative;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .buylefttop {
+      background-size: cover;
+      width: 5rem;
+      height: 5rem;
+    }
+
+    .buylefttop img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .buyrighttop {
+      flex: 1;
+      padding-left: 10px;
+    }
+
+    .buyprice {
+      font-size: 14px;
+      font-weight: bold;
+      color: orangered;
+    }
+
+    .onevone {
+      font-size: 15px;
+      font-weight: bold;
+      width: 90%;
+    }
+
+    .middlebox {
+      width: 100%;
+      height: 3rem;
+      display: flex;
+      box-sizing: border-box;
+    }
+
+    .buymethods {
+      font-size: 15px;
+      font-weight: bold;
+      line-height: 1rem;
+      padding: 10px;
+    }
+
+    .publicbuy {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    .pubicsbuypan {
+      border: 1px solid black;
+      padding: 0 5px;
+      font-size: 12px;
+      line-height: 1.5rem;
+      border-radius: 20px;
+      margin-left: 0.7rem;
+    }
+
+    .beforebuy {
+      color: #F46C5A;
+      border: 1px solid #F46C5A;
+    }
+
+    .buynum {
+      height: 2rem;
+      background: white;
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      border-top: 1px solid #ddd;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .plubnum {
+      flex: 1;
+    }
+
+    .numtitle {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .btnbutton {
+      padding: 4px 8px;
+      font-size: 15px;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    .numbtn {
+      width: 30px;
+      background-color: #f1f1f1;
+      color: #b1b1b1;
+      text-align: center;
+    }
+
+    .allnumprice {
+      display: flex;
+      text-align: right;
+    }
+
+    .buybottombox {
+      width: 100%;
+      height: 4rem;
+      display: flex;
+    }
+
+    .buysurebtn {
+      border-radius: 20px;
+      border: 1px solid black;
+      margin: auto;
+      width: 60%;
+      line-height: 1.8rem;
+      font-size: 14px;
+    }
+
+    .closefm {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      z-index: 11;
+      font-size: 20px;
+    }
+
+    .nonebuyhurry {
+      display: block;
+      z-index: 100;
+    }
+
+    .mikeboxtwo {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      background: black;
+      z-index: 100;
+      opacity: 0.7;
+    }
+
+    /*产品参数*/
+    .laver {
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      opacity: 0.5;
+      z-index: 100;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .projectbox {
+      position: fixed;
+      bottom: 44px;
+      width: 100%;
+      background: white;
+      height: auto;
+      padding: 10px;
+      box-sizing: border-box;
+      font-size: 14px;
+      z-index: 101;
+      display: none;
+    }
+
+    .projectdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .nonepeoject {
+      display: block;
+      z-index: 100;
+    }
+
+    .projectul {
+      line-height: 3rem;
+    }
+
+    .projectul span {
+      margin-left: 10px;
+      font-size: 13px;
+    }
+
+    .projectsure {
+      width: 100%;
+      height: 3rem;
+    }
+
+    .prokectbottom {
+      width: 100%;
+      height: 2rem;
+      display: flex;
+    }
+
+    .projectbtn {
+      margin: auto;
+      font-size: 14px;
+      line-height: 14px;
+      border: 1px solid black;
+      border-radius: 25px;
+      width: 100px;
+      height: 35px;
+      background-color: #fff;
+    }
+
+    .bottomtoken {
+      width: 100%;
+      height: 44px;
+
+    }
+
+    .bottomfix {
+      width: 100%;
+      height: 44px;
+      position: fixed;
+      z-index: 101;
+      line-height: 44px;
+      bottom: 0;
+      left: 0;
+      display: flex;
+    }
+
+    .leftfix {
+      flex: 1;
+      text-align: left;
+      font-size: 12px;
+      background: white;
+      color: orange;
+      padding-left: 10px;
+      box-sizing: border-box;
+    }
+
+    .leftfix:active {
+      background-color: gainsboro;
+    }
+
+    .rightfix {
+      flex: 1;
+      text-align: center;
+
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .rightfix.gray {
+      background: #888;
+    }
+
+    .orange {
+      background: orange;
+    }
+
+    .headfont {
+      width: 100%;
+      height: 44px;
+      font-size: 18px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      line-height: 44px;
+      display: flex;
+      z-index: 100;
+      transition: 0.5s;
+      padding: 10px 15px 0 15px;
+    }
+
+    .headericon {
+      z-index: 10;
+      color: white;
+      flex: 1;
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .absolurty {
+      z-index: 10;
+      color: white;
+      flex: 1;
+      text-align: right;
+      padding-right: 20px;
+      box-sizing: border-box;
+    }
+
+    .beforeheadfont {
+      background-color: rgba(0, 0, 0, 0.7);
+      /*background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.7) 0%, #ffffff 100%);*/
+      /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0, 0, 0, 0.7)), color-stop(100%,#ffffff));*/
+      /*background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.7) 0%,#ffffff 100%);*/
+      /*background: -o-linear-gradient(top, rgba(0, 0, 0, 0.7) 0%,#ffffff 100%);*/
+      /*background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.7) 0%,#ffffff 100%);*/
+      /*background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%,#ffffff 100%);*/
+      /*transition: 0.5s;*/
+    }
+
+    .jianbian {
+      background: -moz-linear-gradient(top, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4e4e4e), color-stop(100%, rgba(255, 255, 255, 0)));
+      background: -webkit-linear-gradient(top, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      background: -o-linear-gradient(top, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      background: -ms-linear-gradient(top, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+      background: linear-gradient(to bottom, #4e4e4e 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .titlebigbox {
+      width: 100%;
+      height: auto;
+      box-sizing: border-box;
+    }
+
+    .absolurty span i {
+      margin-right: 5px;
+    }
+
+    /*本地商家*/
+    .list-business {
+      background-color: #fff;
+      height: 4rem;
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid gainsboro;
+    }
+
+    .left-img {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .left-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .right-content {
+      margin-left: 0.5rem;
+      height: 3rem;
+      /*line-height: 1.5rem;*/
+      flex: 1;
+    }
+
+    .right-content h4 {
+      font-size: 16px;
+    }
+
+    .right-content p {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #5a5a5a;
+    }
+
+    .address {
+      width: 8rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding-right: 0.3rem;
+    }
+
+    .right-content p i {
+      font-style: normal;
+    }
+
+    /*弹出框样式*/
+    .pop-wrap {
+      /*position: absolute;*/
+      /*top: 10rem;*/
+      /*z-index: 21;*/
+      display: flex;
+      width: 13rem;
+      height: 8rem;
+      padding: 1rem 1rem 1.35rem 1rem;
+      justify-content: center;
+      box-sizing: border-box;
+      border-radius: 5px;
+      overflow: hidden;
+      background-color: #fff;
+    }
+
+    .certi-pop p {
+      font-size: 0.7rem;
+    }
+
+    .popbutton {
+      padding-top: 2rem;
+      padding-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popbutton button {
+      border-radius: 20px;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.5rem;
+      border: 1px solid black;
+    }
+
+    .popbutton button:first-child {
+      margin-right: 1rem;
+    }
+
+    /*分享*/
+    .mint-popup-bottom {
+      /*width: 100%;*/
+
+    }
+
+    .share {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .share p {
+      width: 100%;
+      font-size: 16px;
+      margin: 10px;
+    }
+
+    .shareWrap {
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .shareWrap > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .shareWrap i {
+      font-size: 40px;
+    }
+
+    .cancelbtn {
+      width: 60%;
+      margin: 20px auto 10px;
+      height: 1.8rem;
+      line-height: 1.8rem;
+      border-radius: 1rem;
+      font-size: 16px;
+      border: 1px solid #8D8D8D;
+      text-align: center;
+    }
+
+    .disabled {
+      color: #c8c8cd;
+      border: 1px solid #c8c8cd;
+    }
+
+    .mint-indicator-wrapper {
+      z-index: 10000;
+    }
+
+    .mint-indicator-mask {
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app' :class="{newappstyle:beforeproject}">
+  <mt-popup v-model="popupVisible" popup-transition="popup-fade" modal="true" style="border-radius: 15px;">
+    <div class="pop-wrap">
+      <div class="certi-pop">
+        <p>点评需要完成产品认证或者实名认证</p>
+        <div class="popbutton">
+          <button type="button" @click="openvAuth">实名认证</button>
+          <button type="button" @click="openqAuth">产品认证</button>
+        </div>
+      </div>
+    </div>
+  </mt-popup>
+  <mt-popup v-model="shenhezhong" popup-transition="popup-fade" modal="true">
+    <div class="pop-wrap">
+      <div class="certi-pop">
+        <p>认证正在审核中，请耐心等候。。。</p>
+        <div class="popbutton">
+          <button type="button" style="width: 100%;" @click="closeRz()">确定</button>
+          <!--<button type="button">产品认证</button>-->
+        </div>
+      </div>
+    </div>
+  </mt-popup>
+  <mt-popup v-model="sharepopup" position="bottom" modal="true" class="share">
+    <p>分享到</p>
+    <div class="shareWrap">
+      <div class="wx" @click="shareTo(1)"><i class="iconfont icon-weixin-copy"
+                                             style="color:#28Ac0c"></i><span>微信好友</span></div>
+      <div class="wxFriend" @click="shareTo(2)"><i class="iconfont icon-pengyouquan"
+                                                   style="color:#28Ac0c"></i><span>朋友圈</span></div>
+      <div class="qq" @click="shareTo(3)"><i class="iconfont icon-qq" style="color:#24bbff"></i><span>QQ</span>
+      </div>
+      <div class="Qzone" @click="shareTo(4)"><i class="iconfont icon-qqkongjian"
+                                                style="color:#f7c000"></i><span>QQ空间</span></div>
+    </div>
+    <div class="cancelbtn" @click="cancelshare">取消</div>
+  </mt-popup>
+  <div :class="{mikeboxtwo:brforestyle}" @click="mikebtntwo()"></div>
+  <div class="titlebigbox">
+    <div class="headfont" style="transition: 0.5s" :class="{beforeheadfont: fontconfsize, jianbian: !fontconfsize}">
+      <div class="headericon">
+        <span @click="closeWindow()">
+          <i class="iconfont icon-ziyuan2-copy"></i>
+        </span>
+      </div>
+      <div class="absolurty">
+        <span>
+          <i class="iconfont" :class="details.ifCollect==='1'? 'icon-xingxing1' : 'icon-xingxing'"
+             @click="changeAOC('1')"></i>
+          <i class="iconfont" :class="details.ifAgree==='1'? 'icon-xin' : 'icon-ziyuan8'" @click="changeAOC('2')"></i>
+          <i class="iconfont icon-fenxiang1" @click="share"></i>
+        </span>
+      </div>
+
+    </div>
+
+
+    <div class="headerback" style="position: relative">
+      <mt-swipe :show-indicators="false">
+        <mt-swipe-item @change="handleChange(index)" class="swiperstyle"
+                       :style="{'background-image': 'url(' + formatImg(item, true) + ')'}"
+                       v-for="(item,index) in backlist">
+        </mt-swipe-item>
+      </mt-swipe>
+    </div>
+
+    <div class="lablebox">
+      <p class="lableop"><span style="margin-left: 10px">{{details.goodName}}</span></p>
+      <p class="lableprice">
+        <span style="margin-left: 10px;line-height: 2rem" v-if="switcher==='-1'">&yen;?</span>
+        <span style="margin-left: 10px;line-height: 2rem" v-else>&yen;{{details.price}}</span>
+      </p>
+      <div class="lablebottom">
+        <div>快递费 &yen;0.00</div>
+        <div>已成交{{details.countOrder}}套</div>
+        <div>北京大兴</div>
+      </div>
+    </div>
+
+    <!--承诺-->
+    <div class="messagebox">
+      <p v-show="details.tenDays==='1'">
+        <span class="messagespan">承诺</span>
+        <span class="messagespan"> <i style="font-size: 0.5rem;color:#f46c5a"
+                                      class="iconfont icon-chenggong"></i> 10天无理由退货</span>
+      </p>
+      <!--v-show="details.zhenglinSend==='1' || details.clubSend==='1' || details.freeBooking==='1'"-->
+      <p>
+        <span class="messagespan">支持</span>
+        <span class="messagespan"> <i style="font-size: 0.5rem;color:#f46c5a" class="iconfont icon-chenggong"
+                                      v-show="details.zhenglinSend==='1'"></i> 正麟发货</span>
+        <span class="messagespan"> <i style="font-size: 0.5rem;color:#f46c5a" class="iconfont icon-chenggong"
+                                      v-show="details.clubSend==='1'"></i> 琴馆提货</span>
+        <span class="messagespan"> <i style="font-size: 0.5rem;color:#f46c5a" class="iconfont icon-chenggong"
+                                      v-show="details.freeBooking==='1'"></i> 免费预约</span>
+      </p>
+
+      <p>
+        <span class="messagespan">提醒</span>
+        <span class="messagespan"> <i style="font-size: 0.5rem;color:#f46c5a"
+                                      class="iconfont icon-chenggong"></i> 实名或古琴认证</span>
+        <span class="messagespan"> <i style="font-size: 0.5rem;color:#f46c5a"
+                                      class="iconfont icon-chenggong"></i> 高级会员</span>
+      </p>
+    </div>
+
+    <div class="goproject">
+      <ul class="projectul">
+        <li @click="alreadybuy()"><span class="projectspan">产品选择</span><i
+                style="font-size: 0.5rem;float: right;margin-right: 0.5rem" class="iconfont icon-ziyuan2"></i>
+        </li>
+        <li @click="projectdata()"><span class="projectspan">产品参数</span><i
+                style="font-size: 0.5rem;float: right;margin-right: 0.5rem" class="iconfont icon-ziyuan2"></i>
+        </li>
+      </ul>
+    </div>
+
+    <!--产品选择-->
+    <div class="buyhurry" :class="{nonebuyhurry:brforestyle}">
+      <div class="buytop">
+        <div class="closefm" @click="ladould()">X</div>
+        <div class="buylefttop">
+          <img :src="formatImg(details.images)" alt="">
+        </div>
+        <div class="buyrighttop">
+          <p class="onevone">{{details.goodName}}</p>
+          <p class="buyprice">&yen;{{details.price}}元</p>
+          <p style="font-size: 10px; color: #888;">剩余：{{details.stock}}套</p>
+        </div>
+      </div>
+      <p class="buymethods">购买方式</p>
+      <div class="middlebox">
+        <div class="publicbuy">
+          <!--暂时不做购买@click="buybtn(ind)：2-正麟发；1-琴馆提；3-免费预约-->
+          <span class="pubicsbuypan" :class="{beforebuy:buyindex==2}" @click="buybtn(2)">线上付,正麟发</span>
+          <span class="pubicsbuypan" style="color: #c8c8cd;border: 1px solid #c8c8cd;">线上付,琴馆提</span>
+          <span class="pubicsbuypan" style="color: #c8c8cd;border: 1px solid #c8c8cd;">免费预约</span>
+          <!--<span class="pubicsbuypan" :class="{beforebuy:buyindex==index}" @click="getJXBuyPage()">{{item.name}}</span>-->
+        </div>
+      </div>
+      <div class="buynum">
+        <div class="plubnum">
+          <span class="numtitle">购买数量</span>
+        </div>
+        <div class="plubnum" style="text-align: right">
+          <span class="btnbutton numbtn" @click="downbtn()">-</span>
+          <span class="btnbutton">{{onum}}</span>
+          <span class="btnbutton numbtn" @click="upbtn()">+</span>
+        </div>
+
+      </div>
+
+      <p class="allnumprice">
+            <span style="flex: 1;text-align: right;padding: 14px;">
+            <span>共计{{onum}}份</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>总计：<span style="font-size: 15px;color: orangered">¥ {{numprice}}</span> 元</span>
+            </span>
+      </p>
+      <div class="buybottombox">
+        <mt-button class="projectbtn" @click="sruebuybtn()">确认</mt-button>
+      </div>
+
+    </div>
+    <!--产品参数-->
+    <div :class="{laver:beforeproject}" @click="closrsure()"></div>
+    <div class="projectbox" :class="{nonepeoject:beforeproject}">
+      <div class="projectdiv">
+        <p>产品参数</p>
+      </div>
+      <ul class="projectul">
+        <li>
+          <span>产品品牌：</span>
+          <span>正麟殿</span>
+        </li>
+        <li>
+          <span>产品规格：</span>
+          <span>长：890cm</span>
+          <span>宽：60cm</span>
+          <span>高：10cm</span>
+        </li>
+        <li>
+          <span>销售渠道：</span>
+          <span>琴馆同款(线上线下都有销售)</span>
+        </li>
+      </ul>
+      <div class="projectsure"></div>
+      <div class="prokectbottom">
+        <mt-button class="projectbtn" @click="closrsure()">确认</mt-button>
+      </div>
+    </div>
+
+    <!--产品详情-->
+    <div class="projectdetails">
+      <span style=" margin-left: 20px">产品详情</span>
+    </div>
+    <div class="detailsbox" v-html="charToHtml(details.content)">
+    </div>
+    <!--&lt;!&ndash;商家&ndash;&gt;-->
+    <!--<div style="background: white;border-bottom: 1px solid gainsboro" class="projectdetails">-->
+    <!--<span style=" margin-left: 20px">在售商家</span>-->
+    <!--</div>-->
+
+    <!--<div class="seller">-->
+    <!--<div v-for="item in sellermessge">-->
+    <!--<div class="list-business">-->
+    <!--<div class="left-img">-->
+    <!--<img :src="formatImg(item.picName)"/>-->
+    <!--</div>-->
+    <!--<div class="right-content">-->
+    <!--<h4>{{item.clubName}}</h4>-->
+    <!--<p><i class="address">地址:{{item.address}}</i>-->
+    <!--<span>-->
+    <!--<i><svg class="icon" aria-hidden="true" style="font-size: 0.6rem">-->
+    <!--<use xlink:href="#icon-dingwei1"></use>-->
+    <!--</svg></i><span style="font-size: 12px">{{item.distance}}km</span></span></p>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div style="background: white;border-bottom: 1px solid gainsboro;display: flex" class="projectdetails">-->
+    <!--<mt-button class="allbtn" style="margin: auto" @click="openbendishangjia">查看全部</mt-button>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--留言-->
+    <div class="tokenmessage" style="background:#ededed">
+      <div style="border-bottom: 1px solid gainsboro;display: flex" class="projectdetails">
+        <span style=" margin-left: 20px">网友留言({{commentCount}}条)</span>
+      </div>
+
+      <div class="listbox" v-for="(item,index) in wordslist">
+        <div class="friendmessage">
+          <img class="listimg" :src=" formatImg(item.avatar)">
+          <div>
+            <svg class="icon vsure" aria-hidden="true" v-show="item.isUserAuth == '1'">
+              <use xlink:href="#icon-vrenzheng"></use>
+            </svg>
+          </div>
+          <div class="rightbox">
+            <div class="righttop">
+                    <span class="titlename">
+                        <span style="flex:1;line-height: 1rem">{{item.nickname}}
+                            <i class="iconfont huangguan icon-huangguan" v-show="item.level == '1'"></i></span>
+                        <span class="xingxing" v-show="item.isTotal == '1'">
+                             <i class="iconfont icon-xingxing1 yellow" v-for="xing in Number(item.overallScore)"></i>
+                             <i class="iconfont icon-xingxing1 gray" v-for="xing in 5-Number(item.overallScore)"></i>
+                        </span>
+                    </span>
+              <span class="titletime">{{item.addTime}}</span>
+            </div>
+            <div class="rightbottom">
+              <span class="artical">{{item.content}}</span>
+              <div style="line-height: 2rem;">
+                <span>全文</span>
+                <div class="img-wrap" v-show="item.images!==null">
+                  <div v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)" alt="">
+                  </div>
+                </div>
+                <span style="font-size: 12px;float: right" @click="changeAgree(index)">
+                  <i style="font-size: 12px;color: #ff4949;" class="iconfont icon-xin"
+                     v-if="item.ifAgree==='1'"></i>
+                  <i style="font-size: 12px" class="iconfont icon-ziyuan8" v-else></i>
+                                    {{item.countAgree}}人
+                                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="textcount">
+        </div>
+      </div>
+      <div style="border-bottom: 1px solid gainsboro;display: flex" class="projectdetails">
+        <mt-button class="allbtn" style="margin: auto;background-color:#f0f0f0;" @click="openevaluate">查看全部
+        </mt-button>
+      </div>
+    </div>
+    <div class="bottomtoken"></div>
+    <div class="bottomfix">
+      <div class="leftfix" @click="openliuyan">
+        <i class="iconfont icon-liuyan"></i>
+        <span>留言</span>
+      </div>
+      <div class="rightfix" @click="alreadybuy()"
+           :class="{orange: switcher === '1', gray: switcher === '-1' || (details.stock == '0' || details.stock == null)}">
+        立即订购
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  document.addEventListener('scroll', function () {
+    if (document.body.scrollTop < 100) {
+      app.fontconfsize = false;
+    } else {
+      app.fontconfsize = true;
+    }
+  });
+  var app = new Vue({
+    el: '#app',
+    data: {
+      sharepopup: false,
+      fontconfsize: false,
+      brforestyle: false,
+      buyindex: 2,
+      onum: 1,
+      numprice: '',
+      backlist: [],
+      sellermessge: [],
+      wordslist: [],
+      beforeproject: false,
+      details: {},
+      payType: 2,
+      popupVisible: false,
+      shenhezhong: false,
+      user: [],
+      refreshDone: -1,  // 设为 -1 保证第一次进来不弹出刷新成功
+      loading: false,
+      firstCount: 0,
+      currentLoc: '',
+      seller: [],
+      switcher: '-1',
+      commentCount: 0
+    },
+    filters: {},
+    watch: {
+      firstCount: function (value) {
+        if (value == 3) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        api.setWinAttr({
+          slidBackEnabled: false
+        });
+
+        app.newCommentForJX(function () {
+          app.firstCount++;
+        });
+
+        app.getJueXiangDetail(function () {
+          app.firstCount++;
+        });
+
+        app.switch_app(function () {
+          app.firstCount++;
+        });
+
+        refresh(function () {
+          app.getJueXiangDetail(function () {
+            app.switch_app(function () {
+              refreshDone();
+            });
+          });
+        });
+
+        app.titlebigbox = $api.offset($api.dom('.titlebigbox')).h;
+        app.headerbackground = $api.offset($api.dom('.headerback')).h;
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: app.titlebigbox - app.headerbackground
+          }
+        }, function (ret, err) {
+          app.fontconfsize = true;
+        });
+
+        api.addEventListener({
+          name: 'jxStockChange'
+        }, function () {
+          app.getJueXiangDetail();
+        });
+      };
+    },
+    methods: {
+      // 绝响开关
+      switch_app: function (callback) {
+        var post = {
+          cmd: 'switch_app',
+          switchType: 6
+        };
+        sendAjax(app, post, function (res) {
+          app.switcher = res.data;
+          if (callback) {
+            callback();
+          }
+        })
+      },
+      // 获取绝响详情
+      getJueXiangDetail: function (callback) {
+        var post = {
+          cmd: 'getJueXiangDetail',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.details = res.data;
+          app.backlist = cutImgurl(res.data.images);
+          if (app.details.vipPrice) {
+            app.details.price = app.details.vipPrice;
+            app.numprice = app.details.vipPrice;
+          } else {
+            app.details.price = app.details.oldPrice;
+            app.numprice = app.details.oldPrice;
+          }
+          if (callback) {
+            callback();
+          }
+        })
+      },
+      // 获取绝响详情
+      getJueXiangStock: function (callback) {
+        var post = {
+          cmd: 'getJueXiangDetail',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          callback(res.data.stock);
+        })
+      },
+      mikebtntwo: function () {
+        app.brforestyle = false
+      },
+      // 调取绝响点赞收藏接口
+      jxAgreeAndCollect: function (res) {
+        var post = {
+          cmd: 'jxAgreeAndCollect',
+          token: getToken(),
+          agreeOrCollect: res
+        };
+        sendAjax(this, post, function (res) {
+        });
+      },
+      // 分享内容：1：微信好友；2：朋友圈；3：qq；4：空间
+      share: function () {
+        app.sharepopup = true;
+      },
+      cancelshare: function () {
+        app.sharepopup = false;
+      },
+      shareTo: function (ind) {
+        var wx = api.require('wx');
+        var qq = api.require('QQPlus');
+        app.sharepopup = false;
+        switch (ind) {
+          case 1 : {
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'session',
+              title: app.details.goodName,
+              description: app.details.goodDesc,
+              thumb: formatShareImg(app.details.goodCover),
+              contentUrl: wapUrl + 'wap/html2/juexiang/juexiang/shopdetails_fm.html'
+            }, function (ret, err) {
+              if (ret.status) {
+                api.toast({
+                  msg: '分享成功！'
+                });
+              } else {
+                if (err.code == 2) {
+                  api.toast({
+                    msg: '已取消'
+                  });
+                } else {
+                  qpi.toast({
+                    msg: '分享失败'
+                  })
+                }
+              }
+            });
+            break;
+          }
+          case 2 : {
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'timeline',
+              title: app.details.goodName,
+              description: app.details.goodDesc,
+              thumb: formatShareImg(app.details.goodCover),
+              contentUrl: wapUrl + 'wap/html2/juexiang/juexiang/shopdetails_fm.html'
+            }, function (ret, err) {
+              if (ret.status) {
+                toastMsg('分享成功');
+              } else {
+              }
+            });
+            break;
+          }
+          case 3 : {
+            qq.shareNews({
+              url: wapUrl + 'wap/html2/juexiang/juexiang/shopdetails_fm.html',
+              title: app.details.goodName,
+              description: app.details.goodDesc,
+              imgUrl: formatShareImg(app.details.images),
+              type: 'QFriend'
+            }, function (ret, err) {
+
+            });
+
+            break;
+          }
+          case 4 : {
+            qq.shareNews({
+              url: wapUrl + '/html2/juexiang/juexiang/shopdetails_fm.html',
+              title: app.details.goodName,
+              description: app.details.goodDesc,
+              imgUrl: formatImg(app.details.images),
+              type: 'QZone'
+            }, function (ret, err) {
+
+            });
+            break;
+          }
+        }
+      },
+      // 改变绝响点赞收藏状态
+      changeAOC: function (res) {
+        if (res === '1') {
+          if (app.details.ifCollect === '1') {
+            app.details.ifCollect = '-1';
+          } else if (app.details.ifCollect === '-1') {
+            app.details.ifCollect = '1';
+          }
+          app.jxAgreeAndCollect('1')
+        } else {
+          if (app.details.ifAgree === '1') {
+            app.details.ifAgree = '-1';
+          } else if (app.details.ifAgree === '-1') {
+            app.details.ifAgree = '1';
+          }
+          app.jxAgreeAndCollect('2');
+        }
+      },
+      // 产品选择:暂时不添加
+      alreadybuy: function () {
+        if (app.switcher === '1') {
+          if (app.details.stock == '0' || app.details.stock == null) {
+            toastMsg('库存不足');
+          } else {
+            app.brforestyle = true;
+          }
+        }
+      },
+      ladould: function () {
+        //关闭产品选择
+        app.brforestyle = false;
+        app.onum = 1;
+        app.numprice = app.details.price
+      },
+      downbtn: function () {
+        isLogined(this, function (logined) {
+          if (logined) {
+            app.onum--;
+            if (app.onum <= 0) {
+              app.onum = 1;
+            }
+            app.getJXBuyPage(app.payType, app.onum);
+          } else {
+            openLogin();
+          }
+        });
+      },
+      upbtn: function () {
+        isLogined(this, function (logined) {
+          if (logined) {
+            if (app.onum < app.details.stock) {
+              app.onum++;
+            }
+            app.getJXBuyPage(app.payType, app.onum);
+          } else {
+            openLogin();
+          }
+        });
+      },
+      sruebuybtn: function () {
+        MINT.Indicator.open();
+        isLogined(this, function (logined) {
+          MINT.Indicator.close();
+          if (logined) {
+            app.getJueXiangStock(function (stock) {
+              if (stock > 0) {
+                if (Number(stock) < Number(app.onum)) {
+                  toastMsg('超出库存数量');
+                } else {
+                  //提交订单
+                  app.brforestyle = false;
+                  if (app.buyindex !== null) {
+                    openView('zhenglinfa_fm', 'juexiang/onlineorder/zhenglinfa_fm', '提交订单', 'zhenglinfa_win', false,
+                      {
+                        buyindex: app.buyindex,
+                        shopprice: app.details.price,
+                        onum: app.onum,
+                        numprice: app.numprice,
+                        details: app.details
+                      });
+                  }
+                }
+              } else {
+                toastMsg('库存不足');
+              }
+            });
+          } else {
+            openLogin();
+          }
+        });
+      },
+      getJXBuyPage: function (payType, onum) {
+        //获取购买页面信息赋值给numprice，得到合计金额
+        var post2 = {
+          cmd: 'getJXBuyPage',
+          token: getToken(),
+          amount: onum,
+          payType: payType
+        };
+        sendAjax(this, post2, function (res) {
+          if (res.data.vipPrice) {
+            app.numprice = res.data.vipPrice;
+          } else {
+            app.numprice = res.data.oldPrice;
+          }
+
+        });
+      },
+      // 产品参数
+      projectdata: function () {
+        app.beforeproject = true
+      },
+      closrsure: function () {
+        app.beforeproject = false
+      },
+      // 在售商家
+      getLocation: function (callback) {
+        var aMap = api.require('aMap');
+        aMap.open({
+          rect: {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0
+          }
+        }, function () {
+          aMap.getLocation(function (ret, arr) {
+              if (ret.status) {
+                app.currentLoc = ret.lon + ',' + ret.lat;
+                if (callback) {
+                  callback();
+                }
+              } else {
+              }
+            }
+          )
+        })
+      },
+      getShopInSale: function (callback) {
+        app.getLocation(function () {
+          var post1 = {
+            cmd: 'getShopInSale',
+            token: getToken(),
+            city: getcitycode(),
+            showWhere: '1',
+            app: '1',
+            currentposition: app.currentLoc
+          };
+          sendAjax(app, post1, function (res) {
+            app.sellermessge = res.data.proList.slice(0, 2);
+            app.seller = res.data.proList;
+            if (callback) {
+              callback();
+            }
+          });
+        });
+        //获取本地商家在售赋值给sellermessge
+
+      },
+      openbendishangjia: function () {
+        //查看全部本地商家
+        openView('bendi', 'juexiang/bendishangjia_fm', '本地商家在售', false, {
+          seller: app.seller
+        });
+      },
+      // 网友留言
+      newCommentForJX: function (callback) {
+        //获取网友留言
+        var post3 = {
+          cmd: 'newCommentForJX',
+          token: getToken(),
+          perPage: 2,
+          page: 1
+        };
+        sendAjax(this, post3, function (res) {
+          app.wordslist = res.data.proList;
+          if (res.data.count) {
+            app.commentCount = res.data.count;
+          }
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      openevaluate: function () {
+        //查看全部评价
+        api.openWin({
+          name: 'evaluate_win',
+          url: '../evaluate/evaluate_win.html',
+          pageParam: {
+            isQinAuth: app.user.isQinAuth,
+            isUserAuth: app.user.isUserAuth
+          }
+        });
+      },
+      changeAgree: function (ind) {
+        //改变点赞状态
+        if (app.wordslist[ind].ifAgree === '-1') {
+          app.wordslist[ind].ifAgree = '1';
+          app.wordslist[ind].countAgree++;
+        } else if (app.wordslist[ind].ifAgree === '1') {
+          app.wordslist[ind].ifAgree = '-1';
+          app.wordslist[ind].countAgree--;
+        }
+        var post = {
+          cmd: 'jxCommentAgree',
+          token: getToken(),
+          commentId: app.wordslist[ind].id
+        };
+        sendAjax(this, post, function (res) {
+        })
+      },
+//      写留言
+      getUserInfo: function (callback) {
+        //获取用户个人信息
+        var post4 = {
+          cmd: 'getUserInfo',
+          token: getToken()
+        };
+        sendAjax(this, post4, function (res) {
+          app.user = res.data;
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      openliuyan: function () {
+        isLogined(this, function (logined) {
+          if (logined) {
+            //打开留言界面
+            if (app.user.isQinAuth === '1' || app.user.isUserAuth === '1') {
+              api.openWin({
+                name: 'leaveMsg_win',
+                url: '../evaluate/leaveMsg_win.html',
+                pageParam: {
+                  isQinAuth: app.user.isQinAuth,
+                  isUserAuth: app.user.isUserAuth
+                }
+              });
+            } else {
+              app.popupVisible = true;
+            }
+          } else {
+            openLogin();
+          }
+        });
+      },
+      closeRz: function () {
+        app.shenhezhong = false;
+      },
+      openvAuth: function () {
+        //去实名认证
+        app.popupVisible = false;
+        if (app.user.isUserAuth == '2') {
+          app.shenhezhong = true;
+        } else {
+          api.openWin({
+            name: 'leaguer_win',
+            url: '../../leaguer/leaguer_win.html',
+            pageParam: {
+              index: 1
+            }
+          });
+        }
+      },
+      openqAuth: function () {
+        //去产品认证
+        app.popupVisible = false;
+        if (app.user.isQinAuth == '2') {
+          app.shenhezhong = true;
+        } else {
+          openView('qinAuth_fm', 'qinAuth/qinAuth_fm', '产品认证');
+        }
+      },
+      //选择琴馆
+      selqinguan: function () {
+        app.getShopInSale(function () {
+          if (app.seller.length === 0) {
+            alert('对不起暂无在售商家');
+          } else {
+            app.openbendishangjia();
+          }
+        });
+
+      },
+      buybtn: function (ind) {
+//        app.payType = ind; 2-正麟发；1-琴馆提；3-免费预约
+        if (ind === 2) {
+          app.payType = ind;
+          app.buyindex = ind;
+          app.getJXBuyPage(app.buyindex, app.onum);
+        }
+
+//        switch (ind) {
+//          case 1: {
+//            var buy = app.details.buyAuthForClubTake;
+//            for (var i = 0; i < buy.length; i++) {
+//              if (buy[i] === '0') {
+//                app.getJXBuyPage(app.buyindex, app.onum);
+//              }
+//            }
+//            break;
+//          }
+//          case 2: {
+//            break;
+//          }
+//          case 3: {
+//            break;
+//          }
+//        }
+
+
+      }
+    }
+  })
+</script>

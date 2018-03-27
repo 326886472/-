@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+</head>
+<style>
+  .timeover {
+    width: 50px;
+    height: 50px;
+    background: white;
+    opacity: 1;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    z-index: 10;
+    position: fixed;
+    right: 30px;
+    top: 20px;
+  }
+</style>
+<body>
+<div id="app">
+  <img style="width: 100%;height: 100%" src="http://api.zhenglinc.com/Public/uploads/juexiang_ad.jpg" @click="gotojuexiang(2)">
+  <div class="timeover" @click="gotojuexiang(0)">
+    {{timenum}}
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      timenum: 5,
+      flag: 0
+    },
+    created: function () {
+      apiready = function () {
+        app.labertime();
+      };
+    },
+    // 啊
+    methods: {
+      labertime: function () {
+        app.flag = setInterval(function () {
+          app.timenum--;
+          if (app.timenum == 0) {
+            api.openWin({
+              name: 'index_win',
+              url: './index_win.html'
+            });
+            clearInterval(app.flag);
+          }
+        }, 1000);
+      },
+      gotojuexiang: function(res) {
+        clearInterval(app.flag);
+        api.openWin({
+          name: 'index_win',
+          url: './index_win.html',
+          pageParam: {
+            thisindex: res
+          }
+        });
+      }
+    }
+  });
+</script>
+
+
+

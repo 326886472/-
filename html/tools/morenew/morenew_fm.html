@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .headernav {
+      width: 100%;
+      background: white;
+    }
+
+    .changbox {
+      flex: 1;
+      text-align: center;
+      font-size: 15px;
+      color: #585858;
+      line-height: 2rem;
+    }
+
+    .beforeclass {
+      border-bottom: 2px solid #ab9277;
+      color: #ab9277;
+    }
+
+    .datalist {
+      width: 90%;
+      margin: auto;
+      height: auto;
+      padding: 10px;
+      background: #f0f0f0;
+      box-sizing: inherit;
+    }
+
+    .boximg {
+      width: 100%;
+      height: 30%;
+    }
+
+    .datalist span {
+      font-size: 13px;
+    }
+
+    .labletext {
+      line-height: 1.5rem;
+    }
+
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+      margin-top: 2rem;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 20px;
+      height: 20px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div class="headernav">
+    <div style="width: 90%;margin: 0 auto;height: 2rem;display: flex">
+      <div class="changbox" v-for="(item,index) in sonCates" :class="{beforeclass:changeindex==index}"
+           @click="change(index)">
+        {{item.cateName}}
+      </div>
+    </div>
+  </div>
+
+  <div class="datalist">
+    <div class="boximg" v-for="(item,index) in newlist" @click="moredetails(index)">
+      <img style="width: 100%;height: 100%" :src="formatImg(item.cover)">
+      <p><span>{{item.title}}</span></p>
+      <p style="float: right" class="labletext">
+        <span>{{item.editTime}}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      changeindex: 0,
+      textlist: [
+        {
+          name: '古琴新闻'
+        },
+        {
+          name: '琴家新闻'
+        },
+        {
+          name: '正麟动态'
+        }
+      ],
+      newlist: [],
+      sonCates: [],
+      page: 1,
+      perPage: 5,
+      rote: false,
+      overlate: false,
+      load: false
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+
+        refresh(function () {
+          app.getCulList(app.cateid, app.changeindex+1, function () {
+            refreshDone();
+          });
+        });
+
+        app.sonCates = api.pageParam.sonCates;
+        app.firstLevelCateId = api.pageParam.firstLevelCateId;
+        app.cateid = api.pageParam.sonCates[0].cateId;
+//                第一次调用
+        app.getCulList(app.cateid, 1);
+
+        //这个是监听滑动
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+
+//                滑动时候改变的值
+        }, function (ret, err) {
+          app.load = true;
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.getCulList(app.cateid);
+        });
+
+      };
+    },
+    methods: {
+      change: function (index) {
+        app.newlist = [];
+        MINT.Indicator.open('加载中...');
+        app.changeindex = index;
+        app.getCulList(app.sonCates[index].cateId)
+      },
+      moredetails: function (index) {
+        api.openWin({
+          name: 'newdetails_win',
+          url: '../morenew/newdetails_win.html',
+          pageParam: {
+            articleid: app.newlist[index].id,
+            cateid: app.newlist[index].cateId
+          }
+        });
+      },
+      getCulList: function (cateid, ref, callback) {
+        var post = {
+          cmd: 'getCulList',
+          cateId: cateid,
+          page:app.page,
+          perPage:app.perPage
+        };
+        sendAjax(this, post, function (res) {
+
+          if(callback){
+            callback()
+          }
+
+          if(ref==1){
+            app.newlist = res.data.proList;
+            app.rote = true;
+            app.load = false;
+
+          }else{
+            app.newlist = app.newlist.concat(res.data.proList);
+            app.rote = true;
+            app.load = false;
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+          MINT.Indicator.close();
+        });
+      }
+    }
+  })
+
+
+</script>

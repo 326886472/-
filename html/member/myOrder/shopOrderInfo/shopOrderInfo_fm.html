@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+    }
+
+    .fz-box {
+      font-size: 0.6rem;
+    }
+
+    .icon {
+      width: 0.8rem;
+      height: 0.8rem;
+      display: block;
+    }
+
+    .icon-dfk {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    /*公共头*/
+    .box-header {
+      padding: 0.2rem 0 0.2rem 1rem;
+    }
+
+    .flex-box {
+      display: flex;
+      align-items: center;
+    }
+
+    .shop-flex-box {
+      display: flex;
+    }
+
+    .bet {
+      justify-content: space-between;
+    }
+
+    .aound {
+      justify-content: space-around;
+    }
+
+    .content li {
+      padding: 0.5rem 1rem;
+      background: white;
+    }
+
+    .label-box span {
+      border-radius: 0.2rem;
+      padding: 0.2rem;
+    }
+
+    /*课程详情*/
+    .img-box {
+      border-radius: 3px;
+      width: 28%;
+      min-height: 5rem;
+      flex-shrink: 0;
+      overflow: hidden;
+      background-size: cover;
+    }
+
+    .message-box {
+      width: 70%;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+
+    .list-box li {
+      padding: 0.5rem 1rem;
+      font-size: 0.7rem;
+      color: #666;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .list-box li:last-child {
+      border: none;
+    }
+
+    .list-box li:last-child input {
+      width: 70%;
+    }
+
+    .bottom-box {
+      font-size: 0.7rem;
+      color: #666;
+      padding: 0.5rem 1rem;
+      background: white;
+    }
+
+    .btn-box {
+      margin-top: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.7rem;
+      color: #666;
+      background: white;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-box div {
+      width: 20%;
+      text-align: center;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid #666;
+      border-radius: 0.7rem;
+      margin-right: 0.5rem;
+    }
+
+    .btn-box div:active {
+      background: gainsboro;
+    }
+
+    .my-color {
+      color: #FF3C00;
+    }
+
+    .order-box {
+      padding: 0.5rem 0;
+
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <ul class="content">
+    <div class="box-header">
+      订单编号:&nbsp;{{form.orderSn}}
+    </div>
+    <!--5种状态  根据class_fm传值判断显示-->
+    <!--代付款-->
+    <li class="order-box flex-box aound" v-show="form.status =='0'  ">
+      <div>
+        <div>等待买家付款</div>
+        <div>
+          {{sendText}}
+        </div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-daifukuan"></use>
+      </svg>
+    </li>
+    <!--等待发货-->
+    <li class="order-box flex-box aound" v-show="form.status =='1' ">
+      <div>
+        <div>等待卖家发货</div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-jiudianbinguan"></use>
+      </svg>
+    </li>
+    <!--交易完成-->
+    <li class="order-box flex-box aound" v-show="form.status =='3'">
+      <div>
+        <div>交易完成</div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-wancheng"></use>
+      </svg>
+    </li>
+    <!--交易关闭-->
+    <li class="order-box flex-box aound" v-show="form.status =='5'">
+      <div>
+        <div>交易关闭</div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-ziyuan_"></use>
+      </svg>
+    </li>
+    <!--等待买家收货-->
+    <li class="order-box flex-box aound" v-show="form.status =='2'">
+      <div>
+        <div>等待买家收货</div>
+      </div>
+      <svg class="icon icon-dfk" aria-hidden="true" style="font-size: 0.8rem">
+        <use xlink:href="#icon-ziyuan11"></use>
+      </svg>
+    </li>
+    <div class="box-header">
+      收货人信息
+    </div>
+    <li class="Buyers-box">
+      <div class="flex-box aui-margin-b-15">
+        <div class="flex-box aui-col-xs-4">
+          <svg class="icon aui-margin-r-10" aria-hidden="true" style="font-size: 0.8rem">
+            <use xlink:href="#icon-shouhuorenxinxi"></use>
+          </svg>
+          收货人:
+        </div>
+        <div class="aui-margin-l-5">
+          {{form.name}}
+        </div>
+      </div>
+      <div class="flex-box">
+        <div class="flex-box aui-col-xs-4">
+          <svg class="icon aui-margin-r-10" aria-hidden="true" style="font-size: 0.8rem">
+            <use xlink:href="#icon-dingwei1"></use>
+          </svg>
+          收货地址:
+        </div>
+        <div class="aui-margin-l-5">
+          {{form.address}}
+        </div>
+      </div>
+    </li>
+    <div class="box-header">
+      快递信息
+    </div>
+    <li class="Buyers-box">
+      <div class="flex-box aui-margin-b-15">
+        <div class="flex-box">
+          <svg class="icon aui-margin-r-10" aria-hidden="true" style="font-size: 0.8rem">
+            <use xlink:href="#icon-shouhuorenxinxi"></use>
+          </svg>
+          快递公司:
+        </div>
+        <div class="aui-margin-l-5">
+          {{form.expressName || '无'}}
+        </div>
+      </div>
+      <div class="flex-box">
+        <div class="flex-box">
+          <svg class="icon aui-margin-r-10" aria-hidden="true" style="font-size: 0.8rem">
+            <use xlink:href="#icon-dingwei1"></use>
+          </svg>
+          快递单号:
+        </div>
+        <div class="aui-margin-l-5">
+          {{form.expressNumber || '无'}}
+        </div>
+      </div>
+    </li>
+    <div class="box-header">
+      货品详情
+    </div>
+    <li>
+      <div class="flex-box aui-padded-b-5">
+        <svg class="icon aui-margin-r-5" aria-hidden="true" style="font-size: 0.8rem">
+          <use xlink:href="#icon-shangjia"></use>
+        </svg>
+        &nbsp;正麟殿官方
+      </div>
+      <!--课程详情-->
+      <div class="shop-flex-box">
+        <!--图片-->
+        <div class="img-box" :style="{'background-image': 'url(' + formatImg(form.images) + ')'}">
+        </div>
+        <!--信息-->
+        <div class="message-box aui-padded-l-10">
+          <div>{{form.goodName}}</div>
+          <div class="flex-box bet">
+            <div class="flex-box my-color">
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-qian-copy"></use>
+              </svg>
+              {{form.vipPrice}}
+            </div>
+            <div class="">X{{form.amount}}</div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <!--价格-->
+  <ul class="list-box aui-margin-t-10">
+    <li>
+      <div>商品总价</div>
+      <div class="flex-box">
+        <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+          <use xlink:href="#icon-qian"></use>
+        </svg>
+        &nbsp;{{form.price}}
+      </div>
+    </li>
+    <!--<li>-->
+    <!--<div>运费</div>-->
+    <!--<div class="flex-box">-->
+    <!--快递-->
+    <!--<svg class="icon" aria-hidden="true" style="font-size: 0.8rem">-->
+    <!--<use xlink:href="#icon-qian"></use>-->
+    <!--</svg>-->
+    <!--12.00-->
+    <!--</div>-->
+    <!--</li>-->
+    <li>
+      <div>订单总价</div>
+      <div class="flex-box">
+        <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+          <use xlink:href="#icon-qian"></use>
+        </svg>
+        &nbsp;{{form.price}}
+      </div>
+    </li>
+    <!--<li>-->
+    <!--<div>实付款</div>-->
+    <!--<div class="flex-box">-->
+    <!--<svg class="icon" aria-hidden="true" style="font-size: 0.8rem">-->
+    <!--<use xlink:href="#icon-qian"></use>-->
+    <!--</svg> {{form.price}}-->
+    <!--(含运费-->
+    <!--<svg class="icon" aria-hidden="true" style="font-size: 0.8rem">-->
+    <!--<use xlink:href="#icon-qian"></use>-->
+    <!--</svg>-->
+    <!--12.00)-->
+    <!--</div>-->
+    <!--</li>-->
+    <li style="justify-content: flex-start">
+      <div class="aui-padded-r-15">买家留言</div>
+      <div>
+        {{form.message}}
+      </div>
+    </li>
+    <div class="bottom-box">
+      <div class="flex-box">
+        <div class="aui-margin-r-10">创建时间:</div>
+        <div>
+          {{form.createTime}}
+        </div>
+      </div>
+      <div class="flex-box" v-show="form.payTime != null ">
+        <div class="aui-margin-r-10">付款时间:</div>
+        <div>
+          {{form.payTime}}
+        </div>
+      </div>
+      <div class="flex-box" v-show="form.sendGoodTime != null ">
+        <div class="aui-margin-r-10">发货时间:</div>
+        <div>
+          {{form.sendGoodTime}}
+        </div>
+      </div>
+      <div class="flex-box" v-show="form.businessFinishTime != null ">
+        <div class="aui-margin-r-10">到店时间:</div>
+        <div>
+          {{form.businessFinishTime}}
+        </div>
+      </div>
+    </div>
+  </ul>
+  <!--对应各种状态btn-->
+  <div class="btn-box" v-show="form.status != 5">
+    <div v-show="form.status ==='0' " @click="openPay(form.goodOrderId, form.amount, form.goodId)">付款</div>
+    <div v-show="form.status ==='0' " @click="goodConfirmToClub('quxiao',form.goodOrderId,form.payType)">取消订单</div>
+    <!--<div v-show="form.status ==='1'" @click="prompt(form.goodOrderId)">确认到店</div>-->
+    <div v-show="form.status ==='2' " @click="goodConfirmToClub('queren',form.goodOrderId,2)">确认收货</div>
+    <div v-show="form.status ==='3' " @click="openEvaluate(form.goodOrderId)">去评价</div>
+    <div v-show="form.status === '4'" @click="goodConfirmToClub('tuikuan',form.goodOrderId,form.payType)">申请退款</div>
+    <!--<div v-show="form.status === '5'">删除订单</div>-->
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      form: {
+        orderSn: '',
+        status: '',
+        payType: ''
+      },
+      formatImg: formatImg,
+      countTime: '2880',
+      sendText: ''
+    },
+    created: function () {
+      apiready = function () {
+        api.addEventListener({
+          name: 'viewappear'
+        }, function () {
+          closeWindow('zhenglinfa_win');
+        });
+
+        app.countDownFn();
+        if (api.pageParam.goodOrderId) {
+          var goodOrderId = api.pageParam.goodOrderId;
+          app.getMyGoodInfo(goodOrderId);
+        }
+
+        // 监听订单状态变化
+        api.addEventListener({
+          name: 'shopOrderchange'
+        }, function (ret, err) {
+          app.getMyGoodInfo(api.pageParam.goodOrderId);
+        });
+      };
+    },
+    methods: {
+      // 获取产品订单详情
+      getMyGoodInfo: function (goodOrderId) {
+        var post = {
+          cmd: 'getMyGoodInfo',
+          token: getToken(),
+          goodOrderId: goodOrderId
+        };
+        sendAjax(this, post, function (res) {
+          app.form = res.data;
+        });
+      },
+      // 确认到店
+      prompt: function () {
+        api.confirm({
+          title: '确认到店',
+          buttons: ['取消', '确定']
+        }, function (ret, err) {
+          var index = ret.buttonIndex;
+          if (index === 2) {
+            // 确认到店
+            var post = {
+              cmd: 'yuConfirmToClub',
+              token: getToken(),
+              clubOrderId: app.clubOrderId,
+              status: 1
+            };
+            sendAjax(this, post, function (res) {
+              app.getMyGoodInfo(api.pageParam.goodOrderId);
+              api.sendEvent({
+                name: 'shopOrderchange'
+              });
+            })
+          } else {
+            // 取消
+          }
+        });
+      },
+      // 取消 确认收货 退款
+      goodConfirmToClub: function (name, goodOrderId, payType) {
+        var title = '';
+        if (name === 'quxiao') {
+          app.choose = 2;
+          title = '确认取消订单？';
+        } else if (name === 'queren') {
+          app.choose = 3;
+          title = '确认收货？';
+        } else {
+          app.choose = 1
+          title = '确认操作？';
+        }
+
+        api.confirm({
+          title: title,
+          buttons: ['取消', '确定']
+        }, function (ret) {
+          if (ret.buttonIndex === 2) {
+            var post = {
+              cmd: 'goodConfirmToClub',
+              token: getToken(),
+              choose: app.choose,
+              goodOrderId: goodOrderId,
+              payType: payType
+            };
+            sendAjax(app, post, function (res) {
+              api.sendEvent({
+                name: 'shopOrderchange'
+              });
+            });
+          }
+        });
+      },
+      // 付款
+      openPay: function (orderId, amount, goodId) {
+        if (goodId == '1') {
+          app.getJueXiangDetail(function (stock) {
+            if (stock == null || stock == '0') {
+              toastMsg('库存不足');
+            } else {
+              if (Number(stock) < Number(amount)) {
+                toastMsg('超出库存数量');
+              } else {
+                openView('orderPay', 'member/myOrder/orderPay/orderPay_fm', '订单支付', false, false, {
+                  orderId: orderId
+                });
+              }
+            }
+          });
+        }
+      },
+      getJueXiangDetail: function (callback) {
+        var post = {
+          cmd: 'getJueXiangDetail',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          callback(res.data.stock);
+        })
+      },
+      // 评价
+      openEvaluate: function (goodOrderId) {
+        api.openWin({
+          name: 'shopEvaluate',
+          url: '../shopEvaluate/shopEvaluate_win.html',
+          pageParam: {
+            goodOrderId: goodOrderId
+          }
+        });
+      },
+      // 倒计时
+      countDownFn: function () {
+        // 剩余1天23小时自动关闭
+        app.sendText = "剩余" + Math.floor(app.countTime / 1440) + '天' + app.countTime % 24 + '小时自动关闭';
+        var countDown = setInterval(function () {
+          if (app.countTime > 1) {
+            app.countTime--;
+            app.sendText = "剩余" + Math.floor(app.countTime / 1440) + '天' + app.countTime % 24 + '小时自动关闭';
+          } else {
+            app.sendText = "订单已失效";
+            app.countTime = 2880;
+            clearInterval(countDown);
+          }
+        }, 60000);
+      }
+    }
+  })
+</script>

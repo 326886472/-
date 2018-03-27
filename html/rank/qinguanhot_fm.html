@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title>古琴馆人气排行榜</title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    body {
+      overflow-x: hidden;
+    }
+
+    #app {
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.15rem;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    /*top标志*/
+    .top-wrap {
+      position: absolute;
+      top: 0;
+      left: -5px;
+      width: 1.8rem;
+      height: 1.8rem;
+      overflow: hidden;
+      border-radius: 1rem;
+      color: #fff;
+    }
+
+    .beijing {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .top1 {
+      background-color: #f46c5a;
+    }
+
+    .top2 {
+      background-color: #ffbb28;
+    }
+
+    .top3 {
+      background-color: #5a9bf4;
+    }
+
+    /*头部*/
+    .top-title {
+      width: 100%;
+      background-color: #fff;
+    }
+
+    .top-title img {
+      width: 100%;
+    }
+
+    /*排行列表*/
+    .list-wrap {
+      display: flex;
+      flex-direction: row;
+      background-color: #fff;
+      padding: 0.3rem 0 5rem 0.5rem;
+      width: 100%;
+      height: 5rem;
+      color: #5a5a5a;
+      font-size: 0.7rem;
+      margin-bottom: 0.2rem;
+      box-sizing: border-box;
+    }
+
+    .left-img {
+      position: relative;
+      width: 4rem;
+      height: 4rem;
+      padding: 0.2rem;
+      flex-shrink: 0;
+    }
+
+    .left-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .right-content {
+      position: relative;
+      padding: 5px 2px 0 5px;
+      flex-grow: 1;
+    }
+
+    .title {
+      padding: 0 0.5rem 0 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .title h4 {
+      display: inline-block;
+      font-size: 0.7rem;
+      color: #000;
+    }
+
+    .title span {
+      font-size: 0.6rem;
+      /*color: #f46c5a;*/
+    }
+
+    .grade {
+      height: 12px;
+      line-height: 12px;
+    }
+
+    .grade span {
+      padding-top: 0.1rem;
+      padding-left: 2px;
+      font-size: 12px;
+      color: #ff8500;
+    }
+
+    .star {
+      float: left;
+      display: flex;
+      width: 0.7rem;
+      height: 0.7rem;
+      padding: 2px 1px;
+    }
+
+    .gray {
+      color: #ccc;
+    }
+
+    .yellow {
+      color: #ff8500;
+    }
+
+    .biaoqian {
+      padding: 0.3rem 0 0.1rem 0;
+    }
+
+    .biaoqian span {
+      height: 0.7rem;
+      line-height: 0.7rem;
+      font-size: 0.5rem;
+      padding: 0 3px;
+      border-radius: 3px;
+      border: 1px solid #5a5a5a;
+    }
+
+    .address span {
+      font-size: 0.6rem;
+      padding: 0.2rem 0.1rem 0.1rem 0;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <div class="top-title qinguan">
+    <img src="../../assets/images/rank/qghot.png" alt="古琴馆人气排行榜">
+  </div>
+
+  <div v-for="(item,index) in items">
+    <div class="list-wrap" @click="openqg(index)">
+      <div class="left-img">
+        <div class="top-wrap top1" v-show="item.rankId==='1'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 10px">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;">TOP1</span>
+          </div>
+        </div>
+        <div class="top-wrap top2" v-show="item.rankId==='2'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;">TOP2</span>
+          </div>
+        </div>
+        <div class="top-wrap top3" v-show="item.rankId==='3'"><!--排行前三-->
+          <div class="beijing">
+            <i>
+              <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+                <use xlink:href="#icon-huangguan"></use>
+              </svg>
+            </i>
+            <span style="font-size: 0.6rem;">TOP3</span>
+          </div>
+        </div>
+        <img :src="formatImg(item.picName)"/>
+      </div>
+      <div class="right-content">
+        <div class="title">
+          <div>
+            <h4>{{item.clubName}}</h4>
+            <span v-show="item.rankId>3" style="color:#f46c5a;">排名{{item.rankId}}</span>
+          </div>
+          <span @click.stop="changeAgree(index)">
+                        <i style="font-size: 12px;color: #ff4949;" class="iconfont icon-xin"
+                           v-if="item.ifAgree==1"></i>
+                        <i style="font-size: 12px;" class="iconfont icon-ziyuan8" v-else></i>
+                        {{item.countAgree}}
+                    </span>
+        </div>
+        <div class="grade">
+          <i class="star yellow" v-for="i in Math.floor(getScore(item.totalScore))">
+            <svg class="icon" aria-hidden="true" style="font-size: 12px">
+              <use xlink:href="#icon-xingxing1"></use>
+            </svg>
+          </i>
+          <i class="star gray" v-for="i in 5-Math.floor(getScore(item.totalScore))">
+            <svg class="icon" aria-hidden="true" style="font-size: 12px">
+              <use xlink:href="#icon-xingxing1"></use>
+            </svg>
+          </i>
+          <span>{{getScore(item.totalScore)}}/5</span>
+        </div>
+        <div class="biaoqian">
+          <span v-show="item.isBrand==='1'">品牌店</span>
+          <span v-show="item.operateYear>0">{{item.operateYear}}年店</span>
+          <span v-show="item.dueTime==='1'">售后服务</span>
+          <span v-show="item.isFree==='1'">免费体验课</span>
+        </div>
+        <div class="address">
+          <span>{{item.cityName}}</span>&#8226;<span>{{item.regionName}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script src="../../assets/iconfont/iconfont.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: "#app",
+    data: {
+      items: [],
+      firstCount: 0
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+
+      apiready = function () {
+        app.getRank(function () {
+          app.firstCount++;
+        });
+      };
+    },
+    methods: {
+      getRank: function (callback) {
+        console.log(getToken());
+        var post = {
+          cmd: 'rankClubList',
+          cityCode: getcitycode(),
+          rank: 2,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+          app.items = res.data;
+          if(callback){
+            callback();
+          }
+        });
+      },
+      getScore: function (ret) {
+        return (ret / 2).toFixed(1);
+      },
+      openqg: function (ret) {
+        //打开琴馆预约购买
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../find/catchdetails/catchdetails_win.html',
+          pageParam: {
+            statustype:0,
+            clubId: app.items[ret].clubId
+          }
+        });
+      },
+      changeAgree: function (index) {
+        if (app.items[index].ifAgree === '1') {
+          app.items[index].ifAgree = '0';
+          app.items[index].countAgree--;
+        } else if (app.items[index].ifAgree === '0') {
+          app.items[index].ifAgree = '1';
+          app.items[index].countAgree++;
+        }
+        app.collectCommon(index);
+      },
+      collectCommon: function (ind) {
+        var post = {
+          cmd: 'collectCommon',
+          token: getToken(),
+          id: app.items[ind].clubId,
+          type: '1',
+          agreeOrCollect: '2',
+          cityCode: getcitycode()
+        };
+        sendAjax(this, post, function (res) {
+        });
+      }
+    }
+  })
+
+</script>
+
+
+<!--备注-->
+<!--没有懒加载-->

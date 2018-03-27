@@ -1,0 +1,67 @@
+html, body {
+  background: #f0f0f0;
+}
+
+.apply {
+  .content {
+    background: white;
+    margin-top: 0.5rem;
+
+    .title {
+      line-height: 2;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    .back {
+      .qing {
+        padding-left: 10px;
+        padding-right: 10px;
+        box-sizing: inherit;
+        .tian {
+          line-height: 2;
+          color: #a6a6a6;
+        }
+
+        .icon-wodezhanghu {
+
+        }
+
+        textarea {
+          resize: none;
+          display: block;
+          width: 90%;
+          margin-left: 10px;
+          height: 6rem;
+          margin-top: 10px;
+        }
+
+        .max {
+          text-align: right;
+          color: #a6a6a6;
+        }
+      }
+    }
+  }
+
+  .commit-text {
+    line-height: 3;
+    color: #8b8b8b;
+  }
+
+  .btn-box {
+    text-align: center;
+    padding-top: 1rem;
+    .mint-button {
+      width: 50%;
+    }
+  }
+
+  .ad {
+    display: flex;
+    height: 20rem;
+    background: white;
+    align-items: center;
+    justify-content: center;
+  }
+}

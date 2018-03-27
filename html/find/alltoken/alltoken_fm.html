@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      height: 100%;
+      position: relative;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.15em;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    #app {
+      flex: 1;
+      height: 100%;
+      background-color: #f0f0f0;
+    }
+
+    /*.message{*/
+    /*width: 100%;*/
+    /*box-sizing: border-box;*/
+    /*}*/
+
+    .content {
+      padding: 5% 5% 0 10px;
+      box-sizing: border-box;
+      word-break: break-all;
+    }
+
+    .hr {
+      height: 1px;
+      background-color: #f0f0f0;
+    }
+
+    /*导航*/
+    .mint-navbar {
+      font-size: 16px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 2;
+      border-top: 10px solid #f0f0f0;
+    }
+
+    .mint-navbar .mint-tab-item.is-selected {
+      border-bottom: 3px solid #ab9277;
+      color: #000;
+      margin-bottom: -3px;
+    }
+
+    .mint-navbar .mint-tab-item {
+      margin: 0 0.7rem;
+    }
+
+    .mint-cell-left, .mint-cell-right, .mint-cell-title {
+      display: none;
+    }
+
+    .mint-tab-item-label {
+      font-size: 14px;
+    }
+
+    .mint-cell {
+      border-bottom: 0.5rem solid #f0f0f0;
+      /*margin-bottom: 0.5rem;*/
+      /*padding: 0 0 0.5rem;*/
+    }
+
+    .mint-cell-wrapper {
+      padding: 0;
+    }
+
+    .mint-cell-value {
+      flex: 1;
+      -webkit-box-flex: 1;
+    }
+
+    .mint-cell-title {
+      flex: 0;
+      -webkit-box-flex: 0;
+    }
+
+    /*评价*/
+    .list-box {
+      width: 100%;
+      padding: 8px;
+    }
+
+    .list {
+      width: 100%;
+    }
+
+    .username {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 3.5rem;
+      padding: 0.5rem 3px 0.5rem;
+    }
+
+    .username .head-picture {
+      width: 3rem;
+      height: 3rem;
+
+    }
+
+    .head-picture img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .vsure {
+      position: absolute;
+      left: 0.5rem;
+      bottom: -0.1rem;
+      width: 2rem;
+      /*background-color: #ff8500;*/
+      color: #fff;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .nickname {
+      position: absolute;
+      left: 3.5rem;
+      top: 0.5rem;
+      width: 6rem;
+      font-size: 14px;
+    }
+
+    .date {
+      padding-top: 0.5rem;
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .username > .left {
+      width: 50%;
+    }
+
+    .username > .right {
+      width: 45%;
+    }
+
+    .hr1 {
+      height: 1px;
+      width: 100%;
+      background-color: gainsboro;
+    }
+
+    .eva-msg-wrap {
+      padding: 0 0 0.5rem 1.5rem;
+      font-size: 14px;
+    }
+
+    .image {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      padding: 5px;
+    }
+
+    .flex-img {
+      width: 3rem;
+      height: 3rem;
+      margin: 5px;
+    }
+
+    .flex-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .goods-type {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding-bottom: 0.5rem;
+    }
+
+    .dianzan {
+      flex: 1;
+      padding: 10px;
+      /*text-align: right;*/
+    }
+
+    .dianzan .iconfont {
+      font-size: 12px;
+    }
+
+    .reply {
+      padding: 0.6em 2px;
+    }
+
+    /*弹出框样式*/
+    .mint-popup {
+      border-radius: 8px;
+    }
+
+    .pop-wrap {
+      /*position: absolute;*/
+      /*top: 10rem;*/
+      /*z-index: 21;*/
+      display: flex;
+      width: 13rem;
+      justify-content: center;
+      box-sizing: border-box;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #fff;
+    }
+
+    .certi-pop {
+      height: 8rem;
+      width: 100%;
+      font-size: 14px;
+      box-sizing: border-box;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    p {
+      font-size: 14px;
+      width: 100%;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .popbutton {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      box-sizing: border-box;
+      margin-top: 20px;
+    }
+
+    .popbutton button {
+      height: 30px;
+      line-height: 30px;
+      font-size: 14px;
+      width: 90px;
+      border: 1px solid #888;
+      border-radius: 15px;
+      outline: none;
+    }
+
+    /*星星*/
+    .xing {
+      margin-top: 10px;
+    }
+
+    .xing i {
+      margin: 5px 2px 0 0;
+      font-size: 12px;
+    }
+
+    .yellow {
+      color: #ff8500;
+    }
+
+    .gray {
+      color: #b5b5b5;
+    }
+
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: #8d8d8d;
+    }
+
+    .bottomdiv span {
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+
+<div id='app'>
+  <mt-popup v-model="popupVisible" popup-transition="popup-fade" modal="true">
+    <div class="pop-wrap">
+      <div class="certi-pop">
+        <p>点评需要完成产品认证或者实名认证</p>
+        <div class="popbutton">
+          <button type="button" @click="openvAuth">实名认证</button>
+          <button type="button" @click="openqAuth">产品认证</button>
+        </div>
+      </div>
+    </div>
+  </mt-popup>
+  <mt-popup v-model="shenhezhong" popup-transition="popup-fade" modal="true">
+    <div class="pop-wrap">
+      <div class="certi-pop">
+        <p>认证正在审核中，请耐心等候。。。</p>
+        <div class="popbutton">
+          <button type="button" style="width: 100%;" @click="closeRz">确定</button>
+          <!--<button type="button">产品认证</button>-->
+        </div>
+      </div>
+    </div>
+  </mt-popup>
+  <!--导航-->
+  <div class="hr"></div>
+  <mt-navbar v-model="selected">
+    <mt-tab-item id="1">全部</mt-tab-item>
+    <mt-tab-item id="2">消费评价</mt-tab-item>
+    <mt-tab-item id="3">普通点评</mt-tab-item>
+    <mt-tab-item id="4">晒图</mt-tab-item>
+  </mt-navbar>
+  <div class="hr" style="padding-top: 3.1rem;"></div>
+  <!-- 评价 -->
+  <mt-tab-container v-model="selected">
+    <mt-tab-container-item id="1">
+      <mt-cell v-for="(item,index0) in allList" v-show='type===1'>
+        <!--使用v-for循环从后台调数据-->
+        <div class="list-box">
+          <div class="list">
+            <div class="username">
+              <div class="left">
+                <div style="position: relative" class="head-picture">
+                  <img :src="formatImg(item.avatar)"/>
+                  <div>
+                    <svg class="icon vsure" aria-hidden="true" v-show="item.authStatus==='1'">
+                      <use xlink:href="#icon-vrenzheng"></use>
+                    </svg>
+                  </div>
+                  <div class="nickname">
+                    <div class="xinxi">
+                      {{item.nickname}} <i class="iconfont icon-huangguan-copy"
+                                           style="color: #ffbb28;font-size: 12px;"></i>
+                    </div>
+                    <div class="xing">
+                      <i class="iconfont icon-shoucang yellow" v-for="xing in Number(item.overallScore)"></i><i
+                            class="iconfont icon-shoucang gray" v-for="xing in 5-Number(item.overallScore)"></i>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div class="date">{{item.addTime}}</div>
+              </div>
+            </div>
+            <hr class="hr1">
+            <div class="eva-msg-wrap">
+              <!--评价信息-->
+              <div class="message">
+                <div class="text">
+                  <div class="content">
+                    {{item.content}}
+                  </div>
+                  <!--<span>......</span>-->
+                </div>
+                <!--<div class="full-text">全文</div>-->
+                <!--<div class="pack">收起</div>-->
+                <div class="image">
+                  <div class="flex-img" v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)"/>
+                  </div>
+                </div>
+                <div class="goods-type">
+                  <!--<div>桐木 </div>-->
+                  <!--<div class="buy-date" style="color:#8d8d8d" v-show="item.payTime!==null">购买日期:{{item.payTime}}</div>-->
+                  <div class="dianzan" @click="changeAgree(allList,index0)">
+                    <i class="iconfont icon-xin" v-if="item.ifAgree==1" style="color: #ff4949;"></i>
+                    <i class="iconfont icon-ziyuan8" v-else></i>
+                    <span style="color:#8d8d8d">{{item.countEvaluateAgree}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!--底部信息-->
+              <div class="bottom" v-if="item.replyEvaluate.length>0">
+                <hr class="hr1">
+                <div class="reply-complain">
+                  <div class="reply">
+                    <span style="color:#ff4949">商家回复：</span>
+                    <span class="replay-text" v-text="item.replyEvaluate[0].replyContent"></span>
+                  </div>
+                </div>
+              </div>
+              <!--商家回复-->
+              <!--查看全部-->
+              <!--<div class="all">查看全部<span>(16)</span></div>-->
+            </div>
+          </div>
+        </div>
+
+      </mt-cell>
+      <mt-cell v-for="(item,index0) in allList" v-show='type===2'>
+        <!--使用v-for循环从后台调数据-->
+        <div class="list-box">
+          <div class="list">
+            <div class="username">
+              <div class="left">
+                <div style="position: relative" class="head-picture">
+                  <img :src="formatImg(item.avatar)"/>
+                  <div>
+                    <svg class="icon vsure" aria-hidden="true" v-show="item.authStatus==='1'">
+                      <use xlink:href="#icon-vrenzheng"></use>
+                    </svg>
+                  </div>
+                  <div class="nickname">
+                    <div class="xinxi">
+                      {{item.nickname}} <i class="iconfont icon-huangguan-copy"
+                                           style="color: #ffbb28;font-size: 12px;"></i>
+                    </div>
+                    <div class="xing">
+                      <i class="iconfont icon-shoucang yellow" v-for="xing in Number(item.overallScore)"></i><i
+                            class="iconfont icon-shoucang gray" v-for="xing in 5-Number(item.overallScore)"></i>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div class="date">{{item.addTime}}</div>
+              </div>
+            </div>
+            <hr class="hr1">
+            <div class="eva-msg-wrap">
+              <!--评价信息-->
+              <div class="message">
+                <div class="text">
+                  <div class="content">
+                    {{item.content}}
+                  </div>
+                  <!--<span>......</span>-->
+                </div>
+                <!--<div class="full-text">全文</div>-->
+                <!--<div class="pack">收起</div>-->
+                <div class="image">
+                  <div class="flex-img" v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)"/>
+                  </div>
+                </div>
+                <div class="goods-type">
+                  <!--<div>桐木 </div>-->
+                  <!--<div class="buy-date" style="color:#8d8d8d" v-show="item.payTime!==null">购买日期:{{item.payTime}}</div>-->
+                  <div class="dianzan" @click="changeAgree(allList,index0)">
+                    <i class="iconfont icon-xin" v-if="item.ifAgree==='1'" style="color: #ff4949;"></i>
+                    <i class="iconfont icon-ziyuan8" v-else></i>
+                    <span style="color:#8d8d8d">{{item.countEvaluateAgree}}</span>
+                  </div>
+                </div>
+              </div>
+              <!--底部信息-->
+              <div class="bottom" v-if="item.replyEvaluate.length>0">
+                <hr class="hr1">
+                <div class="reply-complain">
+                  <div class="reply">
+                    <span style="color:#ff4949">商家回复：</span>
+                    <!--<span class="replay-text" v-text="item.replyEvaluate[0].replyContent"></span>-->
+                  </div>
+                </div>
+              </div>
+              <!--商家回复-->
+              <!--查看全部-->
+              <!--<div class="all">查看全部<span>(16)</span></div>-->
+            </div>
+          </div>
+        </div>
+      </mt-cell>
+      <div class="hr"></div>
+
+      <div class="bottomdiv">
+        <span v-if="rote">---上拉加载---</span>
+        <i v-if="load" class="iconfont publicfont icon-jiazai"></i>
+        <span v-if="overlate">已无更多</span>
+      </div>
+      <!--<div class="sm-loading" v-show="sm_loading[0] >= 1"></div>-->
+      <!--<div class="end" v-show="end[0] >= 2">-->
+      <!--已到最底部-->
+      <!--</div>-->
+    </mt-tab-container-item>
+    <mt-tab-container-item id="2">
+      <mt-cell v-for="(item,index0) in consumeList" v-show=' type===1'>
+        <!--使用v-for循环从后台调数据-->
+        <div class="list-box">
+          <div class="list">
+            <div class="username">
+              <div class="left">
+                <div style="position: relative" class="head-picture">
+                  <img :src="formatImg(item.avatar)"/>
+                  <div>
+                    <svg class="icon vsure" aria-hidden="true" v-show="item.authStatus==='1'">
+                      <use xlink:href="#icon-vrenzheng"></use>
+                    </svg>
+                  </div>
+                  <div class="nickname">
+                    <div class="xinxi">
+                      {{item.nickname}} <i class="iconfont icon-huangguan-copy"
+                                           style="color: #ffbb28;font-size: 12px;"></i>
+                    </div>
+                    <div class="xing">
+                      <i class="iconfont icon-shoucang yellow" v-for="xing in Number(item.overallScore)"></i><i
+                            class="iconfont icon-shoucang gray" v-for="xing in 5-Number(item.overallScore)"></i>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div class="date">{{item.addTime}}</div>
+              </div>
+            </div>
+            <hr class="hr1">
+            <div class="eva-msg-wrap">
+              <!--评价信息-->
+              <div class="message">
+                <div class="text">
+                  <div class="content">
+                    {{item.content}}
+                  </div>
+                  <!--<span>......</span>-->
+                </div>
+                <!--<div class="full-text">全文</div>-->
+                <!--<div class="pack">收起</div>-->
+                <div class="image">
+                  <div class="flex-img" v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)"/>
+                  </div>
+                </div>
+                <div class="goods-type">
+                  <!--<div>桐木 </div>-->
+                  <!--<div class="buy-date" style="color:#8d8d8d" v-show="item.payTime!==null">购买日期:{{item.payTime}}</div>-->
+                  <div class="dianzan" @click="changeAgree(allList,index0)">
+                    <i class="iconfont icon-xin" v-if="item.ifAgree==='1'" style="color: #ff4949;"></i>
+                    <i class="iconfont icon-ziyuan8" v-else></i>
+                    <span style="color:#8d8d8d">{{item.countEvaluateAgree}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!--底部信息-->
+              <div class="bottom" v-if="item.replyEvaluate.length>0">
+                <hr class="hr1">
+                <div class="reply-complain">
+                  <div class="reply">
+                    <span style="color:#ff4949">商家回复：</span>
+                    <span class="replay-text" v-text="item.replyEvaluate[0].replyContent"></span>
+                  </div>
+                </div>
+              </div>
+              <!--商家回复-->
+              <!--查看全部-->
+              <!--<div class="all">查看全部<span>(16)</span></div>-->
+            </div>
+          </div>
+        </div>
+      </mt-cell>
+      <mt-cell v-for="(item,index0) in consumeList" v-show=' type===2'>
+        <!--使用v-for循环从后台调数据-->
+        <div class="list-box">
+          <div class="list">
+            <div class="username">
+              <div class="left">
+                <div style="position: relative" class="head-picture">
+                  <img :src="formatImg(item.avatar)"/>
+                  <div>
+                    <svg class="icon vsure" aria-hidden="true" v-show="item.authStatus==='1'">
+                      <use xlink:href="#icon-vrenzheng"></use>
+                    </svg>
+                  </div>
+                  <div class="nickname">
+                    <div class="xinxi">
+                      {{item.nickname}} <i class="iconfont icon-huangguan-copy"
+                                           style="color: #ffbb28;font-size: 12px;"></i>
+                    </div>
+                    <div class="xing">
+                      <i class="iconfont icon-shoucang yellow" v-for="xing in Number(item.overallScore)"></i><i
+                            class="iconfont icon-shoucang gray" v-for="xing in 5-Number(item.overallScore)"></i>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div class="date">{{item.addTime}}</div>
+              </div>
+            </div>
+            <hr class="hr1">
+            <div class="eva-msg-wrap">
+              <!--评价信息-->
+              <div class="message">
+                <div class="text">
+                  <div class="content">
+                    {{item.content}}
+                  </div>
+                  <!--<span>......</span>-->
+                </div>
+                <!--<div class="full-text">全文</div>-->
+                <!--<div class="pack">收起</div>-->
+                <div class="image">
+                  <div class="flex-img" v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)"/>
+                  </div>
+                </div>
+                <div class="goods-type">
+                  <!--<div>桐木 </div>-->
+                  <!--<div class="buy-date" style="color:#8d8d8d" v-show="item.payTime!==null">购买日期:{{item.payTime}}</div>-->
+                  <div class="dianzan" @click="changeAgree(allList,index0)">
+                    <i class="iconfont icon-xin" v-if="item.ifAgree==='1'" style="color: #ff4949;"></i>
+                    <i class="iconfont icon-ziyuan8" v-else></i>
+                    <span style="color:#8d8d8d">{{item.countEvaluateAgree}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!--底部信息-->
+              <div class="bottom" v-if="item.replyEvaluate.length>0">
+                <hr class="hr1">
+                <div class="reply-complain">
+                  <div class="reply">
+                    <span style="color:#ff4949">商家回复：</span>
+                    <span class="replay-text" v-text="item.replyEvaluate[0].replyContent"></span>
+                  </div>
+                </div>
+              </div>
+              <!--商家回复-->
+              <!--查看全部-->
+              <!--<div class="all">查看全部<span>(16)</span></div>-->
+            </div>
+          </div>
+        </div>
+      </mt-cell>
+      <div class="hr"></div>
+
+      <div class="bottomdiv">
+        <span v-if="rote">---上拉加载---</span>
+        <i v-if="load" class="iconfont publicfont icon-jiazai"></i>
+        <span v-if="overlate">已无更多</span>
+      </div>
+    </mt-tab-container-item>
+    <mt-tab-container-item id="3">
+      <mt-cell v-for="(item,index0) in ordinaryList" v-show=' type===1'>
+        <!--使用v-for循环从后台调数据-->
+        <div class="list-box">
+          <div class="list">
+            <div class="username">
+              <div class="left">
+                <div style="position: relative" class="head-picture">
+                  <img :src="formatImg(item.avatar)"/>
+                  <div>
+                    <svg class="icon vsure" aria-hidden="true" v-show="item.authStatus==='1'">
+                      <use xlink:href="#icon-vrenzheng"></use>
+                    </svg>
+                  </div>
+                  <div class="nickname">
+                    <div class="xinxi">
+                      {{item.nickname}} <i class="iconfont icon-huangguan-copy"
+                                           style="color: #ffbb28;font-size: 12px;"></i>
+                    </div>
+                    <div class="xing">
+                      <i class="iconfont icon-shoucang yellow" v-for="xing in Number(item.overallScore)"></i><i
+                            class="iconfont icon-shoucang gray" v-for="xing in 5-Number(item.overallScore)"></i>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div class="date">{{item.addTime}}</div>
+              </div>
+            </div>
+            <hr class="hr1">
+            <div class="eva-msg-wrap">
+              <!--评价信息-->
+              <div class="message">
+                <div class="text">
+                  <div class="content">
+                    {{item.content}}
+                  </div>
+                  <!--<span>......</span>-->
+                </div>
+                <!--<div class="full-text">全文</div>-->
+                <!--<div class="pack">收起</div>-->
+                <div class="image">
+                  <div class="flex-img" v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)"/>
+                  </div>
+                </div>
+                <div class="goods-type">
+                  <!--<div>桐木 </div>-->
+                  <!--<div class="buy-date" style="color:#8d8d8d" v-show="item.payTime!==null">购买日期:{{item.payTime}}</div>-->
+                  <div class="dianzan" @click="changeAgree(allList,index0)">
+                    <i class="iconfont icon-xin" v-if="item.ifAgree==='1'" style="color: #ff4949;"></i>
+                    <i class="iconfont icon-ziyuan8" v-else></i>
+                    <span style="color:#8d8d8d">{{item.countEvaluateAgree}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!--底部信息-->
+              <div class="bottom" v-if="item.replyEvaluate.length>0">
+                <hr class="hr1">
+                <div class="reply-complain">
+                  <div class="reply">
+                    <span style="color:#ff4949">商家回复：</span>
+                    <span class="replay-text" v-text="item.replyEvaluate[0].replyContent"></span>
+                  </div>
+                </div>
+              </div>
+              <!--商家回复-->
+              <!--查看全部-->
+              <!--<div class="all">查看全部<span>(16)</span></div>-->
+            </div>
+          </div>
+        </div>
+      </mt-cell>
+      <mt-cell v-for="(item,index0) in ordinaryList" v-show=' type===2'>
+        <!--使用v-for循环从后台调数据-->
+        <div class="list-box">
+          <div class="list">
+            <div class="username">
+              <div class="left">
+                <div style="position: relative" class="head-picture">
+                  <img :src="formatImg(item.avatar)"/>
+                  <div>
+                    <svg class="icon vsure" aria-hidden="true" v-show="item.authStatus==='1'">
+                      <use xlink:href="#icon-vrenzheng"></use>
+                    </svg>
+                  </div>
+                  <div class="nickname">
+                    <div class="xinxi">
+                      {{item.nickname}} <i class="iconfont icon-huangguan-copy"
+                                           style="color: #ffbb28;font-size: 12px;"></i>
+                    </div>
+                    <div class="xing">
+                      <i class="iconfont icon-shoucang yellow" v-for="xing in Number(item.overallScore)"></i><i
+                            class="iconfont icon-shoucang gray" v-for="xing in 5-Number(item.overallScore)"></i>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div class="date">{{item.addTime}}</div>
+              </div>
+            </div>
+            <hr class="hr1">
+            <div class="eva-msg-wrap">
+              <!--评价信息-->
+              <div class="message">
+                <div class="text">
+                  <div class="content">
+                    {{item.content}}
+                  </div>
+                  <!--<span>......</span>-->
+                </div>
+                <!--<div class="full-text">全文</div>-->
+                <!--<div class="pack">收起</div>-->
+                <div class="image">
+                  <div class="flex-img" v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)"/>
+                  </div>
+                </div>
+                <div class="goods-type">
+                  <!--<div>桐木 </div>-->
+                  <!--<div class="buy-date" style="color:#8d8d8d" v-show="item.payTime!==null">购买日期:{{item.payTime}}</div>-->
+                  <div class="dianzan" @click="changeAgree(allList,index0)">
+                    <i class="iconfont icon-xin" v-if="item.ifAgree==='1'" style="color: #ff4949;"></i>
+                    <i class="iconfont icon-ziyuan8" v-else></i>
+                    <span style="color:#8d8d8d">{{item.countEvaluateAgree}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!--底部信息-->
+              <div class="bottom" v-if="item.replyEvaluate.length>0">
+                <hr class="hr1">
+                <div class="reply-complain">
+                  <div class="reply">
+                    <span style="color:#ff4949">商家回复：</span>
+                    <span class="replay-text" v-text="item.replyEvaluate[0].replyContent"></span>
+                  </div>
+                </div>
+              </div>
+              <!--商家回复-->
+              <!--查看全部-->
+              <!--<div class="all">查看全部<span>(16)</span></div>-->
+            </div>
+          </div>
+        </div>
+      </mt-cell>
+      <div class="hr"></div>
+
+      <div class="bottomdiv">
+        <span v-if="rote">---上拉加载---</span>
+        <i v-if="load" class="iconfont publicfont icon-jiazai"></i>
+        <span v-if="overlate">已无更多</span>
+      </div>
+    </mt-tab-container-item>
+    <mt-tab-container-item id="4">
+      <mt-cell v-for="(item,index0) in picList" v-show=' type===1'>
+        <!--使用v-for循环从后台调数据-->
+        <div class="list-box">
+          <div class="list">
+            <div class="username">
+              <div class="left">
+                <div style="position: relative" class="head-picture">
+                  <img :src="formatImg(item.avatar)"/>
+                  <div>
+                    <svg class="icon vsure" aria-hidden="true" v-show="item.authStatus==='1'">
+                      <use xlink:href="#icon-vrenzheng"></use>
+                    </svg>
+                  </div>
+                  <div class="nickname">
+                    <div class="xinxi">
+                      {{item.nickname}} <i class="iconfont icon-huangguan-copy"
+                                           style="color: #ffbb28;font-size: 12px;"></i>
+                    </div>
+                    <div class="xing">
+                      <i class="iconfont icon-shoucang yellow" v-for="xing in Number(item.overallScore)"></i><i
+                            class="iconfont icon-shoucang gray" v-for="xing in 5-Number(item.overallScore)"></i>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div class="date">{{item.addTime}}</div>
+              </div>
+            </div>
+            <hr class="hr1">
+            <div class="eva-msg-wrap">
+              <!--评价信息-->
+              <div class="message">
+                <div class="text">
+                  <div class="content">
+                    {{item.content}}
+                  </div>
+                  <!--<span>......</span>-->
+                </div>
+                <!--<div class="full-text">全文</div>-->
+                <!--<div class="pack">收起</div>-->
+                <div class="image">
+                  <div class="flex-img" v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)"/>
+                  </div>
+                </div>
+                <div class="goods-type">
+                  <!--<div>桐木 </div>-->
+                  <!--<div class="buy-date" style="color:#8d8d8d" v-show="item.payTime!==null">购买日期:{{item.payTime}}</div>-->
+                  <div class="dianzan" @click="changeAgree(allList,index0)">
+                    <i class="iconfont icon-xin" v-if="item.ifAgree==='1'" style="color: #ff4949;"></i>
+                    <i class="iconfont icon-ziyuan8" v-else></i>
+                    <span style="color:#8d8d8d">{{item.countEvaluateAgree}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!--底部信息-->
+              <div class="bottom" v-if="item.replyEvaluate.length>0">
+                <hr class="hr1">
+                <div class="reply-complain">
+                  <div class="reply">
+                    <span style="color:#ff4949">商家回复：</span>
+                    <span class="replay-text" v-text="item.replyEvaluate[0].replyContent"></span>
+                  </div>
+                </div>
+              </div>
+              <!--商家回复-->
+              <!--查看全部-->
+              <!--<div class="all">查看全部<span>(16)</span></div>-->
+            </div>
+          </div>
+        </div>
+      </mt-cell>
+      <mt-cell v-for="(item,index0) in picList" v-show=' type===2'>
+        <!--使用v-for循环从后台调数据-->
+        <div class="list-box">
+          <div class="list">
+            <div class="username">
+              <div class="left">
+                <div style="position: relative" class="head-picture">
+                  <img :src="formatImg(item.avatar)"/>
+                  <div>
+                    <svg class="icon vsure" aria-hidden="true" v-show="item.authStatus==='1'">
+                      <use xlink:href="#icon-vrenzheng"></use>
+                    </svg>
+                  </div>
+                  <div class="nickname">
+                    <div class="xinxi">
+                      {{item.nickname}} <i class="iconfont icon-huangguan-copy"
+                                           style="color: #ffbb28;font-size: 12px;"></i>
+                    </div>
+                    <div class="xing">
+                      <i class="iconfont icon-shoucang yellow" v-for="xing in Number(item.overallScore)"></i><i
+                            class="iconfont icon-shoucang gray" v-for="xing in 5-Number(item.overallScore)"></i>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div class="date">{{item.addTime}}</div>
+              </div>
+            </div>
+            <hr class="hr1">
+            <div class="eva-msg-wrap">
+              <!--评价信息-->
+              <div class="message">
+                <div class="text">
+                  <div class="content">
+                    {{item.content}}
+                  </div>
+                  <!--<span>......</span>-->
+                </div>
+                <!--<div class="full-text">全文</div>-->
+                <!--<div class="pack">收起</div>-->
+                <div class="image">
+                  <div class="flex-img" v-for="img in cutImgurl(item.images,5)">
+                    <img :src="formatImg(img)"/>
+                  </div>
+                </div>
+                <div class="goods-type">
+                  <!--<div>桐木 </div>-->
+                  <!--<div class="buy-date" style="color:#8d8d8d" v-show="item.payTime!==null">购买日期:{{item.payTime}}</div>-->
+                  <div class="dianzan" @click="changeAgree(allList,index0)">
+                    <i class="iconfont icon-xin" v-if="item.ifAgree==='1'" style="color: #ff4949;"></i>
+                    <i class="iconfont icon-ziyuan8" v-else></i>
+                    <span style="color:#8d8d8d">{{item.countEvaluateAgree}}</span>
+                  </div>
+                </div>
+              </div>
+              <!--底部信息-->
+              <div class="bottom" v-if="item.replyEvaluate.length>0">
+                <hr class="hr1">
+                <div class="reply-complain">
+                  <div class="reply">
+                    <span style="color:#ff4949">商家回复：</span>
+                    <span class="replay-text" v-text="item.replyEvaluate[0].replyContent"></span>
+                  </div>
+                </div>
+              </div>
+              <!--商家回复-->
+              <!--查看全部-->
+              <!--<div class="all">查看全部<span>(16)</span></div>-->
+            </div>
+          </div>
+        </div>
+      </mt-cell>
+      <div class="hr"></div>
+
+      <div class="bottomdiv">
+        <span v-if="rote">---上拉加载---</span>
+        <i v-if="load" class="iconfont publicfont icon-jiazai"></i>
+        <span v-if="overlate">已无更多</span>
+      </div>
+    </mt-tab-container-item>
+  </mt-tab-container>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      selected: '1',
+      popupVisible: false,
+      shenhezhong: false,
+      clubId: '',
+      courseId: null,
+      // type：1：琴馆；2：课程
+      type: null,
+      allList: [],
+      consumeList: [],
+      ordinaryList: [],
+      picList: [],
+      page: [1, 1, 1, 1],
+      totalPage: [0, 0, 0, 0],
+      count: [0, 0, 0, 0],
+      rote: false,
+      load: false,
+      overlate: false,
+      firstCount: 0,
+      userInfo: {}
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 2) {
+          loadEnd();
+        }
+      },
+      selected: function (val) {
+        app.load = true;
+        app.rote = false;
+        app.overlate = false;
+        switch (val) {
+          case '1': {
+            if (app.allList.length == 0) {
+              app.page.splice(0, 1, 1);
+              if (app.type == 1) {
+                app.clubGetUserEvaluate(1);
+              } else {
+                app.courseGetUserEvaluate(1)
+              }
+            }
+            break;
+          }
+          case '2': {
+            if (app.consumeList.length == 0) {
+              app.page.splice(1, 1, 1);
+              if (app.type == 1) {
+                app.clubGetUserEvaluate1(1);
+              } else {
+                app.courseGetUserEvaluate1(1)
+              }
+            }
+            break;
+          }
+          case '3': {
+            if (app.ordinaryList.length == 0) {
+              app.page.splice(2, 1, 1);
+              if (app.type == 1) {
+                app.clubGetUserEvaluate2(1);
+              } else {
+                app.courseGetUserEvaluate2(1)
+              }
+            }
+            break;
+          }
+          case '4': {
+            if (app.picList.length == 0) {
+              app.page.splice(3, 1, 1);
+              if (app.type == 1) {
+                app.clubGetUserEvaluate3(1);
+              } else {
+                app.courseGetUserEvaluate3(1)
+              }
+            }
+            break;
+          }
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        isLogined(app, function (logined) {
+          if (logined) {
+            app.getUserInfo(function () {
+              app.firstCount++;
+            });
+          } else {
+            app.firstCount++;
+          }
+        });
+
+        app.clubId = api.pageParam.clubId;
+        app.courseId = api.pageParam.courseId;
+        //判断是课程还是琴馆选择不同的接口
+        if (app.clubId) {
+          app.type = 1;
+          app.clubGetUserEvaluate(1, function () {
+            app.firstCount++;
+          });
+        } else if (app.courseId) {
+          app.type = 2;
+          app.courseGetUserEvaluate(1, function () {
+            app.firstCount++;
+          });
+        }
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+        }, function (ret, err) {
+          app.load = true;
+          app.rote = false;
+          app.overlate = false;
+          switch (app.selected) {
+            case'1': {
+              if (app.page[0] <= app.totalPage[0]) {
+                if (app.type == 1) {
+                  app.clubGetUserEvaluate(2);
+                } else {
+                  app.courseGetUserEvaluate(2)
+                }
+              } else {
+                app.load = false;
+                app.rote = false;
+                app.overlate = true;
+              }
+              break;
+            }
+            case '2': {
+              if (app.page[1] <= app.totalPage[1]) {
+                if (app.type == 1) {
+                  app.clubGetUserEvaluate1(2);
+                } else {
+                  app.courseGetUserEvaluate1(2)
+                }
+              } else {
+                app.load = false;
+                app.rote = false;
+                app.overlate = true;
+              }
+              break;
+            }
+            case '3': {
+              if (app.page[2] <= app.totalPage[2]) {
+                if (app.type == 1) {
+                  app.clubGetUserEvaluate2(2);
+                } else {
+                  app.courseGetUserEvaluate2(2)
+                }
+              } else {
+                app.load = false;
+                app.rote = false;
+                app.overlate = true;
+              }
+              break;
+            }
+            case '4': {
+              if (app.page[3] <= app.totalPage[3]) {
+                if (app.type == 1) {
+                  app.clubGetUserEvaluate3(2);
+                } else {
+                  app.courseGetUserEvaluate3(2)
+                }
+              } else {
+                app.load = false;
+                app.rote = false;
+                app.overlate = true;
+              }
+              break;
+            }
+          }
+        });
+        api.addEventListener({
+          name: 'writemessage'
+        }, function () {
+          isLogined(app, function (logined) {
+            if (logined) {
+              if (app.userInfo.isQinAuth === '1' || app.userInfo.isUserAuth === '1') {
+                openView('liuyan', 'find/alltoken/liuyan', '发布评价', 'write', false, {
+                  clubId: app.clubId,
+                  courseId: app.courseId
+                });
+              } else {
+                app.popupVisible = true;
+              }
+            } else {
+              openLogin();
+            }
+          });
+        });
+        api.addEventListener({
+          name: 'refresh'
+        }, function () {
+          app.selected = '1';
+          app.page.splice(0, 1, 1);
+          //判断是课程还是琴馆选择不同的接口
+          if (app.type === 1) {
+            app.clubGetUserEvaluate(1, function () {
+            });
+          } else if (app.type === 2) {
+            app.courseGetUserEvaluate(1);
+          }
+        });
+      }
+    },
+    methods: {
+      // 获取用户信息，判断是否有权限发表评论
+      getUserInfo: function (callback) {
+        var post = {
+          cmd: 'getUserInfo',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.userInfo = res.data;
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      closeRz: function () {
+        app.shenhezhong = false;
+      },
+      openvAuth: function () {
+        //去实名认证
+        app.popupVisible = false;
+        if (app.userInfo.isUserAuth == '2') {
+          app.shenhezhong = true;
+        } else {
+          api.openWin({
+            name: 'leaguer_win',
+            url: '../../leaguer/leaguer_win.html',
+            pageParam: {
+              index: 1
+            }
+          });
+        }
+      },
+      openqAuth: function () {
+        //去产品认证
+        app.popupVisible = false;
+        if (app.userInfo.isQinAuth == '2') {
+          app.shenhezhong = true;
+        } else {
+          openView('qinAuth_fm', 'qinAuth/qinAuth_fm', '产品认证');
+        }
+      },
+      //获取琴馆点评列表
+      clubGetUserEvaluate: function (ref, callback) {
+        //获取琴馆全部点评列表
+        var post = {
+          cmd: 'clubGetUserEvaluate',
+          cityCode: getcitycode(),
+          clubId: app.clubId,
+          isTotal: '',
+          page: app.page[0],
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          if (ref == 1) {
+            app.allList = res.data.proList.evaluate;
+            app.totalPage[0] = res.data.totalPage;
+            app.page[0]++;
+            app.rote = true;
+            app.load = false;
+          } else {
+            app.allList = app.allList.concat(res.data.proList.evaluate);
+            app.page[0]++;
+            app.rote = true;
+            app.load = false;
+          }
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      clubGetUserEvaluate1: function (ref, callback) {
+        //获取琴馆消费点评列表
+        var post = {
+          cmd: 'clubGetUserEvaluate',
+          cityCode: getcitycode(),
+          clubId: app.clubId,
+          isTotal: '1',
+          page: app.page[1],
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          if (ref == 1) {
+            app.consumeList = res.data.proList.evaluate;
+            app.totalPage[1] = res.data.totalPage;
+            app.page[1]++;
+            app.rote = true;
+            app.load = false;
+          } else {
+            app.consumeList = app.consumeList.concat(res.data.proList.evaluate);
+            app.page[1]++;
+            app.rote = true;
+            app.load = false;
+          }
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      clubGetUserEvaluate2: function (ref, callback) {
+        //获取琴馆点评列表
+        var post = {
+          cmd: 'clubGetUserEvaluate',
+          cityCode: getcitycode(),
+          clubId: app.clubId,
+          isTotal: '0',
+          page: app.page[2],
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          if (ref == 1) {
+            app.ordinaryList = res.data.proList.evaluate;
+            app.totalPage[2] = res.data.totalPage;
+            app.page[2]++;
+            app.rote = true;
+            app.load = false;
+          } else {
+            app.ordinaryList = app.ordinaryList.concat(res.data.proList.evaluate);
+            app.page[2]++;
+            app.rote = true;
+            app.load = false;
+          }
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      clubGetUserEvaluate3: function (ref, callback) {
+        //获取琴馆晒图列表
+        var post = {
+          cmd: 'clubGetUserEvaluate',
+          cityCode: getcitycode(),
+          clubId: app.clubId,
+          isTotal: '2',
+          page: app.page[3],
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          if (ref == 1) {
+            app.picList = res.data.proList.evaluate;
+            app.totalPage[3] = res.data.totalPage;
+            app.page[3]++;
+            app.rote = true;
+            app.load = false;
+          } else {
+            app.picList = app.picList.concat(res.data.proList.evaluate);
+            app.page[3]++;
+            app.rote = true;
+            app.load = false;
+          }
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      //获取课程点评列表
+      courseGetUserEvaluate: function (ref, callback) {
+        var post = {
+          cmd: 'courseGetUserEvaluate',
+          cityCode: getcitycode(),
+          courseId: app.courseId,
+          token: getToken(),
+          page: app.page[0]
+        };
+        sendAjax(this, post, function (res) {
+          if (ref == 1) {
+            app.allList = res.data.proList.evaluate;
+            app.totalPage[0] = res.data.totalPage;
+            app.page[0]++;
+            app.rote = true;
+            app.load = false;
+          } else {
+            app.allList = app.allList.concat(res.data.proList.evaluate);
+            app.totalPage[0] = res.data.totalPage;
+            app.page[0]++;
+            app.rote = true;
+            app.load = false;
+          }
+          if (callback) {
+            callback();
+          }
+        })
+      },
+      courseGetUserEvaluate1: function (ref, callback) {
+        var post = {
+          cmd: 'courseGetUserEvaluate',
+          cityCode: getcitycode(),
+          courseId: app.courseId,
+          isTotal: '1',
+          token: getToken(),
+          page: app.page[1]
+        };
+        sendAjax(this, post, function (res) {
+          if (ref == 1) {
+            app.consumeList = res.data.proList.evaluate;
+            app.totalPage[1] = res.data.totalPage;
+            app.page[1]++;
+            app.rote = true;
+            app.load = false;
+          } else {
+            app.consumeList = app.consumeList.concat(res.data.proList.evaluate);
+            app.page[1]++;
+            app.rote = true;
+            app.load = false;
+          }
+          if (callback) {
+            callback();
+          }
+        })
+      },
+      courseGetUserEvaluate2: function (ref, callback) {
+        var post = {
+          cmd: 'courseGetUserEvaluate',
+          cityCode: getcitycode(),
+          courseId: app.courseId,
+          isTotal: '0',
+          token: getToken(),
+          page: app.page[2]
+        };
+        sendAjax(this, post, function (res) {
+          if (ref == 1) {
+            app.ordinaryList = res.data.proList.evaluate;
+            app.totalPage[2] = res.data.totalPage;
+            app.page[2]++;
+            app.rote = true;
+            app.load = false;
+          } else {
+            app.ordinaryList = app.ordinaryList.concat(res.data.proList.evaluate);
+            app.page[2]++;
+            app.rote = true;
+            app.load = false;
+          }
+          if (callback) {
+            callback();
+          }
+        })
+      },
+      courseGetUserEvaluate3: function (ref, callback) {
+        var post = {
+          cmd: 'courseGetUserEvaluate',
+          cityCode: getcitycode(),
+          courseId: app.courseId,
+          isTotal: '2',
+          token: getToken(),
+          page: app.page[3]
+        };
+        sendAjax(this, post, function (ret) {
+          if (ref == 1) {
+            app.picList = ret.data.proList.evaluate;
+            app.totalPage[3] = ret.data.totalPage;
+            app.page[3]++;
+            app.rote = true;
+            app.load = false;
+          } else {
+            app.picList = app.picList.concat(res.data.proList.evaluate);
+            app.page[3]++;
+            app.rote = true;
+            app.load = false;
+          }
+          if (callback) {
+            callback();
+          }
+        })
+      },
+      //改变点赞状态
+      changeAgree: function (arr, ind) {
+        if (arr[ind].ifAgree === '0') {
+          arr[ind].ifAgree = '1';
+          arr[ind].countEvaluateAgree++;
+          app.agreeEvaluate(arr, ind);
+        } else if (arr[ind].ifAgree === '1') {
+          if (arr[ind].countEvaluateAgree == 0) {
+            arr[ind].ifAgree = '0';
+            app.agreeEvaluate(arr, ind);
+          } else {
+            arr[ind].ifAgree = '0';
+            arr[ind].countEvaluateAgree--;
+            app.agreeEvaluate(arr, ind);
+          }
+
+        }
+
+      },
+      agreeEvaluate: function (arr, ind) {
+        var post = {
+          cmd: 'agreeEvaluate',
+          token: getToken(),
+          cityCode: getcitycode(),
+          type: app.type,
+          clubId: app.clubId,
+          clubEvaluateId: arr[ind].evaluateId,
+          courseId: app.courseId,
+          courseEvaluateId: arr[ind].evaluateId
+        };
+        sendAjax(this, post, function (ret) {
+        })
+      }
+    }
+  });
+</script>

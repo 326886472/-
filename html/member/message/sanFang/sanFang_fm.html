@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+            font-size: 0.7rem;
+        }
+
+        .icon-left {
+            width: 1rem;
+            height: 1rem;
+            display: block;
+            margin-right: 0.5rem;
+        }
+
+        .icon-right {
+            width: 0.5rem;
+            height: 0.5rem;
+        }
+
+        .flex-box {
+            display: flex;
+        }
+
+        .list {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .list-item {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #ccc;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-box {
+            font-size: 0.6rem;
+            color: #666;
+            padding-top: 0.2rem;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="list" v-if="qqAllow==1 || wxAllow==1">
+        <li class="list-item" @click=" changewxBind" v-if="wxAllow==1">
+            <div class="flex-box">
+                <svg class="icon icon-left" aria-hidden="true">
+                    <use xlink:href="#icon-weixin1"></use>
+                </svg>
+                微信
+            </div>
+
+            <div>
+                {{wxBind === '1' ? '已绑定' : '未绑定'}}
+                <svg class="icon icon-right" aria-hidden="true">
+                    <use xlink:href="#icon-ziyuan2"></use>
+                </svg>
+            </div>
+        </li>
+        <li class="list-item" @click=" changeqqBind" v-if="qqAllow==1">
+            <div class="flex-box">
+                <svg class="icon icon-left" aria-hidden="true">
+                    <use xlink:href="#icon-qq1"></use>
+                </svg>
+                QQ
+            </div>
+            <div>
+                {{qqBind === '1' ? '已绑定' : '未绑定'}}
+                <svg class="icon icon-right" aria-hidden="true">
+                    <use xlink:href="#icon-ziyuan2"></use>
+                </svg>
+            </div>
+        </li>
+    </ul>
+    <div class="text-box">
+        绑定后,您可以与更多朋友分享您的生活,也可以邀请朋友一起来注册
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      qqBind: '',
+      wxBind: '',
+      qqAllow: '-1',
+      wxAllow: '-1'
+    },
+    filters: {},
+    created: function () {
+      // 能否 qq 登录
+      this.switch_app(1, function (allow) {
+        this.qqAllow = allow;
+      });
+
+//       能否微信登录
+      this.switch_app(2, function (allow) {
+        this.wxAllow = allow;
+      });
+      apiready = function () {
+        app.wxBind = api.pageParam.wxBind;
+        app.qqBind = api.pageParam.qqBind;
+      };
+    },
+    methods: {
+      //      三方登录
+//      三方登录开关 1：qq；2：微信
+      switch_app: function (switchType, callback) {
+        var post = {
+          cmd: 'switch_app',
+          switchType: switchType
+        };
+        sendAjax(this, post, function (res) {
+          if (callback) {
+            callback(res.data);
+          }
+        });
+      },
+      changeqqBind: function () {
+        if (app.qqBind === '1') {
+          api.confirm({
+            title: '您是否要解除绑定',
+            msg: '解除绑定将无法通过QQ登录',
+            buttons: ['取消', '确定']
+          }, function (ret, err) {
+            var index = ret.buttonIndex;
+          });
+        } else {
+
+//                   qq登录
+          var qq = api.require('QQPlus');
+          qq.installed(function (ret, err) {
+            if (ret.status) {
+              qq.login(function (ret, err) {
+//                api.alert({
+//                  title: 'id和token',
+//                  msg: ret.openId + ret.accessToken
+//                });
+              });
+            } else {
+              api.alert({msg: "没有安装"});
+            }
+          });
+        }
+      },
+      changewxBind: function () {
+        if (app.wxBind === '1') {
+          api.confirm({
+            title: '您是否要解除绑定',
+            msg: '解除绑定将无法通过微信登录',
+            buttons: ['取消', '确定']
+          }, function (ret, err) {
+            var index = ret.buttonIndex;
+          });
+        } else {
+//                    微信登录
+          var wx = api.require('wx');
+          wx.isInstalled(function (ret, err) {
+            if (ret.installed) {
+              wx.auth({
+                apiKey: ''
+              }, function (ret, err) {
+                if (ret.status) {
+                } else {
+                }
+              });
+            } else {
+              alert('当前设备未安装微信客户端');
+            }
+          });
+        }
+      }
+    }
+  })
+</script>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+
+        .content {
+            padding-left: 1rem;
+            background: white;
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .content li {
+            width: 100%;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .flex-box {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cen {
+            align-items: center;
+        }
+
+        .content li:last-child {
+            border: none;
+        }
+
+        .input-box {
+            width: 80%;
+            text-align: left;
+        }
+
+        .input-box textarea {
+            padding: 1%;
+            width: 98%;
+            min-height: 4rem;
+        }
+
+        .text-box {
+            width: 97%;
+            padding-right: 3%;
+            font-size: 0.6rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .btn-box {
+            position: absolute;
+            bottom: 10%;
+            left: 20%;
+            width: 60%;
+            text-align: center;
+        }
+
+        .btn-box div {
+            font-size: 0.7rem;
+            color: #666;
+            padding: 0.3rem 0;
+            border-radius: 20px;
+            border: 1px solid #666;
+        }
+
+        .btn-box div:active {
+            background: gainsboro;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="content aui-margin-t-10">
+        <li class="cen flex-box aui-padded-t-10 aui-padded-b-10">
+            <div>
+                产品价格:
+            </div>
+            <div class="input-box">
+                <input type="number" placeholder="请输入产品价格" v-model="leasePrice">
+            </div>
+        </li>
+        <li class="aui-padded-t-10">
+            <div class="flex-box">
+                <div class="">出价理由:</div>
+                <div class="input-box">
+                    <textarea name="" id="" maxlength="500" placeholder="请输入出价理由" v-model="reason"></textarea>
+                </div>
+            </div>
+            <div class="text-box">
+                <div>{{reason.length}}/500</div>
+            </div>
+        </li>
+    </ul>
+    <div class="btn-box">
+        <div @click="uappApplyRentSell">确认提交</div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      qinAuthId: '',
+      reason: '',
+      leaseType: '2',
+      leasePrice: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.qinAuthId) {
+          app.qinAuthId = api.pageParam.qinAuthId;
+        }
+      };
+    },
+    methods: {
+      //      申请出售
+      uappApplyRentSell: function () {
+        if (app.reason != '' || app.leasePrice != '') {
+          var post = {
+            cmd: 'uappApplyRentSell',
+            token: getToken(),
+            qinAuthId: app.qinAuthId,
+            leaseType: app.leaseType,
+            reason: app.reason,
+            leasePrice: app.leasePrice
+          };
+          sendAjax(this, post, function (res) {
+            api.sendEvent({
+              name: 'AuthOrderChange'
+            });
+            closeWindow();
+            app.openSuccess();
+          });
+        } else {
+          toastMsg('请输入出售价格或理由');
+        }
+      },
+      openSuccess: function () {
+        openView('ApplySuccess', 'member/myAuth/ApplySuccess/ApplySuccess_fm', '申请成功')
+      }
+    }
+  })
+</script>

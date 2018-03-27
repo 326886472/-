@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+    }
+    #header {
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <header id="header">
+  </header>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      statustype: null,
+      clubId: null,
+      courseId: null
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.statustype = api.pageParam.statustype;
+        app.clubId = api.pageParam.clubId;
+        app.courseId = api.pageParam.courseId;
+        app.distance = api.pageParam.distance;
+        $api.fixStatusBar($api.dom('header'));
+        openFm('catchdetails');
+
+        api.openFrame({
+
+          name: 'catchdetails',
+          url: './catchdetails_fm.html',
+          rect: {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto'
+          },
+          pageParam: {
+            statustype: app.statustype,
+            clubId: app.clubId,
+            courseId: app.courseId,
+            distance: app.distance
+          }
+        });
+      };
+    },
+    methods: {}
+  })
+</script>

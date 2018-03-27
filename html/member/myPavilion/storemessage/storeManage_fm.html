@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/storeManage_fm.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div id="loadStart"></div>
+    <section>
+        <div class="headermessage">
+            <img class="goodstitle_img" :src="formatImg(clubPic)"/>
+            <div class="messagebox">
+                <p>{{clubHead.clubName}}</p>
+                <p style="line-height: 1rem">
+                    <span class="listView-text-score">
+                        <div class="star-sorce">
+                            <i class="iconfont" :class="starClass(i)" v-for="i in 5"></i>
+                            <span v-if="true"><span class="number">{{clubHead.overallScore}} / 5</span> <span class="score">分</span></span>
+                        </div>
+                    </span>
+                </p>
+                <p class="stylep">
+                    <span>环境：{{clubHead.envirScore}}</span>
+                    <span>师资：{{clubHead.teachScore}}</span>
+                    <span>服务：{{clubHead.serverScore}}</span>
+                </p>
+            </div>
+        </div>
+        <div class="basemessage" style="margin-top: 0.5rem;">
+            <p style="line-height: 2rem;margin-top: 0.5rem;">
+                <span style="margin-left: 1rem">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-xinxi"></use>
+                  </svg>
+                </span>
+                <span style="line-height: 2rem">基础信息</span>
+            </p>
+            <ul class="oul">
+                <li><span class="pub_span">店铺名称</span><span
+                        class="messagespan">{{club.clubName}}</span></li>
+                <li><span class="pub_span">城    市</span><span
+                        class="messagespan">{{club.provinceName}} {{club.cityName}} {{club.regionName}}</span></li>
+                <li><span class="pub_span">地    址</span><span class="messagespan">{{club.address}}</span>
+                </li>
+                <li><span class="pub_span">负 责 人</span><span
+                        class="messagespan">{{club.leader}}</span></li>
+                <li><span class="pub_span">联系电话</span><span class="messagespan">{{club.contactNum}}</span>
+                </li>
+                <li style="line-height: 2rem;padding-top: 0.5rem;padding-bottom: 0.5rem">
+                    <span class="pub_span" style="display: inline-block;float: left;">琴馆简介</span><span class="messagespan">{{club.desc}}</span>
+                </li>
+            </ul>
+            <p style="line-height: 2rem; margin-top: 0.5rem">
+                <span style="margin-left: 1rem">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-jingyingxinxi"></use>
+                  </svg>
+                </span>
+                <span style="line-height: 2rem">经营信息</span>
+            </p>
+            <ul class="bottomoul">
+                <li style="line-height: 3rem">
+                    <span class="bottomspan">营业时段</span>
+                    <span class="bottomchange">{{club.openHours | formatOpenHours}}</span>
+                </li>
+                <li style="line-height: 3rem">
+                    <span class="bottomspan">创立时间</span>
+                    <span style="width: 50%" class="bottomchange">{{club.createTime}}年</span>
+                </li>
+                <li style="line-height: 3rem">
+                    <span class="bottomspan" style="display: inline-block;float: left;margin-top: 1rem">琴馆课程</span>
+                    <span class="bottomchange">
+            {{club.courseType | formatCourseType}}
+          </span>
+                </li>
+                <li class="clearfix" style="line-height: 3rem;">
+                    <span class="bottomspan" style="display: inline-block;float: left;margin-top: 1rem;">经营品牌</span>
+                    <span class="bottomchange">
+            <span v-for="item in club.brand">{{item}}</span>
+          </span>
+                </li>
+                <li>
+                    <span class="bottomspan">价格区间</span>
+                    <span class="bottomchange">
+            {{club.minPrice}}-{{club.maxPrice}}元
+          </span>
+                </li>
+                <li>
+                    <span class="bottomspan">是否有绝响</span>
+                    <span class="bottomchange">
+            {{club.isJuexiang === '1' ? '是' : '否'}}
+          </span>
+                </li>
+                <li>
+                    <span class="bottomspan" style="display: inline-block;float: left;margin-top: 1rem">其他特色商品</span>
+                    <span class="bottomchange">
+            <span>{{club.productTag}}</span>
+          </span>
+                </li>
+                <li>
+                    <span class="bottomspan">停车位情况</span>
+                    <span class="bottomchange">
+           <span>{{(club.park && club.park !== 0 && club.park !== '') ? club.park + '个' : '暂无'}}</span>
+          </span>
+                </li>
+            </ul>
+        </div>
+        <div class="bottombox">
+            <mt-button class="settingbtn" @click="surebtn()">修改</mt-button>
+        </div>
+        <div style="display: flex;width: 100%;background: white">
+            <p style="display: block;margin: 0 auto;width: 90%;color: grey;font-size: 12px">
+                温馨提示：为了确保您的门店信息真实有效，您提交修改的内容将会在审核后在同步到正麟网，因此您选择修改后的3天内，不可再进行修改，敬请谅解。</p>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            token: getToken(),
+            clubId: '',
+            clubHead: {},
+            club: {},
+            clubPic: '',
+            refreshDone: -1,
+            firstDone: 0
+        },
+        watch: {
+            refreshDone(value) {
+                if (value == 3) {
+                    refreshDone();
+                }
+            },
+            firstDone(value) {
+                if (value == 3) {
+                    loadEnd();
+                }
+            }
+        },
+        filters: {
+            formatOpenHours(openHours) {
+                if (openHours === '周一-周二-周三-周四-周五') {
+                    return '周一~周五';
+                } else {
+                    return !openHours ? '' : openHours.replace(/-/g, ',');
+                }
+            },
+            formatCourseType(courseType) {
+                if (courseType) {
+                    for (var i = 0; i < courseType.length; i++) {
+                        switch (courseType[i]) {
+                            case '1':
+                                courseType[i] = '定期课程';
+                                break;
+                            case '2':
+                                courseType[i] = '免费体验课';
+                                break;
+                            case '3':
+                                courseType[i] = '随到随学';
+                                break;
+                        }
+                    }
+                    return courseType.toString();
+                } else {
+                    return '';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+                app.storeBasicDoc(function() {
+                    app.firstDone++;
+                });
+                app.getHeader(false, function () {
+                    app.firstDone++;
+                });
+                app.getClubAlbum(function () {
+                    app.firstDone++;
+                });
+                refresh(function () {
+                    app.refreshDone = 0;
+                    app.storeBasicDoc();
+                    app.getHeader();
+                    app.getClubAlbum();
+                });
+            };
+        },
+        methods: {
+            starClass(index) {
+                var score = parseFloat(app.clubHead.overallScore);
+                if (score % 1 === 0) {
+                    if (index <= score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                } else {
+                    if (score - index < 0 && score - index > -1) {
+                        return 'icon-yibanxingxing1';
+                    } else if (index < score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                }
+            },
+            surebtn() {
+                openView('settingstore', 'member/myPavilion/storemessage/settingstore_fm', '琴馆资料管理', false, false, {
+                    clubId: app.clubId
+                });
+            },
+            storeBasicDoc(callback) {
+                var post = {
+                    cmd: 'storeBasicDoc',
+                    token: app.token,
+                    clubId: app.clubId
+                };
+
+                sendAjax(this, post,function (res) {
+
+                    app.formatStore(res.data);
+                    app.club = res.data;
+                    app.refreshDone++;
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            },
+            formatStore(store) {
+                if (store.brand) {
+                    store.brand = store.brand.replace(/,/g, '、');
+                }
+
+                if (store.productTag) {
+                    store.productTag = store.productTag.replace(/,/g, '、');
+                }
+            },
+            // 调用获取琴馆信息的接口来获取头部
+            getHeader(cityCode, callback) {
+                var post = {
+                    cmd: 'getPerClubDetail',
+                    token: app.token,
+                    clubId: app.clubId,
+                    cityCode: cityCode || 110000
+                };
+
+                sendAjax(this, post,function (res)  {
+                    if (res.code === -74) {
+                        if (callback) {
+                            app.getHeader(res.data.cityCode, callback);
+                        }
+                    } else {
+                        app.clubHead = res.data;
+                        app.refreshDone++;
+
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                });
+            },
+            getClubAlbum(callback) {
+                var post = {
+                    cmd: 'getClubAlbum',
+                    token: app.token,
+                    clubId: app.clubId,
+                    page: 1,
+                    perPage: 20
+                };
+
+                sendAjax(this, post, function (res) {
+                    if (res.data.proList) {
+                        var albumList = res.data.proList;
+                        for (var i = 0; i < albumList.length; i++) {
+                            if (albumList[i].isDefault === '1') {
+                                app.clubPic = albumList[i].picCover;
+                                break;
+                            }
+                        }
+                    }
+                    app.refreshDone++;
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }
+        }
+    });
+</script>

@@ -1,0 +1,100 @@
+.album .banner {
+  position: relative; }
+  .album .banner .wrap {
+    height: 0;
+    width: 100%;
+    padding-bottom: 60%; }
+    .album .banner .wrap .cover-img {
+      width: 100%;
+      vertical-align: bottom;
+      position: absolute;
+      height: 100%; }
+  .album .banner .icon-back {
+    position: absolute;
+    color: white;
+    top: 44px;
+    font-size: 20px;
+    left: 1rem;
+    z-index: 3; }
+  .album .banner h1 {
+    width: 100%;
+    color: white;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    font-size: 20px;
+    margin: auto;
+    height: 20px;
+    z-index: 3; }
+    .album .banner h1 .icon-bianji {
+      font-size: 20px;
+      color: #919485;
+      padding-left: 1rem; }
+  .album .banner .meng {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: black;
+    opacity: 0.6;
+    z-index: 2; }
+
+.album .upload-btn {
+  display: block;
+  margin: 1rem auto;
+  width: 60%; }
+  .album .upload-btn:active {
+    background: #ddd; }
+
+.album .edit-pic .icon-bianji {
+  color: #7f7f7f;
+  margin-left: 10px; }
+  .album .edit-pic .icon-bianji:active {
+    color: #000; }
+
+.album .pd-album {
+  padding: 0 1.5rem 0.5rem; }
+  .album .pd-album .album-list {
+    justify-content: space-between; }
+    .album .pd-album .album-list .album {
+      width: 30%;
+      position: relative;
+      color: #585858;
+      margin-bottom: 5px;
+      float: left;
+      margin-right: 5%; }
+      .album .pd-album .album-list .album:nth-child(3n) {
+        margin-right: 0; }
+      .album .pd-album .album-list .album .img-wrap {
+        height: 0;
+        padding-bottom: 100%;
+        position: relative; }
+        .album .pd-album .album-list .album .img-wrap img {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          border-radius: 5px; }
+      .album .pd-album .album-list .album .default-text {
+        right: 0;
+        top: 0;
+        border-radius: 5px;
+        padding: 2px 4px;
+        font-size: 14px; }
+      .album .pd-album .album-list .album .del {
+        left: -0.6rem;
+        top: -0.6rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        line-height: 1.4rem;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 20px; }
+      .album .pd-album .album-list .album .album-title {
+        line-height: 1.5;
+        font-size: 15px; }
+  .album .pd-album .show-all {
+    color: #a3a3a3;
+    text-align: center;
+    margin-top: 0.5rem; }

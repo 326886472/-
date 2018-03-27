@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+
+    }
+
+    /*地址信息*/
+    .content-top {
+      padding: 5% 5% 0 5%;
+      background-image: url("../../../assets/images/bg-my.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .top-flex-box {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: white;
+    }
+
+    .top-flex-box div:last-child {
+      position: relative;
+    }
+
+    .top-flex-box div:last-child i {
+      font-size: 0.9rem;
+    }
+
+    .mess-num {
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      padding: 0 0.2rem;
+      background: #FCBD54;
+      border-radius: 50%;
+      font-size: 12px;
+    }
+
+    .top-flex-box div:last-child {
+      position: relative;
+    }
+
+    .mess-num {
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      padding: 0 0.2rem;
+      background: #FCBD54;
+      border-radius: 50%;
+      font-size: 12px;
+    }
+
+    /*头像*/
+    .message-box {
+      display: flex;
+      align-items: center;
+      padding-bottom: 1.5rem;
+    }
+
+    .message-box div {
+      flex: 1;
+    }
+
+    .img-box {
+      padding-top: 1.2rem;
+      position: relative;
+    }
+
+    .img {
+      width: 2.7rem;
+      height: 2.7rem;
+      border-radius: 50%;
+      display: block;
+      border: 1px solid white;
+      background: #f0f0f0;
+    }
+
+    .icon-hg {
+      transform: rotate(-20deg);
+      position: absolute;
+      top: 12%;
+      left: 12%;
+    }
+
+    .icon-style {
+      color: orange;
+      font-size: 0.7rem;
+    }
+
+    .text {
+      font-size: 0.6rem;
+      background: #FF8500;
+      padding: 0 0.1rem;
+      color: white;
+      position: absolute;
+      bottom: -0.3rem;
+      left: 0.5rem;
+      border-radius: 5px;
+    }
+
+    /*中间*/
+    .message-box .message-user {
+      flex: 3.5;
+      padding-left: 0.8rem;
+      padding-top: 1rem;
+    }
+
+    .message-user h5 {
+      font-weight: 200;
+      color: white;
+      letter-spacing: 2px;
+    }
+
+    .message-user-flex {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .message-user-flex div {
+      padding: 0.2rem 0.2rem;
+      flex: 1;
+      color: #666;
+      font-size: 0.6rem;
+      background: #ccc;
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .message-user-flex div i {
+      margin-right: 0.1rem;
+    }
+
+    .my-icon {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    /*右*/
+    .message-right {
+      text-align: right;
+      color: white;
+    }
+
+    /*待*/
+    .wait-box {
+      display: flex;
+      font-size: 0.7rem;
+    }
+
+    .wait-box div {
+      padding: 0.75rem 0;
+      text-align: center;
+      flex: 1;
+    }
+
+    .wait-box div:active {
+      background: gainsboro;
+    }
+
+    .wait-box div:nth-child(2), .wait-box div:nth-child(3) {
+      background-image: url("../../../assets/images/icon-shuxian.png");
+      background-repeat: no-repeat;
+      background-position: left;
+      background-size: 1% 60%;
+    }
+
+    .wait-box div:last-child {
+      border: none;
+    }
+
+    .wait-box-item {
+      position: relative;
+    }
+
+    .wait-box-item span {
+      position: absolute;
+      top: 10%;
+      right: 25%;
+      padding: 0.2rem;
+      border-radius: 50%;
+      background: #FCBD54;
+      color: white;
+      height: 10px;
+      line-height: 10px;
+      font-size: 12px;
+    }
+
+    /*九宫格*/
+    .list {
+      width: 100%;
+      border-top: 3px solid #F0F0F0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .list-item {
+      padding: 0.6rem 0;
+      width: 25%;
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    .list-item:active {
+      background: gainsboro;
+    }
+
+    .icon-size {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    /*列表*/
+    .menu {
+      border-top: 3px solid #F0F0F0;
+      font-size: 0.7rem;
+      clear: both;
+    }
+
+    .menu li {
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #F0F0F0;
+      display: flex;
+      align-items: center;
+    }
+
+    .menu li .icon {
+      margin-right: 0.5rem;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .menu li div {
+      color: #666;
+      font-size: 0.7rem;
+    }
+
+    .menu li:active {
+      background: gainsboro;
+    }
+
+    .border-bottom-box {
+      border-bottom: 5px solid #f0f0f0 !important;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="loadStart"></div>
+  <div class="content">
+    <!--信息-->
+    <div class="content-top">
+      <!--地址信息-->
+      <div class="top-flex-box">
+        <div>{{cityname}}</div>
+        <div @click="openNews">
+          <span class="mess-num" v-show="num >0 ">{{num}}</span>
+          <i class="iconfont icon-xiaoxi"></i>
+        </div>
+      </div>
+      <!--头像信息-->
+      <div class="message-box">
+        <div class="img-box">
+          <div class="icon-hg" v-show="form.level == '1'">
+            <i class="iconfont icon-huangguan icon-style"></i>
+          </div>
+          <img :src="avatarShow" alt="" class="img">
+          <span class="text" v-show="form.isUserAuth == '1'">V认证</span>
+        </div>
+        <div class="message-user">
+          <h5 class="aui-margin-b-15">{{form.nickname}}</h5>
+          <div class="message-user-flex">
+            <div class="aui-margin-r-10" @click="opentheWin('0')">
+              <i class="iconfont icon-huangguan my-icon"></i> 金牌会员
+            </div>
+            <div class="" @click="opentheWin('1')">
+              <i class="iconfont icon-shenfenrenzheng my-icon"></i> 身份认证
+            </div>
+          </div>
+        </div>
+        <div class="message-right" @click="openMessWin">
+          <i class="iconfont icon-ziyuan2"></i>
+        </div>
+      </div>
+    </div>
+    <!--待-->
+    <div class="wait-box">
+      <div class="wait-box-item" @click="uappGet3Order1(true)">待支付 <span class="count-box" v-show="count1 !=0 ">{{count1}}</span>
+      </div>
+      <div class="wait-box-item" @click="uappGet3Order2(true)">待收货 <span class="count-box" v-show="count2 !=0 ">{{count2}}</span>
+      </div>
+      <div class="wait-box-item" @click="uappGet3Order3(true)">待评价 <span class="count-box" v-show="count3 !=0 ">{{count3}}</span>
+      </div>
+    </div>
+    <!--九宫格-->
+    <div class="list">
+      <div v-for="(item,index) in boxlist" class="list-item"
+           @click="openWin(item.name,item.url,index)">
+        <svg class="icon icon-size" aria-hidden="true">
+          <use :xlink:href="item.src"></use>
+        </svg>
+        <div>{{item.boxcont}}</div>
+      </div>
+    </div>
+    <!--列表-->
+    <ul class="menu">
+      <li v-for="item in menulist" @click="openListWin(item.name,item.url,item.title)"
+          :class="{ 'border-bottom-box' : item.border  }">
+        <svg class="icon list-icon" aria-hidden="true">
+          <use :xlink:href="item.icon"></use>
+        </svg>
+        <div>{{item.title}}</div>
+      </li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      cityname: '',
+      num: '',
+      shopName: '',
+      clubId: '',
+      form: {},  //个人资料
+      avatarShow: '',
+      boxlist: [
+        {
+          name: 'myOrder',
+          src: '#icon-wodedingdan',
+          boxcont: '我的订单',
+          url: '../myOrder/myOrder_win.html'
+        },
+        {
+          name: 'myComment',
+          src: '#icon-wodedianping',
+          boxcont: '我的点评',
+          url: '../myComment/myComment_win.html'
+        },
+        {
+          name: 'myCollection',
+          src: '#icon-wodeshoucang',
+          boxcont: '我的收藏',
+          url: '../myCollection/myCollection_win.html'
+        },
+        {
+          name: 'myAccount',
+          src: '#icon-wodezhanghao',
+          boxcont: '我的账户',
+          url: '../myAccount/myAccount_win.html'
+        },
+        {
+          name: 'myAuth',
+          src: '#icon-woderenzheng',
+          boxcont: '我的认证',
+          url: '../myAuth/myAuth_win.html'
+        },
+        {
+          name: 'leaguer',
+          src: '#icon-huiyuanzhongxin',
+          boxcont: '会员中心',
+          url: '../../leaguer/leaguer_win.html'
+        },
+        {
+          name: 'myPavilion',
+          src: '#icon-qinguan-copy',
+          boxcont: '我的琴馆',
+          url: '../myPavilion/Pavilion_win.html'
+        }
+//        {
+//          name: '',
+//          src: '#icon-qinguanpingji',
+//          boxcont: '琴馆评级'
+//        },
+//        {
+//          name: '',
+//          src: '#icon-chuzurenyang',
+//          boxcont: '出租认养'
+//        }
+
+      ],
+      menulist: [
+//        {
+//          name: 'addqg',
+//          icon: '#icon-tianjia',
+//          title: '添加琴馆',
+//          url: 'addqinguan/addqinguan/addqinguan_fm'
+//        },
+        {
+          name: 'heZuo',
+          icon: '#icon-yewuhezuo',
+          title: '我要合作',
+          url: 'member/heZuo/heZuo_fm'
+        },
+        {
+          name: 'service',
+          icon: '#icon-kefuyubangzhu',
+          title: '服务与反馈',
+          url: 'member/service/service_fm'
+        },
+        {
+          name: 'setUp',
+          icon: '#icon-shezhi',
+          title: '设置',
+          url: 'member/setUp/setUp_fm'
+        },
+        {
+          name: 'about',
+          icon: '#icon-shouji1',
+          title: '关于我们',
+          url: 'member/setUp/learnme',
+          border: true
+        },
+        {
+          name: '',
+          icon: '#icon-wode-zhenglinhuiyuan-copy',
+          title: '推荐好友赢福利'
+        },
+        {
+          name: '',
+          icon: '#icon-jianpanshuru-copy',
+          title: '输入兑换码'
+        },
+        {
+          name: '',
+          icon: '#icon-ziyuan6',
+          title: '我的福利劵',
+          border: true
+        }
+      ],
+      homePickType: '',    //订单类型
+      count1: '',  // 待支付
+      count2: '',   //  待收货
+      count3: '',   //待评价
+      lock: false,
+      done: 0
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        api.addEventListener({
+          name: 'myBtnClick'
+        }, function () {
+          app.init();
+        });
+//        refresh(function () {
+//          app.getUserInfo(function () {
+//
+//          });
+//        });
+      };
+    },
+    watch: {
+      done: function (value) {
+        if (value == 5) {
+          loadEnd();
+        }
+      }
+    },
+    methods: {
+      init: function () {
+        app.getUserInfo(function () {
+          app.done++;
+
+          app.getNavUnReadCount();
+          // 待付款
+          app.uappGet3Order1();
+          // 待收货
+          app.uappGet3Order2();
+          // 待评价
+          app.uappGet3Order3();
+        });
+
+        // 登录监听
+        api.addEventListener({
+          name: 'login'
+        }, function (ret, err) {
+          app.getUserInfo();
+          app.getNavUnReadCount();
+          // 待付款
+          app.uappGet3Order1();
+          // 待收货
+          app.uappGet3Order2();
+          // 待评价
+          app.uappGet3Order3();
+        });
+
+        // 修改头像
+        api.addEventListener({
+          name: 'changeImg'
+        }, function (ret, err) {
+          app.getUserInfo();
+        });
+
+        // 城市切换监听
+        api.addEventListener({
+          name: 'changecity'
+        }, function (ret, err) {
+          app.cityname = ret.value.cityname;
+        });
+
+        // 开通会员
+        api.addEventListener({
+          name: 'MemberUp'
+        }, function (ret, err) {
+          app.getUserInfo();
+          app.getNavUnReadCount();
+        });
+
+        // 订单生成监听（名字待定）
+        api.addEventListener({
+          name: 'OrderSubmit'
+        }, function (ret, err) {
+          // 待付款
+          app.uappGet3Order1();
+          // 待收货
+          app.uappGet3Order2();
+          // 待评价
+          app.uappGet3Order3();
+          app.getNavUnReadCount();
+        });
+
+        api.addEventListener({
+          name: 'NotifyOk'
+        }, function (ret, err) {
+          app.getNavUnReadCount();
+        });
+      },
+      // 获取个人资料
+      getUserInfo: function (callback) {
+        var post = {
+          cmd: 'getUserInfo',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.form = res.data;
+          app.avatarShow = formatImg(app.form.avatar);
+          if (callback) {
+            callback();
+          }
+        });
+      },
+      // 获取未读消息数量
+      getNavUnReadCount: function () {
+        var post = {
+          cmd: 'getNavUnReadCount',
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+          app.num = res.data;
+          app.done++;
+        });
+      },
+      openWin: function (name, url,index) {
+          if(index !== 6) {
+              openWin(name, url);
+          } else {
+              var post = {
+                  cmd: "isOpenShop",
+                  token: getToken(),
+                  perPage: 100
+              };
+              sendAjax(this, post, function (res) {
+                  if (res.code == 1) {
+                      loadEnd();
+                      if (res.data.count == 0) {
+                          openWin(name, url);
+                      } else if (res.data.count == 1) {
+                          var status = res.data.proList[0].clubstatus;
+                          app.shopName = res.data.proList[0].clubName;
+                          app.clubId = res.data.proList[0].clubId;
+                          if (status == 0) {
+                              openView('addNew_3', 'member/myPavilion/addNewPavilion/addNew_lock', '申请店铺', false, false, false);
+                          } else if(status == 1 || status == 4) {
+                              api.openWin({
+                                  name: 'only_one',
+                                  url: '../myPavilion/only_onePavilion.html',
+                                  pageParam: {
+                                      shopName: app.shopName,
+                                      clubId: app.clubId
+                                  }
+                              })
+                          } else if(status == 2) {
+                              openView('addNew_3', 'member/myPavilion/addNewPavilion/addNew_3', '申请店铺', false, false, false);
+                          } else if(status == 3) {
+                              openView('addNew_fail', 'member/myPavilion/addNewPavilion/addNew_fail', '申请店铺', false, false, false);
+                          }
+                      } else if (res.data.count > 1) {
+                         api.openWin({name : 'muchPavilion', url:'../myPavilion/muchPavilion/muchPavilion_win.html'})
+                      }
+                  } else {
+                      alert('网络超时！')
+                  }
+              });
+          }
+      },
+      // 列表
+      openListWin: function (name, url, title) {
+        openView(name, url, title);
+      },
+      // 会员中心(方法不动)
+      opentheWin: function (index) {
+        api.openWin({
+          name: 'leaguer',
+          url: '../../leaguer/leaguer_win.html',
+          pageParam: {
+            actIndex: index
+          }
+        })
+      },
+      // 个人资料
+      openMessWin: function () {
+        if (getToken) {
+          openView('message', 'member/message/message_fm', '个人资料');
+        } else {
+          openView('login', 'common/login', '会员登录');
+        }
+      },
+      // 消息
+      openNews: function () {
+        openWin('news', '../news/news_win.html')
+      },
+      // 获取待支付
+      uappGet3Order1: function (lock) {
+        var post = {
+          cmd: 'uappGet3Order',
+          token: getToken(),
+          homePickType: 1
+        };
+        sendAjax(this, post, function (res) {
+          app.count1 = res.data.count;
+          if (lock) {
+            api.openWin({
+              name: 'myOrder',
+              url: '../myOrder/myOrder_win.html',
+              pageParam: {
+                orderType: res.data.orderType - 1,
+                myIndex: 2
+              }
+            });
+          }
+          app.done++;
+        });
+      },
+      // 待收货
+      uappGet3Order2: function (lock) {
+        var post = {
+          cmd: 'uappGet3Order',
+          token: getToken(),
+          homePickType: 2
+        };
+        sendAjax(this, post, function (res) {
+          app.count2 = res.data.count;
+          if (lock) {
+            api.openWin({
+              name: 'myOrder',
+              url: '../myOrder/myOrder_win.html',
+              pageParam: {
+                orderType: res.data.orderType - 1,
+                myIndex: 3
+              }
+            });
+          }
+          app.done++;
+        });
+      },
+      // 待评价
+      uappGet3Order3: function (lock) {
+        var post = {
+          cmd: 'uappGet3Order',
+          token: getToken(),
+          homePickType: 3
+        };
+        sendAjax(this, post, function (res) {
+          app.count3 = res.data.count;
+          if (lock) {
+            api.openWin({
+              name: 'myOrder',
+              url: '../myOrder/myOrder_win.html',
+              pageParam: {
+                orderType: res.data.orderType - 1,
+                myIndex: 4
+              }
+            });
+          }
+          app.done++;
+        });
+      },
+      closeAndLogin: function (callback) {
+        isLogined(this, function (logined) {
+          if (logined) {
+            if (callback) {
+              callback();
+            }
+          } else {
+            api.sendEvent({name: "loginOut"});
+            openLogin();
+          }
+        });
+      }
+    }
+  })
+</script>

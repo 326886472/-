@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style type="text/css">
+    #app {
+      width: 100%;
+      height: auto;
+      background: #ededed;
+    }
+
+    .titlep {
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      background: #ededed;
+    }
+
+    .titlespan {
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    .headerbox {
+      width: 100%;
+      height: auto;
+      background: white;
+      box-sizing: border-box;
+      margin-bottom: 5px;
+      padding: 0 10px;
+    }
+
+    .biaozhi {
+      color: #F46C5A;
+    }
+
+    .forstop {
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      border-bottom: 1px solid gainsboro;
+      font-size: 14px;
+    }
+
+    .findmethods {
+      width: 100%;
+      height: auto;
+      background: white;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+
+    .findimgbox {
+      width: 4rem;
+      height: 4rem;
+      border: 1px solid #8D8D8D;
+      margin-left: 1.5rem;
+      text-align: center;
+      line-height: 4rem;
+    }
+    .findimgbox img{
+      width: 100%;
+      height:100%;
+    }
+
+    .publicfont {
+      font-size: 14px;
+    }
+
+    .bottomspan {
+      padding: 10px 0;
+      color: grey;
+      height: 2rem;
+    }
+
+    .zhaopian {
+      width: 100%;
+      height: auto;
+      padding: 0 10px;
+      box-sizing: border-box;
+      background: white;
+      margin-top: 5px;
+    }
+
+    .bigimgbox {
+      width: 10rem;
+      height: auto;
+      padding-left: 20px;
+    }
+
+    .albumimgbox {
+      width: 4rem;
+      height: 4rem;
+      border: 1px solid #8D8D8D;
+      text-align: center;
+      line-height: 4rem;
+      margin-top: 10px;
+      float: left;
+      margin-left: 10px;
+    }
+    .albumimgbox img{
+      width: 100%;
+      height:100%;
+    }
+
+    .surebtnbox {
+      width: 100%;
+      height: 6rem;
+      background: #ededed;
+      display: flex;
+    }
+
+    .surebtn {
+      width: 50%;
+      height: 1.8rem;
+      line-height: 1.8rem;
+      border: 1px solid black;
+      margin: auto;
+      font-size: 14px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .surebtn:active {
+      background: gainsboro;
+    }
+    /*弹出框*/
+    .mint-popup-bottom {
+      width: 100%;
+    }
+
+    .moreoul {
+      width: 100%;
+    }
+
+    .moreoul li {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <p class="titlep">
+    <span class="titlespan">认证基本信息</span>
+  </p>
+
+  <div class="headerbox">
+    <p class="forstop">
+      <span class="biaozhi">*</span>
+      <span style="margin-right: 5px">产品持有者:</span>
+      <input type="text" placeholder="请输入姓名" v-model="qinInfo.buyer">
+    </p>
+
+    <p class="forstop">
+      <span class="biaozhi">*</span>
+      <span style="margin-right: 5px">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</span>
+      <input type="tel" placeholder="请输入电话号码" maxlength="11" v-model="qinInfo.mobile">
+    </p>
+
+    <p class="forstop">
+      <span class="biaozhi">*</span>
+      <span style="margin-right: 5px;letter-spacing: 2px;">购买时间:</span>
+      <input type="date" placeholder="请输入购买时间" class="datetime" v-model="qinInfo.buyTime" style="width: 60%;">
+    </p>
+
+  </div>
+
+
+  <div class="findmethods">
+    <p class="forstop" style="border-bottom:0px solid transparent">
+      <span class="biaozhi">*</span>
+      <span style="margin-right: 5px">认证方式:</span>
+      <span>票据或者收据</span>
+    </p>
+    <div class="findimgbox" @click="upphoto(1)">
+      <i class="iconfont publicfont icon-xiangji" v-if="!pic && pic==='' "></i>
+      <img :src="pic" v-else>
+    </div>
+    <p style="font-size: 12px;border-bottom: 1px solid gainsboro">
+      <span class="bottomspan">图片文件支持jpg,png格式单张不超过5M</span>
+    </p>
+  </div>
+
+  <div class="zhaopian">
+    <p class="forstop" style="border-bottom:0px solid transparent">
+      <span class="biaozhi">*</span>
+      <span style="margin-right: 5px">古琴照片:</span>
+    </p>
+    <div class="bigimgbox">
+
+      <div class="albumimgbox" @click="upphoto(5)">
+        <i class="iconfont icon-xiangji"  v-if="!pics[3] && pics[3]===''"></i>
+        <img :src="pics[3]" v-else>
+        <!--<i class="iconfont publicfont icon-xiangji"></i>-->
+      </div>
+
+      <div class="albumimgbox" @click="upphoto(2)">
+        <i class="iconfont icon-jiahao"  v-if="!pics[0] && pics[0]===''"></i>
+        <img :src="pics[0]" v-else>
+      </div>
+
+      <div class="albumimgbox" @click="upphoto(3)">
+        <i class="iconfont icon-jiahao"  v-if="!pics[1] && pics[1]===''"></i>
+        <img :src="pics[1]" v-else>
+
+      </div>
+
+      <div class="albumimgbox" @click="upphoto(4)">
+        <i class="iconfont icon-jiahao"  v-if="!pics[2] && pics[2]===''"></i>
+        <img :src="pics[2]" v-else>
+      </div>
+
+    </div>
+    <span class="bottomspan" style="font-size: 12px">图片文件支持jpg,png格式单张不超过5M,允许上传4张高清图片</span>
+
+  </div>
+
+  <div class="surebtnbox">
+    <mt-button class="surebtn" @click="submit">确认</mt-button>
+  </div>
+  <!--弹出选照片-->
+  <mt-popup
+          v-model="popupVisible"
+          position="bottom">
+    <ul class="moreoul">
+      <li @click="takephoto()">拍照</li>
+      <li @click="myphotos()">从相册中选择</li>
+      <li @click="cancel()" style="border-top: 2px solid #f0f0f0">取消</li>
+    </ul>
+  </mt-popup>
+
+</div>
+</body>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script>
+  var app = new Vue({
+    el: "#app",
+    data: {
+      qinInfo:{
+        buyer:'',
+        mobile:'',
+        buyTime:'',
+        bill:'',
+        qinPic:''
+      },
+      qin:{},
+      popupVisible:false,
+      //1：票据；2.照片
+      type:0,
+      pics:['','','',''],
+      pic:'',
+      number:/^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\d{8}$/
+
+    },
+    created: function () {
+      apiready = function () {
+        app.qin = api.pageParam.qinInfo;
+      }
+    },
+    methods: {
+      //照片
+      myphotos: function () {
+        api.getPicture({
+          sourceType: 'album',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.popupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.switchcase(ret.data);
+          } else {
+            toastMsg('已取消修改')
+          }
+        });
+      },
+      takephoto: function () {
+        api.getPicture({
+          sourceType: 'camera',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.popupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.switchcase(ret.data);
+          } else {
+            toastMsg('已取消修改')
+          }
+        });
+      },
+      cancel: function () {
+        app.popupVisible = false;
+      },
+      upphoto:function (res) {
+        app.type=res;
+        app.popupVisible=true;
+      },
+      switchcase:function (res){
+//        if(res===1){
+//          app.pic=res;
+//        }else{
+//
+//        }
+        switch(app.type){
+          case 1 :{
+            app.pic=res;
+            break;
+          }
+          case 2 :{
+            app.pics[0]=res;
+            break;
+          }
+          case 3 :{
+            app.pics[1]=res;
+            break;
+          }
+          case 4 :{
+            app.pics[2]=res;
+            break;
+          }
+          case 5 :{
+            app.pics[3]=res;
+            break;
+          }
+        }
+      },
+      upQinImgTmp:function (callback) {
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "upQinImgTmp",
+              "token": getToken()
+            },
+            files: {
+              'qinPic[]':app.pics
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            app.qinInfo.qinPic = ret.data;
+            if(callback){
+              callback();
+            }
+          } else {}
+        });
+      },
+      upQinAuthImgTmp:function (callback) {
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "upQinAuthImgTmp",
+              "token": getToken()
+            },
+            files: {
+              'bill':app.pic
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            app.qinInfo.bill = ret.data;
+            if(callback){
+              callback();
+            }
+          } else {
+          }
+        });
+      },
+      qinAuth:function (callback) {
+        MINT.Indicator.open();
+
+        var post = {
+          cmd:'qinAuth',
+          token:getToken(),
+          type:'2',
+          qinId:app.qin.qinId,
+          isSn:app.qin.isSn,
+          buyer:app.qinInfo.buyer,
+          mobile:app.qinInfo.mobile,
+          qinName:app.qin.qinName,
+          buyingPrice:app.qin.buyingPrice,
+          buyTime:app.qinInfo.buyTime,
+          clubId:app.qin.clubId,
+          bill:app.qinInfo.bill.bill,
+          qinPic:app.qinInfo.qinPic
+        };
+
+         sendAjax(app,post,function (ret) {
+           MINT.Indicator.close();
+
+           if(ret.code===1){
+             if(callback){
+               callback();
+             }
+           }else {
+             api.toast({
+               msg: '上传失败，请重新上传'
+             });
+           }
+
+        });
+      },
+      validat:function () {
+        if (!app.qinInfo.buyer.trim()) {
+          api.toast({
+            msg: '请输入持有者姓名'
+          });
+          return false;
+        } else if (!app.qinInfo.mobile.trim()) {
+          api.toast({
+            msg: '请输入电话号码'
+          });
+          return false;
+        } else if (!app.number.test(app.qinInfo.mobile)) {
+          api.toast({
+            msg: '请输入正确的联系电话'
+          });
+          return false;
+        } else if (!app.qinInfo.buyTime.trim()) {
+          api.toast({
+            msg: '请选择购买日期'
+          });
+          return false;
+        } else if (!app.pic.trim()) {
+          api.toast({
+            msg: '请选择上传票据或收据'
+          });
+          return false;
+        } else if (!app.pics.join('').trim()) {
+          api.toast({
+            msg: '请选择上传古琴照片'
+          });
+          return false;
+        } else {
+          return true;
+        }
+      },
+      submit:function () {
+        if(app.validat()===true){
+          app.upQinImgTmp(function () {
+            app.upQinAuthImgTmp(function () {
+                app.qinAuth(function () {
+                  openView('成功','qinAuth/chengGong/chenggong_fm','提交成功',false,false)
+                });
+            });
+          });
+        }
+      }
+    }
+  })
+</script>
+</html>

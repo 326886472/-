@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <!--<link rel="stylesheet" href="../../assets/iconfont/iconfont.css">-->
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+
+    }
+
+    #header {
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .beforeindex {
+      color: #E4B88B;
+    }
+
+    #footer {
+      width: 100%;
+      padding: 0.3rem 0;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #666;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      position: absolute;
+      bottom: 0;
+    }
+
+    .bottomindex {
+      flex: 1;
+    }
+
+    .jiantou {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
+
+    .footer-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <header class="aui-bar aui-bar-nav" id="header">
+    <a class="aui-padded-l-10 aui-pull-left aui-btn" @click="closeWindow()">
+      <!--<i class="iconfont icon-ziyuan2-copy"></i>-->
+      <svg class="icon jiantou" aria-hidden="true">
+        <use xlink:href="#icon-ziyuan2-copy"></use>
+      </svg>
+    </a>
+    <div class="aui-title">{{barData.footerlist[barData.minindex].title}}</div>
+  </header>
+  <footer class=" aui-bar-tab" id="footer">
+    <div v-for="(item,index) in barData.footerlist" @click="btncount(index)"
+         :class="{'beforeindex'  : barData.minindex==index}">
+      <!--<i class="iconfont" :class=" barData.minindex ==index ?  item.srcActive : item.src " ></i>-->
+      <svg class="icon footer-icon" aria-hidden="true">
+        <use :xlink:href="barData.minindex ==index ?  item.srcActive : item.src"></use>
+      </svg>
+      <p>{{item.name}}</p>
+    </div>
+  </footer>
+</div>
+</body>
+
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      barData: {
+        footerlist: [
+          {
+            title: '会员中心',
+            name: '会员首页',
+            src: '#icon-huiyuan',
+            srcActive: '#icon-huiyuanqiehuan'
+          },
+          {
+            title: '身份认证',
+            name: '身份认证',
+            src: '#icon-huiyuanfuwu',
+            srcActive: '#icon-huiyuanqiehuan1'
+          },
+          {
+            title: '我的福利',
+            name: '我的福利',
+            src: '#icon-liwu',
+            srcActive: '#icon-huiyuanqiehuan3'
+          }
+        ],
+        minindex: 0,
+        tabIndex: 0
+      },
+      username: '',
+      laternamelength: ''
+    },
+    created: function () {
+      apiready = function () {
+
+        api.addEventListener({
+          name: 'vipfont'
+        }, function (ret, err) {
+          app.username = ret.value.username
+        });
+
+
+        $api.fixStatusBar($api.dom('header'));
+        if (api.pageParam.index) {
+          app.tabIndex = api.pageParam.index;
+        } else if (api.pageParam.actIndex) {
+          app.tabIndex = api.pageParam.actIndex
+        }
+//        app.getUserInfo();
+        app.changeFmGroup();
+
+      };
+    },
+    methods: {
+      btncount: function (i) {
+        app.barData.minindex = i;
+        api.setFrameGroupIndex({
+          name: 'leaguer',
+          index: i,
+          scroll: true
+        });
+      },
+//      getUserInfo:function(){
+//        var post = {
+//          cmd: 'getUserInfo',
+//          token:getToken
+//        };
+//        sendAjax(this, post, function (res) {
+//          if (res.data.isUserAuth == 2) {
+//            app.latername = res.data.username;
+//            app.laternamelength = app.latername.length;
+//            app.latername = app.createStar(app.laternamelength - 1) + app.latername.substr(-1);
+//          }
+//        });
+//      },
+      createStar: function (length) {
+        var str = '';
+        for (var i = 0; i < length; i++) {
+          str += '*';
+        }
+        return str;
+      },
+
+      changeFmGroup: function () {
+
+        api.openFrameGroup({
+          name: 'leaguer',
+          scrollEnabled: false,
+          rect: {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto',
+            marginTop : $api.dom('header').offsetHeight,
+            marginBottom : $api.dom('footer').offsetHeight
+          },
+          bounces: true,
+          index: app.tabIndex,
+          frames: [{
+            name: 'homePage',
+            url: './homePage/homePage_fm.html',
+            bgColor: '#f0f0f0'
+          }, {
+            name: 'Authentication',
+            url: './Authentication/Authentication_fm.html',
+            bgColor: '#f0f0f0',
+            pageParam: {
+              username: app.username
+            }
+          },
+            {
+              name: 'my',
+              url: './my/my_fm.html',
+              bgColor: '#f0f0f0'
+            }
+          ]
+        }, function (ret) {
+          app.barData.minindex = ret.index;
+        });
+      },
+      closeWindow: function () {
+        closeWindow();
+      }
+    }
+  })
+</script>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #f0f0f0;
+    }
+
+    #app {
+    }
+
+    /*tab样式*/
+    .menu-top-bar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      background: white;
+      font-size: 0.7rem;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .menu-top-bar div {
+      text-align: center;
+      width: 25%;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .mentAct {
+      color: #BEAB97;
+      border-bottom: 3px solid #BAA691;
+    }
+
+    /*订单开始*/
+    .my-margin {
+      height: 2rem;
+      background: #f0f0f0;
+    }
+
+    .content {
+      background: white;
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    /*公共样式*/
+    .padding-box {
+      padding: 0 1rem;
+    }
+
+    /*一个子元素end 两个子元素bet*/
+    .end {
+      justify-content: flex-end;
+    }
+
+    .bet {
+      justify-content: space-between;
+    }
+
+    /*头*/
+    .order-top-box {
+      font-size: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /*中间*/
+    .order-content-box {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+    }
+
+    .img-box {
+      flex-shrink: 0;
+      width: 25%;
+    }
+
+    .img-box img {
+      width: 4rem;
+      height: 4rem;
+      margin-right: 1rem;
+    }
+
+    .content-center-box {
+      flex-shrink: 0;
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+    }
+
+    .flex-box-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .flex-box-top h6 {
+      flex-shrink: 0;
+      width: 70%;
+      font-size: 0.7rem;
+    }
+
+    .flex-box-center {
+      font-size: 0.6rem;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .flex-box-center div:first-child {
+      width: 30%;
+      flex-shrink: 0;
+    }
+
+    .border-b {
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .price-box-top {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .content-center-bottom-box {
+      font-size: 0.6rem;
+      padding: 0.3rem 1rem 0.3rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /*未通过*/
+    .order-middle-box-copy {
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .order-middle-box-copy div {
+      right: 10%;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      border: 1px solid #666;
+      margin-right: 1rem;
+      color: black;
+    }
+
+    .order-middle-box-copy div:active {
+      background: gainsboro;
+    }
+
+    .order-middle-box-copy span {
+      width: 50%;
+      overflow: hidden;
+    }
+
+    /*底部上拉加载更多样式*/
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 1rem;
+      height: 1rem;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="loadStart"></div>
+  <div class="menu-top-bar">
+    <div v-for="ite in menuList" @click="chagneC(true, ite.mIndex)"
+         :class="{'mentAct' : myIndex === ite.mIndex }">{{ite.title}}
+    </div>
+  </div>
+  <div class="my-margin"></div>
+  <ul>
+    <li v-for="item in proList">
+      <div class="content aui-margin-t-10">
+        <!--头-->
+        <div class="order-top-box aui-padded-t-10 padding-box aui-padded-b-5">
+          <div>订单编号:&nbsp;{{item.orderSn}}</div>
+          <div v-show="item.status === '0'">等待买家付款</div>
+          <div v-show="item.status === '1'">等待卖家发货</div>
+          <div v-show="item.status === '2'">等待买家收货</div>
+          <div v-show="item.status === '3'">等待买家评价</div>
+          <div v-show="item.status === '4'">订单完成</div>
+          <div v-show="item.status === '5'">订单关闭</div>
+        </div>
+        <!--中间-->
+        <div class="order-content-box padding-box" @click="openInfo(item.goodOrderId)">
+          <div class="img-box">
+            <img :src="formatImg(item.images)" alt="" class="img">
+          </div>
+          <div class="content-center-box aui-padded-l-5">
+            <div class="flex-box-top">
+              <h6 class="aui-ellipsis-1">{{item.goodName}}</h6>
+            </div>
+            <div class="aui-padded-l-10" v-show="item.payType=== '1'">线上付 琴馆提</div>
+            <div class="aui-padded-l-10" v-show="item.payType=== '2'">线上付 正麟发</div>
+            <div class="aui-padded-l-10" v-show="item.payType=== '3'">免费预约</div>
+            <div class="price-box-top">
+                            <span class="">
+                                      <i class="iconfont icon-qian"></i>{{item.price}}
+                             </span>
+            </div>
+            <div class="flex-box-center border-b">
+              <span class="">{{item.createTime}}</span>
+              <div class="price-box">
+                                <span class="">
+                                    X{{item.amount}}
+                                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-center-bottom-box">
+          <div class="">{{item.clubName}}</div>
+          <div class="">共{{item.amount}}份商品 合计 <i class="iconfont icon-qian"></i>{{item.price}}</div>
+        </div>
+        <!--底部-->
+        <div class="order-middle-box-copy end aui-padded-t-5 aui-padded-b-5">
+          <div style="color: #666;" v-show="item.status === '0'" @click="goodConfirmToClub('quxiao',item.goodOrderId,item.payType)">取消订单
+          </div>
+          <div v-show="item.status === '0'" @click="openPay(item.goodOrderId, item.amount, item.goodId)">付款</div>
+          <!--<div v-show="item.status === '1'">确认到店</div>-->
+          <div v-show="item.status === '1'" @click="goodConfirmToClub('tuikuan', item.goodOrderId, item.payType)">申请退款</div>
+          <div v-show="item.status === '2'" @click="goodConfirmToClub('queren',item.goodOrderId,2)">确认收货</div>
+          <div v-show="item.status === '3'" @click="openEvaluate(item.goodOrderId)">去评价</div>
+          <!--<div v-show="item.status === '5'">删除订单</div>-->
+        </div>
+      </div>
+    </li>
+  </ul>
+  <!--v-if="rote"-->
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      myIndex: 1,
+      menuList: [
+        {
+          title: '全部',
+          mIndex: 1
+        },
+        {
+          title: '待付款',
+          mIndex: 2
+        },
+        {
+          title: '待发货',
+          mIndex: 6
+        },
+        {
+          title: '待收货',
+          mIndex: 3
+        },
+        {
+          title: '待评价',
+          mIndex: 4
+        }
+      ],
+      proList: [],
+      formatImg: formatImg,
+      choose: '',
+      perPage: 5,
+      page: 1,
+      rote: false,
+      load: false,
+      overlate: false,
+      firstCount: 0  //loader监听
+    },
+    // ref  判断是否是第一次加载
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.myIndex) {
+          app.myIndex = api.pageParam.myIndex;
+          app.chagneC(true, app.myIndex, false, function () {
+            loadEnd();
+          });
+        } else {
+          app.chagneC(true, app.myIndex, false, function () {
+            loadEnd();
+          });
+        }
+        // 监听订单状态变化
+        api.addEventListener({
+          name: 'shopOrderchange'
+        }, function (ret, err) {
+          app.chagneC(true, app.myIndex);
+        });
+        // 上拉加载更多
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 10 // 设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+        }, function (ret, err) {
+          app.load = true;
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.chagneC(false, app.myIndex, true);
+        });
+      };
+    },
+    methods: {
+      // 商品订单列表
+      chagneC: function (ref, index, fromPull, callback) {
+        MINT.Indicator.open();
+
+        app.overlate = false;
+        app.myIndex = index;
+        if (!fromPull) {
+          app.page = 1;
+        }
+        var post = {
+          cmd: 'uappGetMyOrder',
+          token: getToken(),
+          orderType: 3,
+          pickType: index,
+          perPage: app.perPage,
+          page: app.page
+        };
+        sendAjax(this, post, function (res) {
+          if (ref) {
+            app.proList = res.data.proList;
+            app.rote = true;
+            app.load = false
+          } else {
+            app.proList = app.proList.concat(res.data.proList);
+            app.rote = true;
+            app.load = false
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+
+          MINT.Indicator.close();
+
+          if (callback) {
+            callback();
+          }
+        });
+      },
+//      打开商品订单详情
+      openInfo: function (goodOrderId) {
+        openView('shopOrderInfo', 'member/myOrder/shopOrderInfo/shopOrderInfo_fm', '订单详情', false, false, {
+          goodOrderId: goodOrderId
+        })
+      },
+      //      确认到店
+      prompt: function () {
+        api.confirm({
+          title: '确认到店',
+          buttons: ['取消', '确定']
+        }, function (ret, err) {
+          var index = ret.buttonIndex;
+          if (index === 2) {
+//            确认到店
+            var post = {
+              cmd: 'yuConfirmToClub',
+              token: getToken(),
+              clubOrderId: app.clubOrderId,
+              status: 1
+            };
+            sendAjax(this, post, function (res) {
+              app.getMyGoodInfo();
+              api.sendEvent({
+                name: 'shopOrderchange'
+              });
+            })
+          } else {
+//            取消
+          }
+        });
+      },
+      // 付款
+      openPay: function (orderId, amount, goodId) {
+        if (goodId == '1') {
+          app.getJueXiangDetail(function (stock) {
+            if (stock == null || stock == '0') {
+              toastMsg('库存不足');
+            } else {
+              if (Number(stock) < Number(amount)) {
+                toastMsg('超出库存数量');
+              } else {
+                openView('orderPay', 'member/myOrder/orderPay/orderPay_fm', '订单支付', false, false, {
+                  orderId: orderId
+                });
+              }
+            }
+          });
+        }
+      },
+      getJueXiangDetail: function (callback) {
+        var post = {
+          cmd: 'getJueXiangDetail',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          callback(res.data.stock);
+        })
+      },
+      // 取消 确认 退款
+      goodConfirmToClub: function (name, goodOrderId, payType) {
+        var title = '';
+        if (name === 'quxiao') {
+          app.choose = 2;
+          title = '确认取消订单？'
+        } else if (name === 'queren') {
+          app.choose = 3;
+          title = '确认收货？'
+        } else {
+          app.choose = 1;
+          title = '确认操作？'
+        }
+
+        api.confirm({
+          title: title,
+          buttons: ['取消', '确定']
+        }, function (ret) {
+          if (ret.buttonIndex === 2) {
+            var post = {
+              cmd: 'goodConfirmToClub',
+              token: getToken(),
+              choose: app.choose,
+              goodOrderId: goodOrderId,
+              payType: payType
+            };
+            sendAjax(app, post, function (res) {
+              api.sendEvent({
+                name: 'shopOrderchange'
+              });
+
+              if (name == 'tuikuan') {
+                toastMsg('申请已提交');
+              }
+            });
+          }
+        });
+      },
+      // 评价
+      openEvaluate: function (goodOrderId) {
+        api.openWin({
+          name: 'shopEvaluate',
+          url: '../shopEvaluate/shopEvaluate_win.html',
+          pageParam: {
+            goodOrderId: goodOrderId
+          }
+        });
+      }
+    }
+  })
+</script>

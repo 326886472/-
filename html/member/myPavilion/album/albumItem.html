@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/albumItem.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <div id="loadStart"></div>
+    <div class="album">
+        <div class="banner">
+            <div class="wrap">
+                <img :src="formatImg(defaultPic)" alt="" class="cover-img">
+            </div>
+            <i class="iconfont icon-back" @click="closeWin"></i>
+            <h1>{{albumName}}<i class="iconfont icon-bianji" @click="titleEditShow"></i></h1>
+            <div class="meng"></div>
+        </div>
+        <mt-button plain class="upload-btn" @click="showPic">上传照片</mt-button>
+        <div class="pd-album edit-pic" @click="toggleEditable">
+            编辑<i class="iconfont icon-bianji"></i>
+        </div>
+        <div class="pd-album">
+            <div class="album-list clearfix">
+                <div class="album" v-for="(item, index) in picList">
+                    <div class="img-wrap">
+                        <img :src="formatImg(item.picName)" alt="" @click="goPicture(index)">
+                    </div>
+                    <span class="op-label default-text" v-show="item.isCover === '1'">默认为封面</span>
+                    <span class="op-label default-text" v-show="item.isCover === '0'"
+                          @click="setCoverClick(item.id)">设为封面</span>
+                    <div class="op-label del" @click="delPerPic(item.id)" v-show="editable">x</div>
+                    <div class="album-title">照片 {{index + 1}}</div>
+                </div>
+            </div>
+            <div class="show-all">已显示全部</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            token: getToken(),
+            clubId: '',
+            albumId: '',
+            albumName: '',
+            picList: [],
+            defaultPic: '',
+            editable: false
+        },
+        watch: {
+            loadDone(value) {
+                if (value == 2) {
+                    loadEnd();
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+
+                app.clubId = api.pageParam.clubId;
+
+                app.albumId = api.pageParam.albumId;
+
+                app.getAlbumPic(function () {
+                    loadEnd();
+                });
+
+                api.addEventListener({
+                    name: 'picDevare'
+                }, function ()  {
+                    toastMsg('删除成功');
+                    app.getAlbumPic();
+                });
+                loadEnd();
+            };
+        },
+        methods: {
+            toggleEditable() {
+                app.editable = !app.editable;
+            },
+            closeWin() {
+                api.closeWin();
+            },
+            titleEditShow() {
+                api.prompt({
+                    title: '请输入相册名称',
+                    text: app.albumName,
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        app.modifyClubAlbum(ret.text);
+                    }
+                });
+            },
+            modifyClubAlbum(albumName) {
+                var post = {
+                    cmd: 'modifyClubAlbum',
+                    token: app.token,
+                    clubId: app.clubId,
+                    albumId: app.albumId,
+                    albumName: albumName
+                };
+                sendAjax(this, post,function () {
+                    toastMsg('修改成功');
+                    app.getAlbumPic();
+                });
+            },
+            showPic() {
+                api.getPicture({
+                    sourceType: 'album',
+                    allowEdit: true,
+                    quality: 60
+                }, function (ret, err) {
+                    if (ret) {
+                        app.upAlbumPicTmp(ret.data);
+                    } else {
+                        toastMsg('您可能没有授予应用访问相册的权限');
+                    }
+                });
+            },
+            upAlbumPicTmp(picName) {
+                MINT.Indicator.open('正在上传...');
+                api.ajax({
+                    url: HOST,
+                    method: 'post',
+                    data: {
+                        values: {
+                            cmd: 'upAlbumPicTmp',
+                            token: app.token,
+                            clubId: app.clubId
+                        },
+                        files: {
+                            picName: picName
+                        }
+                    }
+                }, function (ret) {
+                    MINT.Indicator.close();
+                    if (ret) {
+                        app.upAlbumPic(ret.data);
+                    } else {
+                        toastMsg('网络错误');
+                    }
+                });
+            },
+            upAlbumPic(picName) {
+                var post = {
+                    cmd: 'upAlbumPic',
+                    token: app.token,
+                    clubId: app.clubId,
+                    albumId: app.albumId,
+                    picName: picName
+                };
+                sendAjax(this, post,function () {
+                    toastMsg('上传成功');
+                    app.getAlbumPic();
+                });
+            },
+            goPicture(i) {
+                openView('albumPicture', 'member/myPavilion/album/picture', (i + 1) + '/' + app.picList.length, false, 'winAlbum', {
+                    index: i,
+                    picList: app.picList,
+                    clubId: app.clubId
+                });
+            },
+            getAlbumPic(callback) {
+                var post = {
+                    cmd: 'getAlbumPic',
+                    token: app.token,
+                    clubId: app.clubId,
+                    albumId: app.albumId,
+                    page: 1,
+                    perPage: 1000
+                };
+
+                sendAjax(this, post,function (res) {
+                    app.albumName = res.data.albumName;
+                    if (res.data.proList) {
+                        app.picList = res.data.proList;
+                        for (var i = 0; i < app.picList.length; i++) {
+                            if (app.picList[i].isCover === '1') {
+                                app.defaultPic = app.picList[i].picName;
+                                break;
+                            }
+                        }
+                        if (app.picList.length === 1 && app.picList[0].isCover === '0') {
+                            app.setCover(app.picList[0].id);
+                        }
+                    } else {
+                        app.picList = [];
+                    }
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            },
+            delPerPic(picId) {
+                api.confirm({
+                    title: '确定删除?',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        var post = {
+                            cmd: 'delPerPic',
+                            token: app.token,
+                            clubId: app.clubId,
+                            albumId: app.albumId,
+                            picId: picId
+                        };
+                        sendAjax(app, post,function () {
+                            toastMsg('删除成功');
+                            app.getAlbumPic();
+                        });
+                    }
+                });
+            },
+            setCover(picId) {
+                var post = {
+                    cmd: 'setCover',
+                    token: app.token,
+                    clubId: app.clubId,
+                    albumId: app.albumId,
+                    picId: picId
+                };
+                sendAjax(this, post,function () {
+                    app.getAlbumPic();
+                });
+            },
+            // 点击设置封面，因为 @click 传递的参数类型不同，单独用个方法了
+            setCoverClick(picId) {
+                app.setCover(picId);
+            }
+        }
+    });
+</script>

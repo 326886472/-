@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app {
+            background: #ededed;
+            margin-top: 20px;
+            border-top: 1px solid gainsboro;
+            width: 100%;
+            height: 100%;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+        }
+
+        .headertitile{
+            width: 100%;
+            height: 30%;
+            display: flex;
+        }
+        .headerspan{
+            margin: auto;
+            font-size: 17px;
+            font-weight: bold;
+        }
+        .headerbtn{
+            width: 100%;
+            height: 1rem;
+            display: flex;
+        }
+        .buyshop{
+            margin: auto;
+            border: 1px solid black;
+
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+        <div class="headertitile">
+            <span class="headerspan">绝响广告页</span>
+        </div>
+        <div class="headerbtn">
+            <mt-button class="buyshop" @click="goshopdetails()">购买绝响</mt-button>
+        </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+        },
+        filters: {},
+        created: function () {
+            apiready = function () {
+
+            };
+        },
+        methods: {
+            goshopdetails:function(){
+                api.openWin({
+                    name: 'shopdetails_fm',
+                    url: '../../juexiang/shopdetails_fm.html'
+                });
+            }
+        }
+    })
+</script>

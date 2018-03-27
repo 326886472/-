@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .headerbox {
+      width: 100%;
+      height: auto;
+      box-sizing: inherit;
+      padding-top: 10px;
+    }
+
+    .headerimg {
+      width: 90%;
+      height: 100%;
+    }
+
+    .messagebox {
+      width: 90%;
+      height: auto;
+      margin: auto;
+      display: flex;
+      font-size: 13px;
+    }
+
+    .op {
+      line-height: 1.5rem;
+    }
+
+    .peoplemessage {
+      width: 100%;
+      height: auto;
+    }
+
+    .messagetitle {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      background: white;
+    }
+
+    .peopleartical {
+      width: 100%;
+      height: auto;
+      background: white;
+      margin: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      font-size: 14px;
+      margin-bottom: 0.5rem;
+      word-break: break-all;
+      overflow: hidden;
+    }
+
+    .peopleartical * {
+      max-width: 100% !important;
+    }
+
+    .peopleartical img {
+      max-width: 95%;
+    }
+
+    .tokenmessage {
+      width: 85%;
+      height: 3rem;
+      margin: auto;
+      line-height: 3rem;
+      background: white;
+      border-bottom: 1px solid gainsboro;
+      font-size: 15px;
+    }
+
+    .tokendetails {
+      width: 85%;
+      background: white;
+      height: auto;
+      margin: auto;
+      border-bottom: 1px solid gainsboro;
+      font-size: 14px;
+      display: flex;
+      padding-top: 20px;
+      padding-bottom: 5px;
+    }
+
+    .detailsbox {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+    }
+
+    .detailsbox img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .ifont {
+      position: absolute;
+      bottom: -5%;
+      z-index: 10;
+      left: 50%;
+      margin-left: -1rem;
+      width: 2rem;
+      background: orangered;
+      color: white;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .rightboxs {
+      flex: 1;
+    }
+
+    .nametime {
+      line-height: 2rem;
+      display: flex;
+    }
+
+    .nametime span {
+      flex: 1;
+      font-size: 13px;
+    }
+
+    .artical {
+      width: 100%;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .ixin {
+      color: #f44336;
+    }
+
+    .findmore {
+      width: 85%;
+      margin: auto;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      font-size: 14px;
+    }
+
+    .fixedbox {
+      width: 100%;
+      height: 44px;
+      background: white;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+    }
+
+    .fixedbox span {
+      width: 44px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .oinput {
+      height: 1.6rem;
+      font-size: 14px;
+      border-radius: 5px;
+      margin: auto;
+      width: 60%;
+      line-height: 1.6rem;
+      color: darkgray;
+    }
+
+    .icontype {
+      margin: auto;
+      font-size: 15px;
+      flex: 1;
+      text-align: center;
+    }
+
+    /*分享*/
+    .bottompoup {
+      width: 100%;
+      height: 12rem;
+      background: white;
+    }
+
+    .fourkind {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .minkind {
+      flex: 1;
+      text-align: center;
+    }
+
+    .publicfont {
+      font-size: 50px;
+    }
+
+    .minkind p {
+      font-size: 14px;
+    }
+
+    .sharetitle {
+      line-height: 2.5rem;
+      font-size: 15px;
+    }
+
+    .canclebox {
+      width: 100%;
+      height: 5rem;
+      display: flex;
+    }
+
+    .cancelinput {
+      width: 70%;
+      height: 2rem;
+      line-height: 2rem;
+      border-radius: 20px;
+      border: 1px solid #9f9f9f;
+      text-align: center;
+      font-size: 14px;
+      margin: auto;
+    }
+
+    .messagebox {
+      display: flex;
+    }
+
+    .messagebox span {
+      flex: 1;
+      text-align: center;
+      font-size: 12px;
+      color: #999999;
+      line-height: 2rem;
+    }
+
+    .bottomsize {
+      font-size: 11px;
+      color: #a3a3a3;
+    }
+
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <div class="headerbox">
+    <p style="line-height: 1rem;text-align: center">{{mycontlist.title}}</p>
+    <div class="messagebox">
+      <span class="startime">{{mycontlist.addTime}}</span>
+      <span>责任编辑：{{mycontlist.author}}</span>
+    </div>
+
+
+    <div style="display: inline-block;width: 100%;height: 30%;text-align: center">
+      <img class="headerimg" :src="formatImg(mycontlist.cover)">
+    </div>
+
+    <div class="peopleartical" v-html="count">
+    </div>
+
+  </div>
+
+
+  <div style="width: 100%;height: 1rem;background: #f0f0f0"></div>
+  <div style="width: 100%;height: auto;background: white">
+    <div class="tokenmessage">
+      <span><i class="iconfont icon-liuyan"></i></span><span style="margin-left: 0.5rem">全部留言（{{alltoken.count || '0'}}）</span>
+    </div>
+
+    <div class="tokendetails" v-for="(item,index) in tokenlist">
+      <div class="detailsbox" style="position: relative">
+        <img :src="'http://zhenglin.kaituo.local/'+item.avatar">
+        <div class="ifont">V认证</div>
+      </div>
+      <div class="rightboxs">
+        <div class="nametime">
+                    <span style="margin-left: 0.2rem;font-size: 16px">{{item.nickname}}<i style="color:#ffbb28"
+                                                                                          class="iconfont icon-huangguan-copy"
+                                                                                          v-if="item.level==1"></i></span>
+          <span style="text-align: right;margin-right: 0.2rem;color:#b8b8b8">{{item.addTime}}</span>
+        </div>
+        <div class="artical">
+          {{item.content}}
+        </div>
+        <div style="width: 100%;line-height: 2rem;text-align: right;margin-right: 20px">
+                <span>
+                    <i v-if="item.ifAgree==1" class="iconfont ixin icon-xin" @click="culEvaluateDoAgree(index)"></i>
+                    <i v-if="item.ifAgree==0" class="iconfont icon-ziyuan8" @click="culEvaluateDoAgree(index)"></i>
+                    {{item.countAgree}}
+                </span>
+        </div>
+      </div>
+
+    </div>
+    <div class="findmore" @click="checkmore()">
+      查看更多
+    </div>
+    <div style="width: 100%;line-height:2rem;background: #f0f0f0;text-align: center;font-size: 14px">——END——</div>
+    <div style="width: 100%;height: 44px"></div>
+    <div class="fixedbox">
+        <span @click="culDoAgree(1)" style="margin-top: 5px">
+             <i v-if="agree==1" class="iconfont ixin icon-xin"></i>
+             <i v-else class="iconfont icon-ziyuan8"></i>
+            <p class="bottomsize">{{agreenum}}</p>
+        </span>
+
+      <span @click="culDoAgree(2)" style="margin-top: 5px">
+            <i v-if="collect==1" style="color: #fcbd54" class="iconfont ixin icon-shoucang"></i>
+            <i v-else class="iconfont icon-shoucang1"></i>
+            <p class="bottomsize">{{countnum}}</p>
+            </span>
+      <div class="oinput" style="background:#e5e5e5" @click="sendtoken()">
+        我要留言
+      </div>
+      <span style="line-height: 44px"><i class="iconfont icontype icon-liuyan"></i></span>
+    </div>
+
+  </div>
+
+
+  <mt-popup class="bottompoup"
+            v-model="bler"
+            position="bottom">
+
+    <p class="sharetitle"><span style="margin-left: 10px">分享到</span></p>
+    <div class="fourkind">
+      <div class="minkind" @click="shareto(1)">
+        <i style="color: #20cb33" class="iconfont publicfont icon-weixin-copy"></i>
+        <p>微信好友</p>
+      </div>
+
+      <div class="minkind" @click="shareto(2)">
+        <i style="color: #20cb33" class="iconfont publicfont icon-pengyouquan"></i>
+        <p>朋友圈</p>
+      </div>
+      <div class="minkind" @click="shareto(3)">
+        <i style="color: #24bbff" class="iconfont publicfont icon-qq"></i>
+        <p>QQ</p>
+      </div>
+      <div class="minkind" @click="shareto(4)">
+        <i style="color: #f7c000" class="iconfont publicfont icon-qqkongjian"></i>
+        <p>QQ空间</p>
+      </div>
+
+    </div>
+    <div class="canclebox">
+      <mt-button class="cancelinput" @click="falsebtn()">取消</mt-button>
+    </div>
+  </mt-popup>
+
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      articleid: '',
+      cateid: '',
+      tokenlist: [],
+      relust: [],
+      tokennum: '',
+      mycontlist: [],
+      collect: '',
+      agree: '',
+      agreenum: '',
+      alltoken: [],
+      countnum: '',
+      count: '',
+//            分享
+      bler: false,
+      sharename: '',
+      sharecount: '',
+      shareimg: '',
+//          动画值
+      laber: 0
+    },
+    filters: {},
+    watch: {
+      'laber': function (value) {
+        if (value == 1) {
+          loadEnd()
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.articleid = api.pageParam.articleid;
+        app.cateid = api.pageParam.cateid;
+        app.culGetEvaluateList(app.articleid);
+        app.getCulDetails(app.articleid);
+
+        api.addEventListener({
+          name: 'shuaxinmessage'
+        }, function (ret, err) {
+          app.page = 1;
+          app.culGetEvaluateList(app.articleid, 1)
+        });
+
+        api.addEventListener({
+          name: 'newssendshare'
+        }, function (ret, err) {
+          app.bler = true
+        });
+
+
+      };
+    },
+    methods: {
+//          分享
+      shareto: function (ind) {
+        var wx = api.require('wx');
+        var qq = api.require('QQPlus');
+        app.bler = false;
+        switch (ind) {
+          case 1 : {
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'session',
+              title: app.sharename,
+              description: app.sharecount,
+              thumb: formatShareImg(app.shareimg),
+              contentUrl: wapUrl + 'wap/html2/tool/morenew/newdetails_fm.html?' + app.articleid + ',' + app.cateid
+//              contentUrl: wapUrl + 'wap/html2/download/download.html?2'
+            }, function (ret, err) {
+              if (ret.status) {
+                toastMsg('分享成功');
+              } else {
+                toastMsg('取消发送');
+              }
+            });
+            break;
+          }
+          case 2 : {
+            wx.shareWebpage({
+              apiKey: '',
+              scene: 'timeline',
+              title: app.sharename,
+              description: app.sharecount,
+              thumb: formatShareImg(app.shareimg),
+              contentUrl: wapUrl + 'wap/html2/tool/morenew/newdetails_fm.html?' + app.articleid + ',' + app.cateid
+//              contentUrl: wapUrl + 'wap/html2/download/download.html?2'
+            }, function (ret, err) {
+              if (ret.status) {
+                toastMsg('分享成功');
+              } else {
+                toastMsg('取消发送');
+              }
+            });
+            break;
+          }
+          case 3 : {
+            qq.shareNews({
+              url: wapUrl + 'wap/html2/tool/morenew/newdetails_fm.html?' + app.articleid + ',' + app.cateid,
+//              url: wapUrl + 'wap/html2/download/download.html?2',
+              title: app.sharename,
+              description: app.sharecount,
+              imgUrl: formatShareImg(app.shareimg),
+              type: 'QFriend'
+            }, function (ret, err) {
+            });
+            break;
+          }
+          case 4 : {
+            qq.shareNews({
+              url: wapUrl + 'wap/html2/tool/morenew/newdetails_fm.html?' + app.articleid + ',' + app.cateid,
+//              url: wapUrl + 'wap/html2/download/download.html?2',
+              title: app.sharename,
+              description: app.sharecount,
+              imgUrl: formatShareImg(app.shareimg),
+              type: 'QZone'
+            }, function (ret, err) {
+            });
+            break;
+          }
+        }
+      },
+      falsebtn: function () {
+        app.bler = false;
+      },
+
+      change: function (index) {
+        app.changeindex = index
+      },
+//            查看全部留言
+      checkmore: function () {
+        api.openWin({
+          name: 'tokenmessage_win',
+          url: '../tokenmessage/tokenmessage_win.html',
+          pageParam: {
+            articleid: app.articleid
+          }
+        });
+      },
+//            留言底下那三个
+      culGetEvaluateList: function (articleid) {
+        var post = {
+          cmd: 'culGetEvaluateList',
+          articleId: articleid,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+          app.alltoken = res.data;
+          app.tokenlist = res.data.proList.slice(0, 3);
+          app.tokennum = res.data.count;
+          for (var i = 0; i < app.tokenlist.length; i++) {
+            console.log(app.tokenlist[i].addTime.substring(0, 10));
+            app.tokenlist[i].addTime = app.tokenlist[i].addTime.substring(0, 10)
+          }
+        });
+      },
+//            我评论的的收藏和支持,以及详情简介内容
+      getCulDetails: function (articleid) {
+        var post = {
+          cmd: 'getCulDetails',
+          articleId: articleid,
+          cate: app.cateid,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+          app.mycontlist = res.data.proList;
+          app.count = charToHtml(app.mycontlist.content);
+          app.collect = res.data.proList.ifCollect;
+          app.agree = res.data.proList.ifAgree;
+          app.agreenum = res.data.proList.countAgree;
+          app.countnum = res.data.proList.countCollect;
+          app.sharename = app.mycontlist.title;
+          app.sharecount = '琴界新闻';
+          app.shareimg = app.mycontlist.cover;
+          app.animatio()
+        });
+      },
+//            底部的我要留言 跳转到留言板
+      sendtoken: function () {
+        openView('sendmessage_fm', 'tools/tokenmessage/sendmessage_fm', '留言板', false, false, {
+          articleId: app.articleid
+        })
+      },
+//            支持网友留言/取消支持
+      culEvaluateDoAgree: function (index) {
+        if (getToken() != null) {
+          if (app.tokenlist[index].ifAgree == 1) {
+            app.tokenlist[index].ifAgree = 0;
+            app.tokenlist[index].countAgree--
+          } else {
+            app.tokenlist[index].ifAgree = 1;
+            app.tokenlist[index].countAgree++
+          }
+        }
+        var post = {
+          cmd: 'culEvaluateDoAgree',
+          commentId: app.tokenlist[index].commentId,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+        })
+      },
+//            支持/取消 我的 收藏或支持
+      culDoAgree: function (num) {
+        if (num == 2 && getToken() != null) {
+          if (app.collect == 1) {
+            app.collect = 0;
+            app.countnum--
+          } else {
+            app.collect = 1;
+            app.countnum++
+          }
+        }
+
+        if (num == 1 && getToken() != null) {
+          if (app.agree == 1) {
+            app.agree = 0;
+            app.agreenum--
+          } else {
+            app.agree = 1;
+            app.agreenum++
+          }
+        }
+
+        var post = {
+          cmd: 'culDoAgree',
+          articleId: app.articleid,
+          agreeOrCollect: num,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+        })
+      },
+      animatio: function () {
+        app.laber++
+      }
+    }
+  })
+</script>

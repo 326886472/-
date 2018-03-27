@@ -1,0 +1,97 @@
+html, body {
+  background: #f0f0f0;
+}
+
+.level-index {
+  .listView-text-score {
+    .iconfont {
+      font-size: 14px;
+    }
+  }
+
+  .level-box {
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    background: white;
+
+    & > img {
+      width: 7rem;
+      height: 7rem;
+    }
+
+    .info {
+      font-size: 14px;
+      margin-left: 1rem;
+
+      .title {
+        font-size: 16px;
+      }
+
+      .overall {
+        margin-top: 0.5rem;
+      }
+
+      .rate-box {
+        margin-top: 1rem;
+        line-height: 1.5;
+        & > div {
+          color: #a3a3a3;
+        }
+      }
+    }
+  }
+
+  .expires {
+    background: white;
+    margin-top: 0.5rem;
+    color: #a3a3a3;
+    padding: 0.7rem;
+  }
+
+  .re-apply {
+    background: white;
+    margin-top: 0.5rem;
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .btn-box {
+    text-align: center;
+    padding: 1rem 0;
+
+    .mint-button {
+      width: 60%;
+    }
+  }
+}
+
+
+.listView-text-score {
+  display: inline-flex;
+
+  .icon-xingxing {
+    color: #FF8500;
+    font-size: 1rem;
+
+    &.grey-star {
+      color: #BFBFBF;
+    }
+  }
+
+  .icon-yibanxingxing1 {
+    color: #ff8500;
+  }
+
+  .number {
+    color: #FFAA2A;
+  }
+
+  .iconfont {
+    margin-right: 0.2rem;
+
+    &:nth-child(5) {
+      margin-right: 0;
+    }
+  }
+}

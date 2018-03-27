@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: white;
+    }
+
+    #header {
+      border-bottom: 1px solid #ccc;
+    }
+
+    .iconfont {
+      color: #989898;
+    }
+
+    #app {
+      height: 100%;
+      position: relative;
+    }
+
+    .logo {
+      padding-top: 10%;
+    }
+
+    .img-box {
+      width: 50%;
+      min-height: 10rem;
+      margin: 0 auto;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .login-box {
+      width: 80%;
+      margin: 5% auto 0 auto;
+    }
+
+    .input-box {
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .input-box i:first-child {
+      margin-right: 1rem;
+    }
+
+    .input-box input {
+      min-height: 1rem;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      width: 70%;
+    }
+
+    .icon-first {
+      flex-shrink: 0;
+      width: 10%;
+      text-align: center;
+    }
+
+    .icon-style {
+      flex-shrink: 0;
+      width: 10%;
+      text-align: center;
+    }
+
+    .text-box {
+      padding: 0.5rem 0 1rem 0;
+      font-size: 0.7rem;
+      width: 80%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .my-color {
+      color: #AF8180;
+    }
+
+    .btn-box {
+      width: 100%;
+      text-align: center;
+    }
+
+    .btn-box button {
+      width: 60%;
+      margin: 0 auto;
+      border-radius: 1rem;
+      border: 1px solid #666;
+      text-align: center;
+      padding: 0.5rem 0;
+      color: #666;
+      font-size: 0.7rem;
+    }
+
+    button:active {
+      background: gainsboro;
+    }
+
+    /*第三方开始*/
+    .disanfang {
+      margin: 40% auto 0 auto;
+      width: 80%;
+      border-top: 1px dotted #ccc;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      position: relative;
+    }
+
+    .cover-text {
+      font-size: 0.7rem;
+      color: #ccc;
+      width: 5rem;
+      text-align: center;
+      background: white;
+      position: absolute;
+      top: -15%;
+      left: 35%;
+    }
+
+    .sanfanglign-box {
+      padding-top: 1rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+    .weixinIcon {
+      width: 2rem;
+      height: 2rem;
+      line-height: 2rem;
+      text-align: center;
+      border-radius: 50%;
+      color: #81d741;
+    }
+
+    .weixinIcon i, .qqIcon i {
+      font-size: 2rem;
+    }
+
+    .qqIcon {
+      width: 2rem;
+      height: 2rem;
+      line-height: 2rem;
+      text-align: center;
+      border-radius: 50%;
+      color: #5995d3;
+    }
+
+    .icon-mima {
+      padding-left: 0.1rem;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="logo">
+    <div class="img-box">
+      <img src="../../assets/images/logo.png" alt="">
+    </div>
+  </div>
+  <div class="login-box ">
+    <div class="input-box ">
+      <i class="iconfont icon-huiyuan icon-first"></i>
+      <input type="text" placeholder="请输入手机号/用户名" v-model="mobile">
+      <i class="iconfont icon-weitongguo icon-style" v-if="mobile !== '' " @click="clear"></i>
+    </div>
+    <div class="input-box aui-margin-t-15">
+      <i class="iconfont icon-mima icon-first"></i>
+      <input type="password" placeholder="请输入登录密码" v-show="!show" v-model="password" class="">
+      <input type="text" placeholder="请输入登录密码" v-show="show" v-model="password">
+      <i class="iconfont icon-faxian icon-style" v-show="password != ''" @click="showPassword"></i>
+    </div>
+  </div>
+  <div class="text-box">
+    <div class="my-color" @click="openNewin('forget','common/forget','找回密码')">
+      忘记密码?
+    </div>
+    <div class="my-color" @click="openNewin('reg','common/reg','会员注册')">
+      注册
+    </div>
+  </div>
+  <div class="btn-box">
+    <button @click="userLogin">登录</button>
+  </div>
+  <!--第三方登录开始-->
+  <div class="disanfang aui-padded-t-15" v-if="qqAllow == 1 || wxAllow == 1">
+    <div class="cover-text">
+      第三方登录
+    </div>
+    <div class="sanfanglign-box">
+      <div class="qqIcon" @click="openThird(1)" v-if="qqAllow == 1">
+        <i class="iconfont icon-qq" style="color:#5995d3"></i>
+      </div>
+      <div class="weixinIcon" @click="openThird(2)" v-if="wxAllow == 1">
+        <i class="iconfont icon-weixin" style="color: #81d741"></i>
+      </div>
+    </div>
+  </div>
+  <!--第三方结束-->
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      mobile: '',
+      password: '',
+      show: false,
+      qqAllow: '-1',
+      wxAllow: '-1',
+      fromLaunch: false  //是否首次登录
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.fromLaunch) {
+          app.fromLaunch = true;
+        }
+        // 能否 qq 登录
+        app.switch_app(1, function (allow) {
+          app.qqAllow = allow;
+        });
+
+        // 能否微信登录
+        app.switch_app(2, function (allow) {
+          app.wxAllow = allow;
+        });
+      };
+    },
+    methods: {
+      // 用户登录
+      userLogin: function () {
+        if (app.mobile !== '' && app.password !== '') {
+          var post = {
+            cmd: 'userLogin',
+            mobile: app.mobile,
+            password: app.password
+          };
+          sendAjax(this, post, function (res) {
+            if (res.code == 1) {
+              api.sendEvent({
+                name: "login",
+                extra: {
+                  data: res.data
+                }
+              });
+
+              $api.setStorage('token', res.data.token);
+              $api.setStorage('mobile', res.data.mobile);
+              $api.setStorage('id', res.data.id);
+              $api.setStorage('nickname', res.data.nickname);
+
+              pushBind(res.data.nickname, res.data.id);
+
+              if (app.fromLaunch) {
+                api.openWin({
+                  name: 'root',
+                  url: '../index/index/index_win.html'
+                });
+              } else {
+                closeWindow();
+              }
+            } else if (res.code == -2) {
+              // 您的账户名或登录密码有误
+              api.confirm({
+                title: '温馨提示',
+                msg: '您的账户名或登录密码有误,请重新输入',
+                buttons: ['重新输入', '忘记密码']
+              }, function (ret, err) {
+                var index = ret.buttonIndex;
+                if (index == 1) {
+//                  app.mobile = '';
+//                  app.password = '';
+                } else {
+                  openView('forget', 'common/forget', '找回密码');
+                }
+              });
+            } else {
+              // 您的账户不存在
+              api.confirm({
+                title: '温馨提示',
+                msg: '您的账户不存在',
+                buttons: ['去注册', '取消']
+              }, function (ret, err) {
+                var index = ret.buttonIndex;
+                if (index == 1) {
+                  openView('reg', 'common/reg', '会员注册');
+                } else {
+                }
+              });
+            }
+          });
+        } else {
+          toastMsg('请输入账号或者密码');
+        }
+      },
+      // 忘记密码.注册跳转
+      openNewin: function (name, url, title) {
+        openView(name, url, title, false, false, {
+          fromLaunch: app.fromLaunch
+        });
+      },
+      // 清空用户名
+      clear: function () {
+        app.mobile = '';
+      },
+      // 显示密码
+      showPassword: function () {
+        app.show = !app.show;
+      },
+      // 三方登录开关 1：qq；2：微信
+      switch_app: function (switchType, callback) {
+        var post = {
+          cmd: 'switch_app',
+          switchType: switchType
+        };
+        sendAjax(this, post, function (res) {
+          if (callback) {
+            callback(res.data);
+          }
+        });
+      },
+      wxLogin: function () {
+        var wx = api.require('wx');
+        wx.auth({}, function (retAuth, errAuth) {
+          if (retAuth.status) {
+            wx.getToken({
+              code: retAuth.code
+            }, function (retGetToken, errGetToken) {
+              if (retGetToken.status) {
+                wx.getUserInfo({
+                  accessToken: retGetToken.accessToken,
+                  openId: retGetToken.openId
+                }, function (retGetInfo, errGetInfo) {
+                  if (retGetInfo.status) {
+                    api.toast({msg: '正在登录...'});
+                    var post = {
+                      cmd: 'uappWXLogin',
+                      unionid: retGetInfo.unionid,
+                      access_token: retGetToken.accessToken,
+                      openid: retGetInfo.openid
+                    };
+                    sendAjax(app, post, function (res) {
+                      if (res.data.status == 1) {
+                        $api.setStorage('token', res.data.token);
+                        $api.setStorage('mobile', res.data.info.mobile);
+
+                        if (app.fromLaunch) {
+                          api.openWin({
+                            name: 'root',
+                            url: '../index/index/index_win.html'
+                          });
+                        } else {
+                          api.closeWin();
+                        }
+                      } else if (res.data.status == 2) {
+                        openView('bandLogin', 'common/bandLogin', '绑定登录', false, false, {
+                          unionid: retGetInfo.unionid,
+                          nickname: retGetInfo.nickname,
+                          avatar: retGetInfo.headimgurl,
+                          access_token: retGetToken.accessToken,
+                          openid: retGetInfo.openid,
+                          sex: retGetInfo.sex,
+                          fromLaunch: app.fromLaunch
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      },
+      openThird: function (index) {
+        if (index === 2) {
+          // 微信登录
+          var wx = api.require('wx');
+          wx.isInstalled(function (ret, err) {
+            if (ret.installed) {
+              app.wxLogin();
+            } else {
+              alert('当前设备未安装微信客户端');
+            }
+          });
+        } else {
+          // qq登录
+          var qq = api.require('QQPlus');
+          qq.installed(function (ret, err) {
+            if (ret.status) {
+              qq.login(function (ret, err) {
+//                api.alert({
+//                  title: 'id和token',
+//                  msg: ret.openId + ret.accessToken
+//                });
+              });
+            } else {
+//              api.alert({msg: "没有安装"});
+            }
+          });
+        }
+      }
+    }
+  })
+</script>

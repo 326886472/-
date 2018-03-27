@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/class_home.css">
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+    <section>
+        <ul class="classoul">
+            <!--<mt-button style="border-radius: 0px" type="art">-->
+            <li @click="moretype()">
+                <span>课程类型：</span>
+                <span style="color:#8b8b8b">{{olist.level | typeText}}</span>
+                <i class="iconfont icon-fanhui"></i>
+                <!--</mt-button>-->
+            </li>
+            <li v-show="OtherClassType">
+                <span>其他类型：</span>
+                <input style="outline: none;color: #8b8b8b;margin-left: 1rem" type="text" v-model="olist.OtherClassType">
+            </li>
+            <li>
+                <span>课程名称：</span>
+                <input style="outline: none;color: #8b8b8b;margin-left: 1rem" type="text" v-model="olist.courseName">
+            </li>
+            <li @click="classdetails()"><span>课程详情：</span><i class="iconfont icon-fanhui"></i></li>
+            <li>
+                <span>收费价格：</span>
+                <input v-model="olist.price" style="outline: none;color: #8b8b8b;margin-left: 1rem" type="num">
+            </li>
+            <li>
+                <span>会员价：</span>
+                <input v-model="olist.vipPrice" style="outline: none;color: #8b8b8b;margin-left: 1rem" type="num">
+            </li>
+            <li @click="gototeacherdetails()"><span>教师信息：</span><i class="iconfont icon-fanhui"></i></li>
+            <li class="classcontent" style="height: 6rem">
+                <p>一句话推荐：</p>
+                <textarea maxlength="100" v-model="olist.slogan">{{olist.slogan}}</textarea>
+            </li>
+            <li class="classcontent">
+                <p>课程简介：</p>
+                <textarea maxlength="500" v-model="olist.courseDesc">{{olist.courseDesc}}</textarea>
+            </li>
+        </ul>
+        <div class="class_img">
+            <p>课程配图</p>
+            <ul>
+
+                <li style="position: relative" v-for="item in imglist">
+                    <img style="width: 100%;height: 100%" :src="baseUrl + item">
+                    <div class="details" @click="detailsimg(item)">X</div>
+                </li>
+
+                <li style="position: relative" v-for="item in addlist">
+                    <img style="width: 100%;height: 100%" :src="baseUrl + '/Public/uploads/tmp/' + item">
+                    <div class="details" @click="detailsadd(item)">X</div>
+                </li>
+
+                <li @click="addimg()" v-if="contlist.length!=5">
+                    <i class="iconfont icon-xiangji1"></i>
+                </li>
+
+            </ul>
+        </div>
+        <div class="bottom_box">
+            <mt-button class="submit_btn" @click="modifyCourseInfo">提交申请</mt-button>
+        </div>
+        <!--弹出课程类型-->
+        <mt-popup
+                v-model="more.popupVisibleJX"
+                position="bottom">
+            <ul class="moreoul">
+                <li @click="changeclass(2)" :class="{active: olist.level == '2'}">定期</li>
+                <li @click="changeclass(3)" :class="{active: olist.level == '3'}">提高</li>
+                <li @click="changeclass(4)" :class="{active: olist.level == '4'}">名师</li>
+                <li @click="changeclass(5)" :class="{active: olist.level == '5'}">专项</li>
+                <li @click="changeclass(6)" :class="{active: olist.level == '6'}">其他</li>
+            </ul>
+        </mt-popup>
+        <mt-popup
+                v-model="more.popupVisible"
+                position="bottom">
+            <ul class="moreoul">
+                <li @click="changeclass(7)" :class="{active: olist.level == '7'}">雅集</li>
+                <li @click="changeclass(8)" :class="{active: olist.level == '8'}">讲座</li>
+                <li @click="changeclass(9)" :class="{active: olist.level == '9'}">其他</li>
+            </ul>
+        </mt-popup>
+        <!--弹出课程等级-->
+    </section>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+
+<script>
+    new FastClick(document.body);
+</script>
+
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            starlist: [],
+            clubId: '',
+            classActive: 0,
+            levelActive: 0,
+            ablechange: true,
+            id: '',
+            olist: {},
+            myimg: '',
+            imglist: [],
+            addlist: [],
+            contlist: [],
+            newcontlist: [],
+            teacherimg: '',
+            teachname: '',
+            aboutteach: '',
+            Lesson: '',
+            OtherClassType: false,
+            more: {
+                popupVisible: false,
+                popupVisibleJX: false,
+                classdengji: false
+            },//弹页的布尔值
+            form: {
+                type: 1,
+                grade: 1,
+                memberprice: ''
+            },
+            //课程详情的监听到数据
+            dataimg: '',
+            teachermessage: '',
+            teachername: ''
+            //教师详情的监听到数据
+        },
+        filters: {
+            typeText(courseType) {
+                switch (courseType) {
+                    case 2:
+                        return '定期';
+                    case 3:
+                        return '提高';
+                    case 4:
+                        return '名师';
+                    case 5:
+                        return '专项';
+                    case 6:
+                        return '其他';
+                    case 7:
+                        return '雅集';
+                    case 8:
+                        return '讲座';
+                    case 9:
+                        return '其他';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.id = api.pageParam.id;
+                app.clubId = api.pageParam.clubId;
+                app.getPerCourseInfo();
+                //监听从课程详情获取到的信息
+                api.addEventListener({
+                    name: 'courseDetailUp'
+                }, function (ret) {
+                    app.olist.classHour = ret.value.classHour;
+                    app.olist.Lesson = ret.value.Lesson;
+                    app.olist.personCount = ret.value.personCount;
+                    app.olist.startInterval = ret.value.startInterval;
+                    app.olist.endInterval = ret.value.endInterval;
+                    app.olist.startDate = ret.value.startDate;
+                    app.olist.endDate = ret.value.endDate;
+                    app.olist.reserveDay = ret.value.reserveDay;
+                });
+                //监听从教师信息获取到的信息
+                api.addEventListener({
+                    name: 'mypicture'
+                }, function (ret, err) {
+                    app.olist.teacherAvatar = ret.value.mypicture;
+                    app.olist.teacherDesc = ret.value.teachermessage;
+                    app.olist.teacher = ret.value.teachername;
+                });
+                loadEnd();
+            };
+        },
+        methods: {
+            //删除服务端传过来的图片方法
+            detailsimg(item) {
+                api.confirm({
+                    title: '确定删除?',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        var index = app.imglist.indexOf(item);
+                        app.imglist.splice(index, 1);
+                        app.contlist = app.addlist.concat(app.imglist);
+                    }
+                });
+            },
+            //删除相册获取的图片的方法
+            detailsadd(item) {
+                api.confirm({
+                    title: '确定删除?',
+                    buttons: ['取消', '确定']
+                }, function (ret) {
+                    if (ret.buttonIndex === 2) {
+                        var index = app.addlist.indexOf(item);
+                        app.addlist.splice(index, 1);
+                        app.contlist = app.addlist.concat(app.imglist);
+                    }
+                });
+            },
+            //获取相册图片且显示的方法和apiAJAX
+            addimg() {
+                api.getPicture({
+                    sourceType: 'album',
+                    encodingType: 'jpg',
+                    mediaValue: 'pic',
+                    destinationType: 'url',
+                    allowEdit: true,
+                    quality: 50,
+                    targetWidth: 100,
+                    targetHeight: 100,
+                    saveToPhotoAlbum: false
+                }, function (ret, err) {
+                    if (ret.data) {
+                        app.myimg = ret.data;
+                        api.ajax({
+                            url: HOST,
+                            method: 'post',
+                            data: {
+                                values: {
+                                    "cmd": "upCourseImgTmp",
+                                    "token": getToken(),
+                                    "courseId": app.id,
+                                },
+                                files: {
+                                    "images": app.myimg
+                                }
+                            }
+                        }, function (ret, err) {
+                            if (ret) {
+                                app.addlist.push(ret.data);
+                                app.contlist = app.imglist.concat(app.addlist);
+                            } else {
+                                toastMsg('失败');
+                            }
+                        });
+
+                    } else {
+                        toastMsg('已取消添加');
+                    }
+                });
+            },
+            //获取课程详情
+            getPerCourseInfo() {
+                var post = {
+                    cmd: 'getPerCourseInfo',
+                    token: getToken(),
+                    clubId: app.clubId,
+                    courseId: app.id
+                };
+                sendAjax(this, post,function(res) {
+                    app.olist = res.data;
+                    app.starimg();
+                });
+            },
+            starimg() {
+                if (app.olist.images) {
+                    app.starlist = app.olist.images.split(',');
+                } else {
+                    app.starlist = [];
+                }
+                app.imglist = app.starlist;
+                app.contlist = app.addlist.concat(app.imglist);
+            },
+            moretype() {
+                if (app.olist.courseType == 2 ) {
+                    app.more.popupVisible = true;
+                }else {
+                    app.more.popupVisibleJX = true;
+                }
+            },
+            //课程类型显示与隐藏
+            changeclass(courseType) {
+                app.olist.level = courseType;
+                app.more.popupVisible = false;
+                app.more.popupVisibleJX = false;
+                if( courseType == '6' || courseType == '9' ) {
+                    app.OtherClassType = true
+                } else {
+                    app.OtherClassType = false
+                }
+            },//课程类型的文字转换及高亮
+            classdengji() {
+                if (app.more.classdengji) {
+                    app.more.classdengji = false;
+                } else {
+                    app.more.classdengji = true
+                }
+            },
+            //课程等级的文字转换及高亮
+            gototeacherdetails() {
+                openView('teacher_details', 'member/myPavilion/teachclass/teacher_details', '教师信息', false, false, {
+                    teacherAvatar: app.olist.teacherAvatar,
+                    teacher: app.olist.teacher,
+                    teacherDesc: app.olist.teacherDesc
+                });
+            },//去教师详情页
+            classdetails() {
+                openView('class_details', 'member/myPavilion/teachclass/class_detailstwo', '修改课程', false, false, {
+                    classHour: app.olist.classHour,
+                    Lesson: app.olist.Lesson,
+                    personCount: app.olist.personCount,
+                    startInterval: app.olist.startInterval,
+                    endInterval: app.olist.endInterval,
+                    startDate: app.olist.startDate,
+                    endDate: app.olist.endDate,
+                    reserveDay: app.olist.reserveDay,
+                });
+            },
+            checkPost() {
+                if (!trim(app.olist.price)) {
+                    toastMsg('请填写收费价格');
+                    return false;
+                } else if (!/^[0-9]\d*(\.\d{1,2})?$/.test(app.olist.price)) {
+                    toastMsg('请填写合法的收费价格');
+                    return false;
+                } else if (!trim(app.olist.vipPrice)) {
+                    toastMsg('请填写会员价');
+                    return false;
+                } else if (!/^[0-9]\d*(\.\d{1,2})?$/.test(app.olist.vipPrice)) {
+                    toastMsg('请填写合法的会员价');
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            modifyCourseInfo() {
+                if (app.checkPost()) {
+                    app.newcontlist = app.contlist.join(',');
+                    //提交更改的全部信息的
+                    api.ajax({
+                        url: HOST,
+                        method: 'post',
+                        data: {
+                            values: {
+                                "cmd": 'modifyCourseInfo',
+                                "token": getToken(),
+                                "clubId": app.clubId,
+                                "courseId": app.id,
+                                "images": app.newcontlist,
+                                "courseType": app.olist.courseType,
+                                "courseName": app.olist.courseName,
+                                "level": app.olist.level,
+                                "classHour": app.olist.classHour,
+                                "Lesson": app.olist.Lesson,
+                                "personCount": app.olist.personCount,
+                                "startDate": app.olist.startDate,
+                                "endDate": app.olist.endDate,
+                                "startInterval": app.olist.startInterval,
+                                "endInterval": app.olist.endInterval,
+                                "reserveDay": app.olist.reserveDay,
+                                "courseDesc": app.olist.courseDesc,
+                                "teacher": app.olist.teacher,
+                                "slogan": app.olist.slogan,
+                                "teacherDesc": app.olist.teacherDesc,
+                                "price": app.olist.price,
+                                "vipPrice": app.olist.vipPrice,
+                                "OtherClassType": app.olist.OtherClassType
+                            },
+                            files: {
+                                "teacherAvatar": app.olist.teacherAvatar
+                            }
+                        }
+                    }, function (ret, err) {
+                        if (ret.code == 1) {
+                            app.contlist = app.addlist.concat(app.imglist);
+                            api.closeWin({
+                                name: 'alter_class'
+                            });
+                            api.closeWin();
+                            //openView('teach_manage', 'teachclass/teach_manage', '发布课程', false, false);
+                            api.sendEvent({
+                                name: 'shuaxin'
+                            });
+                        } else {
+                            toastMsg(ret.message);
+                        }
+                    });
+                }
+            }
+        }
+    })
+</script>
+</html>

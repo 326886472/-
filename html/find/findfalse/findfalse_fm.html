@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: 100%;
+      width: 100%;
+      background: #ededed;
+    }
+
+    .falsetype {
+      width: 100%;
+      height: 4.5rem;
+      padding: 10px;
+      background: #ededed;
+      box-sizing: border-box;
+    }
+
+    .otype {
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 2rem;
+      margin-left: 15px;
+    }
+
+    .navbox {
+      width: 100%;
+      height: auto;
+      display: flex;
+    }
+
+    .spantitle {
+      padding: 5px 10px 5px 10px;
+      border-radius: 20px;
+      border: 1px solid gainsboro;
+      background: #ededed;
+      font-size: 13px;
+      color: darkgray;
+    }
+
+    .beforespan {
+      border: 1px solid black;
+      background: #ededed;
+      color: black;
+    }
+
+    .textareabox {
+      width: 100%;
+      height: 50%;
+      background: white;
+      margin-top: 1rem;
+    }
+
+    .falsecont {
+      font-weight: bold;
+      font-size: 15px;
+      margin-left: 15px;
+      line-height: 2rem;
+    }
+
+    .otextarea {
+      width: 90%;
+      height: 70%;
+      margin-left: 15px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .bottomup {
+      width: 100%;
+      height: 30%;
+      display: flex;
+    }
+
+    .submitup {
+      border-radius: 20px;
+      border: 1px solid black;
+      margin: auto;
+      width: 45%;
+      height: 1.8rem;
+      line-height: 1.8rem;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div class="falsetype">
+    <p>
+      <span class="otype">报错类型</span>
+    </p>
+
+    <div class="navbox">
+      <div v-for="(item,index) in navlist" style="flex: 1" @click="btnnav(index)">
+        <span class="spantitle" :class="{beforespan:foursindex==index}">{{item.name}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="textareabox">
+    <p>
+      <span class="falsecont">报错内容</span>
+    </p>
+    <textarea class="otextarea" v-model="content" maxlength="500"></textarea>
+    <p style="text-align: right;font-size: 16px;padding-right: 15px;color: #8D8D8D;">
+      <span>{{content.length}}</span><span>/500</span></p>
+  </div>
+
+
+  <div class="bottomup">
+    <!--琴管报错提交-->
+    <mt-button class="submitup" v-if="albumorclass == 1" @click="putClubError()">提交</mt-button>
+    <!--课程报错提交-->
+    <mt-button class="submitup" v-if="albumorclass == 0" @click="putCourseError()">提交</mt-button>
+  </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+//          接口
+      content: '',
+//          假数据：
+
+      navlist: [
+        {
+          name: '基本资料'
+        },
+        {
+          name: '营业状态'
+        },
+        {
+          name: '商户重复'
+        },
+        {
+          name: '地图位置'
+        }
+      ],
+      albumorclass: '',
+      courseId: '',
+      clubId: '',
+      foursindex: null
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.clubId = api.pageParam.clubId;
+        app.courseId = api.pageParam.courseId;
+//              0是课程 1是琴管 判断  显示那？个 提交按钮
+        if (app.clubId == undefined) {
+          app.albumorclass = 0
+        } else {
+          app.albumorclass = 1
+        }
+//                  app.albumorclass = api.pageParam.albumorclass
+      };
+    },
+    methods: {
+      btnnav: function (index) {
+        app.foursindex = index
+      },
+//          琴管门店报错
+      putClubError: function (cityCode) {
+        var cCode = '';
+        if (cityCode) {
+          cCode = cityCode;
+        } else {
+          cCode = getcitycode();
+        }
+
+        var post = {
+          cmd: 'putClubError',
+          token: getToken(),
+          clubId: app.clubId,
+          errorType: app.foursindex + 1,
+          content: app.content,
+          cityCode: cCode
+        };
+
+        sendAjax(this, post, function (res) {
+          if (res.code == -74) {
+            app.putClubError(res.data.cityCode);
+          } else {
+            toastMsg('感谢您的报错！');
+            api.closeWin();
+          }
+        });
+      },
+//          课程报错
+      putCourseError: function (cityCode) {
+        var cCode = '';
+        if (cityCode) {
+          cCode = cityCode;
+        } else {
+          cCode = getcitycode();
+        }
+
+        var post = {
+          cmd: 'putCourseError',
+          token: getToken(),
+          courseId: app.courseId,
+          errorType: app.foursindex + 1,
+          content: app.content,
+          cityCode: cCode
+        };
+        sendAjax(this, post, function (res) {
+          if (res.code == -73) {
+            app.putCourseError(res.data.cityCode);
+          } else {
+            toastMsg('感谢您的报错！');
+            api.closeWin();
+          }
+        });
+      }
+    }
+  })
+</script>
+
+
+
+

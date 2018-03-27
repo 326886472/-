@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #F0F0F0;
+    }
+
+    #app {
+
+    }
+
+    .content {
+      padding: 10% 0 0 0;
+      text-align: center;
+    }
+
+    .content .code {
+      width: 108px;
+      height: 108px;
+      margin: 30px auto;
+    }
+
+    .content .code p {
+      font-size: 0.7rem;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .img {
+      width: 3rem;
+      height: 3rem;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .text {
+      font-size: 0.7rem;
+      color: #666;
+      padding-top: 1rem;
+    }
+
+    .img-two {
+      margin: 5% auto 0 auto;
+      width: 8rem;
+      height: 8rem;
+      display: block;
+    }
+
+    .btn-box {
+    }
+
+    .btn-box div {
+      width: 60%;
+      margin: 0 auto;
+      position: absolute;
+      bottom: 10%;
+      left: 20%;
+      border-radius: 1rem;
+      border: 1px solid #666;
+      text-align: center;
+      padding: 0.4rem 0;
+      margin-bottom: 0.5rem;
+      color: #666;
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div class="content">
+    <img src="../../../assets/images/logo.png" alt="" class="img">
+    <div class="text">正麟V1.0.0</div>
+    <div class="code">
+      <div id="qrcode"></div>
+      <p>扫描可下载正麟</p>
+    </div>
+    <!--<img src="../../../assets/images/logo.png" alt="" class="img-two">-->
+    <div class="btn-box">
+      <div>
+        向朋友推荐正麟
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/qrcode.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      link: '',
+      count: 0
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        app.app_getDownloadQRCode(function () {
+          var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width: 108,
+            height: 108
+          });
+          qrcode.makeCode(app.link);
+          app.count++;
+        });
+      };
+    },
+    methods: {
+      app_getDownloadQRCode: function (callback) {
+        var systemType = api.systemType;
+        var systype = '';
+        if (systemType == 'ios') {
+          systype = '2'
+        } else if (systemType == 'android') {
+          systype = '4'
+        }
+        var post = {
+          cmd: 'app_getDownloadQRCode',
+          switch: systype
+        };
+        sendAjax(this, post, function (ret) {
+          app.link = ret.data;
+          if (callback) {
+            callback();
+          }
+        })
+      }
+    }
+  })
+</script>

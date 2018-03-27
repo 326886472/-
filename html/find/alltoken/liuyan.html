@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      height: 100%;
+    }
+
+    #app {
+      /*display: flex;*/
+      flex-direction: column;
+      height: 100%;
+      background-color: #f0f0f0;
+      box-sizing: border-box;
+    }
+
+    /*留言*/
+    .hr {
+      height: 1px;
+      background-color: #f0f0f0;
+    }
+
+    .msgWrap {
+      margin-top: 0.5rem;
+      width: 100%;
+      background-color: #fff;
+      padding-top: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    .message {
+      width: 100%;
+      height: 7rem;
+      line-height: 1rem;
+      font-size: 14px;
+      padding: 0 1rem;
+      text-align: start;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .photo {
+      display: flex;
+      flex-wrap:wrap;
+      align-items: flex-start;
+      /*flex: 1;*/
+    }
+
+    .img-wrap {
+      width: 3.5em;
+      height: 3.5em;
+      margin: 8px;
+    }
+
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .camera {
+      border: 1px solid #5a5a5a;
+      color: #5a5a5a;
+      display: flex;
+      flex-direction: column;
+      justify-content:center;
+      align-items: center;
+    }
+
+    .camera i {
+      display: block;
+      margin-top: 5px;
+      margin-bottom: -7px;
+      font-size: 20px;
+    }
+
+    .camera span {
+      padding-top: 10px;
+      font-size: 14px;
+    }
+
+    .label{
+      position: relative;
+    }
+    .del {
+      position: absolute;
+      left: -10px;
+      top: -10px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: black;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      font-weight: bolder;
+    }
+
+    /*搜索列表项*/
+    .list-wrap {
+      display: flex;
+      flex-direction: row;
+      background-color: #fff;
+      width: 100%;
+      color: #5a5a5a;
+      font-size: 0.7rem;
+      margin-bottom: 0.2rem;
+      margin-top: 5px;
+      box-sizing: border-box;
+      padding: 15px;
+    }
+
+    .left-img {
+      width: 90px;
+      height: 90px;
+    }
+
+    .left-img img {
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+    }
+
+    .right-content {
+      position: relative;
+      flex-grow: 1;
+      margin-left: 10px;
+    }
+
+    .right-content h4 {
+      color: #000;
+      font-weight: normal;
+      font-size: 16px;
+    }
+
+    .grade {
+      height: 1rem;
+      line-height: 1rem;
+      padding-top: 0.1rem;
+    }
+
+    .location {
+      font-size: 12px;
+      color: #5a5a5a;
+      margin-top: 25px;
+    }
+    .shenglue{
+      width: 80%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .favorite {
+      position: absolute;
+      top: 2px;
+      right: 8px;
+      color: #5a5a5a;
+      font-size: 14px;
+    }
+
+    .dingqi {
+      height: 14px;
+      line-height: 14px;
+      font-size: 12px;
+      padding: 1px 2px;
+      color: #ff4949;
+      border: 1px solid #ff4949;
+      margin-right: 5px;
+    }
+
+    .tigao {
+      height: 14px;
+      line-height: 14px;
+      font-size: 12px;
+      padding: 1px 2px;
+      color: #4CAD35;
+      border: 1px solid #4CAD35;
+    }
+
+    /*提交按钮*/
+    .uploading {
+      /*position: absolute;*/
+      /*bottom: 0;*/
+      margin-top: 2rem;
+      padding: 1.5rem 0;
+      display: flex;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .uploading button {
+      height: 1.5rem;
+      line-height: 1.5rem;
+      width: 11rem;
+      border: 1px solid #5a5a5a;
+      font-size: 0.8rem;
+      text-align: center;
+      border-radius: 0.8rem;
+      color: #5a5a5a;
+      outline: none;
+    }
+
+    /*弹出框*/
+    .mint-popup-bottom {
+      width: 100%;
+    }
+
+    .moreoul {
+      width: 100%;
+    }
+
+    .moreoul li {
+      width: 100%;
+      height: 3rem;
+      line-height: 3rem;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f0f0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <div class="hr"></div>
+  <div class="list-wrap" v-show="course">
+    <div class="left-img">
+      <img :src="course.images"/>
+    </div>
+    <div class="right-content">
+      <span class="favorite">&yen; {{course.price}}</span>
+
+      <h4>{{course.courseName}}</h4>
+      <div class="grade">
+        <span class="dingqi" v-show="course.courseType==1">定期课程</span>
+        <span class="dingqi" v-show="course.courseType==2">免费体验课</span>
+        <span class="dingqi" v-show="course.courseType==3">随到随学</span>
+        <span class="tigao" v-show="course.level==1">入门级</span>
+        <span class="tigao" v-show="course.level==2">提高班</span>
+        <span class="tigao" v-show="course.level==3">进修班</span>
+      </div>
+      <div class="location">{{course.clubName}}</div>
+    </div>
+  </div>
+  <div class="list-wrap" v-show="club">
+    <div class="left-img">
+      <img :src="club.images"/>
+    </div>
+    <div class="right-content">
+      <span class="favorite" v-text="'评分'+club.overallScore"></span>
+
+      <h4>{{club.clubName}}</h4>
+      <div class="grade">
+        <span class="dingqi" v-for="type in club.courseType">{{type}}</span>
+      </div>
+      <div class="location shenglue">{{club.address}}</div>
+    </div>
+  </div>
+  <div class="msgWrap">
+    <textarea class="message" placeholder="请留下您宝贵的建议" v-model="msg" maxlength="200"></textarea>
+  </div>
+
+  <!--弹出选照片-->
+  <mt-popup
+          v-model="more.popupVisible"
+          position="bottom">
+    <ul class="moreoul">
+      <li @click="takephoto">拍照</li>
+      <li @click="myphotos">从相册中选择</li>
+      <li @click="cancel" style="border-top: 2px solid #f0f0f0">取消</li>
+    </ul>
+  </mt-popup>
+  <div class="photo">
+    <div v-for="photo in photos">
+            <span class="img-wrap label">
+                <img :src="photo" alt="">
+                <span class="del" @click="delbtn(photo)"><i class="iconfont icon-shanchu"></i></span>
+            </span>
+    </div>
+    <div class="img-wrap camera" @click="openpop" v-show="photos.length<5"><i class="iconfont icon-xiangji"></i><span v-text="photos.length+'/5'"></span>
+    </div>
+  </div>
+
+  <div class="uploading">
+    <button @click="submit">提交</button>
+  </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      msg: '',
+      frc: '4/5',
+      course: '',
+      club: '',
+      more: {
+        popupVisible: false
+      },
+      photos: [],
+      imgs: [],
+      clubId: '',
+      courseId: '',
+      type: null,
+      firstCount: 0
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.courseId = api.pageParam.courseId;
+        app.clubId = api.pageParam.clubId;
+        if (app.clubId) {
+          app.type = 1;
+          app.getPerClubDetail(
+            function () {
+              app.firstCount++;
+            });
+        } else if (app.courseId) {
+          app.type = 2;
+          app.getPerCourseDetail(
+            function () {
+              app.firstCount++;
+            });
+        }
+      }
+    },
+    methods: {
+      myphotos: function () {
+        api.getPicture({
+          sourceType: 'album',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.more.popupVisible = false;
+          if (ret && ret.data && ret.data!== "") {
+            app.upEvaluateImgTmp(ret.data);
+          } else {
+            toastMsg('已取消修改')
+          }
+        });
+      },
+
+      takephoto: function () {
+        api.getPicture({
+          sourceType: 'camera',
+          encodingType: 'jpg',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          allowEdit: true,
+          quality: 50,
+          targetWidth: 100,
+          targetHeight: 100,
+          saveToPhotoAlbum: true
+        }, function (ret, err) {
+          app.more.popupVisible = false;
+          if (ret && ret.data && ret.data !== "") {
+            app.upEvaluateImgTmp(ret.data);
+          } else {
+            toastMsg('已取消修改')
+          }
+        });
+      },
+      cancel: function () {
+        app.more.popupVisible = false;
+      },
+      openpop: function () {
+        app.more.popupVisible = true;
+      },
+      //图片处理
+      upEvaluateImgTmp: function (res) {
+        api.ajax({
+          url: Ajaxurl(),
+          method: 'post',
+          data: {
+            values: {
+              "cmd": "upEvaluateImgTmp",
+              "token": getToken()
+            },
+            files: {
+              "images": res
+            }
+          }
+        }, function (ret, err) {
+          if (ret) {
+            app.photos.push(res);
+            app.imgs.push(ret.data);
+          } else {
+            toastMsg('上传失败');
+          }
+        });
+      },
+      delbtn: function (photo) {
+        api.confirm({
+          msg: '确认删除该图片？',
+          buttons: ['确定', '取消']
+        }, function (ret, err) {
+          if (ret.buttonIndex == 1) {
+            var newindex = app.photos.indexOf(photo);
+            app.photos.splice(newindex, 1);
+          }
+        });
+      },
+      //获取单个琴馆主要信息
+      getPerClubDetail: function (callback) {
+        var post = {
+          cmd: 'getPerClubDetail',
+          cityCode: getcitycode(),
+          clubId: app.clubId,
+          token: getToken()
+        };
+        sendAjax(this, post, function (ret) {
+          app.club = ret.data;
+          app.club.images = formatImg(ret.data.banner);
+          app.club.courseType = (ret.data.courseType).split(',');
+          if(callback){
+            callback();
+          }
+        })
+      },
+      //获取单个课程主要信息
+      getPerCourseDetail: function (callback) {
+        var post = {
+          cmd: 'getPerCourseDetail',
+          cityCode: getcitycode(),
+          courseId: app.courseId,
+          token: getToken()
+        };
+        sendAjax(this, post, function (ret) {
+          app.course = ret.data;
+          app.course.images = formatImg(ret.data.images);
+          if(callback){
+            callback();
+          }
+        })
+      },
+      //课程/琴馆发表评论
+      publishEvaluate: function (res) {
+        var post = {
+          cmd: 'publishEvaluate',
+          token: getToken(),
+          cityCode: getcitycode(),
+          type: app.type,
+          clubId: app.clubId,
+          courseId: app.courseId,
+          images: app.imgs.join(','),
+          content: app.msg
+        };
+        sendAjax(this, post, function () {
+        });
+      },
+      //
+      disble: function () {
+        if (app.msg == '') {
+          toastMsg('留言板评论不能为空')
+        } else {
+          app.publishEvaluate();
+          closeWindow();
+          api.sendEvent({
+            name:'refresh'
+          });
+        }
+      },
+      submit: function () {
+        app.disble()
+      }
+    }
+  });
+
+</script>
+<!--备注-->
+

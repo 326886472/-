@@ -1,0 +1,322 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+
+  .order-home {
+    flex: 1;
+    color: #808080;
+    font-size: 13px;
+
+    .refer {
+      margin-left: 0.7rem;
+      display: block;
+      background: #f0f0f0;
+      font-size: 13px;
+      line-height: 1rem;
+    }
+
+    .title_header {
+      width: 100%;
+      background: white;
+      z-index: 10;
+      position: relative;
+      height: 2.5rem;
+      display: flex;
+
+      .header_oul {
+        width: 100%;
+        display: flex;
+        font-size: 14px;
+        text-align: center;
+        align-items: center;
+        color: #000;
+
+        .shu {
+          font-size: 16px;
+          color: #999;
+        }
+
+        .typeof {
+          position: relative;
+          width: 0;
+          flex-grow: 1;
+          align-self: stretch;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          & > .iconfont {
+            position: relative;
+            top: 1px;
+          }
+
+          ul {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            top: 2.5rem;
+            background: white;
+
+            li {
+              height: 2.5rem;
+              line-height: 2.5rem;
+              border-top: 1px solid #d9d9d9;
+              font-size: 13px;
+
+              &.active {
+                background: #d9d9d9;
+              }
+            }
+          }
+        }
+      }
+    }
+    .headerfirst {
+      width: 100%;
+      height: 9.2rem;
+      background: white;
+      border-bottom: 1px solid gainsboro;
+      position: relative;
+      margin-top: 0.5rem;
+
+      .nickname {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #242424;
+      }
+
+      span {
+        font-size: 11px;
+        color: grey;
+      }
+      .fonttel {
+        margin-left: 10px;
+        color: black;
+        font-size: 14px;
+      }
+      p {
+        line-height: 1.5rem;
+        color: grey;
+      }
+      .gospeak {
+        width: 100px;
+        height: 1.8rem;
+        float: right;
+        font-size: 14px;
+        position: absolute;
+        bottom: 25%;
+        right: 4%;
+
+        &.not {
+          border-color: #7f7f7f;
+          background: #7f7f7f;
+          color: #efefef;
+        }
+
+        &.already {
+          background: #404040;
+          color: #e9e9e9;
+        }
+      }
+    }
+
+    .shopcount {
+      width: 100%;
+      display: flex;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .leftbox {
+      width: 6rem;
+      height: 6rem;
+    }
+    .oimg {
+      width: 6rem;
+      height: 6rem;
+    }
+    .rightbox {
+      flex: 1;
+      padding: 0 10px;
+      box-sizing: border-box;
+      width: 70%;
+      overflow: hidden;
+    }
+    .overflowp {
+      width: 100%;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.5rem;
+    }
+    .priceandnum {
+      display: flex;
+      margin-top: 18px;
+
+      .oprice {
+        text-align: left;
+        flex: 1;
+        color: #ff3c00;
+        font-size: 13px;
+      }
+      .onum {
+        flex: 1;
+        text-align: right;
+      }
+    }
+    .omethods {
+      margin-top: 7px;
+      color: #808080;
+    }
+    .omessage {
+      border-top: 1px solid #d9d9d9;
+      border-bottom: 1px solid #d9d9d9;
+      padding: 8px 0;
+
+      & > span {
+        font-size: 12px;
+      }
+    }
+    .opricemessage1 {
+      padding: 8px 0px;
+    }
+    .opricemessage {
+        padding: 8px 0px 8px 10px;
+      & > span {
+        margin-right: 10px;
+        color: #808080;
+
+        &:first-child {
+          margin-right: 12px;
+        }
+
+        .sprice {
+          color: #ff6647;
+        }
+      }
+    }
+    .fource {
+      display: flex;
+      height: auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .publicbtn {
+      text-align: center;
+      font-size: 14px;
+      height: 1.8rem;
+      line-height: 1.7rem;
+      flex: 1;
+      margin-right: 10px;
+      border: 1px solid #7f7f7f;
+      width: 100px;
+      border-radius: 1.7rem;
+
+      &.not {
+        border-color: #7f7f7f;
+        background: #7f7f7f;
+        color: #efefef;
+      }
+
+      &.already {
+        background: #404040;
+        color: #e9e9e9;
+      }
+    }
+    .detailstime {
+      flex: 1;
+      text-align: left;
+      line-height: 1.7rem;
+    }
+    .comment {
+      color:#409EFF;
+    }
+    .detailsbox {
+      flex: 1;
+      text-align: right;
+
+    }
+
+    .oedercontent {
+      margin-top: 0.5rem;
+      background: white;
+
+      .nickname {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #242424;
+      }
+
+      .icon-qizi {
+        float: right;
+        margin-right: 10px;
+        color: #f46c5a;
+      }
+    }
+
+    .none {
+      padding: 1rem;
+      box-sizing: border-box;
+      background: white;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.customerInformation {
+  background: #f0f0f0;
+  padding: 8px 0 8px 10px;
+}
+
+.relation {
+  background: #409EFF;
+  color: white;
+}
+
+.orderContent {
+  position: relative;
+  .shadow {
+    position: absolute;
+    width:100%;
+    height:100%;
+    text-align: center;
+    line-height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width:1rem;
+      height:1rem;
+      margin: auto;
+    }
+  }
+}
+
+.bottom{
+  height:2rem;
+  text-align: center;
+  line-height: 2rem;
+}

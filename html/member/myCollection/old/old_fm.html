@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+
+        .icon {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .list {
+            font-size: 0.7rem;
+            padding: 0 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .list-item {
+            background: white;
+            width: 48%;
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+        }
+
+        .list-item img {
+            width: 100%;
+            height: 9rem;
+        }
+
+        /*内容盒子*/
+        .message-flex-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-flex-box div {
+            flex: 1;
+        }
+
+        .laber-box {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .laber-box span {
+            font-size: 12px;
+            margin-left: 3px;
+            border-radius: 0.2rem;
+        }
+
+        .brand-box {
+            color: #F89C90;
+            border: 1px solid #F89C90;
+        }
+
+        .year-box {
+            color: #A7E0CF;
+            border: 1px solid #A7E0CF
+        }
+
+        .free-box {
+            color: #C9DFFF;
+            border: 1px solid #C9DFFF
+        }
+
+        .bottom-box {
+            width: 100%;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .bottom-box span {
+            margin-left: 0.6rem;
+        }
+
+        .ixin {
+            color: #d83615;
+            font-size: 16px;
+        }
+
+        .shoucangfont {
+            color: #FCBD54;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div id="loadStart"></div>
+    <ul class="list">
+        <li class="list-item" v-for="(item,index) in proList">
+            <img :src="formatImg(item.clubPic)" alt="" @click="getClubInfo(item.clubId)">
+            <div class="message-flex-box aui-padded-l-5 aui-padded-r-5">
+                <div class="aui-padded-t-5 aui-padded-b-5 aui-ellipsis-1">{{item.clubName}}</div>
+                <div class="laber-box">
+                    <span v-show="item.isBrand ==='1'" class="brand-box">品牌店</span>
+                    <span class="year-box">{{item.operateYear}}年店</span>
+                    <span v-show="item.isFree ==='1'" class="free-box">免费体验课</span>
+                </div>
+                <div class="bottom-box">
+                    <span style="" @click="collectCommon(index,1,2)">
+                        <i v-if="item.ifAgree==1" class="iconfont ixin icon-xin"></i>
+                        <i v-else class="iconfont icon-ziyuan8"></i>
+                    </span>
+                    <span style="" @click="collectCommon(index,1,1)">
+                            <i style="color: #FCBD54" v-if="item.ifCollect==1"
+                               class="iconfont shoucangfont icon-shoucang"></i>
+                            <i style="color: black" v-else class="iconfont icon-shoucang1"></i>
+                    </span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      type: '1',
+      proList: [],
+      formatImg: formatImg,
+      firstCount: 0  //loader监听
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        app.uappGetCollectList();
+      };
+    },
+    methods: {
+//      获取琴官收藏列表
+      uappGetCollectList: function () {
+        var post = {
+          cmd: 'uappGetCollectList',
+          token: getToken(),
+          type: app.type
+        };
+        sendAjax(this, post, function (res) {
+          app.loaderChange();
+          app.proList = res.data.proList;
+        });
+      },
+      getClubInfo: function (id) {
+        api.openWin({
+          name: 'catchdetails_win',
+          url: '../../../find/catchdetails/catchdetails_win.html',
+          pageParam: {
+            statustype: 0,
+            clubId: id
+          }
+        });
+      },
+      //      loader加载
+      loaderChange: function () {
+        app.firstCount++;
+      },
+//      琴馆点赞/支持 （取消或支持）
+      collectCommon: function (index, type, agreeOrCollect) {
+        if (type == 1) {
+          if (agreeOrCollect == 1 && getToken() != null) {
+            if (app.proList[index].ifCollect == 1) {
+              app.proList[index].ifCollect = -1;
+            } else {
+              app.proList[index].ifCollect = 1
+            }
+          }
+          if (agreeOrCollect == 2 && getToken() != null) {
+            if (app.proList[index].ifAgree == 1) {
+              app.proList[index].ifAgree = -1;
+            } else {
+              app.proList[index].ifAgree = 1
+            }
+          }
+        }
+
+        var post = {
+          cmd: 'collectCommon',
+          token: getToken(),
+          id: app.proList[index].clubId,
+          type: type,
+          agreeOrCollect: agreeOrCollect,
+          cityCode: getcitycode()
+        };
+        sendAjax(this, post, function (res) {
+
+          api.sendEvent({
+            name: 'sendtype'
+          });
+
+        });
+      }
+    }
+  })
+</script>

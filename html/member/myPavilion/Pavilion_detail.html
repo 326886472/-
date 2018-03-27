@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../assets/css/css/Pavilion_detail.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont_pavilion.css">
+    <style>
+        html, body {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div id="loadStart"></div>
+    <div class="index">
+        <mt-swipe  prevent="true" @change="onLoad" :auto="10000" :continuous="true" :show-indicators="false" style="height: auto">
+            <mt-swipe-item style="height: auto">
+                <div class="banner">
+                    <div class="left">
+                        <div>
+                            本周收益
+                        </div>
+                        <div>￥{{clubHomeData.totalPrice}}</div>
+                    </div>
+                    <div class="right">
+                        <div class="com">
+                            <span>综合评分: {{(clubHomeData.weights/20).toFixed(1)}}</span>
+                            <div>
+                                <svg class="icon" aria-hidden="true" v-for="i in 5">
+                                    <use :xlink:href="starClass(i,(clubHomeData.weights/20).toFixed(1))"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="class">
+                    <span>
+                        诚信
+                        <svg class="icon" aria-hidden="true" v-for="i in 5">
+                            <use :xlink:href="starClass(i,clubHomeData.overallScore)"></use>
+                        </svg>
+                    </span>
+                            <br/>
+                            <span>
+                        服务
+                        <svg class="icon" aria-hidden="true" v-for="i in 5">
+                            <use :xlink:href="starClass(i,clubHomeData.serverScore)"></use>
+                        </svg>
+                    </span>
+                            <br/>
+                            <span>
+                        环境
+                        <svg class="icon" aria-hidden="true" v-for="i in 5">
+                            <use :xlink:href="starClass(i,clubHomeData.teachScore)"></use>
+                        </svg>
+                    </span>
+                            <br/>
+                            <span>
+                        价格
+                        <svg class="icon" aria-hidden="true" v-for="i in 5">
+                            <use :xlink:href="starClass(i,clubHomeData.envirScore)"></use>
+                        </svg>
+                    </span>
+                        </div>
+                    </div>
+                    <img src="../../../assets/images/index-banner.jpg" alt="">
+                </div>
+            </mt-swipe-item>
+            <mt-swipe-item style="height: auto">
+                <div class="banner" @click="statistics" style='padding-top: 1rem'>
+                    <div id="main" style="width: 100%; height: 10rem"></div>
+                </div>
+            </mt-swipe-item>
+        </mt-swipe>
+        <div class="amounts">
+            <div class="order" @click="orders">
+                <span class="amount">{{clubHomeData.ordernums}}</span> <br/>
+                待处理订单
+            </div>
+            <div class="v-line"></div>
+            <div class="student" @click="openMyStudent">
+                <span class="amount">{{myStudent.memberCount}}</span> <br/>
+                我的学员
+            </div>
+            <div class="v-line"></div>
+            <div class="visit">
+                <span class="amount">{{newEvaluate}}</span> <br/>
+                新增评价
+            </div>
+        </div>
+        <div class="icons">
+            <div v-for="(item, index) in icons" @click="itemBtn(item.url, index)">
+                <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="'#' + item.iconClass"></use>
+                </svg>
+                <br/>
+                {{item.title}}
+            </div>
+        </div>
+        <div class="my">
+            <div class="list" @click="exam">
+                <div class="left">
+                    <i class="iconfont icon-wodeqianbao"></i>
+                    <div>琴会评级</div>
+                </div>
+                <div class="right">
+                    <i class="iconfont icon-fanhui"></i>
+                </div>
+            </div>
+            <div class="list" >
+                <div class="left">
+                    <i class="iconfont icon-wodezhanghu"></i>
+                    <div>我的推荐码</div>
+                </div>
+                <div class="right">
+                    <i style="font-style:normal;font-size: 16px">{{recommendUser}}</i>
+                </div>
+            </div>
+            <!--添加员工-->
+            <div class="list" @click="addStaff">
+                <div class="left">
+                    <i class="iconfont icon-zhenglinhuiyuan"></i>
+                    <div>添加员工</div>
+                </div>
+                <div class="right">
+                    <i class="iconfont icon-fanhui"></i>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <span>感谢您对正麟的支持，祝顺！</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script type="text/javascript" src="../../../assets/js/echarts.simple.min.js"></script>
+<script type="text/javascript">
+    Vue.prototype.$echarts = echarts;
+    var app = new Vue({
+        el: "#app",
+        data: {
+            incomeData: {},
+            clubId: '',
+            score: 3.6,
+            clubHomeData: {},
+            myStudent: {},
+            newEvaluate: '',
+            recommendUser:'',
+            levellist: [],
+            expires: false,  // 是否过期，默认为 false
+            icons: [{
+                    iconClass: 'icon-qinguanziliao',
+                    title: '琴馆资料',
+                    name: 'storemessage_manage',
+                    url: 'storemessage/storeManage_win'
+                },
+                {
+                    iconClass: 'icon-jiaoxueguanli',
+                    title: '教学管理',
+                    name: 'teacherclass',
+                    url: 'teachclass/teach_manage_win',
+                },
+//                {
+//                    iconClass: 'icon-shangpinguanli',
+//                    title: '商品管理',
+//                    name: 'shopmanage',
+//                    url: 'shopmanage/shop_home'
+//                },
+                {
+                    iconClass: 'icon-zhaopianguanli',
+                    title: '相册管理',
+                    name: 'album',
+                    url: 'album/album_win'
+                },
+                {
+                    iconClass: 'icon-pingjiaguanli',
+                    title: '评价管理',
+                    name: 'evaluate',
+                    url: 'evaluate_win'
+                },
+                {
+                    iconClass: 'icon-ziyuan',
+                    title: '琴馆等级',
+                    name: 'levelAd',
+                    url: 'level/level_win'
+                },
+                {
+                    iconClass: 'icon-jingyingribao',
+                    title: '经营报告',
+                    name: 'daily',
+                    url: 'daily/daily_win'
+                },
+                {
+                    iconClass: 'icon-StickyNotes',
+                    title: '订单管理',
+                    name: 'orderHome',
+                    url: './orderHome'
+                }
+            ],
+            refreshDone: -1,  // 设为 -1 保证第一次进来不弹出刷新成功
+            loading: false,
+            firstCount: 0
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+                app.getClubHomeData();
+                app.getMyStudentData();
+                app.getNewEvaluate();
+                app.getweekIncome();
+                app.getClubGrade();
+                app.getClubrecommendUser();
+                loadEnd();
+            };
+        },
+        mounted: function () {
+            this.drawLine();
+        },
+        methods: {
+            getClubrecommendUser: function () {
+                var post = {
+                    cmd: 'getClubrecommendUser',
+                    clubId:app.clubId,
+                    token:getToken(),
+                };
+                sendAjax(this, post, function (res) {
+                    if(res.data.recommendUser) {
+                        app.recommendUser = res.data.recommendUser;
+                    }
+                })
+            },
+            addStaff: function () {
+                openView('addStaff', 'member/myPavilion/addStaff/add', '员工管理', false, false, {
+                    clubId:app.clubId
+                })
+            },
+            exam: function () {
+                if (app.levellist.clubApplyStatus !== '2') {
+                    openView('levelApply', 'member/myPavilion/level/apply', '琴馆评级', false, false, {
+                        clubId:app.clubId
+                    });
+                } else {
+                    openView('goods_details', 'member/myPavilion/level/applyed', '琴馆评级',false,false,{
+                        clubId:app.clubId
+                    });
+                }
+            },
+            getClubGrade: function () {
+                var post = {
+                    cmd: 'getClubGrade',
+                    token: getToken(),
+                    clubId: app.clubId
+                };
+                sendAjax(this, post, function (res) {
+                    app.levellist = res.data
+                })
+            },
+            itemBtn: function (url, i) {
+                if(i == 0) {
+                    var post = {
+                        cmd: "isOpenShop",
+                        token: getToken(),
+                        perPage: 100
+                    };
+                    sendAjax(this, post, function (res) {
+                        if (res) {
+                            var status = res.data.proList[0].clubstatus;
+                            if (status !== 4) {
+                                api.openWin({
+                                    name:url,
+                                    url:url + '.html',
+                                    pageParam: {
+                                        clubId:app.clubId,
+                                        clubName: app.clubName
+                                    }
+                                })
+                            } else {
+                                api.openWin({
+                                    name: 'store_over',
+                                    url: '../store_over_win.html',
+                                })
+                            }
+                        }
+                    })
+                }
+                api.openWin({
+                    name:url,
+                    url:url + '.html',
+                    pageParam: {
+                        clubId:app.clubId
+                    }
+                })
+            },
+            orders: function () {
+                api.openWin({
+                    name:'orderHome',
+                    url:'./orderHome.html',
+                    pageParam: {
+                        clubId:app.clubId
+                    }
+                })
+            },
+            openMyStudent: function () {
+                api.openWin({
+                    name:'MyStudents',
+                    url:'./myStudent.html',
+                    pageParam: {
+                        clubId:app.clubId
+                    }
+                })
+            },
+            getClubHomeData: function () {
+                var post = {
+                    cmd: "storeBasicDoc",
+                    token: getToken(),
+                    clubId: app.clubId
+                };
+                sendAjax(this, post, function (res) {
+                    if (res.code === 1) {
+                        app.clubHomeData = res.data;
+                    }
+                })
+            },
+            getMyStudentData: function () {
+                var post = {
+                    cmd: "getUserManageList",
+                    token: getToken(),
+                    clubId: app.clubId,
+                    orderType: 1
+                };
+                sendAjax(this, post, function (res) {
+                    if (res.code === 1) {
+                        app.myStudent = res.data;
+                    }
+                })
+            },
+            getNewEvaluate: function () {
+                var post = {
+                    cmd: "appGetOrderListByUserday",
+                    token: getToken(),
+                    clubId: app.clubId,
+                    evaluateType: 1
+                };
+                sendAjax(this, post, function (res) {
+                    if (res.code === 1) {
+                        app.newEvaluate = res.data;
+                    }
+                })
+            },
+            getweekIncome: function () {
+              var post = {
+                  cmd: 'weekIncome',
+                  token: getToken(),
+                  clubId: app.clubId
+              };
+              sendAjax(this, post, function (res) {
+                  if(res.code === 1) {
+                      app.incomeData = res.data
+                  }
+              })
+            },
+            starClass: function (index, x) {
+                var score = parseFloat(x);
+                if (score % 1 === 0) {
+                    if (index <= score) {
+                        return '#icon-yansebanxingxing';
+                    } else {
+                        return '#icon-yansebanxingxing1';
+                    }
+                } else {
+                    if (score - index < 0 && score - index > -1) {
+                        return '#icon-yibanyanseban';
+                    } else if (index < score) {
+                        return '#icon-yansebanxingxing';
+                    } else {
+                        return '#icon-yansebanxingxing1';
+                    }
+                }
+            },
+//                            用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+            resizeWorldMapContainer : function () {
+                var worldMapContainer = document.getElementById('main');
+                worldMapContainer.style.width = window.innerWidth+'px';
+                worldMapContainer.style.height = 10+'rem';
+            },
+            onLoad: function () {
+                var worldMapContainer = document.getElementById('main');
+                this.resizeWorldMapContainer();
+                var myChart = this.$echarts.init(worldMapContainer);
+                myChart.dispose();
+                this.drawLine()
+            },
+            drawLine: function () {
+                var worldMapContainer = document.getElementById('main');
+                this.resizeWorldMapContainer();
+                var myChart = this.$echarts.init(worldMapContainer);
+                myChart.setOption({
+                    xAxis: {
+                        data: this.incomeData.weektime
+                    },
+                    yAxis: {},
+                    title: {
+                        x: 'center',
+                        text: '本周收益统计图'
+                    },
+                    grid:{
+                        x:45,
+                        borderWidth:1
+                    },
+                    series: [{
+                        name: '收入',
+                        type: 'line',
+                        data: this.incomeData.weeklist
+                    }]
+                });
+                window.onresize = function () {
+                    //重置容器高宽
+                    this.resizeWorldMapContainer();
+                    myChart.resize();
+                };
+            },
+            statistics: function () {
+                api.toast({
+                    location: 'middle',
+                    msg: '详情数据请登录www.zhenglinc.com',
+                    duration: 5000
+                });
+            }
+        }
+    })
+</script>

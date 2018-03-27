@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    #app {
+    }
+
+    .video-box img {
+      width: 100%;
+      height: 10rem;
+    }
+
+    .content {
+      padding: 0.5rem;
+      font-size: 0.7rem;
+      color: #666;
+      background: white;
+    }
+
+    .label-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .label-box li {
+      text-align: center;
+      border-radius: 0.7rem;
+      margin: 0.5rem;
+      flex-shrink: 0;
+      width: 23%;
+      padding: 0.1rem 0.3rem;
+      border: 1px solid #666;
+    }
+
+    .Aindex {
+      color: #D99A4D;
+      border: 1px solid #D99A4D !important;
+    }
+
+    .content-bottom {
+      font-size: 0.7rem;
+      padding: 0.3rem 0.5rem;
+      background: white;
+    }
+
+    .content-bottom textarea {
+      width: 100%;
+      height: 100%;
+      padding: 0.2rem;
+    }
+
+    .btn-box {
+      margin: 10% auto 10% auto;
+      width: 60%;
+      text-align: center;
+    }
+
+    .btn-box div {
+      font-size: 0.7rem;
+      color: #666;
+      padding: 0.3rem 0;
+      border-radius: 0.8rem;
+      border: 1px solid #666;
+    }
+
+    .btn-box div:active {
+      background: gainsboro;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div class="video-box">
+    <img src="../../../assets/images/bg-my.png" alt="">
+  </div>
+  <div class="content">
+    <div>反馈问题类型</div>
+    <ul class="label-box">
+      <li v-for="item in list" :class="{'Aindex' : Aindex ===item.index  }" @click="change(item.index)">{{item.title}}
+      </li>
+    </ul>
+  </div>
+  <div class="aui-margin-t-10 content-bottom">
+    <textarea name="" class="message-box" cols="50" rows="10" placeholder="请描述您遇到的问题" v-model="content"></textarea>
+  </div>
+  <div class="btn-box" @click="sendFeedBack">
+    <div>提交</div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      list: [
+        {
+          title: '功能方面',
+          index: 0
+        },
+        {
+          title: '体验方面',
+          index: 1
+        },
+        {
+          title: '新功能建议',
+          index: 2
+        },
+        {
+          title: '其他',
+          index: 3
+        }
+      ],
+      content: '',
+      Aindex: 0
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+      change: function (index) {
+        app.Aindex = index;
+      },
+      sendFeedBack: function () {
+        if (app.content === '') {
+          toastMsg('请描述您遇到的问题');
+        } else {
+          var post = {
+            cmd: 'sendFeedBack',
+            messageType: 2,
+            content: app.content,
+            tel: $api.getStorage('mobile')
+          };
+          sendAjax(this, post, function () {
+            toastMsg('反馈成功'); // TODO 这个没用
+            closeWindow();
+          });
+        }
+      }
+    }
+  })
+</script>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .headernav {
+      width: 100%;
+      background: white;
+    }
+
+    .changbox {
+      flex: 1;
+      text-align: center;
+      font-size: 15px;
+      color: #585858;
+      line-height: 2rem;
+    }
+
+    .beforeclass {
+      border-bottom: 2px solid #ab9277;
+      color: #ab9277;
+    }
+
+    .datalist {
+      width: 90%;
+      margin: auto;
+      height: auto;
+      padding: 10px;
+      background: #f0f0f0;;
+      box-sizing: inherit;
+    }
+
+    .boximg {
+      width: 100%;
+      height: 30%;
+    }
+
+    .datalist span {
+      font-size: 13px;
+    }
+
+    .labletext {
+      line-height: 1.5rem;
+      text-align: right;
+    }
+
+    /*分页*/
+    .bottomdiv {
+      width: 100%;
+      height: 3rem;
+      text-align: center;
+      line-height: 3rem;
+      background: #f0f0f0;
+      color: black;
+      margin-top: 2rem;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 20px;
+      height: 20px;
+      margin: auto;
+    }
+
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <div class="headernav">
+    <div style="width: 90%;margin: 0 auto;height: 2rem;display: flex">
+      <div class="changbox" v-for="(item,index) in sonCates" :class="{beforeclass:changeindex==index}"
+           @click="change(index)">{{item.cateName}}
+      </div>
+    </div>
+  </div>
+
+  <div class="datalist">
+    <div class="boximg" v-for="(item,index) in booklist" @click="godetails(index)" style="background: white">
+      <img style="width: 100%;height: 100%" :src="formatImg(item.cover)">
+      <div>
+        <p><span style="margin-left: 5px">{{item.title}}</span></p>
+        <p class="labletext" style="background: white">
+          <span style="margin-right: 3px">{{item.editTime}}</span>
+        </p>
+      </div>
+      <div style="width: 100%;height: 5px;background: #f0f0f0"></div>
+    </div>
+  </div>
+
+
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      changeindex: 0,
+      firstLevelCateId: '',
+      ww: '',
+      sonCates: [],
+      booklist: [],
+      navlist: [],
+      countnum: 0,
+      rote: false,
+      overlate: false,
+      load: false,
+      page: 1,
+      perPage: 3
+    },
+    filters: {},
+    watch: {
+      'countnum': function (value) {
+        if (value == 1) {
+          loadEnd()
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+
+        app.sonCates = api.pageParam.sonCates;
+        app.firstLevelCateId = api.pageParam.firstLevelCateId;
+        app.cateid = api.pageParam.sonCates[0].cateId;
+        app.navlist = app.sonCates;
+//                第一次
+        app.getCulList(app.cateid, 1);
+        refresh(function () {
+          app.getCulList(app.cateid, app.changeindex+1, function () {
+            refreshDone();
+          });
+        });
+
+
+        //这个是监听滑动
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 20 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+//                滑动时候改变的值
+        }, function (ret, err) {
+//                app.rote = true;
+          app.load = true;//
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.getCulList(app.cateid);
+        });
+
+      };
+    },
+    methods: {
+      change: function (index) {
+        MINT.Indicator.open();
+        app.changeindex = index;
+        app.booklist = [];
+        app.page = 1;
+        app.getCulList(app.sonCates[index].cateId, 1);
+      },
+      godetails: function (index) {
+        api.openWin({
+          name: 'details_win',
+          url: '../book/details_win.html',
+          pageParam: {
+            articleid: app.booklist[index].id,
+            cateid: app.booklist[index].cateId
+          }
+        });
+      },
+//          获取详情分类
+      getCulList: function (cateid, ref, callback) {
+        var post = {
+          cmd: 'getCulList',
+          cateId: cateid,
+          page: app.page,
+          perPage: app.perPage
+        };
+        sendAjax(this, post, function (res) {
+
+          if (callback) {
+            callback()
+          }
+
+          if (ref == 1) {
+            app.booklist = res.data.proList;
+            app.rote = true;
+            app.load = false
+          } else {
+            app.booklist = app.booklist.concat(res.data.proList);
+            app.rote = true;
+            app.load = false
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+          app.labr();
+          MINT.Indicator.close();
+        });
+      },
+      labr: function () {
+        app.countnum++
+      }
+    }
+  })
+</script>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style type="text/css">
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: white;
+    }
+
+    .icon {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .cantent {
+      text-align: center;
+    }
+
+    .sharp {
+      margin-top: 5%;
+    }
+
+    .text-box {
+      width: 60%;
+      position: absolute;
+      top: 15%;
+      left: 20%;
+      font-size: 0.8rem;
+      color: black;
+    }
+
+    .text-box p {
+      padding-bottom: 0.5rem;
+    }
+
+    .btn-bx div {
+      border-radius: 0.8rem;
+      border: 1px solid #ccc;
+      width: 50%;
+      position: absolute;
+      bottom: 10%;
+      left: 25%;
+      font-size: 0.7rem;
+      color: #666;
+      padding: 0.4rem 0;
+    }
+
+    .btn-bx div:active {
+      color: #AB9277;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="cantent">
+    <div>
+      <div>
+        <!--正在审核-->
+        <div class="sharp">
+          <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+            <use xlink:href="#icon-ziyuan4"></use>
+          </svg>
+        </div>
+        <!--未通过-->
+        <div class="sharp" v-if="countcode == 0">
+          <svg class="icon" aria-hidden="true" style="font-size: 0.8rem">
+            <use xlink:href="#icon-ziyuan3"></use>
+          </svg>
+        </div>
+        <!--未通过的话-->
+        <div class="text-box" v-if="countcode == 0">
+          <p>您填写的资料未通过</p>
+          <p>可能填写的资料与实际不符</p>
+          <p>请您重新填写</p>
+        </div>
+        <!--通过的话-->
+        <div class="text-box">
+          <p>您填写的资料正在审核中</p>
+          <p>2-3日会给您回复</p>
+        </div>
+      </div>
+    </div>
+    <div class="btn-bx" v-if="countcode == 0">
+      <div>重新提交</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      countcode: '1'
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        api.addEventListener({
+          name: 'viewappear'
+        }, function () {
+          closeWindow('shenfen')
+        });
+
+        if (api.pageParam.countcode) {
+          app.countcode = api.pageParam.countcode;
+        }
+        if(api.pageParam.regLock){
+          app.regLock = api.pageParam.regLock
+        }
+      };
+    },
+    methods: {
+      regLock:function(){
+        setTimeout(function(){
+          api.openWin({
+            name: 'root',
+            url: '../index/index/index_win.html'
+          });
+        },1000)
+      }
+    }
+  })
+</script>

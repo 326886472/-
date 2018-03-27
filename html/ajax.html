@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js案例，脚本之家</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        .ctrLists{
+            overflow: hidden;
+        }
+        .ctrLists li{
+            list-style: none;
+            float: left;
+            background: #ccffff;
+            border: 1px solid #ccc;
+            /*	height: 50px;
+                line-height: 50px;*/
+            padding: 10px;
+        }
+        .ctrLists li input{
+            padding: 0px;
+        }
+        .btnCurtime{
+            width: 200px;
+        }
+        .shows{
+            position: relative;
+        }
+        .controlls{
+            position: absolute;
+            left: 10px;
+            bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+
+</div>
+</body>
+<script type="text/javascript" src="../assets/js/api.js"></script>
+<script type="text/javascript" src="../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../assets/js/public.js"></script>
+<script type="text/javascript" src="../assets/js/index.js"></script>
+<script>
+ apiready = function () {
+   var qq = api.require('QQPlus');
+   qq.login(function(ret, err) {
+   });
+ }
+</script>
+</html>

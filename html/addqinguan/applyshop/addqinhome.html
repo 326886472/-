@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+      height: auto
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    .mainbox {
+      width: 100%;
+      height: auto;
+    }
+
+    .headerspan {
+      line-height: 2rem;
+      background: white;
+      font-size: 15px;
+      border-bottom: 1px solid gainsboro;
+      padding-left: 10px;
+      box-sizing: border-box;
+    }
+
+    .albummessage {
+      display: flex;
+      height: auto;
+      font-size: 15px;
+      border-bottom: 1px solid gainsboro;
+      background: white;
+    }
+
+    .albumname {
+      width: auto;
+      height: 100%;
+      padding-left: 10px;
+      box-sizing: border-box;
+      line-height: 2rem;
+    }
+
+    .rightmessage {
+      flex: 1;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+
+    .ladely {
+      float: right;
+      margin-right: 0.3rem;
+    }
+
+    .minbox {
+      width: 100%;
+      height: 5px;
+      background: #ededed;
+    }
+
+    .changebox {
+      width: 100%;
+      height: auto;
+    }
+
+    .publicborder {
+      border-radius: 20px;
+      border: 1px solid #888;
+      padding: 2px 10px 2px 10px;
+      font-size: 12px;
+      line-height: 1.2rem;
+      margin-top: 5px;
+      margin-right: 5px;
+      color: #888;
+    }
+
+    .shoptype {
+      width: auto;
+      height: 2rem;
+      line-height: 2rem;
+      padding-left: 10px;
+      box-sizing: border-box;
+    }
+
+    .bure {
+      border-radius: 20px;
+      border: 1px solid black;
+      padding: 2px 20px 2px 20px;
+      font-size: 12px;
+      line-height: 1.2rem;
+    }
+
+    .bottombox {
+      width: 100%;
+      height: 6rem;
+      display: flex;
+      background: #ededed;
+    }
+
+    .nextbtn {
+      width: 60%;
+      height: 1.8rem;
+      line-height: 1.8rem;
+      border: 1px solid black;
+      border-radius: 20px;
+      margin: auto;
+    }
+
+    .firstspan {
+      color: #F46C5A;
+    }
+
+    .addshaopname {
+      width: 80%;
+      background: white;
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      margin-left: -40%;
+      height: 4rem;
+      border: 1px solid gainsboro;
+      text-align: center;
+    }
+
+    .mkair {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      background: black;
+      opacity: 0.6;
+    }
+
+    .beforename {
+      border: 1px solid black;
+      color: black;
+    }
+
+    /*选择地址*/
+    .mint-popup {
+      width: 100%;
+    }
+
+    .picker-box {
+      display: flex;
+    }
+
+    .picker-box > * {
+      width: 0;
+      flex-grow: 1;
+    }
+
+    .slot1 {
+      font-size: 14px;
+    }
+
+    .picker-button {
+      display: flex;
+      justify-content: space-around;
+      padding: 1rem 0;
+    }
+
+    .btn-black {
+      width: 30%;
+    }
+
+    .disabled {
+      background: #bbb;
+    }
+
+    .picker-button:active {
+      background: #bbb;
+    }
+
+    .active {
+      color: #010101 !important;
+      border: 1px solid #5a5a5a !important;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id='app'>
+  <!--选择地址-->
+  <mt-popup
+          v-model="cityPickerVisible"
+          position="bottom"
+          :closeOnClickModal="false">
+    <div style="padding: 1rem;">
+      选择地址
+    </div>
+    <div class="picker-box">
+      <mt-picker :slots="provinceList" :visible-item-count="3" value-key="city" @change="provinceChange"
+                 ref="province"></mt-picker>
+      <mt-picker :slots="cityList" :visible-item-count="3" value-key="city" @change="cityChange" ref="city"></mt-picker>
+      <mt-picker :slots="regionList" :visible-item-count="3" value-key="city" @change="regionChange"
+                 ref="region"></mt-picker>
+    </div>
+    <div class="picker-button">
+      <mt-button type="primary" class="mint-button btn-black disabled" style="background:#8c8c8c;"
+                 @click="cancel">取消
+      </mt-button>
+      <mt-button type="primary" class="mint-button btn-black" :class="{disabled: cityOnload}"
+                 @click="cityConfirm">确定
+      </mt-button>
+    </div>
+  </mt-popup>
+  <!--选择年份-->
+  <mt-popup
+          v-model="datePickerVisible"
+          position="bottom"
+          :closeOnClickModal="false">
+    <div style="padding: 1rem;">
+      选择创建年份
+    </div>
+    <div class="picker-box">
+      <mt-picker :slots="datetimeList" visible-item-count="3" ref="year" @change="yearChange"></mt-picker>
+    </div>
+    <div class="picker-button">
+      <mt-button type="primary" class="mint-button btn-black disabled" style="background:#8c8c8c;"
+                 @click="creatTimeBtn(0)">取消
+      </mt-button>
+      <mt-button type="primary" class="mint-button btn-black" :class="{disabled: cityOnload}"
+                 @click="creatTimeBtn(1)">确定
+      </mt-button>
+    </div>
+  </mt-popup>
+
+  <div class="mainbox">
+    <div class="headerspan">
+                    <span class="leftspan">
+                        <span class="firstspan">*</span>
+                        <span>琴馆名称：</span>
+                    </span>
+      <input style="outline: none" type="text" v-model="msg.clubName">
+    </div>
+    <div class="headerspan" @click="selectCity()">
+                    <span class="leftspan">
+                        <span class="firstspan">*</span>
+                        <span>城市：</span>
+
+                    </span>
+      <input style="outline: none" type="text" readonly="true" v-model="msg.cityName">
+      <i class="iconfont ladely icon-ziyuan2"></i>
+    </div>
+
+
+    <div class="headerspan">
+                    <span class="leftspan">
+                        <span class="firstspan">*</span>
+                        <span>地  址：</span>
+                    </span>
+      <input style="outline: none" type="text" v-model="msg.address">
+    </div>
+
+
+    <div class="headerspan">
+                    <span class="leftspan">
+                        <span class="firstspan">*</span>
+                        <span>负 责 人：</span>
+                    </span>
+      <input style="outline: none" type="text" v-model="msg.leader">
+    </div>
+
+    <div class="headerspan">
+                    <span class="leftspan">
+                        <span class="firstspan">*</span>
+                        <span>联系电话：</span>
+                    </span>
+      <input style="outline: none" type="tel" v-model="msg.contactNum" maxlength="12">
+    </div>
+
+    <div class="albummessage">
+      <div class="albumname">
+        <span class="firstspan"> &nbsp;</span>
+        <span>琴馆简介：</span>
+      </div>
+      <textarea class="rightmessage" style="outline: none" type="text" v-model="msg.desc">
+
+                </textarea>
+    </div>
+
+    <div class="minbox"></div>
+
+    <div class="headerspan" @click="openyingye">
+                    <span class="leftspan">
+                        <span class="firstspan"> &nbsp;</span>
+                        <span>营业时段：</span>
+                    </span>
+      <span>{{msg.openHours}}</span>
+      <i class="iconfont ladely icon-ziyuan2" @click="openyingye"></i>
+    </div>
+
+    <div class="headerspan" @click="showDatePicker">
+                    <span class="leftspan">
+                        <span class="firstspan">*</span>
+                        <span>创立时间：</span>
+
+                    </span>
+      <span>{{msg.createTime}}</span>
+      <i class="iconfont ladely icon-ziyuan2"></i>
+    </div>
+
+    <div class="albummessage">
+                    <span class="shoptype">
+                        <span class="firstspan">*</span>
+                        <span>经营品牌：</span>
+                    </span>
+      <div class="rightmessage" style="outline: none">
+        <span class="publicborder" :class="{active: msg.brand.indexOf(item) !== -1}"
+              v-for="item in fixedbrand" @click="toggleFixedBrand({item:item}) ">{{item}}</span>
+        <!--<span class="publicborder active" v-for="(item, index) in msg.brand"-->
+              <!--v-show="item !== '正麟殿' && item !== '钧天坊'">-->
+              <!--{{item}}-->
+              <!--<span class="delbtn" @click="delbutton({item:item})">x</span>-->
+            <!--</span>-->
+        <!--<span class="publicborder active" @click="addBrand">其他</span>-->
+      </div>
+    </div>
+
+
+    <!--<div class="headerspan">-->
+                    <!--<span class="leftspan">-->
+                        <!--<span class="firstspan"> &nbsp;</span>-->
+                        <!--<span>价格区间：</span>-->
+                    <!--</span>-->
+      <!--<input type="text">-->
+    <!--</div>-->
+
+    <div class="albummessage">
+                    <span class="shoptype">
+                        <span class="firstspan"> &nbsp;</span>
+                        <span>是否有绝响：</span>
+                    </span>
+      <div class="rightmessage" style="outline: none">
+        <span class="publicborder" :class="{active:isJuexiang===1}" @click="changJuexiang(1)">&nbsp;是&nbsp;</span>
+        <span class="publicborder" :class="{active:isJuexiang===0}" @click="changJuexiang(0)">&nbsp;否&nbsp;</span>
+      </div>
+    </div>
+
+
+    <div class="albummessage">
+                    <span class="shoptype">
+                        <span class="firstspan">*</span>
+                        <span>特色商品：</span>
+                    </span>
+      <div class="rightmessage" style="outline: none">
+        <span class="publicborder" :class="{active:msg.productTag.indexOf(tag)!==-1}"
+              v-for="tag in fixedTag" @click="toggleFixedProduct({item:tag})">{{tag}}</span>
+        <!--<span class="publicborder active" v-for="(item, index) in msg.productTag"-->
+              <!--v-show="fixedTag.indexOf(item) === -1">-->
+              <!--{{item}}-->
+              <!--<span class="delbtn" @click="delTag({item:item})">x</span>-->
+            <!--</span>-->
+        <!--<span class="publicborder active" @click="addTag">其他</span>-->
+      </div>
+    </div>
+
+
+    <div class="headerspan">
+                    <span class="leftspan">
+                        <span class="firstspan"> &nbsp;</span>
+                        <span>停车位情况：</span>
+                    </span>
+      <input type="text" v-model="msg.park">
+    </div>
+
+    <div class="bottombox">
+      <mt-button class="nextbtn" @click="next">下一步</mt-button>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      cityPickerVisible: false,
+      provinceList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      cityList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      regionList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      province: {},
+      city: {},
+      region: {},
+      provinceTemp: {},
+      cityTemp: {},
+      regionTemp: {},
+      cityAuto: false,
+      cityOnload: false,
+      datePickerVisible: false,
+      datetimeList: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot2',
+          textAlign: 'center'
+        }
+      ],
+      createTimeTemp: '',
+      year: '',
+      msg: {
+        clubName: '',
+        cityName: '',
+        provinceCode: '',
+        cityCode: '',
+        regionCode: '',
+        address: '',
+        leader: '',
+        contactNum: '',
+        desc: '',
+        openHours: '',
+        openTime: '',
+        createTime: '',
+        brand: [],
+        productTag: [],
+        park: '',
+        position: '117.21451000000002,39.116949'
+      },
+
+      phoneNumRagular: /^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\d{8}$/,
+      isJuexiang: 0,
+      fixedbrand: ['正麟殿', '钧天坊','其他'],
+      fixedTag: ['琴桌', '出版物', '茶艺', '饰品配件', '家具产品','其他']
+
+    },
+    created: function () {
+      loadEnd();
+      apiready = function () {
+        api.addEventListener({
+          name: 'openHours1'
+        }, function (ret, err) {
+          app.msg.openHours = ret.value.openHours;
+          app.msg.openTime = ret.value.openTime;
+        })
+      };
+      var vueObj = this;
+      // 获取省市
+      vueObj.$nextTick(function () {
+        vueObj.selectAllCityDrop(1, null, function (provinceList) {
+          vueObj.provinceList[0].values = provinceList;
+          vueObj.provinceTemp = provinceList[0];
+
+          vueObj.selectAllCityDrop(2, provinceList[0].code, function (cityList) {
+            vueObj.cityList[0].values = cityList;
+            vueObj.cityTemp = cityList[0];
+
+            vueObj.selectAllCityDrop(3, cityList[0].code, function (regionList) {
+              vueObj.regionList[0].values = regionList;
+              vueObj.regionTemp = regionList[0];
+              vueObj.cityAuto = true;
+            })
+          })
+        });
+        var date = new Date();
+        var year = date.getFullYear();
+        vueObj.datetimeList[0].values = vueObj.adddanwei(getSeq(101, year - 100), '年');
+      });
+    },
+    methods: {
+      openyingye: function () {
+        openView('yingye', 'addqinguan/applyshop/yingye_fm', '营业时间', false, false);
+      },
+      openupload: function () {
+        openView('applyupload', 'addqinguan/applyshop/applyupload_fm', '申请店铺', 'upload', false, false);
+      },
+      //选择城市
+      selectCity: function () {
+        app.cityPickerVisible = true;
+      },
+      cancel: function () {
+        app.provinceTemp = app.province;
+        app.cityTemp = app.city;
+        app.regionTemp = app.region;
+        if (app.province.code && app.city.code && app.region.code) {
+          app.citySet(app.province.code, app.city.code, app.region.code);
+        }
+
+        app.msg.cityName = app.province.city + app.city.city + app.region.city;
+        app.cityPickerVisible = false;
+      },
+      cityConfirm: function () {
+        if (!app.cityOnload) {
+          app.province = app.provinceTemp;
+          app.city = app.cityTemp;
+          app.region = app.regionTemp;
+          app.msg.provinceCode = app.province.code;
+          app.msg.cityCode = app.city.code;
+          app.msg.regionCode = app.region.code;
+          app.msg.cityName = app.province.city + app.city.city + app.region.city;
+          app.cityPickerVisible = false;
+        }
+      },
+      getCityByCode: function (codeOrObj, cityList) {
+        if ((typeof codeOrObj) === 'string') {
+          for (var i = 0; i < cityList.length; i++) {
+            if (cityList[i].code === codeOrObj) {
+              return cityList[i];
+            }
+          }
+        } else {
+          return codeOrObj;
+        }
+      },
+      provinceChange: function (picker, values) {
+        if (this.cityAuto) {
+          app.cityOnload = true;
+          this.selectAllCityDrop(2, values[0].code, function (cityList) {
+            app.cityList[0].values = cityList;
+          })
+        }
+        this.provinceTemp = values[0];
+      },
+      cityChange: function (picker, values) {
+        var cityobj = this;
+        if (this.cityAuto) {
+          app.cityOnload = true;
+          app.selectAllCityDrop(3, values[0].code, function (regionList) {
+            app.regionList[0].values = regionList;
+            app.cityOnload = false;
+          })
+        }
+        this.cityTemp = values[0];
+      },
+      regionChange: function (picker, values) {
+        this.regionTemp = values[0];
+      },
+      // 把 省-市-区 设置为指定的省市区
+      citySet: function (province, city, region) {
+        app.cityAuto = false;
+        var provinceTemp = app.getCityByCode(province, app.provinceList[0].values);
+        app.$refs.province.setSlotValue(0, provinceTemp);
+        app.province = provinceTemp;
+        app.provinceTemp = provinceTemp;
+
+        app.selectAllCityDrop(2, provinceTemp.code, function (cityList) {
+          app.cityList[0].values = cityList;
+          var cityTemp = app.getCityByCode(city, app.cityList[0].values);
+          app.$refs.city.setSlotValue(0, cityTemp);
+          app.city = cityTemp;
+          app.cityTemp = cityTemp;
+
+          app.selectAllCityDrop(3, cityTemp.code, function (regionList) {
+            app.regionList[0].values = regionList;
+            var regionTemp = app.getCityByCode(region, app.regionList[0].values);
+            app.$refs.region.setSlotValue(0, regionTemp);
+            app.region = regionTemp;
+            app.regionTemp = regionTemp;
+
+            app.cityAuto = true;
+          })
+        })
+      },
+      // 获取全国城市三级联动下拉列表，type: {1: 省, 2: 市, 3: 区}
+      selectAllCityDrop: function (type, code, callback) {
+        var post = {
+          cmd: 'selectAllCityDrop'
+        };
+
+        switch (type) {
+          case 2:
+            post.provinceCode = code;
+            break;
+          case 3:
+            post.cityCode = code;
+            break;
+        }
+        sendAjax(app, post, function (res) {
+          if (callback) {
+            callback(res.data);
+          }
+        });
+      },
+      //创立时间
+      showDatePicker: function () {
+        app.datePickerVisible = true;
+      },
+      adddanwei: function (values, danwei) {
+        var arr = new Array(values.length);
+        for (var i = 0; i < values.length; i++) {
+          arr[i] = values[i] + danwei;
+        }
+        return arr;
+      },
+      yearChange: function (piker, values) {
+        this.createTimeTemp = values[0];
+      },
+      creatTimeBtn: function (res) {
+        if (res === 0) {
+          app.datePickerVisible = false;
+        } else {
+          app.msg.createTime = this.createTimeTemp;
+          app.datePickerVisible = false;
+        }
+      },
+      //经营品牌
+      toggleFixedBrand: function (params) {
+        var index = this.msg.brand.indexOf(params.item);
+        if (index === -1) {
+          this.msg.brand.push(params.item);
+        } else {
+          this.msg.brand.splice(index, 1);
+        }
+      },
+//      addBrand: function () {
+//        api.prompt({
+//          title: '请输入经营品牌',
+//          buttons: ['确定', '取消']
+//        }, function (ret) {
+//          if (ret.buttonIndex === 1) {
+//            if (!(ret.text).trim()) {
+//              api.toast({
+//                msg: '不能为空'
+//              });
+//            } else {
+//              if (app.msg.brand.indexOf(ret.text) !== -1) {
+//                api.toast({
+//                  msg: '品牌已存在'
+//                });
+//              } else {
+//                app.msg.brand.push(ret.text);
+//              }
+//            }
+//          }
+//        });
+//      },
+//      delbutton: function (params) {
+//        api.confirm({
+//          title: '确定删除？',
+//          buttons: ['确定', '取消']
+//        }, function (ret) {
+//          if (ret.buttonIndex === 1) {
+//            var index = app.msg.brand.indexOf(params.item);
+//            app.msg.brand.splice(index, 1);
+//          }
+//        });
+//      },
+      //是否为绝响
+      changJuexiang: function (res) {
+        app.isJuexiang = res;
+      },
+//      特色商品
+      toggleFixedProduct: function (params) {
+        var index = app.msg.productTag.indexOf(params.item);
+        if (index === -1) {
+          app.msg.productTag.push(params.item);
+        } else {
+          app.msg.productTag.splice(index, 1);
+        }
+      },
+//      addTag: function () {
+//        api.prompt({
+//          title: '请输入特色商品',
+//          buttons: ['确定', '取消']
+//        }, function (ret) {
+//          if (ret.buttonIndex === 1) {
+//            if (!ret.text.trim()) {
+//              api.toast({
+//                msg: '不能为空'
+//              });
+//            } else {
+//              if (app.msg.productTag.indexOf(ret.text) !== -1) {
+//                api.toast({
+//                  msg: '品牌已存在'
+//                });
+//              } else {
+//                app.msg.productTag.push(ret.text);
+//              }
+//            }
+//          }
+//        });
+//      },
+//      delTag: function (params) {
+//        api.confirm({
+//          title: '确定删除？',
+//          buttons: ['确定', '取消']
+//        }, function (ret) {
+//          if (ret.buttonIndex === 1) {
+//            var index = app.msg.productTag.indexOf(params.item);
+//            app.msg.productTag.splice(index, 1);
+//          }
+//        });
+//      },
+//      检查所填信息
+      checkPost: function () {
+        if (!app.msg.clubName.trim()) {
+          api.toast({
+            msg: '请输入琴馆名称'
+          });
+          return false;
+        } else if (!(app.province.code && app.city.code && app.region.code)) {
+          api.toast({
+            msg: '请选择市-区-县'
+          });
+          return false;
+        } else if (!app.msg.address.trim()) {
+          api.toast({
+            msg: '请输入地址'
+          });
+          return false;
+        } else if (!app.msg.leader.trim()) {
+          api.toast({
+            msg: '请输入负责人'
+          });
+          return false;
+        } else if (!app.msg.contactNum.trim()) {
+          api.toast({
+            msg: '请输入联系电话'
+          });
+          return false;
+        } else if (!app.phoneNumRagular.test(app.msg.contactNum)) {
+          api.toast({
+            msg: '请输入正确的联系电话'
+          });
+          return false;
+        } else if (!app.msg.createTime) {
+          api.toast({
+            msg: '请选择创立时间'
+          });
+          return false;
+        } else if (app.msg.brand.length === 0) {
+          api.toast({
+            msg: '请选择经营品牌'
+          });
+          return false;
+        } else {
+          return true;
+        }
+      },
+//      下一步
+      next: function () {
+        if (app.checkPost()===true){
+          openView('applyupload', 'addqinguan/applyshop/applyupload_fm', '申请店铺', 'upload', false, {
+            msg: app.msg
+          });
+        };
+      }
+
+    }
+  })
+</script>
+
+
+
+

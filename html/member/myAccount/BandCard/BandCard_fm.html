@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+        .list{
+            font-size:0.7rem;
+            color:#666;
+        }
+        .list-item{
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            padding:0.5rem 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .left-box{
+            flex-shrink: 0;
+            width:30%;
+        }
+        .center-box{
+            flex-shrink: 0;
+            width:50%;
+        }
+        .right-box{
+            text-align: right;
+            width:20%;
+            flex-shrink: 0;
+        }
+        .text-box{
+            padding:0.5rem 1rem;
+            color: #666;
+        }
+        .text-box span{
+            font-size:0.6rem;
+        }
+        .btn-box{
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+        }
+        .btn-box div{
+            padding: 0.3rem 0;
+            text-align: center;
+            width:60%;
+            margin:0 auto;
+            border-radius: 20px;
+            font-size:0.7rem;
+            color:#666;
+            border:1px solid #666;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="list">
+        <li class="list-item">
+            <div class="left-box">
+                开户银行
+            </div>
+            <div class="center-box">
+                请选择开户银行
+            </div>
+            <div class="right-box">
+                <i class="iconfont icon-ziyuan2"></i>
+            </div>
+        </li>
+        <li class="list-item">
+            <div class="left-box">
+                银行卡号
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="仅支持借记卡">
+            </div>
+        </li>
+        <li class="list-item aui-margin-t-10">
+            <div class="left-box">
+                持卡人
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="请输入持卡人姓名">
+            </div>
+        </li>
+        <li class="list-item">
+            <div class="left-box">
+                身份证
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="请输入身份证号">
+            </div>
+        </li>
+        <li class="list-item">
+            <div class="left-box">
+                预留手机
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="请输入身份证号">
+            </div>
+        </li>
+        <div class="text-box">
+            <div>温馨提示:</div>
+            <div>
+                <span>1,请填写本人的银行卡信息(该银行卡开户名必须与实名认证的真实姓名一致,并且只能是借记卡)</span>
+                <span>2,若您填写的银行信息不正确,可能将无法正确提现,由此产生的提现费用将不予返还</span>
+            </div>
+        </div>
+    </ul>
+    <div class="btn-box">
+        <div>提交信息</div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+    }
+  })
+</script>

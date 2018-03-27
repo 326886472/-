@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    .content-menu {
+      /*padding-top:45px;*/
+    }
+
+    /*头部列表*/
+    .menu {
+      height: 100%;
+      background: #f0f0f0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .menu-top {
+      height: 2.5rem;
+      background: white;
+      font-size: 0.7rem;
+      color: #666;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /*横排tab*/
+    .menu-top-left-copy {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      overflow-x: auto;
+      padding-bottom: 30px;
+      /*解决ios卡顿*/
+      overflow-scrolling: touch;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .menu-top-left-copy li {
+      text-align: center;
+      line-height: 3rem;
+      flex-shrink: 0;
+      padding-top: 1rem;
+      width: 10%;
+      height: 100%;
+      margin: 0 1rem;
+    }
+
+    /*选中样式*/
+    .act {
+      color: #B59F88;
+    }
+
+    .Topact {
+      color: #B59F88;
+      border-bottom: 2px solid #B19A81;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div class="content-menu" id="menu">
+    <div class="menu">
+      <div class="menu-top">
+        <ul class="menu-top-left-copy">
+          <li v-for="item in menulist" @click="choseColor(item.index,item.cate)"
+              :class="{'Topact' : actIndex ===item.cate }">
+            {{item.title}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      menulist: [
+        {
+          title: '琴谱',
+          cate: 4,
+          index: 0
+        },
+        {
+          title: '琴曲',
+          cate: 5,
+          index: 1
+        },
+        {
+          title: '琴学',
+          cate: 6,
+          index: 2
+        }, {
+          title: '新闻',
+          cate: 7,
+          index: 3
+        }
+        , {
+          title: '名家',
+          cate: 8,
+          index: 4
+        }
+      ],
+      actIndex: 4,
+      proList: []
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        $api.fixStatusBar($api.dom('menu'));
+        app.changeFrameG();
+      };
+    },
+    methods: {
+      choseColor: function (i, cate) {
+        app.actIndex = cate;
+        api.setFrameGroupIndex({
+          name: 'group1',
+          index: i
+        });
+      },
+      changeFrameG: function () {
+        api.openFrameGroup({
+          name: 'group1',
+          scrollEnabled: false,
+          rect: {
+            x: 0,
+            y: 0,
+            w: 'auto',
+            h: 'auto',
+            marginTop : 120
+          },
+          preload: 0,
+          frames: [{
+            name: 'qinPu',
+            url: 'qinPu_fm.html',
+            bgColor: '#f0f0f0'
+          }, {
+            name: 'qinQu',
+            url: 'qinQu_fm.html',
+            bgColor: '#f0f0f0'
+          },
+            {
+              name: 'qinXue',
+              url: 'qinXue_fm.html',
+              bgColor: '#f0f0f0'
+            },
+            {
+              name: 'xinWen',
+              url: 'xinWen_fm.html',
+              bgColor: '#f0f0f0'
+            },
+            {
+              name: 'mingJia',
+              url: 'mingJia_fm.html',
+              bgColor: '#f0f0f0'
+            }
+          ]
+        }, function (ret, err) {
+        });
+      }
+    }
+  })
+</script>

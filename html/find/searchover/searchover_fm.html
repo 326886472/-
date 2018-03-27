@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .headernav {
+      display: flex;
+      font-size: 14px;
+      background: white;
+      line-height: 2rem;
+    }
+
+    .headernav div {
+      flex: 1;
+      text-align: center;
+    }
+
+    .spanbefore {
+      border-bottom: 2px solid saddlebrown;
+      color: saddlebrown;
+    }
+
+    .navoul {
+      width: 100%;
+      height: 1.5rem;
+      display: flex;
+      background: white;
+      margin-top: 0.5rem;
+      z-index: 100;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .navoul li {
+      flex: 1;
+      text-align: center;
+      font-size: 14px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      line-height: 1rem;
+      z-index: 100;
+      color: #585858;
+      border-right: 1px solid #d9d9d9;
+    }
+
+    .navoul li:nth-child(4) {
+      border-right: 1px solid transparent;
+    }
+
+    .firstlable {
+      width: 100%;
+      height: auto;
+      background: white;
+    }
+
+    .firstlable li {
+      line-height: 3rem;
+      padding-left: 0.5rem;
+      font-size: 15px;
+      box-sizing: inherit;
+      border-top: 1px solid gainsboro;
+      z-index: 100;
+    }
+
+    .firstlable li:active {
+      background: gainsboro;
+    }
+
+    .changebox {
+      width: 3.5rem;
+      height: 1.2rem;
+      font-size: 12px;
+      color: #838383;
+      text-align: center;
+      line-height: 1.2rem;
+      border-radius: 20px;
+      border: 1px solid #838383;
+      padding: 3px;
+      display: inline-block;
+      margin-left: 0.5rem;
+      z-index: 100;
+    }
+
+    .beforeclass {
+      border: 1px solid #ff3c00;
+      color: #ff3c00;
+    }
+
+    .datacount {
+      width: 100%;
+      height: auto;
+    }
+
+    .shopcount {
+      width: 100%;
+      height: 7.5rem;
+      background: white;
+      padding: 0.5rem 10px 0 0;
+      margin-top: 0.5rem;
+      display: flex;
+      box-sizing: border-box;
+    }
+
+    .oimg {
+      width: 5rem;
+      display: inline-block;
+      height: 5rem;
+    }
+
+    .ableimg {
+      width: 5rem;
+      margin-left: 0.5rem;
+      display: inline-block;
+      height: 6rem;
+      float: left;
+      text-align: center;
+    }
+
+    .textcount {
+      flex: 1;
+      height: 100%;
+      font-size: 14px;
+      margin-left: 0.5rem;
+      display: inline-block;
+    }
+
+    .countp {
+      width: 100%;
+      padding-bottom: 0.2rem;
+      height: auto;
+      font-size: 13px;
+    }
+
+    .ableop {
+      font-size: 15px;
+      color: #585858;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .ospan {
+      display: inline-block;
+      border: 1px solid orangered;
+      color: orangered;
+      font-size: 10px;
+      padding: 2px;
+      box-sizing: border-box;
+    }
+
+    .storespan {
+      display: inline-block;
+      padding: 2px;
+      border: 1px solid #777777;
+      color: #777777;
+      font-size: 12px;
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .oi {
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .oi i {
+      font-size: 10px;
+      padding: 0;
+    }
+
+    .kmitle {
+      display: inline-block;
+      font-size: 11px;
+      color: #5a5a5a;
+    }
+
+    .pricehour {
+      color: #ff3c00;
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 1.5rem;
+      border-bottom: 1px solid gainsboro;
+    }
+
+    .option {
+      float: left;
+      display: inline-block;
+      height: 100%;
+      line-height: 1.5rem
+    }
+
+    /*.modal {*/
+    /*position: fixed;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*background: black;*/
+    /*opacity: 0.5;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*z-index: 10;*/
+    /*}*/
+    .navboxtitle {
+      width: 100%;
+      height: 3rem;
+      display: flex;
+      line-height: 3rem;
+      background: white;
+      margin-top: 0.5rem;
+      padding: 0 5px;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+
+    .abletodo {
+      /*flex: 1;*/
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .beofrediv {
+      color: #F46C5A;
+    }
+
+    .news {
+      width: 100%;
+      height: auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .newsimgbox {
+      width: 100%;
+      height: 8rem;
+    }
+
+    .newsimgbox img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .ofasty {
+      text-align: right;
+      font-size: 14px;
+      line-height: 2rem;
+    }
+
+    .ofasty span {
+      margin-right: 0.5rem;
+    }
+
+    .strongpeople {
+      width: 100%;
+      height: auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .peopledetails {
+      width: 50%;
+      height: 8rem;
+      float: left;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    .imgdetails {
+      width: 6rem;
+      height: 6rem;
+      display: inline-block;
+    }
+
+    .rotg {
+      color: darkgray;
+    }
+
+    .navlist li:active {
+      background: gainsboro;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <div :class="{modal: minindex !== -1}"></div>
+
+  <div class="headernav">
+    <div v-for="(item,index) in headerlist"><span style="text-align: center" :class="{spanbefore:headerindex==index}"
+                                                  @click="headerbtn(index)">{{item.name}}</span></div>
+  </div>
+
+
+  <div class="navlist" style="z-index: 1000" v-if="headerindex!=3">
+    <ul class="navoul">
+      <li @click="count(index)" v-for="(item,index) in navlist">{{item.listname}}
+        <i style="font-size: 0.5rem;" class="iconfont icon-ziyuan2-copy-2" v-if="minindex != index"></i>
+        <i style="font-size: 0.5rem;" class="iconfont icon-ziyuan-copy-1" v-if="minindex == index"></i>
+    </ul>
+
+    <ul class="firstlable" v-show="minindex === 0">
+      <li v-for="item in threelist">{{item.local}}</li>
+    </ul>
+    <ul class="firstlable" v-show="minindex === 1">
+      <li v-for="item in secondlist">{{item.star}}</li>
+    </ul>
+    <ul class="firstlable" v-show="minindex === 2">
+      <li v-for="item in firstlist">{{item.firstname}}</li>
+    </ul>
+    <ul class="firstlable" v-show="minindex === 3">
+      <li>
+        <p>经营年数</p>
+        <div @click="change(index)" class="changebox" v-for="(item,index) in operateYear"
+             :class="{beforeclass:nativeindex==index}">{{item.name}}
+        </div>
+      </li>
+      <li>
+        <p>班级人数</p>
+        <div @click="changenum(index)" class="changebox" v-for="(item,index) in classpeople"
+             :class="{beforeclass:changenumindex==index}">{{item.name}}
+        </div>
+      </li>
+      <li>
+        <p>课程类型</p>
+        <div @click="changetype(index)" :class="{beforeclass:changetypeindex==index}" class="changebox"
+             v-for="(item,index) in courseType">{{item.name}}
+        </div>
+      </li>
+      <li>
+        <p>课程级别</p>
+        <div @click="changelevel(index)" :class="{beforeclass:changelevelindex==index}" class="changebox"
+             v-for="(item,index) in courseLevel">{{item.name}}
+        </div>
+      </li>
+      <li>
+        <p>商户等级</p>
+        <div class="changebox" @click="changestore(index)" :class="{beforeclass:changestoreindex==index}"
+             v-for="(item,index) in clubLevel">{{item.name}}
+        </div>
+      </li>
+
+      <li style="line-height: 4rem">
+        <div @click="resbtn()" class="changebox">重置</div>
+        <div @click="surebtn()" class="changebox">确定</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="navboxtitle" v-if="headerindex==3">
+    <div @click="allbtncount(index)" v-for="(item,index) in navtitlelist" class="abletodo"
+         :class="{beofrediv:detailsindex == index}">
+      <span style="text-align: center">{{item.name}}</span>
+    </div>
+  </div>
+  <!--不是文化的时候的商品-->
+  <div class="datacount" v-if="headerindex!=3">
+    <!--古琴教学-->
+    <div class="shopcount" v-for="item in teachlist" v-if="headerindex == 0" @clicm="gotodetails()">
+      <div class="ableimg">
+        <img class="oimg" :src="item.src">
+        <p class="ableop">{{item.imgtitle}}</p>
+      </div>
+
+      <div class="textcount">
+        <p class="countp" style="font-weight: bolder;font-size: 14px">
+          {{item.titlecount}}
+          <span class="ospan">{{item.orders}}</span>
+          <span class="ospan">{{item.classes}}</span>
+        </p>
+        <div class="oi">
+          <div><i style="color: #ff8500" class="iconfont icon-xingxing1"></i>
+            <i style="color: #ff8500" class="iconfont icon-xingxing1"></i>
+            <i style="color: #bfbfbf" class="iconfont icon-xingxing1"></i>
+            <i style="color: #bfbfbf" class="iconfont icon-xingxing1"></i>
+            <i style="color: #bfbfbf" class="iconfont icon-xingxing1"></i>
+            <span style="color:#ff8500;margin-left: 0.2rem">{{item.score}} / 5</span>
+          </div>
+
+
+          <span class="kmitle">{{item.km}}km</span>
+        </div>
+
+        <p class="pricehour">￥{{item.classhour}}/课时</p>
+        <p style="line-height: 1.5rem;font-size: 14px;color: darkgray">[开课日期]{{item.classtime}}</p>
+
+      </div>
+    </div>
+    <!--古琴教学结束-->
+    <!--古琴课程的-->
+    <div class="storebox" v-if="headerindex==1" @clicm="gotodetails()">
+      <div class="shopcount" v-for="item in teachlist">
+        <div class="ableimg">
+          <img class="oimg" :src="item.src">
+        </div>
+
+        <div class="textcount">
+          <p class="countp" style="font-weight: bolder;font-size: 14px">
+            {{item.titlecount}}
+          </p>
+          <div class="oi">
+            <div>
+              <i style="color: #ff8500" class="iconfont icon-xingxing1"></i>
+              <i style="color: #ff8500" class="iconfont icon-xingxing1"></i>
+              <i style="color: #bfbfbf" class="iconfont icon-xingxing1"></i>
+              <i style="color: #bfbfbf" class="iconfont icon-xingxing1"></i>
+              <i style="color: #bfbfbf" class="iconfont icon-xingxing1"></i>
+              <span style="color:#ff8500;margin-left: 0.2rem">{{item.score}} / 5</span>
+            </div>
+
+            <span class="kmitle">{{item.km}}km</span>
+          </div>
+          <p><span class="storespan">{{item.orders}}</span>
+            <span class="storespan">{{item.classes}}</span></p>
+          <p style="line-height: 1.5rem;font-size: 15px;border-top: 1px solid gainsboro">
+
+          <p class="option" style="color: darkgray">[{{item.orders}}]</p>
+          <p class="option">
+          <p style="line-height: 1.5rem">{{item.classtime}}</p>
+          <p>{{item.classtime}}</p>
+          </p>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--古琴课程的结束-->
+
+  </div>
+
+
+  <div class="learncount" v-if="headerindex==3">
+
+    <!--新闻-->
+    <div class="news" v-if="detailsindex==0">
+      <div class="newsdetails" v-for="item in newsdetailslist">
+        <div class="newsimgbox">
+          <img :src="item.src">
+        </div>
+        <div class="ofasty">
+          <span>{{item.yeartime}}</span><span>{{item.hourtime}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!--名家-->
+    <div class="strongpeople" v-if="detailsindex==1">
+      <div class="peopledetails" v-for="item in peoplelist">
+        <div class="imgdetails">
+          <img style="width: 100%;height: 100%" :src="item.src">
+        </div>
+        <div style="font-size: 13px">{{item.name}}</div>
+      </div>
+    </div>
+    <!--视频-->
+    <div class="strongpeople" v-if="detailsindex==2">
+      <div class="peopledetails" v-for="item in peoplelist">
+        <div class="imgdetails">
+          <img style="width: 100%;height: 100%" :src="item.src">
+        </div>
+        <div style="font-size: 13px">视频{{item.name}}</div>
+      </div>
+    </div>
+    <!--琴谱-->
+    <div class="strongpeople" v-if="detailsindex==3">
+      <div class="peopledetails" v-for="item in peoplelist">
+        <div class="imgdetails">
+          <img style="width: 100%;height: 100%" :src="item.src">
+        </div>
+        <div style="font-size: 13px">琴谱{{item.name}}</div>
+      </div>
+    </div>
+    <!--琴曲-->
+    <div class="strongpeople" v-if="detailsindex==4">
+      <div class="peopledetails" v-for="item in peoplelist">
+        <div class="imgdetails">
+          <img style="width: 100%;height: 100%" :src="item.src">
+        </div>
+        <div style="font-size: 13px">琴曲{{item.name}}</div>
+      </div>
+    </div>
+    <!--琴学-->
+    <div class="news" v-if="detailsindex==5">
+      <div class="newsdetails" v-for="item in newsdetailslist">
+        <div class="newsimgbox">
+          <img :src="item.src">
+        </div>
+        <div class="ofasty">
+          <span>{{item.yeartime}}</span><span>琴学{{item.hourtime}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      topStatus: '',
+      statusindex: '',
+      nativeindex: null,
+      changenumindex: null,
+      changetypeindex: null,
+      changelevelindex: null,
+      changestoreindex: null,
+      detailsindex: 0,
+      headerindex: 0,
+      minindex: -1,
+      navlist: [
+        {
+          listname: '附近'
+        },
+        {
+          listname: '星级'
+        },
+        {
+          listname: '智能排序'
+        },
+        {
+          listname: '筛选',
+          index: '1'
+        }
+      ],
+      firstlist: [
+        {
+          firstname: '智能排序'
+        },
+        {
+          firstname: '距离优先'
+        },
+        {
+          firstname: '人气最高'
+        },
+        {
+          firstname: '服务最好'
+        },
+        {
+          firstname: '环境最好'
+        },
+        {
+          firstname: '教学最好'
+        }
+      ],
+      secondlist: [
+        {
+          star: '一星'
+        }, {
+          star: '二星'
+        },
+        {
+          star: '三星'
+        },
+        {
+          star: '四星'
+        },
+        {
+          star: '五星'
+        }
+
+      ],
+      threelist: [
+        {
+          local: '朝阳区'
+        },
+        {
+          local: '朝阳区'
+        },
+        {
+          local: '朝阳区'
+        },
+        {
+          local: '朝阳区'
+        },
+        {
+          local: '朝阳区'
+        },
+        {
+          local: '朝阳区'
+        },
+        {
+          local: '朝阳区'
+        }
+
+      ],
+      operateYear: [
+        {
+          "name": "不限",
+          "value": "1"
+        },
+        {
+          "name": "1年以下",
+          "value": "2"
+        },
+        {
+          "name": "1~3年",
+          "value": "3"
+        },
+        {
+          "name": "3~5年",
+          "value": "4"
+        },
+        {
+          "name": "5年以上",
+          "value": "5"
+        }
+      ],
+      classpeople: [
+        {
+          name: '1人班级'
+        },
+        {
+          name: '2人班级'
+        },
+        {
+          name: '3人班级'
+        },
+        {
+          name: '4人班级'
+        },
+        {
+          name: '5人班级'
+        },
+        {
+          name: '6人以上班级'
+        }
+      ],
+      courseType: [
+        {
+          "name": "定期课程",
+          "value": "1"
+        },
+        {
+          "name": "免费体验课",
+          "value": "2"
+        },
+        {
+          "name": "随到随学",
+          "value": "3"
+        }
+      ],
+      clubLevel: [
+        {
+          "name": "不限",
+          "value": "0"
+        },
+        {
+          "name": "普通商户",
+          "value": "1"
+        },
+        {
+          "name": "金牌商户",
+          "value": "2"
+        }
+      ],
+      courseLevel: [
+        {
+          "name": "入门级",
+          "value": "1"
+        },
+        {
+          "name": "提高班",
+          "value": "2"
+        }
+      ],
+      teachlist: [
+        {
+          titlecount: '木艺古琴文化传承中心',
+          orders: '定期课程',
+          classes: '提高班',
+          km: '14.7',
+          score: '4.8',
+          classhour: '90',
+          classtime: '2017/5/1-6/2',
+          imgtitle: '琴馆悠长没得大琴馆管',
+          src: "../../../assets/images/tanqin.png"
+        },
+        {
+          titlecount: '木艺古琴文化传承中心',
+          orders: '定期课程',
+          classes: '提高班',
+          km: '14.7',
+          score: '4.8',
+          classhour: '90',
+          classtime: '2017/5/1-6/2',
+          imgtitle: '琴馆悠长没得大琴馆管',
+          src: "../../../assets/images/tanqin.png"
+        },
+        {
+          titlecount: '木艺古琴文化传承中心',
+          orders: '定期课程',
+          classes: '提高班',
+          km: '14.7',
+          score: '4.8',
+          classhour: '90',
+          classtime: '2017/5/1-6/2',
+          imgtitle: '琴馆悠长没得大琴馆管',
+          src: "../../../assets/images/tanqin.png"
+        },
+        {
+          titlecount: '木艺古琴文化传承中心',
+          orders: '定期课程',
+          classes: '提高班',
+          km: '14.7',
+          score: '4.8',
+          classhour: '90',
+          classtime: '2017/5/1-6/2',
+          imgtitle: '琴馆悠长没得大琴馆管',
+          src: "../../../assets/images/tanqin.png"
+        },
+        {
+          titlecount: '木艺古琴文化传承中心',
+          orders: '定期课程',
+          classes: '提高班',
+          km: '14.7',
+          score: '4.8',
+          classhour: '90',
+          classtime: '2017/5/1-6/2',
+          imgtitle: '琴馆悠长没得大琴馆管',
+          src: "../../../assets/images/tanqin.png"
+        }
+      ],
+      peoplelist: [
+        {
+          name: '管平湖',
+          src: '../../../assets/images/tanqin.png'
+        },
+        {
+          name: '管平湖',
+          src: '../../../assets/images/tanqin.png'
+        },
+        {
+          name: '管平湖',
+          src: '../../../assets/images/tanqin.png'
+        },
+        {
+          name: '管平湖',
+          src: '../../../assets/images/tanqin.png'
+        }
+      ],
+      catchnum: 0,
+      headerlist: [
+        {
+          name: '琴馆'
+        },
+        {
+          name: '课程'
+        },
+        {
+          name: '产品'
+        },
+        {
+          name: '文化'
+        }
+      ],
+
+      navtitlelist: [
+        {
+          name: '琴界新闻'
+        },
+        {
+          name: '古琴名家'
+        },
+        {
+          name: '教学视频'
+        },
+        {
+          name: '琴谱'
+        },
+        {
+          name: '琴曲'
+        },
+        {
+          name: '琴学'
+        }
+      ],
+      newsdetailslist: [
+        {
+          yeartime: '2017-02-02',
+          hourtime: '12:00:30',
+          src: '../../../assets/images/tanqin.png'
+        },
+        {
+          yeartime: '2017-02-02',
+          hourtime: '12:00:30',
+          src: '../../../assets/images/tanqin.png'
+        },
+        {
+          yeartime: '2017-02-02',
+          hourtime: '12:00:30',
+          src: '../../../assets/images/tanqin.png'
+        },
+        {
+          yeartime: '2017-02-02',
+          hourtime: '12:00:30',
+          src: '../../../assets/images/tanqin.png'
+        },
+        {
+          yeartime: '2017-02-02',
+          hourtime: '12:00:30',
+          src: '../../../assets/images/tanqin.png'
+        }
+      ],
+      modal: false
+    },
+    filters: {},
+//    watch: {
+//      'catchnum': function (value) {
+//        if (value == 0) {
+//          loadEnd();
+//        }
+//      }
+//    },
+    created: function () {
+      apiready = function () {
+        app.searchvalue = api.pageParam.searchvalue;
+//              判断主页搜索进入还是发现搜索进入
+        if (app.searchvalue == 1) {
+          app.headerlist.splice(2, 2);
+          app.laber();
+        }
+
+        api.addEventListener({
+          name: 'catchChange'
+        }, function (ret, err) {
+          statusindex = ret.value.statusindex;
+          app.laber();
+          return statusindex;
+        });
+      };
+    },
+    methods: {
+      change: function (index) {
+        app.nativeindex = index;
+      },
+      changenum: function (index) {
+        app.changenumindex = index;
+      },
+      changetype: function (index) {
+        app.changetypeindex = index;
+      },
+      changelevel: function (index) {
+        app.changelevelindex = index;
+      },
+      changestore: function (index) {
+        app.changestoreindex = index;
+      },
+
+      headerbtn: function (index) {
+        app.headerindex = index;
+
+        if (index == 2) {
+          api.openWin({
+            name: 'catchdetails_fm',
+            url: '../catchdetails/catchdetails_fm.html',
+            pageParam: {
+              statustype: 1
+            }
+          });
+        }
+      },
+
+      resbtn: function () {
+        app.nativeindex = null,
+          app.changenumindex = null,
+          app.changetypeindex = null,
+          app.changelevelindex = null,
+          app.changestoreindex = null
+      },
+      surebtn: function () {
+        app.minindex = -1
+      },
+      count: function (index) {
+        if (app.minindex === index) {
+          app.minindex = -1
+        } else {
+          app.minindex = index;
+        }
+//                window.alert(app.minindex)
+      },
+      openNewin: function (name) {
+        api.openWin({
+          name: name,
+          url: '../' + name + '/' + name + '_win.html'
+        });
+      },
+      allbtncount: function (index) {
+        app.detailsindex = index
+      },
+      laber: function () {
+        app.catchnum++
+      }
+    }
+  })
+</script>

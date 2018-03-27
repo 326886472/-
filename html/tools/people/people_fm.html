@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <link rel="stylesheet" href="../../../assets/css/swiper-3.4.2.min.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .headernav {
+      width: 100%;
+      background: white;
+    }
+
+    .changbox {
+      text-align: center;
+      font-size: 14px;
+      color: #585858;
+      line-height: 2rem;
+    }
+
+    .beforeclass {
+      border-bottom: 2px solid #ab9277;
+      color: #ab9277;
+    }
+
+    .countimg {
+      width: 5rem;
+      height: 5rem;
+      margin: 10px;
+    }
+
+    .countbox {
+      display: flex;
+      flex-direction: row;
+      background: white;
+      border-bottom: 1px solid gainsboro;
+    }
+
+    .rightbox {
+      font-size: 14px;
+      color: #676767;
+      width: 60%;
+    }
+
+    .rightbox p {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <div class="headernav">
+    <!--<div style="width: 95%;margin: 0 auto 4px auto;height: 2rem;display: flex">-->
+    <!--<div class="changbox" v-for="(item,index) in textlist" :class="{beforeclass:changeindex==index}" @click="change(index)">{{item.name}}</div>-->
+    <!--</div>-->
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+
+        <div @click="change(index)" class="swiper-slide changbox" :class="{beforeclass: changeindex == index}"
+             v-for="(item, index) in sonCates">
+          {{item.cateName}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="countnav">
+    <div class="countbox" v-for="(item,index) in peoplelist" @click="revisehome(index)">
+      <div class="leftbox"><img class="countimg" :src="formatImg(item.cover)"></div>
+      <div class="rightbox">
+        <p style="font-size: 16px;line-height: 2.5rem;font-weight: bold">{{item.title}}</p>
+        <span style="line-height: 1.5rem;width: 90%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{item.desc}}</span><span
+              class="back"><i class="iconfont icon-ziyuan2"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script type="text/javascript" src="../../../assets/js/swiper-3.4.2.min.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      changeindex: 0,
+      peoplelist: [],
+      cateName: [],
+      sonCates: [],
+      countnum: 0
+    },
+    filters: {},
+
+    watch: {
+      'countnum': function (value) {
+        if (value == 1) {
+          loadEnd()
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+
+
+        refresh(function () {
+          app.getCulList(api.pageParam.sonCates[app.changeindex], function () {
+            refreshDone();
+          });
+        });
+
+
+        app.sonCates = api.pageParam.sonCates;
+        app.cateName = api.pageParam.sonCates.cateName;
+        app.firstLevelCateId = api.pageParam.firstLevelCateId;
+        app.getCulList(api.pageParam.sonCates[0].cateId);
+        app.$nextTick(function () {
+          var mySwiper = new Swiper('.swiper-container', {
+            slidesPerView: 4,
+            spaceBetween: 10
+          });
+        });
+      };
+    },
+
+
+    methods: {
+      change: function (index) {
+        app.peoplelist = [];
+        MINT.Indicator.open('加载中...');
+        app.changeindex = index;
+        app.getCulList(app.sonCates[index].cateId);
+      },
+      revisehome: function (index) {
+        api.openWin({
+          name: 'revisehome_win',
+          url: '../people/revisehome_win.html',
+          pageParam: {
+            articleid: app.peoplelist[index].id,
+            cateid: app.sonCates[app.changeindex].cateId
+          }
+        });
+      },
+      getCulList: function (cateId, callback) {
+        var post = {
+          cmd: 'getCulList',
+          cateId: cateId
+        };
+        sendAjax(this, post, function (res) {
+
+          if (callback) {
+            callback()
+          }
+
+          app.peoplelist = res.data.proList;
+          console.log(app.peoplelist);
+          app.laber();
+          MINT.Indicator.close();
+        });
+      },
+      laber: function () {
+        app.countnum++
+      }
+    }
+  })
+</script>

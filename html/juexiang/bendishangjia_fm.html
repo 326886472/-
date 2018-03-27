@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background-color: #f0f0f0;
+    }
+
+    .icon {
+      width: 1em;
+      height: 1em;
+      vertical-align: 0;
+      fill: currentColor;
+      overflow: hidden;
+    }
+
+    .list-business {
+      margin-top: 0.3rem;
+      background-color: #fff;
+      height: 4rem;
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .left-img {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .left-img img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .right-content {
+      margin: 0 0.5rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      flex: 1;
+    }
+
+    .right-content h4 {
+      font-size: 0.8rem;
+    }
+
+    .right-content p {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      color: #5a5a5a;
+    }
+
+    .address {
+      width: 8rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding-right: 0.3rem;
+    }
+
+    .right-content p i {
+      font-style: normal;
+    }
+  </style>
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+  <div v-for="item in items">
+    <div class="list-business">
+      <div class="left-img">
+        <img :src="formatImg(item.picName)"/>
+      </div>
+      <div class="right-content">
+        <h4>{{item.clubName}}</h4>
+        <p><i class="address">地址:{{item.address}}</i>
+          <span>
+                <i><svg class="icon" aria-hidden="true" style="font-size: 0.6rem">
+                <use xlink:href="#icon-dingwei1"></use>
+            </svg></i><span style="font-size: 12px">{{item.distance}}km</span></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../assets/js/index.js"></script>
+<script src="../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      items: [],
+      firstCount: 0
+    },
+    created: function () {
+      apiready = function () {
+        app.getShopInSale(function () {
+          app.firstCount++;
+        });
+      }
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    methods: {
+      getLocation:function (callback) {
+        var aMap = api.require('aMap');
+        aMap.open({
+          rect:{
+            x:0,
+            y:0,
+            w:0,
+            h:0
+          }
+        },function () {
+          aMap.getLocation(function (ret,arr) {
+              if(ret.status){
+                app.currentLoc = ret.lon +',' + ret.lat;
+                if(callback){
+                  callback();
+                }
+              }else{
+              }
+            }
+          )
+        })
+      },
+      getShopInSale: function (callback) {
+        app.getLocation(function () {
+          var post1 = {
+            cmd: 'getShopInSale',
+            token: getToken(),
+            city: getcitycode(),
+            showWhere: '1',
+            app: '1',
+            currentposition: app.currentLoc
+          };
+          sendAjax(app, post1, function (res) {
+            app.items = res.data.proList;
+            if(callback){
+              callback();
+            }
+          });
+        });
+        //获取本地商家在售赋值给sellermessge
+      }
+    }
+  })
+
+</script>
+
+
+<!--备注-->
+

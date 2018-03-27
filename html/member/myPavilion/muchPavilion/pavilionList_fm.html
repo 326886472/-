@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/pavilion_fm.css">
+</head>
+<body>
+<div id="loadStart"></div>
+<div id="app">
+    <div class="index-list">
+        <div class="content">
+            <div class="having-shop">已有店铺</div>
+            <div v-for="(item, index) in shopList1">
+                <div class="content-center" @click="goClubHome(index)">
+                    <img class="img" :src="formatImg(item.picName)"/>
+                    <div class="listView-text">
+                        <div class="listView-text-title">
+                            <span class="shop-name">{{item.clubName}}<i class="iconfont icon-duigoudunpai"></i></span>
+                            <span class="shopping">营业中</span>
+                        </div>
+                        <span class="listView-text-score">
+                            <div class="star-sorce">
+                                <i class="iconfont" :class="starClass(i,item.overallScore)" v-for="i in 5"></i>
+                                <span><span class="number">{{item.overallScore}} / 5</span> <span class="score">分</span></span>
+                            </div>
+                        </span>
+                        <mt-progress :value="item.progressBar" :bar-height="10" id="mt-progress-progress"
+                                     style="margin-right: 2rem;">
+                            <div slot="end">{{item.progressBar}}% 资料完整度</div>
+                        </mt-progress>
+                    </div>
+                </div>
+                <div class="perfect-information" v-if="item.progressBar !== 100">
+                    <mt-button type="default" id="mint-button" size="small"  @click="goClubHome(index)">快去完善</mt-button>
+                </div>
+            </div>
+            <div class="no-data" v-show="shopList1.length == 0">暂无店铺</div>
+        </div>
+        <div class="hr"></div>
+        <div class="content">
+            <div class="having-shop">审核中店铺</div>
+            <div v-for="item in shopList2">
+                <div class="content-center">
+                    <img class="img" :src="formatImg(item.picName)"/>
+                    <div class="listView-text">
+                        <div class="listView-text-title">
+                            <span class="shop-name">{{item.clubName}}</span>
+                            <span class="shopping">审核中</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-days">
+                    申请需要3-5个工作日，请您耐心等待
+                </div>
+            </div>
+            <div class="no-data" v-show="shopList2.length == 0">暂无店铺</div>
+        </div>
+        <div class="hr"></div>
+        <div class="content">
+            <div class="having-shop">申请失败店铺</div>
+            <div v-for="item in shopList3">
+                <div class="content-center">
+                    <img class="img" :src="formatImg(item.picName)"/>
+                    <div class="listView-text">
+                        <div class="listView-text-title">
+                            <span class="shop-name">{{item.clubName}}</span>
+                            <span class="shopping">申请失败</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="failed">
+                    <div class="review-days">原因：您的营业执照已过期。</div>
+                    <mt-button type="default" id="mint-button" size="small" @click="replay(item.clubId)">重新申请
+                    </mt-button>
+                </div>
+            </div>
+            <div class="no-data" v-show="shopList3.length == 0">暂无店铺</div>
+        </div>
+        <div class="none-store" v-show="!hasShop">
+            您还没有开通过店铺
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+
+<script>
+    new FastClick(document.body);
+</script>
+
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            shopList1: [],  // 正常店铺
+            shopList2: [],  // 审核中店铺
+            shopList3: [],  // 审核未通过店铺
+            hasShop: false,
+            token: getToken()
+        },
+        filters: {
+            statusText(status) {
+                switch (status) {
+                    case '1':
+                        return '营业中';
+                    case '2':
+                        return '审核中';
+                    case '3':
+                        return '申请失败';
+                }
+            }
+        },
+
+        created: function () {
+            apiready = function() {
+                api.closeWin({name: 'findregister_home'});
+                api.closeWin({name: 'register_home'});
+                api.closeWin({name: 'login_home'});
+                api.closeWin({name: 'thirdRegister'});
+
+                api.setWinAttr({
+                    slidBackEnabled: false
+                });
+
+                app.isOpenShop(function () {
+                    loadEnd();
+                });
+
+                api.addEventListener({
+                    name: 'storeUpdate'
+                }, function () {
+                    app.isOpenShop();
+                });
+
+                refresh(function () {
+                    app.isOpenShop(function () {
+                        refreshDone();
+                    });
+                });
+            }
+
+        },
+        methods: {
+            isOpenShop(callback) {
+                var post = {
+                    cmd: 'isOpenShop',
+                    token: app.token,
+                    perPage: 10000
+                };
+                app.shopList1 = [];
+                app.shopList2 = [];
+                app.shopList3 = [];
+                sendAjax(this, post,function (res) {
+                    if (res.data.proList !== 0) {
+                        app.hasShop = true;
+                        for (var i = 0; i < res.data.proList.length; i++) {
+                            switch (res.data.proList[i].status) {
+                                case '1':
+                                    app.shopList1.push(res.data.proList[i]);
+                                    break;
+                                case '2':
+                                    app.shopList2.push(res.data.proList[i]);
+                                    break;
+                                case '3':
+                                    app.shopList3.push(res.data.proList[i]);
+                                    break;
+                            }
+                        }
+                        // 候选的审核通过琴馆列表，用来选择
+//                        setStorage('clubList', app.shopList1);
+                    }
+
+                    if (callback) {
+                        callback();
+                    }
+                });
+            },
+//            快去完善
+            goClubHome(index) {
+                var nowClub = app.shopList1[index];
+//                setStorage('clubId', nowClub.clubId);
+//                setStorage('clubName', nowClub.clubName);
+//                openView('index', 'member/myPavilion/only_onePavilion', false, false, false, {
+//                    clubId:nowClub.clubId,
+//                    shopName:nowClub.shopName
+//                });
+                api.openWin({
+                    name: 'only_one',
+                    url: '../../myPavilion/only_onePavilion.html',
+                    pageParam: {
+                        shopName: nowClub.clubName,
+                        clubId: nowClub.clubId
+                    }
+                })
+            },
+            replay(clubId) {
+                openView('settingstore', 'member/myPavilion/storemessage/settingstore_fm', '琴馆资料管理', false, false, {
+                    clubId: clubId
+                });
+            },
+
+            starClass(index, score) {
+                if (score % 1 === 0) {
+                    if (index <= score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                } else {
+                    if (score - index < 0 && score - index > -1) {
+                        return 'icon-yibanxingxing1';
+                    } else if (index < score) {
+                        return 'icon-xingxing';
+                    } else {
+                        return 'icon-xingxing grey-star';
+                    }
+                }
+            }
+        }
+    })
+</script>
+</html>

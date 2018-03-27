@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: #f0f0f0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: 100%;
+    }
+
+    .bookbox {
+      width: 5rem;
+      height: 7rem;
+      display: inline-block;
+    }
+
+    .headerbox {
+      width: 100%;
+      background: white;
+      height: auto;
+    }
+
+    .oimg {
+      width: 4rem;
+      height: 4rem;
+    }
+
+    .bookbox p {
+      font-size: 12px;
+    }
+
+    .ablieyou {
+      width: 100%;
+      text-align: center;
+      line-height: 2rem;
+      font-size: 15px;
+      padding: 10px 10px 10px 10px;
+      box-sizing: border-box;
+    }
+
+    /*搜索*/
+    .searchbox {
+      width: 100%;
+      height: 2rem;
+      display: flex;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+      left: 0;
+      background: white;
+    }
+
+    .inputbox {
+      border: 1px solid #a6a6a6;
+      flex: 1;
+      border-radius: 20px;
+      height: 1.5rem;
+      margin: auto;
+    }
+
+    .otype {
+      width: 65%;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      outline: none;
+      display: inline-block;
+      float: left;
+      margin-left: 0.5rem;
+      font-size: 13px;
+    }
+
+    .ifont {
+      float: left;
+      line-height: 1.5rem;
+      margin-left: 0.5rem;
+    }
+
+    .ospan {
+      width: 44px;
+      line-height: 1.5rem;
+      font-size: 14px;
+      margin: auto;
+      color: #f46c5a;
+      text-align: center;
+    }
+
+    .musictitle {
+      font-size: 14px;
+      line-height: 1.5rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-align: center;
+    }
+
+    /*加载*/
+    .bottomdiv {
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+      margin-top: 1rem;
+    }
+
+    .uptext {
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+
+    .publicfont {
+      width: 20px;
+      height: 20px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <div class="searchbox">
+    <div style="margin: auto;display: flex;width: 95%">
+      <div class="inputbox">
+        <i style="color:#e5e5e5" class="iconfont ifont icon-sousuo"></i>
+        <input class="otype" type="text" v-model="searchcont" placeholder="请输入琴谱名称...">
+      </div>
+      <span class="ospan" @click="culSearchList(6)">搜索</span>
+    </div>
+  </div>
+
+
+  <div class="headerbox" style="margin-top: 35px">
+    <div class="ablieyou">--为您推荐--</div>
+    <div style="width: 100%;height: auto;text-align: center;background: white">
+      <div v-if="item.isRecommend==1" class="bookbox" v-for="(item,index) in musiclist" @click="musicdetails(index)">
+        <img class="oimg" :src="formatImg(item.cover)">
+        <p class="musictitle">{{item.title}}</p>
+        <p class="musictitle">{{item.author}}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="headerbox">
+    <div class="ablieyou" style="margin-top: 0.5rem">--所有琴谱--</div>
+    <div style="width: 100%;height: auto;text-align: center;background: white">
+      <div class="bookbox" v-for="(item,index) in musiclist">
+        <img class="oimg" :src="formatImg(item.cover)" @click="musicdetails(index)">
+        <p class="musictitle">{{item.title}}</p>
+        <p class="musictitle">{{item.author}}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+
+      musiclist: [],
+      searchcont: '',
+      searchlist: [],
+      countnum: 0,
+      page: 1,
+      perPage: 6,
+      rote: false,
+      overlate: false,
+      load: false
+
+    },
+    filters: {},
+    watch: {
+      'countnum': function (value) {
+        if (value == 1) {
+          loadEnd()
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        refresh(function () {
+          app.getCulList(api.pageParam.firstLevelCateId, 1,function () {
+            refreshDone();
+          });
+        });
+
+
+        app.sonCates = api.pageParam.sonCates;
+        app.cateName = api.pageParam.sonCates.cateName;
+
+        app.firstLevelCateId = api.pageParam.firstLevelCateId;
+        app.getCulList(api.pageParam.firstLevelCateId, 1);
+
+        //这个是监听滑动
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 30 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+//                滑动时候改变的值
+        }, function (ret, err) {
+          app.load = true;
+          app.rote = false;
+          app.overlate = false;
+          app.page++;
+          app.getCulList(api.pageParam.firstLevelCateId);
+        });
+
+      };
+    },
+    methods: {
+      change: function (index) {
+        app.changeindex = index
+      },
+      musicdetails: function (index) {
+
+        api.openWin({
+          name: 'musicdetails_win',
+          url: '../music/musicdetails_win.html',
+          pageParam: {
+            articleid: app.musiclist[index].id,
+            cateid: app.musiclist[index].cateId
+          }
+        });
+      },
+      getCulList: function (firstLevelCateId, ref,callback) {
+        var post = {
+          cmd: 'getCulList',
+          firstLevelCateId: firstLevelCateId,
+          page: app.page,
+          perPage: app.perPage
+        };
+        sendAjax(this, post, function (res) {
+          if (callback) {
+            callback();
+          }
+
+          if (ref == 1) {
+            app.musiclist = res.data.proList;
+            app.rote = true;
+            app.load = false;
+
+          } else {
+            app.musiclist = app.musiclist.concat(res.data.proList);
+            app.rote = true;
+            app.load = false;
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+          app.laber()
+        });
+      },
+      culSearchList: function (number) {
+        var post = {
+          cmd: 'culSearchList',
+          searchBox: app.searchcont
+        };
+        sendAjax(this, post, function (res) {
+          app.searchlist = res.data.proList;
+          openView('search_fm', 'tools/search/clubsearch', '古琴琴谱', false, false, {
+            searchlist: app.searchlist,
+            searchvalue: app.searchcont
+          })
+        });
+      },
+      laber: function () {
+        app.countnum++
+      }
+    }
+  })
+</script>

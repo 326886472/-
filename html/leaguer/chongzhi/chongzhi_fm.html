@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #f0f0f0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #app {
+
+        }
+
+        .icon {
+            width: 1rem;
+            height: 1rem;
+            display: block;
+            margin-right: 0.5rem;
+        }
+
+        .kaitong-box {
+            padding-top: 0.5rem;
+            color: #bbbbbb;
+        }
+
+        /*radio样式*/
+        .my-radio {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.2rem;
+            background-color: #ffffff;
+            border: solid 1px #dddddd;
+            font-size: 0.3rem;
+            margin-right: 0.3rem;
+            padding: 0;
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            cursor: default;
+            -webkit-appearance: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-transition: background-color ease 0.1s;
+            transition: background-color ease 0.1s;
+        }
+
+        .my-radio:checked {
+            border: solid 1px #F8A79C;
+            text-align: center;
+            background-clip: padding-box;
+        }
+
+        .my-radio:checked:before, .my-radio:checked:after {
+            content: '';
+            width: 0.5rem;
+            height: 0.3rem;
+            position: absolute;
+            top: 50%;
+            left: 48%;
+            margin-left: -0.25rem;
+            margin-top: -0.25rem;
+            background: transparent;
+            border: 1px solid #F8A79C;
+            border-top: none;
+            border-right: none;
+            z-index: 2;
+            -webkit-border-radius: 0;
+            border-radius: 0;
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+
+        .flex-box {
+            align-items: center;
+            display: flex;
+        }
+
+        .bet {
+            justify-content: space-between;
+        }
+
+        .list {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .list li {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .header-box {
+            padding: 0.3rem 1rem;
+        }
+
+        .img-box {
+            padding-right: 1rem;
+        }
+
+        .img {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+        }
+
+        .btn-box {
+            width: 60%;
+            position: absolute;
+            bottom: 10%;
+            left: 20%;
+            font-size: 0.7rem;
+            color: #666;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+            padding: 0.3rem 0;
+            text-align: center;
+        }
+
+        .btn-box:active {
+            background: gainsboro;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <div id="loadStart"></div>
+    <ul class="list">
+        <li class="flex-box">
+            <div class="img-box">
+                <img :src="formatImg(avatar)" alt="" class="img">
+            </div>
+            <div>
+                <div>{{nickname}}</div>
+                <div class="kaitong-box">开通权限享受高品质生活</div>
+            </div>
+        </li>
+        <div class="header-box">会员套餐</div>
+        <li class="flex-box bet">
+            <div>{{oneM}}{{onePrice}}元</div>
+            <div><input type="radio" class="my-radio" name="demo1" value="1" v-model="duringOpen"></div>
+        </li>
+        <li class="flex-box bet">
+            <div>{{sixM}}个月{{sixPrice}}元</div>
+            <div><input type="radio" class="my-radio" name="demo1" value="6" v-model="duringOpen"></div>
+        </li>
+        <li class="flex-box bet">
+            <div>{{TwelveM}}个月{{TwelvePrice}}元</div>
+            <div><input type="radio" class="my-radio" name="demo1" value="12" v-model="duringOpen"></div>
+        </li>
+        <div class="header-box">支付方式</div>
+        <li class="flex-box bet" v-show="wpayAllow == 1">
+            <div class="flex-box">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-weixin1"></use>
+                </svg>
+                微信支付
+            </div>
+            <div><input type="radio" class="my-radio" name="demo2" v-model="payType" value="1"></div>
+        </li>
+        <li class="flex-box bet" v-show="zfbAllow == 1">
+            <div class="flex-box">
+                <svg class="icon " aria-hidden="true">
+                    <use xlink:href="#icon-zhifubao"></use>
+                </svg>
+                支付宝支付
+            </div>
+            <div><input type="radio" class="my-radio" name="demo2" v-model="payType" value="2"></div>
+        </li>
+        <li class="flex-box bet" v-show="ylAllow == 1">
+            <div class="flex-box">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-yinlian"></use>
+                </svg>
+                银联支付
+            </div>
+            <div><input type="radio" class="my-radio" name="demo2" v-model="payType" value="3"></div>
+        </li>
+    </ul>
+    <div class="btn-box" @click="openPayInfo">
+        立即开通
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      avatar: '', //头像
+      nickname: '',
+      duringOpen: '', //会员开通时长
+      payType: 0,   //支付方式 1微信 2支付宝 3银联
+      oneM: '包月',
+      onec: '1',
+      onePrice: '',
+      sixM: '6',
+      sixPrice: '',
+      TwelveM: '12',
+      TwelvePrice: '',
+      firstCount: 0,  //loader监听
+      zfbAllow: -1,
+      wpayAllow: -1,
+      ylAllow: -1
+    },
+    watch: {
+      firstCount: function (value) {
+        if (value === 1) {
+          loadEnd();
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        if (api.pageParam.avatar) {
+          app.avatar = api.pageParam.avatar;
+          app.nickname = api.pageParam.nickname;
+        }
+        app.openHighMemberOne();
+        app.openHighMemberSix();
+        app.openHighMemberTwelve();
+
+        //       支付宝
+        app.switch_app(3, function (allow) {
+          app.zfbAllow = allow;
+        });
+        // 微信
+        app.switch_app(4, function (allow) {
+          app.wpayAllow = allow;
+        });
+//       银联
+        app.switch_app(5, function (allow) {
+          app.ylAllow = allow;
+        });
+      };
+    },
+    methods: {
+      //      支付方式
+//      支付开关 4：微信；3：微信 5:银联
+      switch_app: function (switchType, callback) {
+        var post = {
+          cmd: 'switch_app',
+          switchType: switchType
+        };
+        sendAjax(this, post, function (res) {
+          console.log(JSON.stringify(res));
+          if (callback) {
+            callback(res.data);
+          }
+        });
+      },
+//      获取开通高级会员实付金额
+      openHighMemberOne: function () {
+        var post = {
+          cmd: 'openHighMember',
+          token: getToken(),
+          duringOpen: app.onec
+        };
+        sendAjax(this, post, function (res) {
+          app.loaderChange();
+          app.onePrice = res.data;
+        })
+      },
+      openHighMemberSix: function () {
+        var post = {
+          cmd: 'openHighMember',
+          token: getToken(),
+          duringOpen: app.sixM
+        };
+        sendAjax(this, post, function (res) {
+          app.sixPrice = res.data;
+        })
+      },
+      openHighMemberTwelve: function () {
+        var post = {
+          cmd: 'openHighMember',
+          token: getToken(),
+          duringOpen: app.TwelveM
+        };
+        sendAjax(this, post, function (res) {
+          app.TwelvePrice = res.data;
+        })
+      },
+      openPayInfo: function () {
+        if (app.duringOpen === '') {
+          toastMsg('请选择开通时长');
+        } else if (app.payType === 0) {
+          toastMsg('请选择支付方式');
+        } else {
+          switch (app.payType) {
+            case '1':
+              app.wxPayOfMarketPackage();
+              break;
+            case '2':
+              app.aliPayOfMarketPackage();
+              break;
+            case '3':
+              app.unionPayOfMarketPackage();
+              break;
+          }
+        }
+      },
+      wxPayOfMarketPackage: function () {
+        api.showProgress({
+          title: '努力加载中...',
+          text: '先喝杯茶...',
+          modal: false
+        });
+        var post = {
+          cmd: 'wxPayapi',
+          token: getToken(),
+          duringOpen: app.duringOpen,
+          app: 1
+        };
+        sendAjax(app, post, function (res) {
+          var payInfo = res.data.html_text;
+          var wxPay = api.require('wxPay');
+          wxPay.payOrder({
+            orderId: payInfo.prepay_id,
+            mchId: payInfo.mch_id,
+            nonceStr: payInfo.nonce_str,
+            timeStamp: payInfo.timeStamp,
+            sign: payInfo.sign
+          }, function (ret, err) {
+            if (ret.status) {
+              //支付成功
+              api.hideProgress();
+              api.sendEvent({
+                name: 'MemberUp'
+              });
+              toastMsg('充值成功');
+              closeWindow();
+            } else {
+              toastMsg('支付失败');
+              api.hideProgress();
+            }
+          });
+        });
+      },
+      //      loader加载
+      loaderChange: function () {
+        app.firstCount++;
+      },
+//      微信支付
+//      wxPayOfMarketPackage: function () {
+//        api.showProgress({
+//          title: '努力加载中...',
+//          text: '先喝杯茶...',
+//          modal: false
+//        });
+//        var wxPay = api.require('wxPay');
+//        wxPay.config({}, function (ret, err) {
+//          if (ret.status) {
+//            var post = {
+//              cmd: 'wxPayapi',
+//              token: getToken(),
+//              duringOpen: app.duringOpen,
+//              app: 1
+//            };
+//            sendAjax(app, post, function (res) {
+//              var payInfo = res.data.html_text;
+//              var payParams = {
+//                description: payInfo.description,
+//                totalFee: payInfo.totalFee,
+//                tradeNo: payInfo.tradeNo,
+//                attach: payInfo.attach,
+//                timeStart: payInfo.timeStart,
+//                timeExpire: payInfo.timeExpire,
+//                goodsTag: payInfo.goodsTag,
+//                productId: payInfo.productId
+//              };
+//              var wxPay = api.require('wxPay');
+//              wxPay.pay(payParams, function (payRet, payErr) {
+//                if (payRet) {
+//                  api.hideProgress();
+//                  if (payRet.status) {
+//                    api.sendEvent({
+//                      name: 'MemberUp'
+//                    });
+//                    toastMsg('充值成功');
+//                    setTimeout(function () {
+//                      closeWindow();
+//                    }, 2000)
+//                  } else {
+//                    api.hideProgress();
+//                    alert(JSON.stringify(payErr));
+//                  }
+//                }
+//              });
+//            });
+//          }
+//        });
+//      },
+//      支付宝
+      aliPayOfMarketPackage: function () {
+        api.showProgress({
+          title: '努力加载中...',
+          text: '先喝杯茶...',
+          modal: false
+        });
+        var post = {
+          cmd: 'alipayapi',
+          token: getToken(),
+          duringOpen: app.duringOpen,
+          app: 1
+        };
+        sendAjax(app, post, function (res) {
+          var aliPayPlus = api.require('aliPayPlus');
+          aliPayPlus.payOrder({
+            orderInfo: res.data.html_text
+          }, function (ret, err) {
+            api.sendEvent({
+              name: 'MemberUp'
+            });
+            if (ret.code == 9000) {
+              api.hideProgress();
+              toastMsg('充值成功');
+              closeWindow();
+            } else {
+              api.hideProgress();
+            }
+          });
+        });
+      },
+//      银联
+      unionPayOfMarketPackage: function () {
+        var post = {
+          cmd: 'unionPayapi',
+          token: getToken(),
+          duringOpen: app.duringOpen,
+          app: 1
+        };
+        sendAjax(this, post, function (res) {
+          var unPay = api.require('unionPay');
+          var payPost = {
+            tn: res.data.orderNo,
+            devMode: true
+          };
+          unPay.pay({
+            tn: res.data.tn,
+            devMode: true
+          }, function (ret, err) {
+            api.sendEvent({
+              name: 'MemberUp'
+            });
+            toastMsg('充值成功');
+            setTimeout(function () {
+              closeWindow();
+            }, 2000)
+          });
+        });
+      }
+    }
+  })
+</script>

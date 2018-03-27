@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        html, body {
+            background: #F0F0F0;
+        }
+
+        #app {
+
+        }
+
+        .content {
+            padding-bottom: 1rem;
+            background: white;
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .content li {
+            width: 94%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 3%;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .header {
+            flex-shrink: 0;
+            width: 30%;
+        }
+
+        .content li:last-child {
+            border: none;
+        }
+
+        .input-box {
+            width: 80%;
+            text-align: left;
+        }
+
+        .item-header {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .label-box {
+            padding:0.5rem 0.3rem;
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .label-box span {
+            padding: 0.3rem 0.3rem;
+            border: 1px solid #f0f0f0;
+            border-radius: 0.7rem;
+            margin-left:0.3rem;
+            margin-bottom: 0.3rem;
+        }
+        .typeclass{
+            border: 1px solid #ececec;
+            color: #808080;
+        }
+
+        .message-box {
+            width:96%;
+            padding: 0.5rem 3%;
+            line-height: 1rem;
+        }
+
+        .bottom-label-box {
+            width: 70%;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .ert{
+            text-align: center;
+            flex: 1;
+            border: 1px solid #ececec;
+            color: #838383;
+            line-height: 1.3rem;
+            border-radius: 20px;
+            margin-right: 0.2rem;
+            font-size: 13px;
+        }
+
+        .listAct {
+            color: black;
+            border: 1px solid black !important;
+        }
+        .ertact{
+            color: black;
+            border: 1px solid black;
+        }
+
+        .btn-box {
+            margin: 10% auto 10% auto;
+            width: 60%;
+            text-align: center;
+        }
+
+        .btn-box div {
+            font-size: 0.7rem;
+            color: #666;
+            padding: 0.3rem 0;
+            border-radius: 0.8rem;
+            border: 1px solid #666;
+        }
+
+        .btn-box div:active {
+            background: gainsboro;
+        }
+
+        .text-box {
+            font-size: 0.6rem;
+        }
+        .minbox{
+            width: 100%;
+            height: 3px;
+            background: #f0f0f0;
+        }
+        .nei-padding-box{
+            padding-left: 0.5rem;
+            padding-right:0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <ul class="content aui-margin-t-10">
+        <div>
+            <div class="item-header nei-padding-box">合作意向类型</div>
+            <div class="label-box">
+                <span class="typeclass" v-for="(item,index) in list" :class="{'listAct'  : listAct == item.index }"
+                      @click="changeLabel(item.index)">{{item.title}}</span>
+            </div>
+        </div>
+        <div>
+            <textarea v-model="description" maxlength="500" class="message-box" cols="45" rows="7"
+                      placeholder="请描述您偏向的具体合作及方法,便于我们更快更好的展开合作" style="width: 90%;height: 100%;"></textarea>
+            <div style="border-bottom: 5px solid #f0f0f0;text-align: right;padding-right: 0.5rem;" class="text-box">
+                <div>{{description.length}}/500</div>
+            </div>
+        </div>
+        <li>
+            <div class="header">
+                联系人姓名:
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="请输入联系人姓名" v-model="name">
+            </div>
+        </li>
+        <li>
+            <div class="header">
+                联系人电话:
+            </div>
+            <div class="input-box">
+                <input type="tel" placeholder="请输入联系人电话" v-model="tel">
+            </div>
+        </li>
+        <li>
+            <div class="header" style="width: 20%">
+                合作类型
+            </div>
+            <div class="bottom-label-box" style="width: 80%">
+                <span class="ert" v-for="(item,index) in hezuo" :class="{'ertact':numAct == index }"
+                      @click="changebottomLabel(index)">{{item.title}}</span>
+            </div>
+        </li>
+        <li style="border-bottom: 3px solid #f0f0f0;">
+            <div class="header">
+                合作专线
+            </div>
+            <div>
+                010-62658989
+            </div>
+        </li>
+        <li class="">
+            <div class="">
+                提交后,我方会尽快派人与您联系
+            </div>
+        </li>
+    </ul>
+    <div class="btn-box" @click="cooperationApply()">
+        <div>提交</div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      list: [
+        {
+          title: '商品定制',
+          index: 0
+        },
+        {
+          title: '地方总代',
+          index: 1
+        },
+        {
+          title: '连锁加盟',
+          index: 2
+        },
+        {
+          title: '当地首推',
+          index: 3
+        },
+        {
+          title: '定制服务',
+          index: 4
+        },
+        {
+          title: '联合活动',
+          index: 5
+        }
+      ],
+      hezuo: [
+        {
+          title: '公司',
+          num: 0
+        },
+        {
+          title: '个体工商户',
+          num: 1
+        },
+        {
+          title: '个人教师',
+          num: 2
+        }
+      ],
+      textareatext: '',
+      listAct: 0,
+      numAct: 0,
+      tel: '',
+      description: '',
+      name: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+      };
+    },
+    methods: {
+      changeLabel: function (index) {
+        app.listAct = index;
+      },
+      changebottomLabel: function (index) {
+        app.numAct = index;
+      },
+      cooperationApply: function () {
+        var post = {
+          cmd: 'cooperationApply',
+          token: getToken(),
+          description: app.description,
+          name: app.name,
+          tel: app.tel,
+          willType: app.listAct + 1,
+          type: app.numAct + 1,
+          isSellerApp: 2
+        };
+        sendAjax(this, post, function (res) {
+          app.peoplelist = res.data.proList;
+          console.log(app.peoplelist);
+        });
+      }
+    }
+  })
+</script>

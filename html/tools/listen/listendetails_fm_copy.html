@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+    }
+
+    #app {
+      height: auto;
+    }
+
+    .tokenmessage {
+      width: 85%;
+      height: 3rem;
+      margin: auto;
+      line-height: 3rem;
+      background: white;
+      border-bottom: 1px solid gainsboro;
+      font-size: 15px;
+    }
+
+    .tokendetails {
+      width: 85%;
+      height: auto;
+      margin: auto;
+      border-bottom: 1px solid gainsboro;
+      font-size: 14px;
+      display: flex;
+      padding-top: 20px;
+      padding-bottom: 5px;
+    }
+
+    .detailsbox {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+    }
+
+    .detailsbox img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .ifont {
+      position: absolute;
+      bottom: -5%;
+      z-index: 10;
+      left: 50%;
+      margin-left: -1rem;
+      width: 2rem;
+      background: orangered;
+      color: white;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .rightbox {
+      flex: 1;
+    }
+
+    .nametime {
+      line-height: 2rem;
+      display: flex;
+    }
+
+    .nametime span {
+      flex: 1;
+      font-size: 13px;
+    }
+
+    .artical {
+      width: 100%;
+      height: auto;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .ixin {
+      color: #f44336;
+    }
+
+    .findmore {
+      width: 85%;
+      margin: auto;
+      text-align: center;
+      line-height: 2rem;
+      font-size: 14px;
+    }
+
+    .fixedbox {
+      width: 100%;
+      height: 44px;
+      background: white;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+    }
+
+    .fixedbox span {
+      width: 44px;
+      font-size: 15px;
+      text-align: center;
+    }
+
+    .oinput {
+      height: 1.6rem;
+      line-height: 1.6rem;
+      text-align: left;
+      font-size: 14px;
+      border-radius: 5px;
+      margin: auto;
+      width: 60%;
+    }
+
+    .headerbox {
+      width: 100%;
+      height: auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .titlename {
+      line-height: 2rem;
+      font-size: 17px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .teachname {
+      font-size: 14px;
+      line-height: 1.5rem;
+    }
+
+    .tioicont {
+      margin-left: 10px;
+      color: gainsboro;
+    }
+
+    .contfont {
+      font-size: 13px;
+      line-height: 2rem;
+    }
+
+    .imgbox {
+      width: 100%;
+      height: 60%;
+      margin-top: 0.5rem;
+    }
+
+    .imgbox img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .callback {
+      width: 100%;
+      height: auto;
+      background: #f0f0f0;
+      padding: 5px;
+      box-sizing: border-box;
+      color: #7b7b7b;
+      margin-top: 3px;
+    }
+
+    .lookmore {
+      width: 100%;
+      margin-top: 0.5rem;
+      height: 2rem;
+      background: #f0f0f0;
+      text-align: center;
+      line-height: 2rem;
+    }
+
+    .namemessage {
+      line-height: 1.5rem;
+      font-size: 12px;
+      color: #7b7b7b;
+    }
+
+    .tokenspan {
+      text-align: right;
+      margin-right: 0.5rem;
+      color: #7b7b7b;
+    }
+
+    .musicbox {
+      width: 100%;
+      height:10rem;
+      position: relative;
+    }
+
+    .playmusic {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+    }
+
+    .iconty {
+      margin: auto;
+      font-size: 15px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .callbackfont {
+
+    }
+
+    .fixedbox {
+      width: 100%;
+      height: 44px;
+      line-height: 44px;
+      position: fixed;
+      top: 20px;
+      left: 0;
+      color: black;
+      font-size: 22px;
+      padding-left: 20px;
+      box-sizing: border-box;
+      transition: 1s;
+      background: transparent;
+    }
+
+    .beforeflex {
+      background: white;
+      opacity: 0.6;
+      transition: 1s;
+    }
+
+    .starbtn {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      width: 3rem;
+      height: 3rem;
+      background: black;
+      opacity: 0.6;
+      border-radius: 50%;
+    }
+
+    .btnCurtime {
+      width: 100%;
+    }
+
+    .ofsery {
+      width: 100%;
+      height: 10px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: white;
+    }
+
+    .jindu {
+      width: 100%;
+      background: gainsboro;
+      height: 10px;
+      position: relative;
+    }
+
+    #controller {
+      width: 20px;
+      height: 20px;
+      background: #4687D7;
+      border-radius: 50%;
+      position: absolute;
+      top: -5px;
+      left: -20px;
+    }
+
+    #bar {
+      width: 0%;
+      max-width: 100%;
+      height: 100%;
+      background-color: #4687D7;
+    }
+
+    .time {
+      font-size: 13px;
+      color: darkgray;
+    }
+
+    .leftboxfont {
+      flex: 1;
+      text-align: left;
+    }
+
+    .rightboxfont {
+      flex: 1;
+      color: #b2b2b2;
+      text-align: right;
+      margin-right: 5px;
+    }
+
+    .orange {
+      width: 100%;
+      height: 10px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      opacity: 0;
+    }
+    .bottomdiv{
+      width: 100%;
+      height: 2rem;
+      text-align: center;
+      line-height: 2rem;
+      background: #f0f0f0;
+      color: black;
+    }
+    .uptext{
+      color: #bfbfbf;
+      font-size: 13px;
+    }
+    .publicfont{
+        width:20px;
+        height: 20px;
+        margin: auto;
+    }
+    .audioplayer-volume-button{
+      display: none;
+    }
+    /*.audioplayer-time audioplayer-time-current{*/
+
+    /*}*/
+
+  </style>
+</head>
+<body>
+<div id='app'>
+  <div id="loadStart"></div>
+  <div class="fixedbox" :class="{beforeflex:blurefont}"><i class="iconfont callbackfont icon-ziyuan2-copy" @click="closethiswin()"></i></div>
+  <div class="musicbox">
+    <img style="width: 100%;height: 100%" :src="formatImg(listdetailslist.cover)">
+    <div class="ofsery">
+      <div id="jindutiao" class="jindu" @click="btngodetl()">
+        <div id="bar"></div>
+        <input type="range" class="orange" v-model="rangstyle" :max="maxlength" step="1" @input="changewidth()">
+        <div id="controller"></div>
+      </div>
+    </div>
+  </div>
+  <div class="headerbox">
+    <div class="titlename">
+      <div class="leftboxfont">
+        {{listdetailslist.title}}
+        <span class="time" id="musictime">{{nowminute}}:{{nowsecond}}/{{starminute}}:{{starsecond}}</span>
+      </div>
+
+      <!--暂停/开始-->
+
+      <div class="rightboxfont">
+        <span><i class="iconfont icon-prev" style="font-size: 20px"></i></span>
+        <span @click="playAudio" v-if='keyPly==false'><i style="font-size: 25px"
+                                                         class="iconfont icon-zanting"></i></span>
+        <span @click="playAudio" v-if='keyPly'><i style="font-size: 25px" class="iconfont icon-bofang"></i></span>
+        <span><i class="iconfont icon-next" style="font-size: 20px"></i></span>
+      </div>
+
+    </div>
+    <audio class="playmusic" :src="newllisten + listdetailslist.attachment" controls="controls" preload="auto"
+           id="myVideo" style="display: none"></audio>
+    <p class="teachname">{{listdetailslist.author}}</p>
+    <div style="font-size: 14px">{{listdetailslist.desc}}</div>
+    <div class="contfont">
+            <span @click="culDoAgree(1)">
+                <i v-if="agree==1" style="color: #f44336" class="iconfont tioicont icon-xin"></i>
+                 <i v-else class="iconfont tioicont icon-ziyuan8"></i>
+                <sapn>{{listdetailslist.countAgree}}</sapn>
+            </span>
+
+      <span @click="culDoAgree(2)" style="margin-left: 10px">
+                <i v-if="collect==1" style="color: #fcbd54" class="iconfont ixin icon-shoucang"></i>
+                <i v-else class="iconfont icon-shoucang1"></i>
+                <sapn>{{listdetailslist.countCollect}}</sapn>
+            </span>
+
+    </div>
+  </div>
+
+  <div style="width: 100%;height: 1rem;background: #f0f0f0"></div>
+
+  <div class="tokenmessage">
+    <span><i class="iconfont icon-liuyan"></i></span><span
+      style="margin-left: 0.5rem">全部留言（{{alltoken.count || '0'}}）</span>
+  </div>
+
+  <div class="tokendetails" v-for="(item, index) in tokenlist">
+    <div class="detailsbox" style="position: relative;flex-shrink: 0">
+      <img :src="formatImg(item.avatar)">
+      <div class="ifont" v-if="item.isQinAuth==1||item.isUserAuth==1">V认证</div>
+    </div>
+    <div class="rightbox">
+      <div class="nametime">
+                <span style="margin-left: 0.2rem">{{item.nickname}}<i style="color:#ffbb28"
+                                                                      class="iconfont icon-huangguan-copy"
+                                                                      v-if="item.level==1"></i></span>
+        <span style="text-align: right;margin-right: 0.2rem">{{item.addTime}}</span>
+      </div>
+      <div class="artical">
+        {{item.content}}
+      </div>
+      <div style="width: 100%;line-height: 2rem;text-align: right;margin-right: 20px">
+                <span>
+                     <i v-if="item.ifAgree==1" class="iconfont ixin icon-xin" @click="culEvaluateDoAgree(index)"></i>
+                     <i v-else class="iconfont icon-ziyuan8" @click="culEvaluateDoAgree(index)"></i>
+                    {{item.countAgree}}
+                </span>
+        <span>
+                    <i class="iconfont ixin icon-liuyan"></i>
+                    {{item.countReply}}
+                </span>
+      </div>
+      <div style="width: 100%">
+        <div class="callback" v-for="(replyItem,index) in item.reply" v-if="index<app.labellength">
+          <p class="namemessage">
+            <span>{{replyItem.nickname}}</span>
+            <span style="color:#f46c5a">回复:@{{item.nickname}}</span>
+          </p>
+          <div style="width: 100%;height: auto">
+            <p>{{replyItem.content}}</p>
+            <p class="tokenspan"><i class="iconfont icon-xiaoxi"></i></p>
+          </div>
+        </div>
+        <div v-if="item.reply.length>2" class="lookmore" @click="checkallmessage(index)">
+          查看全部（{{item.countReply}}）
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottomdiv">
+    <span v-if="rote" class="uptext">---上拉加载---</span>
+    <img v-if="load" class="publicfont" src="../../../assets/images/timg.gif">
+    <span v-if="overlate" class="uptext">数据已全部加载</span>
+  </div>
+
+</div>
+</body>
+</html>
+
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/iconfont/iconfont.js"></script>
+<!--<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>-->
+<!--<script>-->
+  <!--new FastClick(document.body);-->
+<!--</script>-->
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      vdo: null,
+      keyPly: true,
+      listdetailslist: [],
+      articleid: '',
+      cateid: '',
+      collect: '',
+      agree: '',
+      agreenum: '',
+      alltoken: '',
+      tokenlist: [],
+      tokennum: '',
+      countCollect: '',
+      labellength: 2,
+      blurefont: false,
+      second: 0,
+      minute: 0,
+      nowsecond:0,
+      nowminute:0,
+      contro: null,
+      bar: null,
+      rangstyle: '',
+      maxlength: '',
+      listentnum:'',
+      countnum:0,
+//      下来加载的页数和有多少个
+      page:1,
+      perPage:5,
+//      判断 状态 圈，上拉加载，已经加载全部
+      rote:false,
+      overlate:false,
+      load:false,
+//      新版初始时间
+      starsecond:'',
+      starminute:''
+    },
+    filters: {},
+    watch:{
+      'countnum':function(value){
+        if(value==2){
+          loadEnd()
+        }
+      }
+    },
+    created: function () {
+      apiready = function () {
+        api.setWinAttr({
+          slidBackEnabled: false
+        });
+        app.$nextTick(function () {
+
+          app.contro = document.getElementById("controller");
+          app.bar = document.getElementById("bar");
+          app.vdo = document.getElementById("myVideo");
+          app.rangstyle = app.vdo.currentTime;
+//          定义初始时间
+          app.vdo.onloadedmetadata = function () {
+            app.starsecond = parseInt(app.vdo.duration % 60);
+            app.starminute = parseInt(app.vdo.duration / 60);
+            app.second = parseInt(app.vdo.duration % 60);
+            app.minute = parseInt(app.vdo.duration / 60);
+          };
+
+//        随着进度条播放
+          var jindutiao = document.getElementById('jindutiao');
+          var bar = document.getElementById('bar');
+
+          app.vdo.addEventListener("timeupdate", function (event) {
+
+            var scales = app.vdo.currentTime / app.vdo.duration;
+            app.rangstyle = scales * jindutiao.offsetWidth - 20;
+            app.bar.style.width = app.rangstyle + "px";
+            app.contro.style.left = app.rangstyle - 1 + "px";
+          }, false);
+        });
+
+        app.articleid = api.pageParam.articleid;
+        app.cateid = api.pageParam.cateid;
+
+        app.getCulDetails(app.articleid);
+
+
+//        第一次加载数据
+        app.culGetEvaluateList(app.articleid, 1);
+        api.addEventListener({
+          name: 'shuaxinmessage'
+        }, function (ret, err) {
+          app.culGetEvaluateList(app.articleid)
+        });
+
+//      监听事件滑动
+
+        api.addEventListener({
+          name: 'scrolltobottom',
+          extra: {
+            threshold: 40 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+//                滑动时候改变的值
+        }, function (ret, err) {
+          app.load = true;//加载的圈
+          app.rote = false;//上拉加载的文字
+          app.overlate = false;//显示全部的文字
+          app.page++;
+          app.culGetEvaluateList(app.articleid);
+        });
+      };
+    },
+    methods: {
+
+
+        closethiswin:function(){
+          api.closeWin()
+        },
+      changewidth: function () {
+        app.vdo.currentTime = app.rangstyle;
+        var newfasle = app.vdo.currentTime / app.vdo.duration;
+        app.bar.style.width = app.rangstyle + "px";
+        app.contro.style.left = app.rangstyle - 20 + "px";
+//        时间的变化
+//        alert(app.vdo.duration);
+        app.second = parseInt((app.vdo.duration - app.vdo.currentTime) % 60);
+        app.minute = parseInt((app.vdo.duration - app.vdo.currentTime) / 60);
+
+//        已播放时间的变化
+        app.nowsecond = parseInt(app.vdo.currentTime % 60);
+        app.nowminute = parseInt(app.vdo.currentTime / 60);
+      },
+
+//      开始或暂停
+      playAudio: function () {
+        app.maxlength = app.vdo.duration;
+        if(app.listdetailslist.attachment == null){
+        }else{
+          if (app.keyPly) {
+            app.bar.style.width = 0;
+            app.second = parseInt(app.vdo.duration % 60);
+            app.minute = parseInt(app.vdo.duration / 60);
+
+            app.vdo.play();
+            app.rangstyle = app.contro.style.left;
+            musicinterval = setInterval(function () {
+              app.second--;
+              app.nowsecond++;
+//          判断进度时间秒大于60
+              if(app.nowsecond>59){
+                app.nowsecond = 0;
+                app.nowminute = app.nowminute + 1;
+              }
+//          判断读取时间小于60
+              if (app.second < 0) {
+                app.second = 59;
+                app.minute = app.minute - 1;
+              }
+//            判断时间结束
+              if (app.minute == 0 && app.second == 0) {
+                app.nowminute = 0;
+                app.nowsecond = 0;
+                app.keyPly = true;
+                clearInterval(musicinterval);
+              }
+            }, 1000);
+            app.keyPly = false;
+          } else {
+            app.vdo.pause();
+            clearInterval(musicinterval);
+            app.keyPly = true;
+          }
+        }
+
+
+      },
+
+
+//            底部的我要留言 跳转到留言板
+      sendtoken: function () {
+        openView('sendmessage_fm', 'tools/tokenmessage/sendmessage_fm', '留言板', false, false, {
+          articleId: app.articleid
+        })
+      },
+
+//            我评论的的收藏和支持状态,以及详情简介内容
+      getCulDetails: function (articleid) {
+        var post = {
+          cmd: 'getCulDetails',
+          articleId: articleid,
+          cate: app.cateid,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+          app.labr();
+          app.listdetailslist = res.data.proList;
+          app.listentnum =charToHtml(res.data.proList.content);
+          app.collect = res.data.proList.ifCollect;
+          app.agree = res.data.proList.ifAgree;
+          app.agreenum = res.data.proList.countAgree;
+          app.countCollect = res.data.proList.countCollect;
+        });
+      },
+      // 去 全部留言
+      checkmore: function () {
+        api.openWin({
+          name: 'tokenmessage_win',
+          url: '../tokenmessage/tokenmessage_win.html',
+          pageParam: {
+            articleid: app.articleid
+          }
+        });
+      },
+      // 留言下面的全部+更多+商家回复
+      culGetEvaluateList: function (articleid,ref) {
+        var post = {
+          cmd: 'culGetEvaluateList',
+          articleId: articleid,
+          token: getToken(),
+          page: app.page,
+          perPage: app.perPage
+        };
+
+        sendAjax(this, post, function (res) {
+          if(ref==1){
+            app.tokenlist = res.data.proList;
+            app.alltoken = res.data;
+            app.rote = true;
+            app.load = false
+          }else{
+            app.tokenlist = app.tokenlist.concat(res.data.proList);
+            app.alltoken = res.data;
+            app.rote = true;
+            app.load = false
+          }
+          if (res.data.proList.length == 0) {
+            app.overlate = true;
+            app.rote = false;
+            app.load = false
+          }
+
+          for (var k = 0; k < res.data.proList.length; k++) {
+            res.data.proList[k].reply = [];
+          }
+          app.labr();
+
+          for (var i = 0; i < app.tokenlist.length; i++) {
+            console.log(app.tokenlist[i].addTime.substring(0, 10));
+            app.tokenlist[i].addTime = app.tokenlist[i].addTime.substring(0, 10);
+          }
+
+          app.getReplyEvaluateList();
+
+        });
+      },
+//             支持网友留言/取消支持
+      culEvaluateDoAgree: function (index) {
+        if( getToken()!=null){
+          if (app.tokenlist[index].ifAgree == 1) {
+            app.tokenlist[index].ifAgree = 0;
+            app.tokenlist[index].countAgree--
+          } else {
+            app.tokenlist[index].ifAgree = 1;
+            app.tokenlist[index].countAgree++
+          }
+        }
+
+        var post = {
+          cmd: 'culEvaluateDoAgree',
+          commentId: app.tokenlist[index].commentId,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+        })
+      },
+//            支持/取消 我的 收藏或支持
+      culDoAgree: function (num) {
+
+        var post = {
+          cmd: 'culDoAgree',
+          articleId: app.articleid,
+          agreeOrCollect: num,
+          token: getToken
+        };
+        sendAjax(this, post, function (res) {
+          if (num == 2 && getToken()!=null) {
+            if (app.collect == 1) {
+              app.collect = 0;
+              app.listdetailslist.countCollect--
+            } else {
+              app.collect = 1;
+              app.listdetailslist.countCollect++
+            }
+          }
+
+          if (num == 1 && getToken()!=null) {
+            if (app.agree == 1) {
+              app.agree = 0;
+              app.listdetailslist.countAgree--
+            } else {
+              app.agree = 1;
+              app.listdetailslist.countAgree++
+            }
+          }
+        });
+      },
+//            回复评论
+
+      getReplyEvaluateList: function () {
+        for (var j = 0; j < app.tokenlist.length; j++) {
+          app.culGetReplyEvaluateList(app.tokenlist[j].commentId, j);
+        }
+      },
+//      拿到回复评论的参数
+      culGetReplyEvaluateList: function (commentId, index) {
+        var post = {
+          cmd: 'culGetReplyEvaluateList',
+          commentId: commentId
+        };
+        sendAjax(this, post, function (res) {
+          app.tokenlist[index].reply = res.data.proList;
+          app.labr()
+        });
+
+      },
+
+//            查看所有回复
+      checkallmessage: function (index) {
+        app.labellength = app.tokenlist[index].reply.length
+      },
+//      设置次数，动画判断的次数
+      labr:function(){
+        app.countnum++
+      }
+    }
+  })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

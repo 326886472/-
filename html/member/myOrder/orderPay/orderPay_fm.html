@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../../assets/iconfont/iconfont.css">
+  <style>
+    html, body {
+      background: #F0F0F0;
+    }
+
+    #app {
+
+    }
+
+    .icon {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .icon-box {
+      padding: 0.3rem;
+      margin-bottom: 0.5rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+    }
+
+    .content {
+      font-size: 0.7rem;
+      color: #666;
+    }
+
+    .content-header {
+      padding: 0.3rem 1rem;
+    }
+
+    .content-list {
+      background: white;
+      padding: 1rem 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .content-list div {
+      text-align: center;
+    }
+
+    .btn-box {
+      position: absolute;
+      bottom: 5%;
+      width: 100%;
+    }
+
+    .btn-box:active {
+      color: #AB9277;
+    }
+
+    .btn-box div {
+      padding: 0.3rem 0;
+      text-align: center;
+      width: 60%;
+      margin: 0 auto;
+      border-radius: 0.5rem;
+      font-size: 0.7rem;
+      color: #666;
+      border: 1px solid #666;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="content">
+    <div class="content-header">
+      支付方式
+    </div>
+    <div class="content-list" v-if="courseOrderPay">
+      <div @click="openPayInfo(1)" v-show="wpayAllow==1">
+        <div class="icon-box weixin">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-weixin-copy"></use>
+          </svg>
+        </div>
+        微信
+      </div>
+      <div @click="openPayInfo(2)" v-show="zfbAllow==1">
+        <div class="icon-box zfb">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-zhifubao"></use>
+          </svg>
+        </div>
+        支付宝
+      </div>
+      <div @click="openPayInfo(3)" v-show="ylAllow==1">
+        <div class="icon-box yl">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-yinhangqia-copy"></use>
+          </svg>
+        </div>
+        银联
+      </div>
+    </div>
+    <div class="content-list" v-if="Jxpay">
+      <div @click="openPayInfo(4)" v-if="wpayAllow==1">
+        <div class="icon-box weixin">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-weixin-copy"></use>
+          </svg>
+        </div>
+        微信
+      </div>
+      <div @click="openPayInfo(5)" v-if="zfbAllow==1">
+        <div class="icon-box zfb">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-zhifubao"></use>
+          </svg>
+        </div>
+        支付宝
+      </div>
+      <div @click="openPayInfo(6)" v-if="ylAllow==1">
+        <div class="icon-box yl">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-yinhangqia-copy"></use>
+          </svg>
+        </div>
+        银联
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/iconfont/iconfont.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      courseOrderPay: false,  //课程
+      Jxpay: false,      //绝响
+      courseOrderId: '',//课程单号
+      orderId: '',      //绝响单号
+      zfbAllow: '-1',
+      wpayAllow: '-1',
+      ylAllow: '-1'
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        // 课程
+        if (api.pageParam.courseOrderId) {
+          app.courseOrderId = api.pageParam.courseOrderId;
+          app.courseOrderPay = true;
+        }
+        // 绝响
+        if (api.pageParam.orderId) {
+          app.orderId = api.pageParam.orderId;
+          app.Jxpay = true;
+        }
+        // 支付宝
+        app.switch_app(3, function (allow) {
+          app.zfbAllow = allow;
+        });
+        // 微信
+        app.switch_app(4, function (allow) {
+          app.wpayAllow = allow;
+        });
+        // 银联
+        app.switch_app(5, function (allow) {
+          app.ylAllow = allow;
+        });
+      };
+    },
+    methods: {
+      //      支付方式
+//      支付开关 4：微信；3：微信 5:银联
+      switch_app: function (switchType, callback) {
+        var post = {
+          cmd: 'switch_app',
+          switchType: switchType
+        };
+        sendAjax(this, post, function (res) {
+          if (callback) {
+            callback(res.data);
+          }
+        });
+      },
+//      课程
+      openPayInfo: function (payType) {
+        switch (payType) {
+//          课程
+          case 1:
+            app.wxPayapiForCourse();
+            break;
+          case 2:
+            app.courseAlipayapi();
+            break;
+          case 3:
+            app.unionPayOfMarketPackage();
+            break;
+//            产品绝响
+          case 4:
+            app.wxPayapiForJX();
+            break;
+          case 5:
+            app.jxAlipayapi();
+            break;
+          case 6:
+            app.jxUnionPayapi();
+            break;
+        }
+      },
+//      微信支付
+      wxPayapiForCourse: function () {
+        api.showProgress({
+          title: '努力加载中...',
+          text: '先喝杯茶...',
+          modal: false
+        });
+        var post = {
+          cmd: 'wxPayapiForCourse',
+          token: getToken(),
+          courseOrderId: app.courseOrderId,
+          app: 1
+        };
+        console.log(JSON.stringify(post.token));
+        sendAjax(app, post, function (res) {
+          var payInfo = res.data.htmlResult;
+          var wxPay = api.require('wxPay');
+          wxPay.payOrder({
+            orderId: payInfo.prepay_id,
+            mchId: payInfo.mch_id,
+            nonceStr: payInfo.nonce_str,
+            timeStamp: payInfo.timeStamp,
+            sign: payInfo.sign
+          }, function (ret, err) {
+            if (ret) {
+              if (ret.status) {
+                //支付成功
+                api.hideProgress();
+                toastMsg('支付成功');
+                api.sendEvent({
+                  name: 'classOrderchange'
+                });
+                closeWindow();
+              } else {
+                api.hideProgress();
+                toastMsg('支付失败');
+                api.sendEvent({
+                  name: 'classOrderchange'
+                });
+                closeWindow();
+              }
+            } else {
+              api.hideProgress();
+            }
+          });
+        });
+      },
+//      支付宝
+      courseAlipayapi: function () {
+        var post = {
+          cmd: 'courseAlipayapi',
+          token: getToken(),
+          courseOrderId: app.courseOrderId,
+          app: 1
+        };
+
+        sendAjax(app, post, function (res) {
+          var aliPayPlus = api.require('aliPayPlus');
+          aliPayPlus.payOrder({
+            orderInfo: res.data.htmlResult
+          }, function (ret, err) {
+            api.sendEvent({
+              name: 'classOrderchange'
+            });
+            if (ret.code == 9000) {
+              toastMsg('支付成功');
+              closeWindow();
+            }
+          });
+        });
+      },
+//      银联
+      unionPayOfMarketPackage: function () {
+        var post = {
+          cmd: 'unionPayapi',
+          token: getToken(),
+          duringOpen: app.duringOpen,
+          app: 1
+        };
+        sendAjax(this, post, function (res) {
+          var unPay = api.require('unionPay');
+          var payPost = {
+            tn: res.data.orderNo,
+            devMode: true
+          };
+          unPay.pay({
+            tn: res.data.tn,
+            devMode: true
+          }, function (ret, err) {
+            api.sendEvent({
+              name: 'MemberUp'
+            });
+            toastMsg('充值成功');
+            setTimeout(function () {
+              closeWindow();
+            }, 2000)
+          });
+        });
+      },
+//        产品绝响
+//      wx
+      wxPayapiForJX: function () {
+        api.showProgress({
+          title: '努力加载中...',
+          text: '先喝杯茶...',
+          modal: false
+        });
+        var post = {
+          cmd: 'wxPayapiForJX',
+          token: getToken(),
+          orderId: app.orderId,
+          app: 1
+        };
+        sendAjax(app, post, function (res) {
+          var payInfo = res.data.htmlResult;
+          var wxPay = api.require('wxPay');
+          wxPay.payOrder({
+            orderId: payInfo.prepay_id,
+            mchId: payInfo.mch_id,
+            nonceStr: payInfo.nonce_str,
+            timeStamp: payInfo.timeStamp,
+            sign: payInfo.sign
+          }, function (ret, err) {
+            if (ret) {
+              if (ret.status) {
+                //支付成功
+                api.hideProgress();
+                toastMsg('支付成功');
+                api.sendEvent({
+                  name: 'shopOrderchange'
+                });
+                closeWindow();
+              } else {
+                api.hideProgress();
+                toastMsg('支付失败');
+                api.sendEvent({
+                  name: 'shopOrderchange'
+                });
+                closeWindow();
+              }
+            } else {
+              api.hideProgress();
+            }
+          });
+        });
+      },
+//      zfb
+      jxAlipayapi: function () {
+        var post = {
+          cmd: 'jxAlipayapi',
+          token: getToken(),
+          orderId: app.orderId,
+          app: 1
+        };
+        sendAjax(app, post, function (res) {
+          var aliPayPlus = api.require('aliPayPlus');
+          aliPayPlus.payOrder({
+            orderInfo: res.data.htmlResult
+          }, function (ret, err) {
+            api.sendEvent({
+              name: 'shopOrderchange'
+            });
+            if (ret.code == 9000) {
+              toastMsg('充值成功');
+              closeWindow();
+            }
+          });
+        });
+      },
+//      yl
+      jxUnionPayapi: function () {
+        var post = {
+          cmd: 'jxUnionPayapi',
+          token: getToken(),
+          orderId: app.orderId,
+          app: 1
+        };
+        sendAjax(this, post, function (res) {
+          var unPay = api.require('unionPay');
+          var payPost = {
+            tn: res.data.orderNo,
+            devMode: true
+          };
+          unPay.pay({
+            tn: res.data.tn,
+            devMode: true
+          }, function (ret, err) {
+            api.sendEvent({
+              name: 'shopOrderchange'
+            });
+            toastMsg('充值成功');
+            closeWindow();
+          });
+        });
+      }
+    }
+  })
+</script>

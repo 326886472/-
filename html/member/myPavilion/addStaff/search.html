@@ -1,0 +1,132 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+    <link rel="stylesheet" href="../../../../assets/css/css/assets_search.css">
+</head>
+<body>
+
+<div id="app">
+    <div id="loadStart"></div>
+    <mt-search
+            v-model="searchValue"
+            @keyup.native.enter="filterResult"
+            cancel-text="取消"
+            :result="SearchResults"
+            placeholder="搜索(用户名、推荐码、手机号)"
+    >
+        <mt-cell v-for="item in SearchResults">
+            <div @click="app.popupVisible = !app.popupVisible;app.ace = item">
+                <img slot="icon" :src="formatImg(item.avatar)" width="24" height="24">
+                <span>姓名：{{item.nickname}}</span>
+                <span>电话：{{item.mobile}}</span>
+            </div>
+        </mt-cell>
+    </mt-search>
+    <mt-popup
+        v-model="popupVisible"
+        position="right"
+        class="detailsMessage"
+        style="width: 100%;height: 100%;flex-direction: column;justify-content: flex-start"
+    >
+        <div style="height: 100px;margin: 0.5rem 0">
+            <img slot="icon" :src="formatImg(ace.avatar)" width="100" height="100">
+        </div>
+        <div>用户姓名：{{ace.nickname}}</div>
+        <div>联系方式：{{ace.mobile}}</div>
+        <div v-show="ace.city">所在城市 ：{{ace.city}}</div>
+        <div>性别：{{ace.sex | resolverSex}}</div>
+        <mt-button type="default" @click="addStaff(ace.id)" style="margin-top: 1rem;margin-right: 2rem;margin-left: 2rem;">确认</mt-button>
+        <mt-button type="default" @click="popupVisible = false" style="margin-top: 1rem;margin-right: 2rem;margin-left: 2rem;">返回</mt-button>
+    </mt-popup>
+</div>
+
+</body>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            token:getToken(),
+            searchValue:'',
+            ace:{},
+            clubId: '',
+            popupVisible: false,
+            SearchResults:[]
+        },
+        filters:{
+            resolverSex:function (sex) {
+                switch (sex) {
+                    case '1':
+                        return '男';
+                    case '2':
+                        return '女';
+                }
+            }
+        },
+        created: function () {
+            apiready = function () {
+                app.clubId = api.pageParam.clubId;
+                loadEnd()
+            }
+        },
+        methods: {
+            ToSearch: function () {
+                openView('searchStaff', 'member/myPavilion/addStaff/search', '添加员工', false, false, {
+                    clubId: app.clubId
+                })
+            },
+            filterResult: function () {
+                var post = {
+                    cmd: 'getUserList',
+                    token: app.token,
+                    nickname: app.searchValue,
+                };
+                MINT.Indicator.open();
+                sendAjax(this, post,function (res) {
+                        app.SearchResults = res.data;
+                        MINT.Indicator.close();
+                })
+            },
+            addStaff: function (id) {
+                popupVisible = false;
+                var post = {
+                    cmd: 'addUserClubList',
+                    clubId: app.clubId,
+                    token: app.token,
+                    staffId: id
+                };
+                sendAjax(this, post, function (res) {
+                    if (res.code === 1) {
+                        toastMsg('添加成功！');
+                        api.sendEvent({
+                            name: 'staffRefresh'
+                        });
+                        setTimeout(closeWindow,2000)
+                    }else {
+                        toastMsg('添加失败，请稍后重试！');
+                    }
+                })
+            }
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "vue-multiple-pages",
+  "description": "A Vue.js project",
+  "author": "plortinus@gmail.com",
+  "private": true,
+  "scripts": {
+    "wifiStart": "apicloud wifiStart --port 8686",
+    "wifiSync": "apicloud wifiSync --project ./ --updateAll false",
+    "wifiLog": "apicloud wifiLog --port 8686"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

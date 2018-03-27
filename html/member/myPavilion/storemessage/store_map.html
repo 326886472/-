@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport"
+                  content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+            <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+            <title></title>
+            <link rel="stylesheet" href="../../../../assets/css/api.css"/>
+            <link rel="stylesheet" href="../../../../assets/css/style.css">
+            <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+            <link rel="stylesheet" href="../../../../assets/iconfont/iconfont_pavilion.css">
+            <link rel="stylesheet" href="../../../../assets/css/css/store_map.css">
+        </head>
+<body>
+<div id='app' style="height: 100%;">
+    <section>
+        <div class="headermap">
+            <div class="search">
+                <div class="inputbox">
+                    <input type="text" style="text-align: center;" placeholder="请输入地址" v-model="address" @input="inputAddress()"/>
+                </div>
+            </div>
+        </div>
+        <div class="maplist">
+            <ul>
+                <li v-for="(item, index) in addressList" @click="addressChoose(item)">
+                    <p class="mapname">{{index == 0 ? '[当前位置]' : ''}}{{item.name}}</p>
+                    <p class="mapdetail">{{item.address}}</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../../assets/js/index.js"></script>
+<script src="../../../../assets/iconfont/iconfont_pavilion.js"></script>
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            position: '',
+            cityCode: '',
+            aMap: '',
+            address: '',
+            addressList: []
+        },
+        created: function () {
+            apiready = function () {
+                app.position = api.pageParam.position;
+                app.aMap = api.require('aMap');
+                app.aMapOpen(function() {
+                    if (!app.position) {
+                        app.getLocation(function (pos) {
+                            app.setCenter(pos.lon, pos.lat);
+                            app.addLocationIcon();
+
+                            app.getNameFromCoords(pos.lon, pos.lat, function () {
+                                app.searchNearby(pos.lon, pos.lat, function () {
+                                    app.addAnnotations(pos.lon, pos.lat);
+//                                     app.setBubble();
+                                });
+                            });
+                        });
+                    } else {
+                        var pos = app.position.split(',');
+
+                        setTimeout(function () {
+                            app.setCenter(pos[0], pos[1]);
+                        }, 50);
+                        app.addLocationIcon();
+
+                        app.getNameFromCoords(pos[0], pos[1], function () {
+                            app.searchNearby(pos[0], pos[1], function () {
+                                app.addAnnotations(pos[0], pos[1]);
+//                                 app.setBubble();
+                            });
+                        });
+                    }
+                });
+
+                api.addEventListener({
+                    name: 'locationClick'
+                }, function () {
+                    app.getLocation(function (pos) {
+                        app.setCenter(pos.lon, pos.lat);
+                        app.setAnnotationCoords(pos.lon, pos.lat);
+                        app.searchNearby(pos.lon, pos.lat, function () {
+//              app.setBubble();
+                        });
+                    });
+                });
+            }
+        },
+        methods: {
+            addLocationIcon() {
+                api.openFrame({
+                    name: 'location',
+                    url: './location.html',
+                    rect: {
+                        x: 20,
+                        y: 300,
+                        w: '20px',
+                        h: '20px'
+                    },
+                    bgColor: 'rgba(0, 0, 0, 0.0)',
+                    pageParam: {
+                        name: 'test'
+                    }
+                });
+            },
+            addressChoose(address) {
+                api.sendEvent({
+                    name: 'addressChange',
+                    extra: {
+                        address: address.address,
+                        lon: address.lon,
+                        lat: address.lat
+                    }
+                });
+                api.closeWin();
+            },
+            inputAddress() {
+                if (trim(app.address)) {
+                    app.searchInCity(function (posFromSearch) {
+                        app.setAnnotationCoords(posFromSearch.lon, posFromSearch.lat);
+                        app.setCenter(posFromSearch.lon, posFromSearch.lat);
+                        app.searchNearby(posFromSearch.lon, posFromSearch.lat, function () {
+//              app.setBubble();
+                        });
+                    });
+                }
+            },
+            searchInCity(callback) {
+                app.aMap.searchInCity({
+                    city: app.cityCode,
+                    keyword: trim(app.address),
+                    offset: 1,
+                    page: 1,
+                    sortrule: 0
+                }, function (ret) {
+                    if (ret.status) {
+                        callback(ret.pois[0]);
+                    }
+                });
+            },
+            searchNearby(lon, lat, callback) {
+                app.aMap.searchNearby({
+                    lon: lon,
+                    lat: lat,
+                    radius: 6000,
+                    offset: 20,
+                    page: 1
+                }, function (ret, err) {
+                    if (ret.status) {
+                        app.addressList = ret.pois;
+                        if (!app.position) {
+                            api.sendEvent({
+                                name: 'addressChange',
+                                extra: {
+                                    address: app.addressList[0].address,
+                                    lon: app.addressList[0].lon,
+                                    lat: app.addressList[0].lat
+                                }
+                            });
+                        }
+
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                });
+            },
+            addAnnotations(lon, lat) {
+                app.aMap.addAnnotations({
+                    annotations: [{
+                        id: 1,
+                        lon: lon,
+                        lat: lat
+                    }]
+                }, function (ret) {
+                    if (ret.eventType == 'click') {
+                        app.aMap.popupBubble({id: 2});
+                    }
+                });
+            },
+            setAnnotationCoords(lon, lat) {
+                app.aMap.setAnnotationCoords({
+                    id: 1,
+                    lon: lon,
+                    lat: lat
+                });
+            },
+            setBubble() {
+                if (app.addressList[0]) {
+                    app.aMap.setBubble({
+                        id: 1,
+                        content: {
+                            title: app.addressList[0].name,
+                            subTitle: app.addressList[0].address
+                        },
+                        styles: {
+                            titleColor: '#000',
+                            titleSize: 16,
+                            subTitleColor: '#999',
+                            subTitleSize: 12,
+                            illusAlign: 'left'
+                        }
+                    }, function () {
+                    });
+                }
+            },
+            // 通过 cityCode 来获取城市的经纬度，暂时不用了
+            getCoordsFromName(callback) {
+                app.aMap.getCoordsFromName({
+                    city: app.region.code,
+                    address: trim(app.address) || app.region.city
+                }, function (ret) {
+                    if (ret.status && ret.lon) {
+                        callback(ret);
+                    } else {
+                        Toast('输入的地址不存在');
+                    }
+                });
+            },
+            setCenter(lon, lat) {
+                app.aMap.setCenter({
+                    coords: {
+                        lon: lon,
+                        lat: lat
+                    },
+                    animation: false
+                });
+            },
+            aMapOpen(callback) {
+                app.aMap.open({
+                    rect: {
+                        x: 0,
+                        y: 48,
+                        w: api.winWidth,
+                        h: 212
+                    },
+                    zoomLevel: 17,
+                    fixedOn: api.frameName,
+                    fixed: true
+                }, function (ret) {
+                    if (ret.status) {
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                });
+            },
+            getLocation(callback) {
+                app.aMap.getLocation(function (ret, err) {
+                    if (ret.status) {
+                        if (callback) {
+                            callback(ret);
+                        }
+                    } else {
+                        toastMsg('定位失败');
+                    }
+                });
+            },
+            getNameFromCoords(lon, lat, callback) {
+                app.aMap.getNameFromCoords({
+                    lon: lon,
+                    lat: lat
+                }, function (ret, err) {
+                    if (ret.status) {
+                        var cityCode = '';
+                        if (api.systemType == "ios") {
+                            // 如果为真，则不是直辖市，截四位
+                            if (ret.city != ret.state) {
+                                app.cityCode = ret.adcode.substr(0, 4) + '00';
+                            } else {
+                                app.cityCode = ret.adcode.substr(0, 2) + '0000';
+                            }
+                        } else {
+                            // 如果为真，则不是直辖市，截四位
+                            if (ret.city) {
+                                app.cityCode = ret.adcode.substr(0, 4) + '00';
+                            } else {
+                                app.cityCode = ret.adcode.substr(0, 2) + '0000';
+                            }
+                        }
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>

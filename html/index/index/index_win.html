@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <title></title>
+  <link rel="stylesheet" href="../../../assets/css/api.css"/>
+  <link rel="stylesheet" href="../../../assets/css/style.css">
+  <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+  <style>
+    #app {
+      background: white;
+    }
+    #header {
+      /*border-bottom: 1px solid #ccc;*/
+      width: 100%;
+    }
+    .middlebox {
+      display: inline-block;
+      border-radius: 20px;
+      border: 1px solid #8e8e8e;
+      padding-left: 0.5rem;
+      margin-top: 0.5rem;
+      height: 1.3rem;
+      flex: 1;
+    }
+
+    .middlebox span {
+      width: 80%;
+      color: #cacaca;
+      text-align: left;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      height: 1.3rem;
+      font-size: 13px;
+      display: block;
+      float: left;
+      outline: none;
+      margin: auto;
+      line-height: 1.3rem;
+    }
+
+    #footer {
+      display: flex;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      margin-top: auto;
+      left: 0;
+      height: 44px;
+      background: white;
+      align-items: center;
+      font-size: 9px;
+      justify-content: space-between;
+    }
+
+    .bottomindex {
+      flex: 1;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .localwhere {
+      padding-top: 2px;
+      float: left;
+      width: auto;
+      padding-right: 7px;
+      text-align: center;
+      display: block;
+      font-size: 14px;
+      line-height: 44px;
+      margin-left: 0.5rem;
+    }
+
+    .osearch {
+      display: inline-block;
+      float: right;
+      width: 13%;
+      height: 1.3rem;
+      line-height: 1.3rem;
+      color: #ff4d4d;
+      font-size: 19px;
+    }
+
+    .oavbox {
+      width: 44px;
+      text-align: center;
+      padding-top: 3px;
+    }
+
+    .beforeindex {
+      color: #f44336;
+    }
+
+    .pubheader {
+      width: auto;
+      height: auto;
+      display: flex;
+    }
+
+    /*发现页面的头部*/
+    .headerchange {
+      flex: 1;
+      text-align: center;
+      font-size: 15px;
+      padding-left: 10px;
+      padding-right: 10px;
+      box-sizing: border-box;
+    }
+
+    .beforeclass {
+      border-bottom: 2px solid #ad957b;
+      color: saddlebrown;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    /*绝响页面的头部*/
+    .jxhead {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 5px 10px;
+      box-sizing: border-box;
+    }
+
+    .jxsousuo {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      flex: 1;
+      border: 1px solid #929292;
+      height: 1.3rem;
+      margin: 5px 10px;
+      border-radius: 0.8rem;
+      overflow: hidden;
+      box-sizing: border-box;
+      color: #8d8d8d;
+      font-size: 14px;
+    }
+
+    .jxsousuo input {
+      flex: 1;
+      outline: none;
+    }
+
+    .msgbox {
+      position: relative;
+    }
+
+    .msgbox .iconfont {
+      font-size: 18px;
+      padding-right: 5px;
+    }
+
+    .msgbox span {
+      position: absolute;
+      top: 5px;
+      right: 0;
+      display: block;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      background-color: #fdbf56;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 12px;
+      /*overflow: hidden;*/
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <header class="aui-bar aui-bar-nav" id="header">
+    <!--首页头部-->
+    <div class="pubheader" v-if="minindex==0">
+      <div @click="gochangecity()" class="localwhere">{{cityName}} <span style="transform: rotate(90deg)"><i
+          style="font-size: 10px"
+          class="iconfont icon-ziyuan2"></i></span>
+      </div>
+      <div class="middlebox" @click="gotosearch()">
+        <span>
+          搜索古琴馆/课程/产品/咨询工具
+        </span>
+        <i class="iconfont osearch icon-sousuo"></i>
+      </div>
+      <div class="oavbox"><i style="color: #ff4d4d;font-size: 18px"
+                             class="iconfont icon-saoyisao"></i></div>
+    </div>
+
+    <!--发现页的头部-->
+    <div style="width: 100%;height: 100%;display: flex " v-if="minindex==1">
+      <div class="headerchange" @click="count(index)"
+           v-for="(item,index) in titlenav">
+        <span :class="{beforeclass:titleindex==index}">{{item.title}}</span>
+      </div>
+    </div>
+
+    <!--绝响页头部-->
+    <div class="jxhead" v-if="minindex==2">
+      <i class="iconfont icon-saoyisao"></i>
+      <div class="jxsousuo" @click="gosearch()">
+        <i class="iconfont icon-sousuo" style="padding: 0 5px;color: red;"></i>
+        <input type="text" disabled="disabled" placeholder="绝响">
+      </div>
+      <div class="msgbox" @click="openNews()">
+        <span v-text="num" v-show="num>0"></span>
+        <i class="iconfont icon-xiaoxi"></i>
+      </div>
+    </div>
+
+    <!--工具页的头部-->
+    <div v-if="minindex==3"> 咨询/工具</div>
+  </header>
+  <!--首页的头部结束-->
+
+  <footer class="aui-bar aui-bar-tab" id="footer">
+    <div v-for="(item, index) in footerlist" class="bottomindex" @click="btncount(index)"
+         :class="{beforeindex: minindex==index}">
+      <i style="font-size: 20px;font-weight: 500" class="iconfont indexbottom" :class="item.src"></i>
+      <p style="font-size: 12px">{{item.name}}</p>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+  new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/vue-resource.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      minindex: 0,
+      footerlist: [
+        {
+          name: '首页',
+          src: 'icon-hone'
+        },
+        {
+          name: '发现',
+          src: 'icon-faxian1'
+        },
+        {
+          name: '绝响',
+          src: 'icon-shangcheng1'
+        },
+        {
+          name: '工具',
+          src: 'icon-xueshimao'
+        },
+        {
+          name: '我的',
+          src: 'icon-wo10'
+        }
+
+      ],
+      titlenav: [
+        {
+          title: '古琴馆'
+        },
+        {
+          title: '古琴教学'
+        }
+      ],
+      titleindex: 0,
+      headerH: 0,
+      footerH: 0,
+      navstatusindex: 0,
+//            接口的data
+      cityName: '',
+      newcityname: '',
+      citycode: '',
+      searchvalue: 0,
+      thisindex: '',
+      //绝响未读消息
+      num: '',
+      lon: '',
+      lat: ''
+    },
+    filters: {},
+    created: function () {
+      apiready = function () {
+        api.setWinAttr({
+          slidBackEnabled: false
+        });
+
+        api.addEventListener({
+          name: 'keyback'
+        }, function () {
+          api.closeWidget({})
+        });
+        // 未读消息监听
+        api.addEventListener({
+          name: 'NotifyOk'
+        }, function (ret, err) {
+          app.getNavUnReadCount();
+        });
+
+        app.thisindex = api.pageParam.thisindex;
+        api.addEventListener({
+          name: 'changecity'
+        }, function (ret, err) {
+          app.cityName = ret.value.cityname
+        });
+
+        api.addEventListener({
+          name: 'sendindex'
+        }, function (ret, err) {
+          app.titleindex = ret.value.navstatusindex
+        });
+
+        // 退出监听
+        api.addEventListener({
+          name: 'loginOut'
+        }, function (ret, err) {
+          api.setFrameGroupIndex({
+            name: 'index_fm',
+            index: 0
+          });
+        });
+
+        app.cityName = getcityname();
+        api.addEventListener({
+          name: 'cityReady'
+        }, function () {
+          app.cityName = getcityname();
+        });
+
+        app.$nextTick(function () {
+          $api.fixStatusBar($api.dom('header'));
+          api.setStatusBarStyle({
+            style: 'dark'
+          });
+          app.headerH = $api.offset($api.dom('header')).h;
+          app.footerH = getHeight('footer');
+
+          api.openFrameGroup({
+            name: 'index_fm',
+            url: 'index_fm.html',
+            scrollEnabled: false,
+            preload: 5,
+            index: app.thisindex,
+            rect: {
+              x: 0,
+              y: 0,
+              w: 'auto',
+              h: 'auto',
+              marginTop : app.headerH,
+              marginBottom : app.footerH
+            },
+            frames: [
+              {
+                name: 'index1',
+                url: 'index_fm.html',
+                bounces: true,
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+              },
+              {
+                name: 'index2',
+                url: '../../find/catch/findhome_fm.html',
+                bounces: true,
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+              },
+              {
+                name: 'index3',
+                url: '../../juexiang/juexiang/juexiang_fm.html',
+                bounces: true,
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+              },
+              {
+                name: 'index4',
+                url: '../../tools/tool/toolfm_fm.html',
+                bounces: true,
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+              },
+              {
+                name: 'index5',
+                url: '../../member/myIndex/my.html',
+                bounces: false,
+                vScrollBarEnabled: true,
+                hScrollBarEnabled: true
+              }
+            ]
+          }, function (ret, err) {
+            app.minindex = ret.index;
+            switch (ret.index) {
+              case 4:
+                api.setFrameGroupAttr({
+                  name: 'index_fm',
+                  rect: {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: 'auto',
+                    marginTop: 0,
+                    marginBottom : app.footerH
+                  }
+                });
+                break;
+              case 0:
+              case 2: {
+                app.getNavUnReadCount();
+                api.setFrameGroupAttr({
+                  name: 'index_fm',
+                  rect: {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: 'auto',
+                    marginTop : app.headerH,
+                    marginBottom : app.footerH
+                  }
+                });
+                break;
+              }
+              case 1:
+              case 3:
+                api.setFrameGroupAttr({
+                  name: 'index_fm',
+                  rect: {
+                    x: 0,
+                    y: 0,
+                    w: 'auto',
+                    h: 'auto',
+                    marginTop : app.headerH,
+                    marginBottom : app.footerH
+                  }
+                });
+                break;
+            }
+          });
+        });
+      };
+    },
+
+    methods: {
+      openMap: function (callback) {
+        var aMap = api.require('aMap');
+        aMap.open({
+          rect: {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0
+          }
+        }, function (ret) {
+          if (ret.status) {
+            if (callback) {
+              callback();
+            }
+          }
+        });
+      },
+      getLocation: function (callback) {
+        var aMap = api.require('aMap');
+        aMap.getLocation(function (ret, err) {
+          if (ret.status) {
+            app.lon = ret.lon;
+            app.lat = ret.lat;
+
+            if (callback) {
+              callback();
+            }
+          }
+        });
+      },
+      btncount: function (index) {
+        // 切换到“我的”时
+        if (index == 4) {
+          isLogined(this, function (logined) {
+            if (logined) {
+              api.setFrameGroupIndex({
+                name: 'index_fm',
+                index: index
+              });
+
+              api.sendEvent({
+                name: 'myBtnClick'
+              });
+            } else {
+              openLogin();
+            }
+          });
+        } else {
+          api.setFrameGroupIndex({
+            name: 'index_fm',
+            index: index
+          });
+        }
+      },
+      count: function (index) {
+        app.titleindex = index;
+        api.sendEvent({
+          name: 'catchChange',
+          extra: {
+            statusindex: app.titleindex
+          }
+        });
+      },
+      gotosearch: function () {
+        api.openWin({
+          name: 'search_win',
+          url: '../../find/search/search_win.html',
+          pageParam: {
+            searchvalue: app.searchvalue
+          }
+        });
+      },
+
+      gochangecity: function () {
+        api.openWin({
+          name: 'changecity_win',
+          url: '../splitcity/changecity_win.html'
+        });
+      },
+
+      gosearch: function () {
+        api.openWin({
+          name: 'search_win',
+          url: '../../find/search/search_win.html'
+        });
+      },
+      //      绝响获取未读消息数量
+      getNavUnReadCount: function () {
+        var post = {
+          cmd: 'getNavUnReadCount',
+          token: getToken()
+        };
+        sendAjax(this, post, function (res) {
+          app.num = res.data
+        });
+      },
+      //      消息
+      openNews: function () {
+        openWin('news', '../../member/news/news_win.html')
+      }
+    }
+
+  })
+</script>

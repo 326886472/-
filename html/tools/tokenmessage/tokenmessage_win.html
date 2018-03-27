@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" href="../../../assets/css/api.css"/>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/iconfont/iconfont.css">
+    <style>
+        #app{
+            background: white;
+            width: 100%;
+        }
+        #header{
+            border-bottom:1px solid #ccc;
+            width: 100%;
+            display: flex;
+        }
+        .ifont{
+            display: inline-block;
+        }
+        .titlename{
+            flex: 1;
+            text-align: center;
+        }
+        .ospan{
+            width: 20%;
+            padding-left: 10px;
+            text-align: left;
+            display: inline-block;
+        }
+        #footer {
+            display: flex;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            margin-top: auto;
+            left: 0;
+            height: 44px;
+            background: white;
+            align-items: center;
+            font-size: 15px;
+            justify-content: space-between;
+        }
+
+        .bottomboxtoken{
+            width: 100%;
+            height: 44px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            background: white;
+            line-height: 44px;
+            padding-left: 20px;
+            box-sizing: border-box;
+        }
+        .mintag{
+            width: 44px;
+            text-align: center;
+        }
+        .otype{
+            flex: 1;
+            background:#ededed;
+            height: 30px;
+            margin-top: 5px;
+            padding-left: 10px;
+            box-sizing: border-box;
+            line-height: 30px;
+            color: darkgray;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id='app'>
+    <header class="aui-bar aui-bar-nav" id="header">
+        <span class="ospan" @click="closeWindow()"><i class="iconfont ifont icon-ziyuan2-copy"></i></span>
+        <span class="titlename">留言列表</span>
+        <span class="ospan"></span>
+    </header>
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <div class="bottomboxtoken">
+            <div class="otype" type="text" @click="gosendmessage()">我要留言</div>
+        <div class="mintag">
+        <i class="iconfont icon-liuyan"></i>
+        </div>
+        </div>
+    </footer>
+
+
+
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="../../../assets/js/api.js"></script>
+<script type="text/javascript" src="../../../assets/js/fastclick.js"></script>
+<script>
+    new FastClick(document.body);
+</script>
+<script type="text/javascript" src="../../../assets/js/vue.min.js"></script>
+<script type="text/javascript" src="../../../assets/js/index.js"></script>
+<script type="text/javascript" src="../../../assets/js/public.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            articleid:''
+        },
+        filters: {},
+        created:function() {
+            apiready = function () {
+                app.articleid = api.pageParam.articleid;
+                $api.fixStatusBar($api.dom('header'));
+                app.headerH = $api.offset($api.dom('header')).h;
+                app.footerH = getHeight('footer');
+                api.openFrame({
+                    name: 'tokenmessage_fm',
+                    url: './tokenmessage_fm.html',
+                    rect: {
+                        x: 0,
+                        y: app.headerH,
+                        w: 'auto',
+                        h: api.winHeight - app.headerH - app.footerH
+                    },
+                    pageParam: {
+                        articleid : app.articleid
+                    },
+                    bounces:true
+
+                });
+            };
+        },
+        methods: {
+            gosendmessage:function(){
+                openView('sendmessage_fm', 'tools/tokenmessage/sendmessage_fm', '留言板', false, false, {
+                    articleId : app.articleid
+                })
+            }
+        }
+    })
+</script>
